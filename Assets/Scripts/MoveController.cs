@@ -13,6 +13,7 @@ public class MoveController : MonoBehaviour {
     // Direction of object
     internal Vector2 direction;
     internal Vector2 facing;
+    internal Vector2 previousFacing;
     // Actual movement
     internal Vector2 movementVector = new Vector2(0, 0);
     private bool isMoving;
@@ -26,7 +27,8 @@ public class MoveController : MonoBehaviour {
         isMoving = false;
         movementVector = new Vector2(0, 0);
         direction = new Vector2(0, 0);
-        facing = new Vector2(0, 0);
+        facing = new Vector2(-1, 0);
+        previousFacing = new Vector2(-1, 0);
         canDash = true;
         isDashing = false;
         dashIn = 0;
@@ -36,7 +38,7 @@ public class MoveController : MonoBehaviour {
 	void Update () {
         //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
         dashIn -= Time.deltaTime;
-        if (dashIn < 0.8) {
+        if (dashIn < 0.5) {
             isDashing = false;
             rigidbody2D.drag = 75;
             rigidbody2D.mass = 2;
@@ -47,7 +49,14 @@ public class MoveController : MonoBehaviour {
         /* Check if character is moving and store the direction the player is facing in case they stop moving*/
         if (rigidbody2D.velocity.normalized.x != 0 || rigidbody2D.velocity.normalized.y != 0) {
             facing = rigidbody2D.velocity.normalized;
+            facing.x = (Mathf.Round(facing.x * 10) / 10);   //Round off in case theyre not going in a straight line
+            facing.y = (Mathf.Round(facing.y * 10) / 10);
             isMoving = true;
+        }
+
+        //Checks if the player is going in a diagonal. If it is, make it so the player doesnt change the direction its facing
+        if(facing.x == 0.7f || facing.y == 0.7f || facing.x == -0.7f || facing.y == -0.7f){
+            facing = previousFacing;
         }
         if (movementVector.x == 0 && movementVector.y == 0 && isDashing == false) {
             isMoving = false;
@@ -80,7 +89,8 @@ public class MoveController : MonoBehaviour {
         }
         else {
             animator.SetBool("IsDashing", false);
-        } 
+        }
+        previousFacing = facing;
     }
     void FixedUpdate() {
         // Apply the movement to the rigidbody
