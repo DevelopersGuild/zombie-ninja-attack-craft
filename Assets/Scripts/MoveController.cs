@@ -6,6 +6,7 @@ public class MoveController : MonoBehaviour {
     // Components
     private Animator animator;
     private Transform transform;
+    public BoxCollider2D attackCollider;
     // Speed of object
     [Range(0, 10)]
     public float speed = 8;
@@ -18,28 +19,32 @@ public class MoveController : MonoBehaviour {
     internal Vector2 movementVector = new Vector2(0, 0);
     private bool isMoving;
     private bool isDashing;
-    private bool canDash;
+    public bool canDash;
     public float dashIn;
-	public BoxCollider2D attackCollider;
-	//public BoxCollider2D otherAttackCollider;
+    //
+    private bool isAttacking;
+
 
     void Awake() {
         animator = GetComponent<Animator>();
         transform = GetComponent<Transform>();
+
         isMoving = false;
         movementVector = new Vector2(0, 0);
         direction = new Vector2(0, 0);
         facing = new Vector2(-1, 0);
         previousFacing = new Vector2(-1, 0);
+
         canDash = true;
         isDashing = false;
         dashIn = 0;
+
+        isAttacking = false;
     }
 
 	// Update is called once per frame
 	void Update () {
 
-		//otherAttackCollider.transform.position = new Vector2 (5, 5);
         //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
         dashIn -= Time.deltaTime;
         if (dashIn < 0.5) {
@@ -74,20 +79,21 @@ public class MoveController : MonoBehaviour {
             transform.localScale = new Vector3(-1, 1, 1);
         }
 
+        //Move the collider relative to where the player is facing
 		if (facing.x > 0) {
-						attackCollider.transform.position = new Vector2 (transform.position.x + 0.5f, transform.position.y);
-				} else if (facing.x < 0) {
-						attackCollider.transform.position = new Vector2 (transform.position.x - 0.5f, transform.position.y);
-				} else if (facing.y > 0) {
-						attackCollider.transform.position = new Vector2 (transform.position.x, transform.position.y + 0.6f);
-				} else if (facing.y < 0) {
-						attackCollider.transform.position = new Vector2 (transform.position.x, transform.position.y - 0.6f);
-				}
+			attackCollider.transform.position = new Vector2 (transform.position.x + 0.5f, transform.position.y);
+		} else if (facing.x < 0) {
+			attackCollider.transform.position = new Vector2 (transform.position.x - 0.5f, transform.position.y);
+		} else if (facing.y > 0) {
+			attackCollider.transform.position = new Vector2 (transform.position.x, transform.position.y + 0.6f);
+		} else if (facing.y < 0) {
+			attackCollider.transform.position = new Vector2 (transform.position.x, transform.position.y - 0.6f);
+		}
 
         // Calculate movement amount
         movementVector = direction * speed;
 
-        //Play animations
+        //Play walking animations
         if (isMoving == true) {
             animator.SetBool("IsMoving", isMoving);
             animator.SetFloat("movement_x", movementVector.x);
@@ -98,18 +104,29 @@ public class MoveController : MonoBehaviour {
         else {
             animator.SetBool("IsMoving", false);
         }
+
+        //Play dashing animations
         if (isDashing) {
             animator.SetBool("IsDashing", true);
         }
         else {
             animator.SetBool("IsDashing", false);
         }
+
+        //Play attacking animations
+        if (isAttacking) {
+            animator.SetBool("IsAttacking", true);
+        }
+        else {
+            animator.SetBool("IsAttacking", false);
+        }
+
         previousFacing = facing;
     }
     void FixedUpdate() {
         // Apply the movement to the rigidbody
         //rigidbody2D.AddForce(movementVector);
-        if (isDashing == false) {
+        if (isDashing == false && isAttacking == false) {
             rigidbody2D.velocity = movementVector;
         }
             
@@ -146,4 +163,28 @@ public class MoveController : MonoBehaviour {
             canDash = false;
         }
     }
+
+    public void Attack() {
+        isAttacking = true;
+        isDashing = false;
+    }
+
+    public void FinishedAttacking() {
+        isAttacking = false;
+    }
+
+    public bool CanAttack() {
+        if (isDashing) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+
+
+
+
+
 }

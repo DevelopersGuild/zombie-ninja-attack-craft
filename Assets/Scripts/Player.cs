@@ -22,20 +22,18 @@ public class Player : MonoBehaviour {
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputY = Input.GetAxisRaw("Vertical");
 
-        // Retrieve attack input
-        bool attack = Input.GetButtonDown("Fire1");
 
 
         //Move the player with the controller based off the players input
-        if(Input.GetButtonDown("Jump")){
+        if(Input.GetButtonDown("Jump") && moveController.canDash){
             moveController.Dash();
         }else{
             moveController.Move(inputX, inputY);
         }
 
 
-        if (attack) {
-
+        if (Input.GetButtonDown("Fire1") && moveController.CanAttack()) {
+            moveController.Attack();
         }
     }
 }
