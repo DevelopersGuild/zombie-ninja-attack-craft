@@ -20,6 +20,8 @@ public class MoveController : MonoBehaviour {
     private bool isDashing;
     private bool canDash;
     public float dashIn;
+	public BoxCollider2D attackCollider;
+	//public BoxCollider2D otherAttackCollider;
 
     void Awake() {
         animator = GetComponent<Animator>();
@@ -36,6 +38,8 @@ public class MoveController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+		//otherAttackCollider.transform.position = new Vector2 (5, 5);
         //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
         dashIn -= Time.deltaTime;
         if (dashIn < 0.5) {
@@ -69,6 +73,16 @@ public class MoveController : MonoBehaviour {
         else {
             transform.localScale = new Vector3(-1, 1, 1);
         }
+
+		if (facing.x > 0) {
+						attackCollider.transform.position = new Vector2 (transform.position.x + 0.5f, transform.position.y);
+				} else if (facing.x < 0) {
+						attackCollider.transform.position = new Vector2 (transform.position.x - 0.5f, transform.position.y);
+				} else if (facing.y > 0) {
+						attackCollider.transform.position = new Vector2 (transform.position.x, transform.position.y + 0.6f);
+				} else if (facing.y < 0) {
+						attackCollider.transform.position = new Vector2 (transform.position.x, transform.position.y - 0.6f);
+				}
 
         // Calculate movement amount
         movementVector = direction * speed;

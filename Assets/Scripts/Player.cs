@@ -27,7 +27,7 @@ public class Player : MonoBehaviour {
 
 
         //Move the player with the controller based off the players input
-        if(Input.GetButtonDown("Fire2")){
+        if(Input.GetButtonDown("Jump")){
             moveController.Dash();
         }else{
             moveController.Move(inputX, inputY);
