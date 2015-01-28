@@ -5,6 +5,8 @@ public class Player : MonoBehaviour {
     private MoveController moveController;
     private Animator animator;
     private WeaponController weaponController;
+    private AttackController attackController;
+    
     private float ButtonCooler;
     private int ButtonCount;
     private float lastTapTimeW;
@@ -17,6 +19,8 @@ public class Player : MonoBehaviour {
         moveController = GetComponent<MoveController>();
         animator = GetComponent<Animator>();
         weaponController = GetComponent<WeaponController>();
+        attackController = GetComponent<AttackController>();
+        
         ButtonCooler = 0.5f;
         ButtonCount = 0;
         tapSpeed = .15f;
@@ -32,8 +36,6 @@ public class Player : MonoBehaviour {
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputY = Input.GetAxisRaw("Vertical");
 
-        // Retrieve attack input
-        bool attack = Input.GetButtonDown("Fire1");
 
 
         //Move the player with the controller based off the players input
@@ -41,10 +43,11 @@ public class Player : MonoBehaviour {
             moveController.Dash();
         }else{
             moveController.Move(inputX, inputY);
+            //Debug.Log(inputX);
         }
 
 
-        //Check for double tap
+        //Check for double tap      
         if (Input.GetKeyDown("w")) { 
             if ((Time.time - lastTapTimeW) < tapSpeed) { 
                 moveController.Dash();
@@ -56,7 +59,6 @@ public class Player : MonoBehaviour {
                 moveController.Dash();
             }
             lastTapTimeS = Time.time;
-        }
         if (Input.GetKeyDown("a")) {
             if ((Time.time - lastTapTimeA) < tapSpeed) {
                 moveController.Dash();
@@ -69,6 +71,11 @@ public class Player : MonoBehaviour {
             }
             lastTapTimeD = Time.time;
         } 
+        
+        //Check for attack input
+        if (Input.GetButtonDown("Fire1") && attackController.CanAttack()) {
+             attackController.Attack();
+        }
 
     }
 }
