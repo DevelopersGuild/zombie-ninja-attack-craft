@@ -5,11 +5,13 @@ public class Player : MonoBehaviour {
     private MoveController moveController;
     private Animator animator;
     private WeaponController weaponController;
+    private AttackController attackController;
 
     void Awake() {
         moveController = GetComponent<MoveController>();
         animator = GetComponent<Animator>();
         weaponController = GetComponent<WeaponController>();
+        attackController = GetComponent<AttackController>();
     }
     void Start() {
 
@@ -25,15 +27,16 @@ public class Player : MonoBehaviour {
 
 
         //Move the player with the controller based off the players input
-        if(Input.GetButtonDown("Jump") && moveController.canDash){
+        if(Input.GetButtonDown("Jump")){
             moveController.Dash();
         }else{
             moveController.Move(inputX, inputY);
+            //Debug.Log(inputX);
         }
 
 
-        if (Input.GetButtonDown("Fire1") && moveController.CanAttack()) {
-            moveController.Attack();
+        if (Input.GetButtonDown("Fire1") && attackController.CanAttack()) {
+             attackController.Attack();
         }
     }
 }

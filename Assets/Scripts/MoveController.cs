@@ -6,26 +6,26 @@ public class MoveController : MonoBehaviour {
     // Components
     private Animator animator;
     private Transform transform;
-    public BoxCollider2D attackCollider;
+    public AttackController attackController;
     // Speed of object
     [Range(0, 10)]
     public float speed = 8;
     public float dashSpeed = 100;
     // Direction of object
     internal Vector2 direction;
-    internal Vector2 facing;
+    public Vector2 facing;
     internal Vector2 previousFacing;
     // Actual movement
     internal Vector2 movementVector = new Vector2(0, 0);
     private bool isMoving;
-    private bool isDashing;
+    public bool isDashing;
     public bool canDash;
     public float dashIn;
-    //
-    private bool isAttacking;
+
 
 
     void Awake() {
+        attackController = GetComponent<AttackController>();
         animator = GetComponent<Animator>();
         transform = GetComponent<Transform>();
 
@@ -38,8 +38,6 @@ public class MoveController : MonoBehaviour {
         canDash = true;
         isDashing = false;
         dashIn = 0;
-
-        isAttacking = false;
     }
 
 	// Update is called once per frame
@@ -79,17 +77,6 @@ public class MoveController : MonoBehaviour {
             transform.localScale = new Vector3(-1, 1, 1);
         }
 
-        //Move the collider relative to where the player is facing
-		if (facing.x > 0) {
-			attackCollider.transform.position = new Vector2 (transform.position.x + 0.5f, transform.position.y);
-		} else if (facing.x < 0) {
-			attackCollider.transform.position = new Vector2 (transform.position.x - 0.5f, transform.position.y);
-		} else if (facing.y > 0) {
-			attackCollider.transform.position = new Vector2 (transform.position.x, transform.position.y + 0.6f);
-		} else if (facing.y < 0) {
-			attackCollider.transform.position = new Vector2 (transform.position.x, transform.position.y - 0.6f);
-		}
-
         // Calculate movement amount
         movementVector = direction * speed;
 
@@ -113,20 +100,13 @@ public class MoveController : MonoBehaviour {
             animator.SetBool("IsDashing", false);
         }
 
-        //Play attacking animations
-        if (isAttacking) {
-            animator.SetBool("IsAttacking", true);
-        }
-        else {
-            animator.SetBool("IsAttacking", false);
-        }
 
         previousFacing = facing;
     }
     void FixedUpdate() {
         // Apply the movement to the rigidbody
         //rigidbody2D.AddForce(movementVector);
-        if (isDashing == false && isAttacking == false) {
+        if (isDashing == false && attackController.isAttacking == false) {
             rigidbody2D.velocity = movementVector;
         }
             
@@ -161,24 +141,6 @@ public class MoveController : MonoBehaviour {
             isMoving = true;
             isDashing = true;
             canDash = false;
-        }
-    }
-
-    public void Attack() {
-        isAttacking = true;
-        isDashing = false;
-    }
-
-    public void FinishedAttacking() {
-        isAttacking = false;
-    }
-
-    public bool CanAttack() {
-        if (isDashing) {
-            return false;
-        }
-        else {
-            return true;
         }
     }
 
