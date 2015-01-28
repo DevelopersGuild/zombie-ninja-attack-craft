@@ -1,9 +1,0 @@
-C:\Users\jj\Documents\GitHub\zombie-ninja-attack-craft\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
-C:\Users\jj\Documents\GitHub\zombie-ninja-attack-craft\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
-C:\Users\jj\Documents\GitHub\zombie-ninja-attack-craft\Temp\UnityVS_bin\Debug\UnityEditor.dll
-C:\Users\jj\Documents\GitHub\zombie-ninja-attack-craft\Temp\UnityVS_bin\Debug\UnityEngine.dll
-C:\Users\jj\Documents\GitHub\zombie-ninja-attack-craft\Temp\UnityVS_bin\Debug\UnityEngine.xml
-C:\Users\jj\Documents\GitHub\zombie-ninja-attack-craft\Temp\UnityVS_bin\Debug\UnityEditor.xml
-C:\Users\jj\Documents\GitHub\zombie-ninja-attack-craft\obj\Debug\UnityVS.zombie-ninja-attack-craft.CSharp.csprojResolveAssemblyReference.cache
-C:\Users\jj\Documents\GitHub\zombie-ninja-attack-craft\obj\Debug\Assembly-CSharp.dll
-C:\Users\jj\Documents\GitHub\zombie-ninja-attack-craft\obj\Debug\Assembly-CSharp.pdb
