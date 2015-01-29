@@ -30,7 +30,7 @@ public class AttackController : MonoBehaviour {
             animator.SetBool("IsAttacking", false);
         }
 
-        //Move the collider relative to where the player is facing
+        //Move and rotate the collider relative to where the player is facing
         if (moveController.facing.x > 0) {
             attackCollider.transform.position = new Vector2(playerPosition.x + 0.5f, playerPosition.y);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 90);
@@ -50,13 +50,20 @@ public class AttackController : MonoBehaviour {
 	}
 
     public void Attack() {
+        //Set attack flags so it doesnt interfere with other animations
         isAttacking = true;
         moveController.isDashing = false;
 
-        //Check if there are any enemies in the collider TODO: maybe put all the enemies in the collider in an arraylist and deal damage to all of the,
-        if (attackCollider.EnemyInRange()) {
-            if (alreadyAttacked == false) {
-                Debug.Log("DO DAMAGE!");
+        //Check for all the enemines in its colluder and deal damage to them
+        if (attackCollider.enemiesInRange.Count > 0 && alreadyAttacked == false) {
+            for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
+                Collider2D enemy = attackCollider.enemiesInRange[i] as Collider2D;
+                EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
+                enemyHealth.TakeDamage(1);
+                if (enemyHealth.currentHealth <= 0) {
+                    Debug.Log("Ded");
+                    attackCollider.enemiesInRange.RemoveAt(i);
+                }
             }
         }
 

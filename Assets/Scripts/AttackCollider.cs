@@ -5,40 +5,34 @@ public class AttackCollider : MonoBehaviour {
 
     public BoxCollider2D boxCollider;
     public bool enemyInRange;
+    public ArrayList enemiesInRange = new ArrayList();
 
 	// Use this for initialization
 	void Start () {
         boxCollider = GetComponent<BoxCollider2D>();
         enemyInRange = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
-	}
+    void Update() {
+        //Debug.Log("enemysize" + enemiesInRange.Count);
+    }
 
     void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("Attackable")){
-           // Debug.Log("ENTER");
-            enemyInRange = true;
+            enemiesInRange.Add(other);
         }
     }
 
     void OnTriggerStay2D(Collider2D other) {
         if (other.CompareTag("Attackable")) {
-            //Debug.Log("STAY");
-            enemyInRange = true;
+
         }
     }
 
     void OnTriggerExit2D(Collider2D other) {
         if (other.CompareTag("Attackable")) {
-            //Debug.Log("STAY");
-            enemyInRange = false;
+            enemiesInRange.Remove(other);
         }
     }
 
-    public bool EnemyInRange() {
-        return enemyInRange;
-    }
 }
