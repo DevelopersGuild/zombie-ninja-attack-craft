@@ -33,15 +33,19 @@ public class AttackController : MonoBehaviour {
         //Move the collider relative to where the player is facing
         if (moveController.facing.x > 0) {
             attackCollider.transform.position = new Vector2(playerPosition.x + 0.5f, playerPosition.y);
+            attackCollider.transform.localEulerAngles = new Vector3(0, 0, 90);
         }
         else if (moveController.facing.x < 0) {
             attackCollider.transform.position = new Vector2(playerPosition.x - 0.5f, playerPosition.y);
+            attackCollider.transform.localEulerAngles = new Vector3(0, 0, 90);
         }
         else if (moveController.facing.y > 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y + 0.6f);
+            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y + 0.5f);
+            attackCollider.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
         else if (moveController.facing.y < 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y - 0.6f);
+            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y - 0.5f);
+            attackCollider.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
 	}
 
@@ -51,7 +55,9 @@ public class AttackController : MonoBehaviour {
 
         //Check if there are any enemies in the collider TODO: maybe put all the enemies in the collider in an arraylist and deal damage to all of the,
         if (attackCollider.EnemyInRange()) {
-            if (alreadyAttacked == false) Debug.Log("DO DAMAGE!");
+            if (alreadyAttacked == false) {
+                Debug.Log("DO DAMAGE!");
+            }
         }
 
         //Set flag so the player cant keep clicking and dealing damage 

@@ -5,7 +5,6 @@ using System.Collections;
 public class Player : MonoBehaviour {
     private MoveController moveController;
     private Animator animator;
-    private WeaponController weaponController;
     private AttackController attackController;
 
     private float ButtonCooler;
@@ -19,7 +18,6 @@ public class Player : MonoBehaviour {
     void Awake() {
         moveController = GetComponent<MoveController>();
         animator = GetComponent<Animator>();
-        weaponController = GetComponent<WeaponController>();
         attackController = GetComponent<AttackController>();
 
         ButtonCooler = 0.5f;

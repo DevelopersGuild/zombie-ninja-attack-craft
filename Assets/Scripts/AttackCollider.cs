@@ -4,7 +4,7 @@ using System.Collections;
 public class AttackCollider : MonoBehaviour {
 
     public BoxCollider2D boxCollider;
-    private bool enemyInRange;
+    public bool enemyInRange;
 
 	// Use this for initialization
 	void Start () {
@@ -14,18 +14,26 @@ public class AttackCollider : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
     void OnTriggerEnter2D(Collider2D other) {
-        //Debug.Log("AA");
         if(other.CompareTag("Attackable")){
+           // Debug.Log("ENTER");
+            enemyInRange = true;
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D other) {
+        if (other.CompareTag("Attackable")) {
+            //Debug.Log("STAY");
             enemyInRange = true;
         }
     }
 
     void OnTriggerExit2D(Collider2D other) {
         if (other.CompareTag("Attackable")) {
+            //Debug.Log("STAY");
             enemyInRange = false;
         }
     }
