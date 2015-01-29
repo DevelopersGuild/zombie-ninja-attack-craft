@@ -32,16 +32,16 @@ public class MoveController : MonoBehaviour {
         isMoving = false;
         movementVector = new Vector2(0, 0);
         direction = new Vector2(0, 0);
-        facing = new Vector2(-1, 0);
-        previousFacing = new Vector2(-1, 0);
+        facing = new Vector2(0, -1);
+        previousFacing = new Vector2(0, -1);
 
         canDash = true;
         isDashing = false;
         dashIn = 0;
     }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update() {
 
         //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
         dashIn -= Time.deltaTime;
@@ -50,7 +50,7 @@ public class MoveController : MonoBehaviour {
             rigidbody2D.drag = 75;
             rigidbody2D.mass = 2;
         }
-        if (dashIn < 0.2)  canDash = true;
+        if (dashIn < 0.2) canDash = true;
 
 
         /* Check if character is moving and store the direction the player is facing in case they stop moving*/
@@ -62,7 +62,7 @@ public class MoveController : MonoBehaviour {
         }
 
         //Checks if the player is going in a diagonal. If it is, make it so the player doesnt change the direction its facing
-        if(facing.x == 0.7f || facing.y == 0.7f || facing.x == -0.7f || facing.y == -0.7f){
+        if (facing.x == 0.7f || facing.y == 0.7f || facing.x == -0.7f || facing.y == -0.7f) {
             facing = previousFacing;
         }
         if (movementVector.x == 0 && movementVector.y == 0 && isDashing == false) {
@@ -109,7 +109,7 @@ public class MoveController : MonoBehaviour {
         if (isDashing == false && attackController.isAttacking == false) {
             rigidbody2D.velocity = movementVector;
         }
-            
+
 
         //Debug.Log("speed:" + speed + "direction:" + direction + "movementVector" + movementVector);
     }

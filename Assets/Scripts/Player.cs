@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 /* PlayerScript - Handle Input from a player */
 public class Player : MonoBehaviour {
@@ -6,7 +7,7 @@ public class Player : MonoBehaviour {
     private Animator animator;
     private WeaponController weaponController;
     private AttackController attackController;
-    
+
     private float ButtonCooler;
     private int ButtonCount;
     private float lastTapTimeW;
@@ -20,7 +21,7 @@ public class Player : MonoBehaviour {
         animator = GetComponent<Animator>();
         weaponController = GetComponent<WeaponController>();
         attackController = GetComponent<AttackController>();
-        
+
         ButtonCooler = 0.5f;
         ButtonCount = 0;
         tapSpeed = .15f;
@@ -39,26 +40,30 @@ public class Player : MonoBehaviour {
 
 
         //Move the player with the controller based off the players input
-        if(Input.GetButtonDown("Jump")){
+        if (Input.GetButtonDown("Jump")) {
             moveController.Dash();
-        }else{
+        }
+        else {
             moveController.Move(inputX, inputY);
             //Debug.Log(inputX);
         }
 
+       // Debug.Log("inputx" + inputX);
+
 
         //Check for double tap      
-        if (Input.GetKeyDown("w")) { 
-            if ((Time.time - lastTapTimeW) < tapSpeed) { 
+        if (Input.GetKeyDown("w")) {
+            if ((Time.time - lastTapTimeW) < tapSpeed) {
                 moveController.Dash();
-            } 
-            lastTapTimeW = Time.time; 
+            }
+            lastTapTimeW = Time.time;
         }
         if (Input.GetKeyDown("s")) {
             if ((Time.time - lastTapTimeS) < tapSpeed) {
                 moveController.Dash();
             }
             lastTapTimeS = Time.time;
+        }
         if (Input.GetKeyDown("a")) {
             if ((Time.time - lastTapTimeA) < tapSpeed) {
                 moveController.Dash();
@@ -70,12 +75,13 @@ public class Player : MonoBehaviour {
                 moveController.Dash();
             }
             lastTapTimeD = Time.time;
-        } 
-        
+        }
+
         //Check for attack input
         if (Input.GetButtonDown("Fire1") && attackController.CanAttack()) {
-             attackController.Attack();
+            attackController.Attack();
         }
 
     }
 }
+

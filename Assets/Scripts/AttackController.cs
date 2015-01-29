@@ -9,6 +9,7 @@ public class AttackController : MonoBehaviour {
 
     public bool isAttacking;
     private bool alreadyAttacked;
+    private Vector2 playerPosition;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +20,7 @@ public class AttackController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        playerPosition = moveController.transform.position;
 
         //Play attacking animations
         if (isAttacking) {
@@ -30,16 +32,16 @@ public class AttackController : MonoBehaviour {
 
         //Move the collider relative to where the player is facing
         if (moveController.facing.x > 0) {
-            attackCollider.transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y);
+            attackCollider.transform.position = new Vector2(playerPosition.x + 0.5f, playerPosition.y);
         }
         else if (moveController.facing.x < 0) {
-            attackCollider.transform.position = new Vector2(transform.position.x - 0.5f, transform.position.y);
+            attackCollider.transform.position = new Vector2(playerPosition.x - 0.5f, playerPosition.y);
         }
         else if (moveController.facing.y > 0) {
-            attackCollider.transform.position = new Vector2(transform.position.x, transform.position.y + 0.6f);
+            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y + 0.6f);
         }
         else if (moveController.facing.y < 0) {
-            attackCollider.transform.position = new Vector2(transform.position.x, transform.position.y - 0.6f);
+            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y - 0.6f);
         }
 	}
 
