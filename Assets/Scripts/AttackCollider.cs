@@ -14,7 +14,7 @@ public class AttackCollider : MonoBehaviour {
 	}
 
     void Update() {
-        Debug.Log("enemysize" + enemiesInRange.Count);
+        //Debug.Log("enemysize" + enemiesInRange.Count);
     }
 
     void OnTriggerEnter2D(Collider2D other) {
