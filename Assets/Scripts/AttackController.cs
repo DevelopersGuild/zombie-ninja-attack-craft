@@ -60,6 +60,11 @@ public class AttackController : MonoBehaviour {
                 Collider2D enemy = attackCollider.enemiesInRange[i] as Collider2D;
                 EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
                 enemyHealth.TakeDamage(1);
+
+            }
+            for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
+                Collider2D enemy = attackCollider.enemiesInRange[i] as Collider2D;
+                EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
                 if (enemyHealth.currentHealth <= 0) {
                     Debug.Log("Ded");
                     attackCollider.enemiesInRange.RemoveAt(i);
