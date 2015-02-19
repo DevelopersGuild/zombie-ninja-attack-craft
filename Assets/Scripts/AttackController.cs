@@ -24,6 +24,7 @@ public class AttackController : MonoBehaviour {
 
         //Play attacking animations
         if (isAttacking) {
+            moveController.canDash = false;
             animator.SetBool("IsAttacking", true);
         }
         else {
@@ -50,36 +51,39 @@ public class AttackController : MonoBehaviour {
 	}
 
     public void Attack() {
-        //Set attack flags so it doesnt interfere with other animations
-        isAttacking = true;
-        moveController.isDashing = false;
+        if (CanAttack()) {
+            //Set attack flags so it doesnt interfere with other animations
+            isAttacking = true;
+            moveController.isDashing = false;
+            moveController.canDash = false;
 
-        //Check for all the enemines in its colluder and deal damage to them
-        if (attackCollider.enemiesInRange.Count > 0 && alreadyAttacked == false) {
-            for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
-                Collider2D enemy = attackCollider.enemiesInRange[i] as Collider2D;
-                EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
-                enemyHealth.TakeDamage(1);
+            //Check for all the enemines in its collider and deal damage to them
+            if (attackCollider.enemiesInRange.Count > 0 && alreadyAttacked == false) {
+                for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
+                    Collider2D enemy = attackCollider.enemiesInRange[i] as Collider2D;
+                    EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
+                    enemyHealth.TakeDamage(1);
 
-            }
-            for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
-                Collider2D enemy = attackCollider.enemiesInRange[i] as Collider2D;
-                EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
-                if (enemyHealth.currentHealth <= 0) {
-                    Debug.Log("Ded");
-                    attackCollider.enemiesInRange.RemoveAt(i);
+                }
+                for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
+                    Collider2D enemy = attackCollider.enemiesInRange[i] as Collider2D;
+                    EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
+                    if (enemyHealth.currentHealth <= 0) {
+                        attackCollider.enemiesInRange.RemoveAt(i);
+                    }
                 }
             }
-        }
 
-        //Set flag so the player cant keep clicking and dealing damage 
-        alreadyAttacked = true;
+            //Set flag so the player cant keep clicking and dealing damage 
+            alreadyAttacked = true;
+        }
     }
 
     public void FinishedAttacking() {
         //Reset variables
         isAttacking = false;
         alreadyAttacked = false;
+        moveController.canDash = true;
     }
 
     public bool CanAttack() {

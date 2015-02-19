@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveController : MonoBehaviour {
+public class TEMPORARYMoveControllerNoAnimation : MonoBehaviour {
 
     // Components
     private Animator animator;
@@ -25,7 +25,7 @@ public class MoveController : MonoBehaviour {
 
 
     void Awake() {
-        attackController = GetComponent<AttackController>();
+        //attackController = GetComponent<AttackController>();
         animator = GetComponent<Animator>();
         transform = GetComponent<Transform>();
 
@@ -46,11 +46,12 @@ public class MoveController : MonoBehaviour {
 
         //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
         dashIn -= Time.deltaTime;
-        if (dashIn < 0.5) {
-            isDashing = false;
-            rigidbody2D.drag = 75;
-            rigidbody2D.mass = 2;
-        }
+        //if (dashIn < 0.5) {
+        //    isDashing = false;
+        //    canMove = true;
+        //    rigidbody2D.drag = 75;
+        //    rigidbody2D.mass = 2;
+        //}
         if (dashIn < 0.2) canDash = true;
 
         /* Check if character is moving and store the direction the player is facing in case they stop moving*/
@@ -80,33 +81,27 @@ public class MoveController : MonoBehaviour {
         // Calculate movement amount
         movementVector = direction * speed;
 
-        //Play walking animations
-        if (isMoving == true) {
-            animator.SetBool("IsMoving", isMoving);
-            animator.SetFloat("movement_x", movementVector.x);
-            animator.SetFloat("movement_y", movementVector.y);
-            animator.SetFloat("facing_x", facing.x);
-            animator.SetFloat("facing_y", facing.y);
-        }
-        else {
-            animator.SetBool("IsMoving", false);
-        }
+        ////Play walking animations
+        //if (isMoving == true) {
+        //    animator.SetBool("IsMoving", isMoving);
+        //    animator.SetFloat("movement_x", movementVector.x);
+        //    animator.SetFloat("movement_y", movementVector.y);
+        //    animator.SetFloat("facing_x", facing.x);
+        //    animator.SetFloat("facing_y", facing.y);
+        //}
+        //else {
+        //    animator.SetBool("IsMoving", false);
+        //}
 
-        //Play dashing animations
-        if (isDashing) {
-            animator.SetBool("IsDashing", true);
-        }
-        else {
-            animator.SetBool("IsDashing", false);
-        }
+        ////Play dashing animations
+        //if (isDashing) {
+        //    animator.SetBool("IsDashing", true);
+        //}
+        //else {
+        //    animator.SetBool("IsDashing", false);
+        //}
 
-        //Check the players state. If its already doing something, prevent the player from being able to move
-        if (isDashing || attackController.isAttacking) {
-            canMove = false;
-        }
-        else {
-            canMove = true;
-        }
+
         previousFacing = facing;
     }
     void FixedUpdate() {
@@ -153,6 +148,7 @@ public class MoveController : MonoBehaviour {
             isMoving = true;
             isDashing = true;
             canDash = false;
+            canMove = false;
         }
     }
 
