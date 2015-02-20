@@ -20,6 +20,17 @@ public class EnemyHealth : MonoBehaviour {
 	
 	}
 
+	public void replenish(int amt) {
+		currentHealth += amt;
+		if (currentHealth > startingHealth)
+			currentHealth = startingHealth;
+	}
+
+	public void setHealth(int amt) {
+		currentHealth = amt;
+
+	}
+
     public void TakeDamage(int amount) {
         currentHealth -= amount;
 

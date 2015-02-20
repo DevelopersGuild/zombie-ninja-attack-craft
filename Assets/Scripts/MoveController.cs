@@ -14,6 +14,7 @@ public class MoveController : MonoBehaviour {
     // Direction of object
     internal Vector2 direction;
     public Vector2 facing;
+	public float newFacing;
     internal Vector2 previousFacing;
     // Actual movement
     internal Vector2 movementVector = new Vector2(0, 0);
@@ -55,11 +56,20 @@ public class MoveController : MonoBehaviour {
 
         /* Check if character is moving and store the direction the player is facing in case they stop moving*/
         if (rigidbody2D.velocity.normalized.x != 0 || rigidbody2D.velocity.normalized.y != 0) {
+			newFacing = 0;
             facing = rigidbody2D.velocity.normalized;
             facing.x = (Mathf.Round(facing.x * 10) / 10);   //Round off in case theyre not going in a straight line
             facing.y = (Mathf.Round(facing.y * 10) / 10);
             isMoving = true;
         }
+		else if(newFacing != 0) {
+			if(newFacing == 1) 
+				facing = new Vector2(0,1);
+			else if(newFacing == 2) {
+				facing = new Vector2(0,-1);
+			}
+			Debug.Log (facing);
+		}
 
         //Checks if the player is going in a diagonal. If it is, make it so the player doesnt change the direction its facing
         if (facing.x == 0.7f || facing.y == 0.7f || facing.x == -0.7f || facing.y == -0.7f) {
@@ -73,40 +83,38 @@ public class MoveController : MonoBehaviour {
         if (facing.x > 0) {
             transform.localScale = new Vector3(1, 1, 1);
         }
-        else {
+        else if (facing.x < 0) {
             transform.localScale = new Vector3(-1, 1, 1);
         }
 
         // Calculate movement amount
         movementVector = direction * speed;
+		if (animator != null) {
+						//Play walking animations
+						if (isMoving == true) {
+								animator.SetBool ("IsMoving", isMoving);
+								animator.SetFloat ("movement_x", movementVector.x);
+								animator.SetFloat ("movement_y", movementVector.y);
+								animator.SetFloat ("facing_x", facing.x);
+								animator.SetFloat ("facing_y", facing.y);
+						} else {
+								animator.SetBool ("IsMoving", false);
+						}
 
-        //Play walking animations
-        if (isMoving == true) {
-            animator.SetBool("IsMoving", isMoving);
-            animator.SetFloat("movement_x", movementVector.x);
-            animator.SetFloat("movement_y", movementVector.y);
-            animator.SetFloat("facing_x", facing.x);
-            animator.SetFloat("facing_y", facing.y);
-        }
-        else {
-            animator.SetBool("IsMoving", false);
-        }
-
-        //Play dashing animations
-        if (isDashing) {
-            animator.SetBool("IsDashing", true);
-        }
-        else {
-            animator.SetBool("IsDashing", false);
-        }
-
+						//Play dashing animations
+						if (isDashing) {
+								animator.SetBool ("IsDashing", true);
+						} else {
+								animator.SetBool ("IsDashing", false);
+						}
+				}
 
         previousFacing = facing;
     }
     void FixedUpdate() {
         // Apply the movement to the rigidbody
         //rigidbody2D.AddForce(movementVector);
-        if (isDashing == false && attackController.isAttacking == false) {
+		if (attackController != null && isDashing == false && attackController.isAttacking == false) {
             rigidbody2D.velocity = movementVector;
         }
 
