@@ -42,7 +42,7 @@ public class EnemyHealth : MonoBehaviour {
     public void Death() {
         isDead = true;
         //anim.SetTrigger("Dead");
-        Destroy(gameObject);
-        //gameObject.SetActive(false);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

@@ -22,7 +22,7 @@ public class MoveController : MonoBehaviour {
     public bool isDashing;
     public bool canDash;
     public float dashIn;
-
+    public bool canMove;
 
 
     void Awake() {
@@ -37,6 +37,7 @@ public class MoveController : MonoBehaviour {
         previousFacing = new Vector2(0, -1);
 
         canDash = true;
+        canMove = true;
         isDashing = false;
         dashIn = 0;
     }
@@ -52,7 +53,6 @@ public class MoveController : MonoBehaviour {
             rigidbody2D.mass = 2;
         }
         if (dashIn < 0.2) canDash = true;
-
 
         /* Check if character is moving and store the direction the player is facing in case they stop moving*/
         if (rigidbody2D.velocity.normalized.x != 0 || rigidbody2D.velocity.normalized.y != 0) {
@@ -109,16 +109,26 @@ public class MoveController : MonoBehaviour {
 						}
 				}
 
+        //Check the players state. If its already doing something, prevent the player from being able to move
+        if (isDashing || attackController.isAttacking) {
+            canMove = false;
+        }
+        else {
+            canMove = true;
+        }
         previousFacing = facing;
     }
     void FixedUpdate() {
         // Apply the movement to the rigidbody
         //rigidbody2D.AddForce(movementVector);
+
 		if (attackController != null && isDashing == false && attackController.isAttacking == false) {
+
+        if (canMove) {
             rigidbody2D.velocity = movementVector;
         }
 
-
+        //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
         //Debug.Log("speed:" + speed + "direction:" + direction + "movementVector" + movementVector);
     }
 
@@ -141,10 +151,12 @@ public class MoveController : MonoBehaviour {
         // Debug.Log("Facing:" + facing);
         // Only let the player dash if the cooldown is < 0. If he can, dash and reset the timer       
         if (canDash) {
+            //Change these rigidbody parameters so the dashing feels better
             rigidbody2D.mass = 1;
             rigidbody2D.drag = 33;
-            //rigidbody2D.AddForce(facing * dashSpeed);
             rigidbody2D.velocity = facing * dashSpeed;
+
+            //Reset dash parameters
             dashIn = 1;
             isMoving = true;
             isDashing = true;
