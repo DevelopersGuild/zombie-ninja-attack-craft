@@ -18,11 +18,13 @@ public class MoveController : MonoBehaviour {
     internal Vector2 previousFacing;
     // Actual movement
     internal Vector2 movementVector = new Vector2(0, 0);
+    // Flags for state checking
     private bool isMoving;
     public bool isDashing;
     public bool canDash;
     public float dashIn;
     public bool canMove;
+    public bool gotAttacked;
 
 
     void Awake() {
@@ -49,8 +51,7 @@ public class MoveController : MonoBehaviour {
         dashIn -= Time.deltaTime;
         if (dashIn < 0.5) {
             isDashing = false;
-            rigidbody2D.drag = 75;
-            rigidbody2D.mass = 2;
+            ToWalkPhysics();
         }
         if (dashIn < 0.2) canDash = true;
 
@@ -89,25 +90,27 @@ public class MoveController : MonoBehaviour {
 
         // Calculate movement amount
         movementVector = direction * speed;
-		if (animator != null) {
-						//Play walking animations
-						if (isMoving == true) {
-								animator.SetBool ("IsMoving", isMoving);
-								animator.SetFloat ("movement_x", movementVector.x);
-								animator.SetFloat ("movement_y", movementVector.y);
-								animator.SetFloat ("facing_x", facing.x);
-								animator.SetFloat ("facing_y", facing.y);
-						} else {
-								animator.SetBool ("IsMoving", false);
-						}
 
-						//Play dashing animations
-						if (isDashing) {
-								animator.SetBool ("IsDashing", true);
-						} else {
-								animator.SetBool ("IsDashing", false);
-						}
-				}
+		if (animator != null) {
+			//Play walking animations
+			if (isMoving == true) {
+				animator.SetBool ("IsMoving", isMoving);
+				animator.SetFloat ("movement_x", movementVector.x);
+				animator.SetFloat ("movement_y", movementVector.y);
+				animator.SetFloat ("facing_x", facing.x);
+				animator.SetFloat ("facing_y", facing.y);
+			} else {
+				animator.SetBool ("IsMoving", false);
+			}
+
+			//Play dashing animations
+			if (isDashing) {
+				animator.SetBool ("IsDashing", true);
+			} else {
+				animator.SetBool ("IsDashing", false);
+			}
+
+        }
 
         //Check the players state. If its already doing something, prevent the player from being able to move
         if (isDashing || attackController.isAttacking) {
@@ -118,11 +121,10 @@ public class MoveController : MonoBehaviour {
         }
         previousFacing = facing;
     }
+
     void FixedUpdate() {
         // Apply the movement to the rigidbody
         //rigidbody2D.AddForce(movementVector);
-
-		if (attackController != null && isDashing == false && attackController.isAttacking == false) {
 
         if (canMove) {
             rigidbody2D.velocity = movementVector;
@@ -147,13 +149,18 @@ public class MoveController : MonoBehaviour {
         rigidbody2D.AddForce(direction * amount);
     }
 
+    public void Knockback(Vector2 direction, float amount) {
+        ToDashPhysics();
+        rigidbody2D.AddForce(direction * amount);
+        ToWalkPhysics();
+    }
+
     public void Dash() {
         // Debug.Log("Facing:" + facing);
         // Only let the player dash if the cooldown is < 0. If he can, dash and reset the timer       
         if (canDash) {
             //Change these rigidbody parameters so the dashing feels better
-            rigidbody2D.mass = 1;
-            rigidbody2D.drag = 33;
+            ToDashPhysics();
             rigidbody2D.velocity = facing * dashSpeed;
 
             //Reset dash parameters
@@ -162,6 +169,24 @@ public class MoveController : MonoBehaviour {
             isDashing = true;
             canDash = false;
         }
+    }
+
+    public void GotAttacked() {
+        gotAttacked = true;
+    }
+
+    public void FinishedGettingAttacked() {
+        gotAttacked = false;
+    }
+
+    public void ToDashPhysics() {
+        rigidbody2D.mass = 1;
+        rigidbody2D.drag = 33;
+    }
+
+    public void ToWalkPhysics() {
+        rigidbody2D.drag = 75;
+        rigidbody2D.mass = 2;
     }
 
 

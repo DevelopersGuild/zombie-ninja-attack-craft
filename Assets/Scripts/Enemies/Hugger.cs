@@ -69,7 +69,7 @@ public class Hugger : MonoBehaviour {
         if (currentWaypoint >= path.vectorPath.Count) {
             if (pathIsEnded) return;
 
-            Debug.Log("END OF PATH REACHED");
+            //Debug.Log("END OF PATH REACHED");
             pathIsEnded = true;
             return;
         }
