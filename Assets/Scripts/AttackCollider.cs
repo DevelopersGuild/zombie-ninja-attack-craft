@@ -18,19 +18,19 @@ public class AttackCollider : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if(other.CompareTag("Attackable") || other.CompareTag ("Cuttable")){
+        if(other.CompareTag("Attackable")){
             enemiesInRange.Add(other);
         }
     }
 
     void OnTriggerStay2D(Collider2D other) {
-		if (other.CompareTag("Attackable")|| other.CompareTag ("Cuttable")) {
+		if (other.CompareTag("Attackable")) {
 
         }
     }
 
     void OnTriggerExit2D(Collider2D other) {
-		if (other.CompareTag("Attackable")|| other.CompareTag ("Cuttable")) {
+		if (other.CompareTag("Attackable")) {
             enemiesInRange.Remove(other);
         }
     }
