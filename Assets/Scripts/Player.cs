@@ -30,10 +30,7 @@ public class Player : MonoBehaviour {
         animator = GetComponent<Animator>();
         attackController = GetComponent<AttackController>();
         playerHealth = GetComponent<EnemyHealth>();
-        ButtonCooler = 0.5f;
-        ButtonCount = 0;
         tapSpeed = .15f;
-        attackedTimer = .5f;
     }
 
     public void OnCollisionStay2D(Collision2D other) {
@@ -45,11 +42,9 @@ public class Player : MonoBehaviour {
                 playerHealth.TakeDamage(1);
                 isInvincible = true;
                
-
+                //Knockback according to where the player was hit
                 Vector3 contactPoint = other.contacts[0].point;
                 Vector3 center = enemyCollider.bounds.center;
-                bool right = contactPoint.x > center.x;
-                bool top = contactPoint.y > center.y;
 
                 Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
                 moveController.Push(pushDirection.normalized, 10000);
