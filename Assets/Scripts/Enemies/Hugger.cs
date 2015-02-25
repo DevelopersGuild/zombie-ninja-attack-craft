@@ -11,7 +11,7 @@ public class Hugger : MonoBehaviour {
 
     private Seeker seeker;
     private Rigidbody2D rb;
-    private TEMPORARYMoveControllerNoAnimation moveController;
+    private MoveController moveController;
 
     public Path path;
 
@@ -21,14 +21,14 @@ public class Hugger : MonoBehaviour {
     [HideInInspector]
     public bool pathIsEnded = false;
 
-    public float nextWaypointDistance = 3;
+    public float nextWaypointDistance;
     private int currentWaypoint = 0;
 
 	// Use this for initialization
 	void Start () {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
-        moveController = GetComponent<TEMPORARYMoveControllerNoAnimation>();
+        moveController = GetComponent<MoveController>();
 
         if (target == null) {
             Debug.LogError("NO PLAYER!");

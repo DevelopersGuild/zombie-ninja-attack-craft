@@ -48,6 +48,8 @@ public class AttackController : MonoBehaviour {
             attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y - 0.5f);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
+
+        //Debug.Log(alreadyAttacked);
 	}
 
     public void Attack() {
@@ -59,19 +61,33 @@ public class AttackController : MonoBehaviour {
 
             //Check for all the enemines in its collider and deal damage to them
             if (attackCollider.enemiesInRange.Count > 0 && alreadyAttacked == false) {
+                //Deal damage to all the enemies and knock them back
                 for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
-                    Collider2D enemy = attackCollider.enemiesInRange[i] as Collider2D;
+                    GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
                     EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
                     enemyHealth.TakeDamage(1);
 
+                    //Knockback according to where the player is
+                    Vector3 contactPoint = enemy.collider2D.transform.position;
+                    Vector3 center = attackCollider.transform.position;
+
+                    MoveController enemyMoveController = enemy.gameObject.GetComponent<MoveController>();
+                    if (enemyMoveController != null) {
+                        Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+                        enemyMoveController.Knockback(pushDirection.normalized, 10000);
+                    }
+
                 }
+                
+                //Check if any of the enemies died. If they did, remove them from the list of enemies
                 for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
-                    Collider2D enemy = attackCollider.enemiesInRange[i] as Collider2D;
+                    GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
                     EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
                     if (enemyHealth.currentHealth <= 0) {
                         attackCollider.enemiesInRange.RemoveAt(i);
                     }
                 }
+                alreadyAttacked = true;
             }
 
             //Set flag so the player cant keep clicking and dealing damage 

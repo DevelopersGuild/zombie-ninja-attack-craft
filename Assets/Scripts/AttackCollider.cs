@@ -19,7 +19,7 @@ public class AttackCollider : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("Attackable")){
-            enemiesInRange.Add(other);
+            enemiesInRange.Add(other.gameObject);
         }
     }
 
@@ -31,7 +31,7 @@ public class AttackCollider : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other) {
 		if (other.CompareTag("Attackable")) {
-            enemiesInRange.Remove(other);
+            enemiesInRange.Remove(other.gameObject);
         }
     }
 

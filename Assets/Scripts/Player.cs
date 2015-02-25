@@ -112,7 +112,7 @@ public class Player : MonoBehaviour {
         }
 
         //Only move if the 2 buttons or less are being pressed
-        if (keyCount < 3) {
+        if (keyCount < 3 && keyCount > 0) {
 
             //Handle double taps for dashing
             if (Input.GetKeyDown("w")) {
@@ -154,7 +154,6 @@ public class Player : MonoBehaviour {
             if (Input.GetKey("d")) {
                 moveController.newFacing = (int)MoveController.facingDirection.right;
             }
-
             moveController.isMoving = true;
             moveController.Move(inputX, inputY);
         }
