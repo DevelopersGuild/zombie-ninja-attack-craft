@@ -8,11 +8,11 @@ public class GUIScript : MonoBehaviour {
     public UILabel scoreLabel;
 
 
-    EnemyHealth playerHealth;
+    Health playerHealth;
 
 	// Use this for initialization
 	void Start () {
-        playerHealth = player.GetComponent<EnemyHealth>();
+        playerHealth = player.GetComponent<Health>();
 	}
 	
 	// Update is called once per frame

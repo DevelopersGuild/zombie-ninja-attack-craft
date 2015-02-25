@@ -64,7 +64,7 @@ public class AttackController : MonoBehaviour {
                 //Deal damage to all the enemies and knock them back
                 for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
                     GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
-                    EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
+                    Health enemyHealth = enemy.gameObject.GetComponent<Health>();
                     enemyHealth.TakeDamage(1);
 
                     //Knockback according to where the player is
@@ -82,7 +82,7 @@ public class AttackController : MonoBehaviour {
                 //Check if any of the enemies died. If they did, remove them from the list of enemies
                 for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
                     GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
-                    EnemyHealth enemyHealth = enemy.gameObject.GetComponent<EnemyHealth>();
+                    Health enemyHealth = enemy.gameObject.GetComponent<Health>();
                     if (enemyHealth.currentHealth <= 0) {
                         attackCollider.enemiesInRange.RemoveAt(i);
                     }

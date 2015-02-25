@@ -7,7 +7,7 @@ public class Player : MonoBehaviour {
     private MoveController moveController;
     private Animator animator;
     private AttackController attackController;
-    private EnemyHealth playerHealth;
+    private Health playerHealth;
 
     //Double tap flags
     private float ButtonCooler;
@@ -32,7 +32,7 @@ public class Player : MonoBehaviour {
         moveController = GetComponent<MoveController>();
         animator = GetComponent<Animator>();
         attackController = GetComponent<AttackController>();
-        playerHealth = GetComponent<EnemyHealth>();
+        playerHealth = GetComponent<Health>();
         tapSpeed = .15f;
     }
 
