@@ -14,12 +14,15 @@ public class MoveController : MonoBehaviour {
     // Direction of object
     internal Vector2 direction;
     public Vector2 facing;
-	public float newFacing;
+	public int newFacing;
+    public enum facingDirection { up, right, down, left }
     internal Vector2 previousFacing;
+    Vector2 previousMoving;
     // Actual movement
     internal Vector2 movementVector = new Vector2(0, 0);
     // Flags for state checking
-    private bool isMoving;
+    public bool isMoving;
+    public bool isPressingMultiple;
     public bool isDashing;
     public bool canDash;
     public float dashIn;
@@ -46,7 +49,6 @@ public class MoveController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
         //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
         dashIn -= Time.deltaTime;
         if (dashIn < 0.5) {
@@ -55,30 +57,34 @@ public class MoveController : MonoBehaviour {
         }
         if (dashIn < 0.2) canDash = true;
 
-        /* Check if character is moving and store the direction the player is facing in case they stop moving*/
-        if (rigidbody2D.velocity.normalized.x != 0 || rigidbody2D.velocity.normalized.y != 0) {
-			newFacing = 0;
-            facing = rigidbody2D.velocity.normalized;
-            facing.x = (Mathf.Round(facing.x * 10) / 10);   //Round off in case theyre not going in a straight line
-            facing.y = (Mathf.Round(facing.y * 10) / 10);
-            isMoving = true;
+        //The player faces according to player input
+        if (canMove) {
+            if (newFacing == (int)facingDirection.up) {
+                facing.y = 1;
+                facing.x = 0;
+            }
+            else if (newFacing == (int)facingDirection.right) {
+                facing.x = 1;
+                facing.y = 0;
+            }
+            else if (newFacing == (int)facingDirection.down) {
+                facing.y = -1;
+                facing.x = 0;
+            }
+            else if (newFacing == (int)facingDirection.left) {
+                facing.x = -1;
+                facing.y = 0;
+            }
         }
-		else if(newFacing != 0) {
-			if(newFacing == 1) 
-				facing = new Vector2(0,1);
-			else if(newFacing == 2) {
-				facing = new Vector2(0,-1);
-			}
-			Debug.Log (facing);
-		}
 
-        //Checks if the player is going in a diagonal. If it is, make it so the player doesnt change the direction its facing
-        if (facing.x == 0.7f || facing.y == 0.7f || facing.x == -0.7f || facing.y == -0.7f) {
-            facing = previousFacing;
+
+        //If the player is going diagonal, dont change the direction its facing
+        if (facing.Equals(previousFacing) == false) {
+            if (isPressingMultiple) {
+                facing = previousFacing;
+            }
         }
-        if (movementVector.x == 0 && movementVector.y == 0 && isDashing == false) {
-            isMoving = false;
-        }
+
 
         //Check whether sprite is facing left or right. Flip the sprite based on its direction
         if (facing.x > 0) {
@@ -91,14 +97,15 @@ public class MoveController : MonoBehaviour {
         // Calculate movement amount
         movementVector = direction * speed;
 
+
 		if (animator != null) {
 			//Play walking animations
+            animator.SetFloat("facing_x", facing.x);
+            animator.SetFloat("facing_y", facing.y);
+            animator.SetFloat("movement_x", movementVector.x);
+            animator.SetFloat("movement_y", movementVector.y);
 			if (isMoving == true) {
 				animator.SetBool ("IsMoving", isMoving);
-				animator.SetFloat ("movement_x", movementVector.x);
-				animator.SetFloat ("movement_y", movementVector.y);
-				animator.SetFloat ("facing_x", facing.x);
-				animator.SetFloat ("facing_y", facing.y);
 			} else {
 				animator.SetBool ("IsMoving", false);
 			}
@@ -119,7 +126,10 @@ public class MoveController : MonoBehaviour {
         else {
             canMove = true;
         }
+
         previousFacing = facing;
+        previousMoving = movementVector;
+      
     }
 
     void FixedUpdate() {

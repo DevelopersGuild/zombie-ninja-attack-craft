@@ -16,6 +16,5 @@ public class GUIScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         healthLabel.text = playerHealth.currentHealth.ToString();
-        Debug.Log(playerHealth);
 	}
 }
