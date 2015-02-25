@@ -6,6 +6,7 @@ public class EnemyHealth : MonoBehaviour {
     public int startingHealth = 10;
     public int currentHealth;
     bool isDead;
+    public int CoinValue;
 
     Animator anim;
     AudioSource enemyAudio;
@@ -33,16 +34,19 @@ public class EnemyHealth : MonoBehaviour {
 
     public void TakeDamage(int amount) {
         currentHealth -= amount;
+        Debug.Log(currentHealth);
 
         if (currentHealth <= 0) {
+            Debug.Log("DEATH");
             Death();
         }
     }
 
     public void Death() {
         isDead = true;
-        //anim.SetTrigger("Dead");
-        //Destroy(gameObject);
+        if (GetComponent<DropCoinsOnDeath>()) {
+            GetComponent<DropCoinsOnDeath>().DropCoins(CoinValue);
+        }
         gameObject.SetActive(false);
     }
 }

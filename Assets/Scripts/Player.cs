@@ -50,7 +50,7 @@ public class Player : MonoBehaviour {
                 Vector3 center = enemyCollider.bounds.center;
 
                 Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-                moveController.Push(pushDirection.normalized, 10000);
+                moveController.Knockback(pushDirection.normalized, 10000);
             }
 
         }

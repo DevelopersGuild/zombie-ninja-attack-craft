@@ -5,6 +5,8 @@ public class GUIScript : MonoBehaviour {
 
     public Player player;
     public UILabel healthLabel;
+    public UILabel scoreLabel;
+
 
     EnemyHealth playerHealth;
 
@@ -16,5 +18,6 @@ public class GUIScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         healthLabel.text = playerHealth.currentHealth.ToString();
+        scoreLabel.text = GameManager.instance.points.ToString();
 	}
 }
