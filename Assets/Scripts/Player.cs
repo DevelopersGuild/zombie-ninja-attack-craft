@@ -21,9 +21,9 @@ public class Player : MonoBehaviour {
     private int keyCount;
 
     //Timers
-	private bool isInvincible;
-	private float timeSpentInvincible;
-    private float attackedTimer;
+	public bool isInvincible;
+	public float timeSpentInvincible;
+    public float attackedTimer;
 
 
     void Awake() {
@@ -38,22 +38,22 @@ public class Player : MonoBehaviour {
 
     public void OnCollisionStay2D(Collision2D other) {
         //Deal with enemy collision
-        if (other.gameObject.CompareTag("Attackable")) {
-            Collider2D enemyCollider = other.collider;
-            //Take damage if the player isnt already currently invincible
-            if (!isInvincible) {
-                playerHealth.TakeDamage(1);
-                isInvincible = true;
+        //if (other.gameObject.CompareTag("Attackable")) {
+        //    Collider2D enemyCollider = other.collider;
+        //    //Take damage if the player isnt already currently invincible
+        //    if (!isInvincible) {
+        //        playerHealth.TakeDamage(1);
+        //        isInvincible = true;
                
-                //Knockback according to where the player was hit
-                Vector3 contactPoint = other.contacts[0].point;
-                Vector3 center = enemyCollider.bounds.center;
+        //        //Knockback according to where the player was hit
+        //        Vector3 contactPoint = other.contacts[0].point;
+        //        Vector3 center = enemyCollider.bounds.center;
 
-                Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-                moveController.Knockback(pushDirection.normalized, 10000);
-            }
+        //        Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+        //        moveController.Knockback(pushDirection.normalized, 10000);
+        //    }
 
-        }
+        //}
     }
 
 
