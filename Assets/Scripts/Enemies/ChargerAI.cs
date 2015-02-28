@@ -62,10 +62,10 @@ public class ChargerAI : MonoBehaviour {
 		if (distance.magnitude > 5) {
 			isAggroed = false;
 		}
-
+        speed = new Vector2(0, 0);
 
 		if (isAggroed) {
-			speed = new Vector2(0,0);
+
             //Charge while the charge animation is playing
             if (isCharging) {
                 speed = new Vector2(5 * distance.normalized.x, 5 * distance.normalized.y);
@@ -99,7 +99,7 @@ public class ChargerAI : MonoBehaviour {
 				}
 			}
 		}
-
+        Debug.Log(speed);
 	    rigidbody2D.velocity = speed;
 	}
 
