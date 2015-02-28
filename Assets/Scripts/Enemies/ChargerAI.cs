@@ -11,99 +11,78 @@ using UnityEngine;
 using System;
 
 public class ChargerAI : MonoBehaviour {
-	public Transform Enemy;
-	public Player dude;
-	private Vector2 enemyPosition;
-	private double EnemyX, EnemyY, dudeX, dudeY;
-	MoveController moveController;
+	//Positions
+	public Player player;
 	private Vector2 speed, distance;
-	private Boolean agro;
+
+    //State checks
+	private bool isAggroed;
+    private bool isTired;
+    private bool isCharging;
+
+    //Components
 	private Animator animator;
-	private AttackController attackController;
+    //private MoveControllerNoAnimation moveControllerNoAnimation;
 	
 	System.Random rnd;
 	private double t, timer;
 	
-	public void start() {
-		enemyPosition = Enemy.position;
+	public void Start() {
+  		//moveControllerNoAnimation = GetComponent<MoveControllerNoAnimation> ();
+        animator = GetComponent<Animator>();
+
 		distance = new Vector2 (0, 0);
 		speed = new Vector2 (0, 0);
+
 		t = 10;
 		timer = 5;
-		agro = false;
-		moveController = GetComponent<MoveController> ();
+
+		isAggroed = false;
+        isTired = false;
+        isCharging = false;
 		rigidbody2D.mass = 5;
 	}
 
-	/* void OnCollisionEnter2D(Collision2D other) {
-		Debug.Log ("enter");
-		timer = 0;
-		agro = true;
-		speed = new Vector2(0,0);
-		Double temp = 1;
-		while (temp > 0) {
-			temp -= Time.deltaTime;
-		}
-	}
-
-	void OnCollisionExit2D(Collision2D other) {
-		Debug.Log ("Exit");
-				agro = false;
-		}
-	*/
-
 	void Update() {
 		rnd = new System.Random ();
-		enemyPosition = Enemy.position;
-		EnemyX = enemyPosition.x;
-		EnemyY = enemyPosition.y;
-		dudeX = dude.transform.position.x;
-		dudeY = dude.transform.position.y;
-		distance = new Vector2 ((float)(dudeX - EnemyX),(float)(dudeY - EnemyY));
 
-		if (distance.magnitude < 3) {
-			agro = true;
-		}
-		if (distance.magnitude > 3) {
-			agro = false;
-		}
-		//playerPosition = dude.moveController.transform.position;
+        //Nir, this isnt necessary. You can get the position of the object the script is attached to by
+        //transform.position because it assumes that it's its own transform if its not stated. thx bb delete this
+		//enemyPosition = Enemy.position; WRONG
+        //transform.position; woooo
+        distance = player.transform.position - transform.position;
+		
 
-		//dude.OnCollisionStay2D
-		if (agro) {
+        //Check distance between the player and charger. If its close enough, aggro
+		if (distance.magnitude < 5 && isTired == false) {
+			isAggroed = true;
+            isCharging = true;
+            animator.SetBool("isCharging", true);
+		}
+		if (distance.magnitude > 5) {
+			isAggroed = false;
+		}
+
+
+		if (isAggroed) {
 			speed = new Vector2(0,0);
-			//dude.facing
-			t = 50;
-			while(t > 0) {
-				t -= Time.deltaTime;
-				speed = new Vector2(0,0);
-			}
-			double xdistance = EnemyX - dudeX;
-			double ydistance = EnemyY - dudeY;
-			speed = new Vector2(-3 * (float)(xdistance),-3 * (float)(ydistance));
-			rigidbody2D.velocity = speed;
-			timer = 25;
-			while(timer > 0) {
-				timer -= Time.deltaTime;
-
-			}
-			Debug.Log ("Stop the clock, the time is " + Time.deltaTime);
-			Debug.Log ("Gotta go fast " + speed);
-			speed = new Vector2 (0,0);
-			//speed = new Vector2(0,0);
-			//rigidbody2D.velocity = speed;
-		}
-
-		else {
-
+            //Charge while the charge animation is playing
+            if (isCharging) {
+                speed = new Vector2(5 * distance.normalized.x, 5 * distance.normalized.y);
+                rigidbody2D.velocity = speed;
+            }
+            //Dont move if charger has already charged and is now tired
+            if (isTired) {
+                speed = new Vector2(0, 0);
+            }
+		} //If the player isnt aggroed, it moves randomly
+        else {
 			if (t <= 0.9) {
 				if(rigidbody2D.velocity.magnitude != 0) {
 					speed = new Vector2 (0, 0);
 					t = 2;
-					//rand 1.5-3?
-				}
-			else {
-				//		if (playerPosition.magnitude - moveController.transform.position.magnitude > 10) {
+                }
+			} else {
 				int rand = rnd.Next (1, 5);
 				if (rand == 1) {
 					speed = new Vector2 (2,0);
@@ -118,20 +97,22 @@ public class ChargerAI : MonoBehaviour {
 					speed = new Vector2 (0,-2);
 					t=1;
 				}
-				
-				//Debug.Log (x.ToString ());
 			}
 		}
-		
-		else {
-			t -= Time.deltaTime;
-		}
-			agro = false;
-	rigidbody2D.velocity = speed;
+
+	    rigidbody2D.velocity = speed;
 	}
-		//Debug.Log (speed);
-		//this.transform.position = x;
-	}
-	
+
+    public void DoneCharging() {
+        isTired = true;
+        animator.SetBool("isCharging", false);
+        animator.SetBool("isTired", true);
+    }
+
+    public void DoneResting() {
+        isTired = false;
+        animator.SetBool("isTired", false);
+    }
 }
+	
 
