@@ -13,6 +13,7 @@ using System;
 public class ChargerAI : MonoBehaviour {
 	//Positions
 	public Player player;
+	public float AgroRange;
 	private Vector2 speed, distance;
 
     //State checks
@@ -26,6 +27,7 @@ public class ChargerAI : MonoBehaviour {
 	
 	System.Random rnd;
 	private double t, timer;
+	private float temp;
 	
 	public void Start() {
   		//moveControllerNoAnimation = GetComponent<MoveControllerNoAnimation> ();
@@ -34,7 +36,8 @@ public class ChargerAI : MonoBehaviour {
 		distance = new Vector2 (0, 0);
 		speed = new Vector2 (0, 0);
 
-		t = 10;
+		temp = 1;
+		t = 1;
 		timer = 5;
 
 		isAggroed = false;
@@ -54,30 +57,38 @@ public class ChargerAI : MonoBehaviour {
 		
 
         //Check distance between the player and charger. If its close enough, aggro
-		if (distance.magnitude < 5 && isTired == false) {
+		if (distance.magnitude <= AgroRange && isTired == false) {
 			isAggroed = true;
             isCharging = true;
             animator.SetBool("isCharging", true);
 		}
-		if (distance.magnitude > 5) {
+		if (distance.magnitude > AgroRange) {
 			isAggroed = false;
 		}
-        speed = new Vector2(0, 0);
+       // speed = new Vector2(0, 0);
 
 		if (isAggroed) {
 
             //Charge while the charge animation is playing
             if (isCharging) {
-                speed = new Vector2(5 * distance.normalized.x, 5 * distance.normalized.y);
+
+				float xSpeed = player.transform.position.x - transform.position.x;
+				float ySpeed = player.transform.position.y - transform.position.y;
+				RunStraight(xSpeed, ySpeed, temp);
+				temp = 5;
+				speed = speed;
+				//speed = new Vector2(5 * xSpeed, 5 * ySpeed);
+				//speed = speed * 3;
                 rigidbody2D.velocity = speed;
             }
             //Dont move if charger has already charged and is now tired
             if (isTired) {
+				temp = 1;
                 speed = new Vector2(0, 0);
             }
 		} //If the player isnt aggroed, it moves randomly
         else {
-			if (t <= 0.9) {
+			if (t < 1) {
 				if(rigidbody2D.velocity.magnitude != 0) {
 					speed = new Vector2 (0, 0);
 					t = 2;
@@ -99,7 +110,8 @@ public class ChargerAI : MonoBehaviour {
 				}
 			}
 		}
-        Debug.Log(speed);
+        //Debug.Log(isCharging);
+		t -= Time.deltaTime;
 	    rigidbody2D.velocity = speed;
 	}
 
@@ -113,6 +125,14 @@ public class ChargerAI : MonoBehaviour {
         isTired = false;
         animator.SetBool("isTired", false);
     }
+
+	private void RunStraight(float xSp,float ySp,float extra) {
+		if(extra == 1) {
+			speed = new Vector2(xSp, ySp);
+			speed = 2 * speed;
+		}
+
+	}
 }
 	
 
