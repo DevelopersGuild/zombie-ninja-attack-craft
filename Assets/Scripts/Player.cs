@@ -90,6 +90,10 @@ public class Player : MonoBehaviour {
             attackController.Attack();
         }
 
+        if (Input.GetButtonDown("Fire2") && attackController.CanAttack()) {
+            attackController.ShootProjectile();
+        }
+
 
         //Check for how many keys are being pressed and act accordingly
         if (Input.GetKey("w")) {
