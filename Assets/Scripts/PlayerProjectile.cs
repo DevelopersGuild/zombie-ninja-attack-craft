@@ -19,7 +19,7 @@ public class PlayerProjectile : MonoBehaviour {
             //Calculate point of collision and knockback accordingly
             Vector3 contactPoint = other.transform.position;
             Vector3 center = transform.position;
-            MoveController enemyMoveController = other.gameObject.GetComponent<MoveController>();
+            EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
             if (enemyMoveController != null) {
                 Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
                 enemyMoveController.Knockback(pushDirection.normalized, 10000);
