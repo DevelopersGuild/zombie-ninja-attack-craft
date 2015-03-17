@@ -16,17 +16,9 @@ public class PlayerProjectile : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         //Check for enemy collision
         if (other.tag == "Attackable") {
-            //Calculate point of collision and knockback accordingly
-            Vector3 contactPoint = other.transform.position;
-            Vector3 center = transform.position;
-            EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
-            if (enemyMoveController != null) {
-                Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-                enemyMoveController.Knockback(pushDirection.normalized, 10000);
-            }
-
-            //Enemy takes damage
+            //Deal damage, knock back what it collided with, and destory itselfz
             Health enemyHealth = other.gameObject.GetComponent<Health>();
+            enemyHealth.CalculateKnockback(other, transform.position);
             enemyHealth.TakeDamage(1);
 
             Destroy(gameObject);

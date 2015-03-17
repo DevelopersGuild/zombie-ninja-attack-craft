@@ -11,7 +11,7 @@ public class Hugger : MonoBehaviour {
 
     private Seeker seeker;
     private Rigidbody2D rb;
-    private MoveController moveController;
+    private EnemyMoveController moveController;
 
     public Path path;
 
@@ -28,7 +28,7 @@ public class Hugger : MonoBehaviour {
 	void Start () {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
-        moveController = GetComponent<MoveController>();
+        moveController = GetComponent<EnemyMoveController>();
 
         if (target == null) {
             Debug.LogError("NO PLAYER!");

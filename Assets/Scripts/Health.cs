@@ -15,11 +15,6 @@ public class Health : MonoBehaviour {
 	void Start () {
         currentHealth = startingHealth;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	public void replenish(int amt) {
 		currentHealth += amt;
@@ -29,7 +24,6 @@ public class Health : MonoBehaviour {
 
 	public void setHealth(int amt) {
 		currentHealth = amt;
-
 	}
 
     public void TakeDamage(int amount) {
@@ -37,9 +31,44 @@ public class Health : MonoBehaviour {
         Debug.Log(currentHealth);
 
         if (currentHealth <= 0) {
-            Debug.Log("DEATH");
             Death();
         }
+    }
+
+    public void CalculateKnockback(Collider2D other, Vector2 currentPosition) {
+        //Calculate point of collision and knockback accordingly
+        Vector3 contactPoint = other.transform.position;
+        Vector3 center = currentPosition;
+        EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
+        MoveController playerMoveController = other.gameObject.GetComponent<MoveController>();
+
+        if (enemyMoveController != null) {;
+            Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+            enemyMoveController.Knockback(pushDirection.normalized, 10000);
+        }
+        else {
+            Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+            playerMoveController.Knockback(pushDirection.normalized, 10000);
+        }
+
+    }
+    public void CalculateKnockback(Collision2D other, Vector2 currentPosition) {
+        //Calculate point of collision and knockback accordingly
+        Vector3 contactPoint = other.transform.position;
+        Vector3 center = currentPosition;
+        EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
+        MoveController playerMoveController = other.gameObject.GetComponent<MoveController>();
+
+        if (enemyMoveController != null) {
+            ;
+            Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+            enemyMoveController.Knockback(pushDirection.normalized, 10000);
+        }
+        else {
+            Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+            playerMoveController.Knockback(pushDirection.normalized, 10000);
+        }
+
     }
 
     public void Death() {

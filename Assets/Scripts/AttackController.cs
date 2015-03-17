@@ -68,18 +68,8 @@ public class AttackController : MonoBehaviour {
                 for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
                     GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
                     Health enemyHealth = enemy.gameObject.GetComponent<Health>();
+                    enemyHealth.CalculateKnockback(enemy.collider2D, transform.position);
                     enemyHealth.TakeDamage(1);
-
-                    //Knockback according to where the player is
-                    Vector3 contactPoint = enemy.collider2D.transform.position;
-                    Vector3 center = attackCollider.transform.position;
-
-                    MoveController enemyMoveController = enemy.gameObject.GetComponent<MoveController>();
-                    if (enemyMoveController != null) {
-                        Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-                        enemyMoveController.Knockback(pushDirection.normalized, 10000);
-                    }
-
                 }
                 
                 //Check if any of the enemies died. If they did, remove them from the list of enemies
