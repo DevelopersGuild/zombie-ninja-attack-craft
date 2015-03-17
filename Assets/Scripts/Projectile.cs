@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour {
 
     public Vector2 originalPosition;
     public Vector2 targetPosition;
+    public Vector2 currentVelocity;
 
     public void Update() {
         if(transform.position.x < originalPosition.x - range){
@@ -38,7 +39,8 @@ public class Projectile : MonoBehaviour {
     public void Shoot(float angle, Vector2 velocity) {
         originalPosition = transform.position;
         transform.eulerAngles = new Vector3(0, 0, angle);
-        rigidbody2D.velocity = velocity * projectileSpeed;
+        currentVelocity = velocity;
+        rigidbody2D.velocity = currentVelocity * projectileSpeed;
         Debug.Log(rigidbody2D.velocity);
     }
 
