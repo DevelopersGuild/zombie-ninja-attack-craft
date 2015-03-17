@@ -11,7 +11,7 @@ public class AttackController : MonoBehaviour {
     private bool alreadyAttacked;
     private Vector2 playerPosition;
 
-    public Projectile arrow;
+    public Projectile PlayerArrow;
     public float projectileSpeed;
 
 	// Use this for initialization
@@ -98,19 +98,19 @@ public class AttackController : MonoBehaviour {
 
         //Instantiate an arrow depending on which direction the player is facing
         if (moveController.facing.x > 0) {
-            Projectile projectile = Instantiate(arrow, new Vector2(transform.position.x + 0.5f, transform.position.y), transform.rotation) as Projectile;
+            Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x + 0.5f, transform.position.y), transform.rotation) as Projectile;
             projectile.Shoot(0, new Vector2(1, 0));
         }
         else if (moveController.facing.x < 0) {
-            Projectile projectile = Instantiate(arrow, new Vector2(transform.position.x - 0.5f, transform.position.y), transform.rotation) as Projectile;
+            Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x - 0.5f, transform.position.y), transform.rotation) as Projectile;
             projectile.Shoot(180, new Vector2(-1, 0));
         }
         else if (moveController.facing.y > 0) {
-            Projectile projectile = Instantiate(arrow, new Vector2(transform.position.x, transform.position.y + 0.5f), transform.rotation) as Projectile;
+            Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x, transform.position.y + 0.5f), transform.rotation) as Projectile;
             projectile.Shoot(90, new Vector2(0, 1));
         }
         else if (moveController.facing.y < 0) {
-            Projectile projectile = Instantiate(arrow, new Vector2(transform.position.x, transform.position.y - 0.5f), transform.rotation) as Projectile;
+            Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x, transform.position.y - 0.5f), transform.rotation) as Projectile;
             projectile.Shoot(-90, new Vector2(0, -1));
         }
 

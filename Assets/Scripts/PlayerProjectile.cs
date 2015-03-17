@@ -3,16 +3,6 @@ using System.Collections;
 
 public class PlayerProjectile : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     void OnTriggerEnter2D(Collider2D other) {
         //Check for enemy collision
         if (other.tag == "Attackable") {
