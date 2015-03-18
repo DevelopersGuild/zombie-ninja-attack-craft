@@ -60,11 +60,10 @@ public class Health : MonoBehaviour {
         MoveController playerMoveController = other.gameObject.GetComponent<MoveController>();
 
         if (enemyMoveController != null) {
-            ;
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
             enemyMoveController.Knockback(pushDirection.normalized, 10000);
         }
-        else {
+        else if(playerMoveController != null){
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
             playerMoveController.Knockback(pushDirection.normalized, 10000);
         }

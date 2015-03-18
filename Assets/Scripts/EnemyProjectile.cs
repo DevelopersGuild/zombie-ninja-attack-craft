@@ -4,13 +4,18 @@ using System.Collections;
 public class EnemyProjectile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
-        //Check for enemy collision
+        //Check for Player collision
         if (other.tag == "Player") {
-            //Deal damage, knock back what it collided with, and destory itselfz
-            Health playerHealth = other.gameObject.GetComponent<Health>();
-            playerHealth.CalculateKnockback(other, transform.position);
-            playerHealth.TakeDamage(1);
+            Player player = other.GetComponent<Player>();
+            Health playerHealth = other.GetComponent<Health>();
 
+            //Deal damage, knockback, set the invinicility flag
+            if (!player.isInvincible)
+            {
+                playerHealth.CalculateKnockback(other, transform.position);
+                playerHealth.TakeDamage(1);
+                player.isInvincible = true;
+            }
             Destroy(gameObject);
         }
     }

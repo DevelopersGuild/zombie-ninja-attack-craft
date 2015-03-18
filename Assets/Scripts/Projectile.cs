@@ -28,10 +28,8 @@ public class Projectile : MonoBehaviour {
 
 
     public void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("COLLIDING WITH SOMETHING");
         if (other.gameObject.tag == "MapCollidable") {
             Destroy(gameObject);
-            Debug.Log("COLLIDING WITH Wall");
         }
     }
 
@@ -41,7 +39,6 @@ public class Projectile : MonoBehaviour {
         transform.eulerAngles = new Vector3(0, 0, angle);
         currentVelocity = velocity;
         rigidbody2D.velocity = currentVelocity * projectileSpeed;
-        Debug.Log(rigidbody2D.velocity);
     }
 
 }
