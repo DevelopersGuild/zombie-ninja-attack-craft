@@ -36,28 +36,6 @@ public class Player : MonoBehaviour {
         tapSpeed = .15f;
     }
 
-    public void OnCollisionStay2D(Collision2D other) {
-        //Deal with enemy collision
-        //if (other.gameObject.CompareTag("Attackable")) {
-        //    Collider2D enemyCollider = other.collider;
-        //    //Take damage if the player isnt already currently invincible
-        //    if (!isInvincible) {
-        //        playerHealth.TakeDamage(1);
-        //        isInvincible = true;
-               
-        //        //Knockback according to where the player was hit
-        //        Vector3 contactPoint = other.contacts[0].point;
-        //        Vector3 center = enemyCollider.bounds.center;
-
-        //        Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-        //        moveController.Knockback(pushDirection.normalized, 10000);
-        //    }
-
-        //}
-    }
-
-
-
 
     // Update is called once per frame
     void Update() {
