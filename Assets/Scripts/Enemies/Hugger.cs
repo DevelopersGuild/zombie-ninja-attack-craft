@@ -10,7 +10,6 @@ public class Hugger : MonoBehaviour {
     public float updateRate = 2f;
 
     private Seeker seeker;
-    private Rigidbody2D rb;
     private EnemyMoveController moveController;
 
     public Path path;
@@ -27,7 +26,6 @@ public class Hugger : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         seeker = GetComponent<Seeker>();
-        rb = GetComponent<Rigidbody2D>();
         moveController = GetComponent<EnemyMoveController>();
 
         if (target == null) {
@@ -78,10 +76,7 @@ public class Hugger : MonoBehaviour {
         Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
         dir *= speed * Time.fixedDeltaTime;
 
-        //rb.AddForce(dir, fMode);
-        //rb.velocity = dir;
         moveController.Move(dir);
-
 
         float dist = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
         if(dist < nextWaypointDistance){

@@ -23,12 +23,6 @@ public class AttackCollider : MonoBehaviour {
         }
     }
 
-    void OnTriggerStay2D(Collider2D other) {
-		if (other.CompareTag("Attackable")) {
-
-        }
-    }
-
     void OnTriggerExit2D(Collider2D other) {
 		if (other.CompareTag("Attackable")) {
             enemiesInRange.Remove(other.gameObject);

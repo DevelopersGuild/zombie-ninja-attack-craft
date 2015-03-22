@@ -3,7 +3,6 @@ using System.Collections;
 
 public class DealDamageToPlayer : MonoBehaviour {
 
-    BoxCollider2D collider;
     public void OnCollisionStay2D(Collision2D other)
     {
         //Check for player collision
@@ -13,7 +12,6 @@ public class DealDamageToPlayer : MonoBehaviour {
             GameObject playerObject = other.gameObject;
             Player player = playerObject.GetComponent<Player>();
             Health playerHealth = playerObject.GetComponent<Health>();
-            MoveController moveController = playerObject.GetComponent<MoveController>();
 
             //Take damage if the player isnt already currently invincible
             if (!player.isInvincible)
@@ -24,9 +22,11 @@ public class DealDamageToPlayer : MonoBehaviour {
                 player.isInvincible = true;
             }
 
+            //Destroy gameobject if its a projectile
             if (GetComponent<Projectile>()) {
                 Destroy(gameObject);
             }
         }
+
     }
 }

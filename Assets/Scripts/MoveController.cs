@@ -5,12 +5,12 @@ public class MoveController : MonoBehaviour {
 
     // Components
     private Animator animator;
-    private Transform transform;
     public AttackController attackController;
     // Speed of object
     [Range(0, 10)]
     public float speed = 8;
     public float dashSpeed = 100;
+    public float sdas;
     // Direction of object
     internal Vector2 direction;
     public Vector2 facing;
@@ -33,7 +33,6 @@ public class MoveController : MonoBehaviour {
     void Awake() {
         attackController = GetComponent<AttackController>();
         animator = GetComponent<Animator>();
-        transform = GetComponent<Transform>();
 
         isMoving = false;
         movementVector = new Vector2(0, 0);

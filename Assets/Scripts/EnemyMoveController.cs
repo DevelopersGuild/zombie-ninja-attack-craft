@@ -5,7 +5,6 @@ public class EnemyMoveController : MonoBehaviour {
 
     // Components
     private Animator animator;
-    private Transform transform;
     // Speed of object
     [Range(0, 10)]
     public float speed = 8;
@@ -19,21 +18,26 @@ public class EnemyMoveController : MonoBehaviour {
     public bool isMoving;
     public bool canMove;
     public bool gotAttacked;
-
+    //Knockback flags
     public bool isKnockedBack;
-    public float knockedBackTime;
-    public float timeKnockedBack;
-    public Vector2 knockbackDirection;
+    public float knockbackForce;
+    private float knockBackTime;
+    private float timeSpentKnockedBack;
+    private Vector2 knockbackDirection;
 
 
     void Awake() {
         animator = GetComponent<Animator>();
-        transform = GetComponent<Transform>();
 
         isMoving = false;
         movementVector = new Vector2(0, 0);
         direction = new Vector2(0, 0);
         facing = new Vector2(0, -1);
+
+        knockbackForce = 4;
+        isKnockedBack = false;
+        timeSpentKnockedBack = 0;
+        knockBackTime = 0.10f;
 
         canMove = true;
     }
@@ -63,12 +67,13 @@ public class EnemyMoveController : MonoBehaviour {
         // Calculate movement amount
         movementVector = direction * speed;
 
+        //Change movement vector if they are being knocked back
         if (isKnockedBack) {
-            timeKnockedBack += Time.deltaTime;
-            movementVector = knockbackDirection * 4;
-            if (timeKnockedBack >= knockedBackTime) {
+            timeSpentKnockedBack += Time.deltaTime;
+            movementVector = knockbackDirection * knockbackForce;
+            if (timeSpentKnockedBack >= knockBackTime) {
                 isKnockedBack = false;
-                timeKnockedBack = 0;
+                timeSpentKnockedBack = 0;
             }
         }
 
@@ -89,9 +94,6 @@ public class EnemyMoveController : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        // Apply the movement to the rigidbody
-        //rigidbody2D.AddForce(movementVector);
-
         if (canMove) {
             rigidbody2D.velocity = movementVector;
         }
@@ -110,12 +112,11 @@ public class EnemyMoveController : MonoBehaviour {
         direction = _direction;
     }
 
-    public void Knockback(Vector2 direction, float amount) {
-        ToDashPhysics();
-        isKnockedBack = true;
-        rigidbody2D.AddForce(direction * amount, ForceMode2D.Force);
-        ToWalkPhysics();
-    }
+    //public void Knockback(Vector2 direction, float amount) {
+    //    isKnockedBack = true;
+    //    knockbackForce = amount;
+    //    knockbackDirection = direction;
+    //}
 
     public void Knockback(Vector2 direction) {
         isKnockedBack = true;

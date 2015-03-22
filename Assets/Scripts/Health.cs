@@ -36,37 +36,40 @@ public class Health : MonoBehaviour {
         }
     }
 
+    //For triggers
     public void CalculateKnockback(Collider2D other, Vector2 currentPosition) {
         //Calculate point of collision and knockback accordingly
         Vector3 contactPoint = other.transform.position;
         Vector3 center = currentPosition;
         EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
-        MoveController playerMoveController = other.gameObject.GetComponent<MoveController>();
+        PlayerMoveController playerMoveController = other.gameObject.GetComponent<PlayerMoveController>();
 
-        if (enemyMoveController != null) {;
+        if (enemyMoveController != null) {
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
             enemyMoveController.Knockback(pushDirection.normalized);
         }
         else {
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            //playerMoveController.Knockback(pushDirection.normalized);
+            playerMoveController.Knockback(pushDirection.normalized);
         }
 
     }
+
+    //For colliders
     public void CalculateKnockback(Collision2D other, Vector2 currentPosition) {
         //Calculate point of collision and knockback accordingly
         Vector3 contactPoint = other.transform.position;
         Vector3 center = currentPosition;
         EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
-        MoveController playerMoveController = other.gameObject.GetComponent<MoveController>();
+        PlayerMoveController playerMoveController = other.gameObject.GetComponent<PlayerMoveController>();
 
         if (enemyMoveController != null) {
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            enemyMoveController.Knockback(pushDirection.normalized, 3000);
+            enemyMoveController.Knockback(pushDirection.normalized);
         }
         else if(playerMoveController != null){
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            playerMoveController.Knockback(pushDirection.normalized, 3000);
+            playerMoveController.Knockback(pushDirection.normalized);
         }
 
     }

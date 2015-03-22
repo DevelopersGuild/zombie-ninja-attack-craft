@@ -4,10 +4,8 @@ using System.Collections;
 /* PlayerScript - Handle Input from a player */
 public class Player : MonoBehaviour {
     //Components
-    private MoveController moveController;
-    private Animator animator;
+    private PlayerMoveController playerMoveController;
     private AttackController attackController;
-    private Health playerHealth;
 
     //Double tap flags
     private float ButtonCooler;
@@ -29,10 +27,8 @@ public class Player : MonoBehaviour {
     void Awake() {
 		isInvincible = false;
 		timeSpentInvincible = 1;
-        moveController = GetComponent<MoveController>();
-        animator = GetComponent<Animator>();
+        playerMoveController = GetComponent<PlayerMoveController>();
         attackController = GetComponent<AttackController>();
-        playerHealth = GetComponent<Health>();
         tapSpeed = .25f;
     }
 
@@ -60,7 +56,7 @@ public class Player : MonoBehaviour {
 
         //The player acts according to input
         if (Input.GetButtonDown("Jump")) {
-            moveController.Dash();
+            playerMoveController.Dash();
         }
 
         //Check for attack input
@@ -87,10 +83,10 @@ public class Player : MonoBehaviour {
             keyCount++;
         }
         if (keyCount >= 2) {
-            moveController.isPressingMultiple = true;
+            playerMoveController.isPressingMultiple = true;
         }
         else {
-            moveController.isPressingMultiple = false;
+            playerMoveController.isPressingMultiple = false;
         }
 
         //Only move if the 2 buttons or less are being pressed
@@ -99,49 +95,49 @@ public class Player : MonoBehaviour {
             //Handle double taps for dashing
             if (Input.GetKeyDown("w")) {
                 if ((Time.time - lastTapTimeW) < tapSpeed) {
-                    moveController.Dash();
+                    playerMoveController.Dash();
                 }
                 lastTapTimeW = Time.time;
             }
             if (Input.GetKeyDown("s")) {
                 if ((Time.time - lastTapTimeS) < tapSpeed) {
-                    moveController.Dash();
+                    playerMoveController.Dash();
                 }
                 lastTapTimeS = Time.time;
             }
             if (Input.GetKeyDown("a")) {
                 if ((Time.time - lastTapTimeA) < tapSpeed) {
-                    moveController.Dash();
+                    playerMoveController.Dash();
                 }
                 lastTapTimeA = Time.time;
             }
             if (Input.GetKeyDown("d")) {
                 if ((Time.time - lastTapTimeD) < tapSpeed) {
-                    moveController.Dash();
+                    playerMoveController.Dash();
                 }
                 lastTapTimeD = Time.time;
             }
 
             //Face the player depending on the button being pressed
             if (Input.GetKey("w")) {
-                moveController.newFacing = (int)MoveController.facingDirection.up;
+                playerMoveController.newFacing = (int)MoveController.facingDirection.up;
             }
             if (Input.GetKey("s")) {
-                moveController.newFacing = (int)MoveController.facingDirection.down;
+                playerMoveController.newFacing = (int)MoveController.facingDirection.down;
 
             }
             if (Input.GetKey("a")) {
-                moveController.newFacing = (int)MoveController.facingDirection.left;
+                playerMoveController.newFacing = (int)MoveController.facingDirection.left;
             }
             if (Input.GetKey("d")) {
-                moveController.newFacing = (int)MoveController.facingDirection.right;
+                playerMoveController.newFacing = (int)MoveController.facingDirection.right;
             }
-            moveController.isMoving = true;
-            moveController.Move(inputX, inputY);
+            playerMoveController.isMoving = true;
+            playerMoveController.Move(inputX, inputY);
         }
         else {
-            moveController.isMoving = false;
-            moveController.Move(0, 0);
+            playerMoveController.isMoving = false;
+            playerMoveController.Move(0, 0);
         }
         keyCount = 0;
     }

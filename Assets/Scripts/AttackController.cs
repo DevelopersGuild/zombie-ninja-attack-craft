@@ -4,7 +4,7 @@ using System.Collections;
 public class AttackController : MonoBehaviour {
 
     Animator animator;
-    MoveController moveController;
+    PlayerMoveController moveController;
     public AttackCollider attackCollider;
 
     public bool isAttacking;
@@ -17,7 +17,7 @@ public class AttackController : MonoBehaviour {
 	void Start () {
         isAttacking = false;
         animator = GetComponent<Animator>(); ;
-        moveController = GetComponent<MoveController>();
+        moveController = GetComponent<PlayerMoveController>();
 	}
 	
 	// Update is called once per frame
@@ -35,19 +35,19 @@ public class AttackController : MonoBehaviour {
 
         //Move and rotate the collider relative to where the player is facing
         if (moveController.facing.x > 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x + 0.5f, playerPosition.y);
+            attackCollider.transform.position = new Vector2(playerPosition.x + 0.25f, playerPosition.y);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 90);
         }
         else if (moveController.facing.x < 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x - 0.5f, playerPosition.y);
+            attackCollider.transform.position = new Vector2(playerPosition.x - 0.25f, playerPosition.y);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 90);
         }
         else if (moveController.facing.y > 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y + 0.5f);
+            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y + 0.25f);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
         else if (moveController.facing.y < 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y - 0.5f);
+            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y - 0.25f);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
 

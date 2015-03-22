@@ -5,7 +5,6 @@ public class PlayerMoveController : MonoBehaviour {
 
     // Components
     private Animator animator;
-    private Transform transform;
     public AttackController attackController;
     // Speed of object
     [Range(0, 10)]
@@ -17,7 +16,6 @@ public class PlayerMoveController : MonoBehaviour {
     public int newFacing;
     public enum facingDirection { up, right, down, left }
     internal Vector2 previousFacing;
-    Vector2 previousMoving;
     // Actual movement
     internal Vector2 movementVector = new Vector2(0, 0);
     // Flags for state checking
@@ -28,12 +26,17 @@ public class PlayerMoveController : MonoBehaviour {
     public float dashIn;
     public bool canMove;
     public bool gotAttacked;
+    //Knockback flags
+    public bool isKnockedBack;
+    public float knockbackForce;
+    private float knockBackTime;
+    private float timeSpentKnockedBack;
+    private Vector2 knockbackDirection;
 
 
     void Awake() {
         attackController = GetComponent<AttackController>();
         animator = GetComponent<Animator>();
-        transform = GetComponent<Transform>();
 
         isMoving = false;
         movementVector = new Vector2(0, 0);
@@ -45,6 +48,11 @@ public class PlayerMoveController : MonoBehaviour {
         canMove = true;
         isDashing = false;
         dashIn = 0;
+
+        knockbackForce = 8;
+        isKnockedBack = false;
+        timeSpentKnockedBack = 0;
+        knockBackTime = 0.12f;
     }
 
     // Update is called once per frame
@@ -55,7 +63,10 @@ public class PlayerMoveController : MonoBehaviour {
             isDashing = false;
             ToWalkPhysics();
         }
-        if (dashIn < 0.2) canDash = true;
+        if (dashIn < 0.2) {
+            canDash = true;
+            canMove = true;
+        }
 
         //The player faces according to player input
         if (canMove) {
@@ -97,6 +108,15 @@ public class PlayerMoveController : MonoBehaviour {
         // Calculate movement amount
         movementVector = direction * speed;
 
+        //Change movement vector if they are being knocked back
+        if (isKnockedBack) {
+            timeSpentKnockedBack += Time.deltaTime;
+            movementVector = knockbackDirection * knockbackForce;
+            if (timeSpentKnockedBack >= knockBackTime) {
+                isKnockedBack = false;
+                timeSpentKnockedBack = 0;
+            }
+        }
 
         if (animator != null) {
             //Play walking animations
@@ -128,10 +148,7 @@ public class PlayerMoveController : MonoBehaviour {
         else {
             canMove = true;
         }
-
         previousFacing = facing;
-        previousMoving = movementVector;
-
     }
 
     void FixedUpdate() {
@@ -156,17 +173,6 @@ public class PlayerMoveController : MonoBehaviour {
         direction = _direction;
     }
 
-    /*pushes a character in a direction by an amount*/
-    internal void Push(Vector2 direction, float amount) {
-        rigidbody2D.AddForce(direction * amount);
-    }
-
-    public void Knockback(Vector2 direction, float amount) {
-        ToDashPhysics();
-        rigidbody2D.AddForce(direction * amount);
-        ToWalkPhysics();
-    }
-
     public void Dash() {
         // Debug.Log("Facing:" + facing);
         // Only let the player dash if the cooldown is < 0. If he can, dash and reset the timer       
@@ -180,7 +186,19 @@ public class PlayerMoveController : MonoBehaviour {
             isMoving = true;
             isDashing = true;
             canDash = false;
+            canMove = false;
         }
+    }
+
+    //public void Knockback(Vector2 direction, float amount) {
+    //    isKnockedBack = true;
+    //    knockbackForce = amount;
+    //    knockbackDirection = direction;
+    //}
+
+    public void Knockback(Vector2 direction) {
+        isKnockedBack = true;
+        knockbackDirection = direction;
     }
 
     public void GotAttacked() {
