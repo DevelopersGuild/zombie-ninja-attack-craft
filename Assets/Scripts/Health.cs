@@ -4,6 +4,7 @@ using System.Collections;
 public class Health : MonoBehaviour {
 
     public int startingHealth = 10;
+    public int asdf;
     public int currentHealth;
     bool isDead;
     public int CoinValue;
@@ -44,11 +45,11 @@ public class Health : MonoBehaviour {
 
         if (enemyMoveController != null) {;
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            enemyMoveController.Knockback(pushDirection.normalized, 10000);
+            enemyMoveController.Knockback(pushDirection.normalized);
         }
         else {
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            playerMoveController.Knockback(pushDirection.normalized, 10000);
+            //playerMoveController.Knockback(pushDirection.normalized);
         }
 
     }
@@ -61,11 +62,11 @@ public class Health : MonoBehaviour {
 
         if (enemyMoveController != null) {
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            enemyMoveController.Knockback(pushDirection.normalized, 10000);
+            enemyMoveController.Knockback(pushDirection.normalized, 3000);
         }
         else if(playerMoveController != null){
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            playerMoveController.Knockback(pushDirection.normalized, 10000);
+            playerMoveController.Knockback(pushDirection.normalized, 3000);
         }
 
     }

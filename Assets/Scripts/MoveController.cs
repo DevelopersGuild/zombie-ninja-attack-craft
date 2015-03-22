@@ -55,7 +55,10 @@ public class MoveController : MonoBehaviour {
             isDashing = false;
             ToWalkPhysics();
         }
-        if (dashIn < 0.2) canDash = true;
+        if (dashIn < 0.2) {
+            canDash = true;
+            canMove = true;
+        }
 
         //The player faces according to player input
         if (canMove) {
@@ -172,12 +175,13 @@ public class MoveController : MonoBehaviour {
             //Change these rigidbody parameters so the dashing feels better
             ToDashPhysics();
             rigidbody2D.velocity = facing * dashSpeed;
-
+            Debug.Log(rigidbody2D.velocity);
             //Reset dash parameters
             dashIn = 1;
             isMoving = true;
             isDashing = true;
             canDash = false;
+            canMove = false;
         }
     }
 

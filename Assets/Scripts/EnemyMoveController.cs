@@ -20,6 +20,11 @@ public class EnemyMoveController : MonoBehaviour {
     public bool canMove;
     public bool gotAttacked;
 
+    public bool isKnockedBack;
+    public float knockedBackTime;
+    public float timeKnockedBack;
+    public Vector2 knockbackDirection;
+
 
     void Awake() {
         animator = GetComponent<Animator>();
@@ -54,8 +59,18 @@ public class EnemyMoveController : MonoBehaviour {
             transform.localScale = new Vector3(-1, 1, 1);
         }
 
+
         // Calculate movement amount
         movementVector = direction * speed;
+
+        if (isKnockedBack) {
+            timeKnockedBack += Time.deltaTime;
+            movementVector = knockbackDirection * 4;
+            if (timeKnockedBack >= knockedBackTime) {
+                isKnockedBack = false;
+                timeKnockedBack = 0;
+            }
+        }
 
         if (animator != null) {
             //Play walking animations
@@ -97,9 +112,16 @@ public class EnemyMoveController : MonoBehaviour {
 
     public void Knockback(Vector2 direction, float amount) {
         ToDashPhysics();
-        rigidbody2D.AddForce(direction * amount);
+        isKnockedBack = true;
+        rigidbody2D.AddForce(direction * amount, ForceMode2D.Force);
         ToWalkPhysics();
     }
+
+    public void Knockback(Vector2 direction) {
+        isKnockedBack = true;
+        knockbackDirection = direction;
+    }
+
 
     public void GotAttacked() {
         gotAttacked = true;

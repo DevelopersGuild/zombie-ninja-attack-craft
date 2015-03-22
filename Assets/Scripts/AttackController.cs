@@ -12,7 +12,6 @@ public class AttackController : MonoBehaviour {
     private Vector2 playerPosition;
 
     public Projectile PlayerArrow;
-    public float projectileSpeed;
 
 	// Use this for initialization
 	void Start () {
