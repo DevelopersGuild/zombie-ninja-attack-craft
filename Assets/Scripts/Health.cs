@@ -9,6 +9,8 @@ public class Health : MonoBehaviour {
     bool isDead;
     public int CoinValue;
 
+    private bool isQuitting;
+
     Animator anim;
     AudioSource enemyAudio;
 
@@ -29,7 +31,6 @@ public class Health : MonoBehaviour {
 
     public void TakeDamage(int amount) {
         currentHealth -= amount;
-        Debug.Log(currentHealth);
 
         if (currentHealth <= 0) {
             Death();
@@ -76,9 +77,20 @@ public class Health : MonoBehaviour {
 
     public void Death() {
         isDead = true;
-        if (GetComponent<DropCoinsOnDeath>()) {
-            GetComponent<DropCoinsOnDeath>().DropCoins(CoinValue);
+        Destroy(gameObject);
+    }
+
+    void OnApplicationQuit() {
+        isQuitting = true;
+    }
+    
+    //Droop loot on death
+    public void OnDestroy() {
+        if (!isQuitting) {
+            DropLoot dropLoot;
+            if (dropLoot = GetComponent<DropLoot>()) {
+                dropLoot.DropItem();
+            }
         }
-        gameObject.SetActive(false);
     }
 }
