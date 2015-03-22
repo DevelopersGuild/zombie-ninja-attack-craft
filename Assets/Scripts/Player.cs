@@ -33,7 +33,7 @@ public class Player : MonoBehaviour {
         animator = GetComponent<Animator>();
         attackController = GetComponent<AttackController>();
         playerHealth = GetComponent<Health>();
-        tapSpeed = .15f;
+        tapSpeed = .25f;
     }
 
 

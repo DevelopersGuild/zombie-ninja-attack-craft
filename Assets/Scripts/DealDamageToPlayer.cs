@@ -23,6 +23,10 @@ public class DealDamageToPlayer : MonoBehaviour {
                 playerHealth.TakeDamage(1);
                 player.isInvincible = true;
             }
+
+            if (GetComponent<Projectile>()) {
+                Destroy(gameObject);
+            }
         }
     }
 }
