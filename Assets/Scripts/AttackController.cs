@@ -5,7 +5,7 @@ public class AttackController : MonoBehaviour {
 
     Animator animator;
     PlayerMoveController moveController;
-    public AttackCollider attackCollider;
+    public BoxCollider2D attackCollider;
 
     public bool isAttacking;
     private bool alreadyAttacked;
@@ -18,6 +18,7 @@ public class AttackController : MonoBehaviour {
         isAttacking = false;
         animator = GetComponent<Animator>(); ;
         moveController = GetComponent<PlayerMoveController>();
+        attackCollider.collider2D.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -61,31 +62,9 @@ public class AttackController : MonoBehaviour {
             moveController.isDashing = false;
             moveController.canDash = false;
 
-            //Check for all the enemines in its collider and deal damage to them
-            if (attackCollider.enemiesInRange.Count > 0 && alreadyAttacked == false) {
-                //Deal damage to all the enemies and knock them back
-                for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
-                    GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
-                    Health enemyHealth = enemy.gameObject.GetComponent<Health>();
-                    enemyHealth.CalculateKnockback(enemy.collider2D, transform.position);
-                    if (enemyHealth.currentHealth - 1 <= 0) {
-                        attackCollider.enemiesInRange.RemoveAt(i);
-                    }
-                    enemyHealth.TakeDamage(1);
-                }
-                
-                //Check if any of the enemies died. If they did, remove them from the list of enemies
-                //for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
-                //    GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
-                //    Health enemyHealth = enemy.gameObject.GetComponent<Health>();
-                //    if (enemyHealth.currentHealth <= 0) {
-                //        attackCollider.enemiesInRange.RemoveAt(i);
-                //    }
-                //}
-                //alreadyAttacked = true;
-            }
+            //Activate the attack collider so whatever was in the collider gets hurt
+            attackCollider.collider2D.enabled = true;
 
-            //Set flag so the player cant keep clicking and dealing damage 
             alreadyAttacked = true;
         }
 
@@ -119,13 +98,12 @@ public class AttackController : MonoBehaviour {
         FinishedAttacking();
     }
 
-
-
     public void FinishedAttacking() {
         //Reset variables
         isAttacking = false;
         alreadyAttacked = false;
         moveController.canDash = true;
+        attackCollider.collider2D.enabled = false;
     }
 
     public bool CanAttack() {

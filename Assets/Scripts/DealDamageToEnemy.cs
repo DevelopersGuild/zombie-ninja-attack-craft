@@ -33,8 +33,6 @@ public class DealDamageToEnemy : MonoBehaviour {
             Health enemyHealth = other.gameObject.GetComponent<Health>();
             enemyHealth.CalculateKnockback(other, transform.position);
             enemyHealth.TakeDamage(1);
-
-            Destroy(gameObject);
         }
 
         //Destroy gameobject if its a projectile
