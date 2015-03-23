@@ -26,7 +26,6 @@ public class SpikeTrap : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         timeSpentActive += Time.deltaTime;
-        Debug.Log(timeSpentActive + "active" + isActive);
         if (timeSpentActive >= activeDuration) {
             Switch();
             timeSpentActive = 0;

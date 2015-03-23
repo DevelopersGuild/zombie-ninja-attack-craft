@@ -68,18 +68,21 @@ public class AttackController : MonoBehaviour {
                     GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
                     Health enemyHealth = enemy.gameObject.GetComponent<Health>();
                     enemyHealth.CalculateKnockback(enemy.collider2D, transform.position);
+                    if (enemyHealth.currentHealth - 1 <= 0) {
+                        attackCollider.enemiesInRange.RemoveAt(i);
+                    }
                     enemyHealth.TakeDamage(1);
                 }
                 
                 //Check if any of the enemies died. If they did, remove them from the list of enemies
-                for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
-                    GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
-                    Health enemyHealth = enemy.gameObject.GetComponent<Health>();
-                    if (enemyHealth.currentHealth <= 0) {
-                        attackCollider.enemiesInRange.RemoveAt(i);
-                    }
-                }
-                alreadyAttacked = true;
+                //for (int i = 0; i < attackCollider.enemiesInRange.Count; i++) {
+                //    GameObject enemy = attackCollider.enemiesInRange[i] as GameObject;
+                //    Health enemyHealth = enemy.gameObject.GetComponent<Health>();
+                //    if (enemyHealth.currentHealth <= 0) {
+                //        attackCollider.enemiesInRange.RemoveAt(i);
+                //    }
+                //}
+                //alreadyAttacked = true;
             }
 
             //Set flag so the player cant keep clicking and dealing damage 
