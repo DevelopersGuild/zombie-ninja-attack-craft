@@ -3,6 +3,8 @@ using System.Collections;
 
 public class DealDamageToPlayer : MonoBehaviour {
 
+    public int damageAmount;
+
     public void OnCollisionStay2D(Collision2D other)
     {
         //Check for player collision
@@ -18,7 +20,7 @@ public class DealDamageToPlayer : MonoBehaviour {
             {
                //Deal damage, knockback, set the invinicility flag
                 playerHealth.CalculateKnockback(other, transform.position);
-                playerHealth.TakeDamage(1);
+                playerHealth.TakeDamage(damageAmount);
                 player.isInvincible = true;
             }
 

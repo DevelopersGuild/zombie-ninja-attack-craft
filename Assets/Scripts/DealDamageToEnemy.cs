@@ -3,6 +3,8 @@ using System.Collections;
 
 public class DealDamageToEnemy : MonoBehaviour {
 
+    public int damageAmount;
+
     //For colliders
     public void OnCollisionStay2D(Collision2D other) {
         Debug.Log("COLLIDER!");
@@ -14,7 +16,7 @@ public class DealDamageToEnemy : MonoBehaviour {
 
             //Deal damage to the enemy
             enemyHealth.CalculateKnockback(other, transform.position);
-            enemyHealth.TakeDamage(1);
+            enemyHealth.TakeDamage(damageAmount);
         }
 
         //Destroy gameobject if its a projectile
