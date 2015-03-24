@@ -33,8 +33,10 @@ public class DealDamageToEnemy : MonoBehaviour {
         if (other.tag == "Attackable") {
             //Deal damage, knock back what it collided with, and destory itselfz
             Health enemyHealth = other.gameObject.GetComponent<Health>();
-            enemyHealth.CalculateKnockback(other, transform.position);
             enemyHealth.TakeDamage(1);
+            if (enemyHealth.GetComponent<Rigidbody2D>()) {
+                enemyHealth.CalculateKnockback(other, transform.position);
+            }
         }
 
         //Destroy gameobject if its a projectile

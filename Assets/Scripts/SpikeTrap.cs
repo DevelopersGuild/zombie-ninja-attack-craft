@@ -3,17 +3,16 @@ using System.Collections;
 
 public class SpikeTrap : MonoBehaviour {
 
-    private SpriteRenderer spriteRenderer;
-    private BoxCollider2D boxCollider;
     public Sprite onSprite;
     public Sprite offSprite;
+    private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
 
     public float activeDuration;
-    public bool isActive;
-    public float timeOffset;
+    public float timeOffset; //Should be about 0.5 - 1 seconds more than active duration
+    private float unactiveDuration;
+    private bool isActive;
     private float timeSpentActive;
-
-    public float butts;
 
 	// Use this for initialization
 	void Start () {
@@ -21,23 +20,33 @@ public class SpikeTrap : MonoBehaviour {
         boxCollider = GetComponent<BoxCollider2D>();
         timeSpentActive -= timeOffset;
         isActive = false;
+        unactiveDuration = activeDuration + 1;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         timeSpentActive += Time.deltaTime;
-        if (timeSpentActive >= activeDuration) {
-            Switch();
-            timeSpentActive = 0;
-        }
 
+        //If the spike is active, turn on the collider
         if (isActive) {
             boxCollider.enabled = true;
             spriteRenderer.sprite = onSprite;
+
+            if (timeSpentActive >= activeDuration) {
+                Switch();
+                timeSpentActive = 0;
+            }
         }
+
+        //Otherwise the spike trap is off and harmless
         else {
             boxCollider.enabled = false;
             spriteRenderer.sprite = offSprite;
+
+            if (timeSpentActive >= unactiveDuration) {
+                Switch();
+                timeSpentActive = 0;
+            }
         }
 	}
 

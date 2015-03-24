@@ -4,15 +4,14 @@ using System.Collections;
 public class Health : MonoBehaviour {
 
     public int startingHealth = 10;
-    public int asdf;
     public int currentHealth;
-    bool isDead;
     public int CoinValue;
+    private bool isDead;
 
     private bool isQuitting;
 
-    Animator anim;
-    AudioSource enemyAudio;
+    private Animator anim;
+    private AudioSource enemyAudio;
 
 	// Use this for initialization
 	void Start () {

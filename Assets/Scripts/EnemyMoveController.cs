@@ -46,13 +46,15 @@ public class EnemyMoveController : MonoBehaviour {
     void Update() {
 
         /* Check if character is moving */
-        if (rigidbody2D.velocity.normalized.x != 0 || rigidbody2D.velocity.normalized.y != 0) {
-            // Store the direction the player is facing in case they stop moving
-            facing = rigidbody2D.velocity.normalized;
-            isMoving = true;
-        }
-        if (movementVector.x == 0 && movementVector.y == 0) {
-            isMoving = false;
+        if (rigidbody2D != null) {
+            if (rigidbody2D.velocity.normalized.x != 0 || rigidbody2D.velocity.normalized.y != 0) {
+                // Store the direction the player is facing in case they stop moving
+                facing = rigidbody2D.velocity.normalized;
+                isMoving = true;
+            }
+            if (movementVector.x == 0 && movementVector.y == 0) {
+                isMoving = false;
+            }
         }
 
         //Check whether sprite is facing left or right. Flip the sprite based on its direction
