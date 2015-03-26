@@ -108,7 +108,7 @@ public class PlayerMoveController : MonoBehaviour {
         // Calculate movement amount
         movementVector = direction * speed;
 
-        //Change movement vector if they are being knocked back
+        //Change the movement vector to the knockbackvector if they are being knocked back
         if (isKnockedBack) {
             timeSpentKnockedBack += Time.deltaTime;
             movementVector = knockbackDirection * knockbackForce;

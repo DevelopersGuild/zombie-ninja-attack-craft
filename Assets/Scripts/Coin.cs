@@ -5,7 +5,7 @@ public class Coin : MonoBehaviour {
 
     public int value = 25;
 
-    void OnCollisionEnter2D(Collision2D other) {
+    void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.GetComponent<Player>() == null) return;
 
         GameManager.instance.AddPoints(value);
