@@ -20,7 +20,7 @@ public class SpikeTrap : MonoBehaviour {
         boxCollider = GetComponent<BoxCollider2D>();
         timeSpentActive -= timeOffset;
         isActive = false;
-        unactiveDuration = activeDuration + 1;
+        unactiveDuration = activeDuration + 2f;
 	}
 	
 	// Update is called once per frame
