@@ -85,11 +85,15 @@ public class Health : MonoBehaviour {
     }
     
     //Droop loot on death
+    //Droop loot on death
     public void OnDestroy() {
         if (!isQuitting) {
             DropLoot dropLoot;
             if (dropLoot = GetComponent<DropLoot>()) {
-                dropLoot.DropItem();
+                //Dont drop loot if its a enemy spawning barrel
+                if (!GetComponent<BarrelSpawn>()) {
+                    dropLoot.DropItem();
+                }
             }
         }
     }
