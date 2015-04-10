@@ -177,6 +177,11 @@ public class MoveControllerNoAnimation : MonoBehaviour {
         rigidbody2D.mass = 2;
     }
 
+	public Vector2 getFacing() {
+		return facing;
+	}
+
+
 
 
 

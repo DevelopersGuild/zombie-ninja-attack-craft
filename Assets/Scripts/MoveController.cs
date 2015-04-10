@@ -199,6 +199,10 @@ public class MoveController : MonoBehaviour {
         rigidbody2D.mass = 2;
     }
 
+	public Vector2 getFacing() {
+		return facing;
+		}
+
 
 
 
