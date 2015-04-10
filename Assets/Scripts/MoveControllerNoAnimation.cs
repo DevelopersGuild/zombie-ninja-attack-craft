@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveController : MonoBehaviour {
+public class MoveControllerNoAnimation : MonoBehaviour {
 
     // Components
     private Animator animator;
-    public AttackController attackController;
+    private Transform transform;
     // Speed of object
     [Range(0, 10)]
     public float speed = 8;
     public float dashSpeed = 100;
-    public float sdas;
     // Direction of object
     internal Vector2 direction;
     public Vector2 facing;
-	public int newFacing;
+    public int newFacing;
     public enum facingDirection { up, right, down, left }
     internal Vector2 previousFacing;
     Vector2 previousMoving;
@@ -31,8 +30,8 @@ public class MoveController : MonoBehaviour {
 
 
     void Awake() {
-        attackController = GetComponent<AttackController>();
         animator = GetComponent<Animator>();
+        transform = GetComponent<Transform>();
 
         isMoving = false;
         movementVector = new Vector2(0, 0);
@@ -54,10 +53,7 @@ public class MoveController : MonoBehaviour {
             isDashing = false;
             ToWalkPhysics();
         }
-        if (dashIn < 0.2) {
-            canDash = true;
-            canMove = true;
-        }
+        if (dashIn < 0.2) canDash = true;
 
         //The player faces according to player input
         if (canMove) {
@@ -100,29 +96,9 @@ public class MoveController : MonoBehaviour {
         movementVector = direction * speed;
 
 
-		if (animator != null) {
-			//Play walking animations
-            animator.SetFloat("facing_x", facing.x);
-            animator.SetFloat("facing_y", facing.y);
-            animator.SetFloat("movement_x", movementVector.x);
-            animator.SetFloat("movement_y", movementVector.y);
-			if (isMoving == true) {
-				animator.SetBool ("IsMoving", isMoving);
-			} else {
-				animator.SetBool ("IsMoving", false);
-			}
-
-			//Play dashing animations
-			if (isDashing) {
-				animator.SetBool ("IsDashing", true);
-			} else {
-				animator.SetBool ("IsDashing", false);
-			}
-
-        }
 
         //Check the players state. If its already doing something, prevent the player from being able to move
-        if (isDashing || attackController.isAttacking) {
+        if (isDashing) {
             canMove = false;
         }
         else {
@@ -131,7 +107,7 @@ public class MoveController : MonoBehaviour {
 
         previousFacing = facing;
         previousMoving = movementVector;
-      
+
     }
 
     void FixedUpdate() {
@@ -180,7 +156,6 @@ public class MoveController : MonoBehaviour {
             isMoving = true;
             isDashing = true;
             canDash = false;
-            canMove = false;
         }
     }
 
@@ -204,7 +179,8 @@ public class MoveController : MonoBehaviour {
 
 	public Vector2 getFacing() {
 		return facing;
-    }
+	}
+
 
 
 

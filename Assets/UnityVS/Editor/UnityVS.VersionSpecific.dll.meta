@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: fdfa9408c2e49bf45a26ab3832bad316
 timeCreated: 1428640880
+=======
+guid: bc30d22c1a960a743a9e78b0176249bc
+timeCreated: 1428699393
+>>>>>>> EnemyAI
 licenseType: Free
 PluginImporter:
   serializedVersion: 1
