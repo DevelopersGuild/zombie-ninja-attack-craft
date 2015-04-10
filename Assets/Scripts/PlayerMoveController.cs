@@ -24,6 +24,7 @@ public class PlayerMoveController : MonoBehaviour {
     public bool isDashing;
     public bool canDash;
     public float dashIn;
+    private bool dashCooldown;
     public bool canMove;
     public bool gotAttacked;
     //Knockback flags
@@ -40,7 +41,6 @@ public class PlayerMoveController : MonoBehaviour {
 
         isMoving = false;
         movementVector = new Vector2(0, 0);
-        direction = new Vector2(0, 0);
         facing = new Vector2(0, -1);
         previousFacing = new Vector2(0, -1);
 
@@ -59,13 +59,18 @@ public class PlayerMoveController : MonoBehaviour {
     void Update() {
         //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
         dashIn -= Time.deltaTime;
-        if (dashIn < 0.5) {
-            isDashing = false;
+
+        //Dash Cooldown
+        if (dashIn < 0.1) {
+            dashCooldown = true;
             ToWalkPhysics();
         }
-        if (dashIn < 0.2) {
+
+        //The player can move after the dash cool down
+        if (dashIn < -0.5) {
             canDash = true;
-            canMove = true;
+            isDashing = false;
+            dashCooldown = false;
         }
 
         //The player faces according to player input
@@ -89,7 +94,7 @@ public class PlayerMoveController : MonoBehaviour {
         }
 
 
-        //If the player is going diagonal, dont change the direction its facing
+        // If the player is going diagonal, dont change the direction its facing
         if (facing.Equals(previousFacing) == false) {
             if (isPressingMultiple) {
                 facing = previousFacing;
@@ -97,7 +102,7 @@ public class PlayerMoveController : MonoBehaviour {
         }
 
 
-        //Check whether sprite is facing left or right. Flip the sprite based on its direction
+        // Check whether sprite is facing left or right. Flip the sprite based on its direction
         if (facing.x > 0) {
             transform.localScale = new Vector3(1, 1, 1);
         }
@@ -108,6 +113,11 @@ public class PlayerMoveController : MonoBehaviour {
         // Calculate movement amount
         movementVector = direction * speed;
 
+        // Movement vector if its dashing
+        if (isDashing) {
+            movementVector = facing * dashSpeed;
+        }
+        
         //Change the movement vector to the knockbackvector if they are being knocked back
         if (isKnockedBack) {
             timeSpentKnockedBack += Time.deltaTime;
@@ -138,11 +148,10 @@ public class PlayerMoveController : MonoBehaviour {
             else {
                 animator.SetBool("IsDashing", false);
             }
-
         }
 
         //Check the players state. If its already doing something, prevent the player from being able to move
-        if (isDashing || attackController.isAttacking) {
+        if (attackController.isAttacking || dashCooldown) {
             canMove = false;
         }
         else {
@@ -154,13 +163,15 @@ public class PlayerMoveController : MonoBehaviour {
     void FixedUpdate() {
         // Apply the movement to the rigidbody
         //rigidbody2D.AddForce(movementVector);
-
+      
         if (canMove) {
-            rigidbody2D.velocity = movementVector;
+            GetComponent<Rigidbody2D>().velocity = movementVector;
         }
 
         //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
         //Debug.Log("speed:" + speed + "direction:" + direction + "movementVector" + movementVector);
+        Debug.Log(canMove);
+
     }
 
     /* Moves the object in a direction by a small amount (used for player input) */
@@ -179,14 +190,14 @@ public class PlayerMoveController : MonoBehaviour {
         if (canDash) {
             //Change these rigidbody parameters so the dashing feels better
             ToDashPhysics();
-            rigidbody2D.velocity = facing * dashSpeed;
+            GetComponent<Rigidbody2D>().velocity = facing * dashSpeed;
 
             //Reset dash parameters
-            dashIn = 1;
+            dashIn = .25f;
             isMoving = true;
             isDashing = true;
             canDash = false;
-            canMove = false;
+            canMove = true;
         }
     }
 
@@ -210,13 +221,13 @@ public class PlayerMoveController : MonoBehaviour {
     }
 
     public void ToDashPhysics() {
-        rigidbody2D.mass = 1;
-        rigidbody2D.drag = 33;
+        GetComponent<Rigidbody2D>().mass = 1;
+        GetComponent<Rigidbody2D>().drag = 33;
     }
 
     public void ToWalkPhysics() {
-        rigidbody2D.drag = 75;
-        rigidbody2D.mass = 2;
+        GetComponent<Rigidbody2D>().drag = 75;
+        GetComponent<Rigidbody2D>().mass = 2;
     }
 
 

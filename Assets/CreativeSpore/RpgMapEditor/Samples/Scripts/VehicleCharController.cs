@@ -46,9 +46,9 @@ namespace CreativeSpore
             if (m_playerCtrl == null)
                 return;
 
-            Color textColor = HelpText.renderer.material.color;
+            Color textColor = HelpText.GetComponent<Renderer>().material.color;
             textColor.a = Mathf.Clamp(0.2f + Mathf.Abs(Mathf.Sin(0.05f * Time.frameCount)), 0f, 1f);
-            HelpText.renderer.material.color = textColor;
+            HelpText.GetComponent<Renderer>().material.color = textColor;
 
             if (m_isLanding)
             {
@@ -88,13 +88,13 @@ namespace CreativeSpore
                         isPlayerCloseEnough = rect.Contains(m_playerCtrl.transform.position);
                     }
                    
-                    HelpText.renderer.enabled = isPlayerCloseEnough;
+                    HelpText.GetComponent<Renderer>().enabled = isPlayerCloseEnough;
                     if (isPlayerCloseEnough)
                     {
                         if (Input.GetKeyDown(KeyCode.Return))
                         {
                             m_playerCtrl.Vehicle = this;
-                            HelpText.renderer.enabled = false;
+                            HelpText.GetComponent<Renderer>().enabled = false;
                             m_playerCtrl.SetVisible(VehicleType == eVehicleType.Boat);
                             if (VehicleType == eVehicleType.Aircraft)
                             {
@@ -189,7 +189,7 @@ namespace CreativeSpore
                 {
                     m_isLanding = false;
                     m_playerCtrl.Vehicle = null;
-                    HelpText.renderer.enabled = true;
+                    HelpText.GetComponent<Renderer>().enabled = true;
                     m_playerCtrl.transform.position = m_vLandingPos;
                     
                     if (VehicleType == eVehicleType.Aircraft)

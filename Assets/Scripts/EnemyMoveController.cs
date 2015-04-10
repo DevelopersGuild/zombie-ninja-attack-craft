@@ -46,10 +46,10 @@ public class EnemyMoveController : MonoBehaviour {
     void Update() {
 
         /* Check if character is moving */
-        if (rigidbody2D != null) {
-            if (rigidbody2D.velocity.normalized.x != 0 || rigidbody2D.velocity.normalized.y != 0) {
+        if (GetComponent<Rigidbody2D>() != null) {
+            if (GetComponent<Rigidbody2D>().velocity.normalized.x != 0 || GetComponent<Rigidbody2D>().velocity.normalized.y != 0) {
                 // Store the direction the player is facing in case they stop moving
-                facing = rigidbody2D.velocity.normalized;
+                facing = GetComponent<Rigidbody2D>().velocity.normalized;
                 isMoving = true;
             }
             if (movementVector.x == 0 && movementVector.y == 0) {
@@ -97,7 +97,7 @@ public class EnemyMoveController : MonoBehaviour {
 
     void FixedUpdate() {
         if (canMove) {
-            rigidbody2D.velocity = movementVector;
+            GetComponent<Rigidbody2D>().velocity = movementVector;
         }
 
         //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
@@ -135,13 +135,13 @@ public class EnemyMoveController : MonoBehaviour {
     }
 
     public void ToDashPhysics() {
-        rigidbody2D.mass = 1;
-        rigidbody2D.drag = 33;
+        GetComponent<Rigidbody2D>().mass = 1;
+        GetComponent<Rigidbody2D>().drag = 33;
     }
 
     public void ToWalkPhysics() {
-        rigidbody2D.drag = 75;
-        rigidbody2D.mass = 2;
+        GetComponent<Rigidbody2D>().drag = 75;
+        GetComponent<Rigidbody2D>().mass = 2;
     }
 
 

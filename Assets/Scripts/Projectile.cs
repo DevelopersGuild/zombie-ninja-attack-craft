@@ -29,7 +29,7 @@ using CreativeSpore.RpgMapEditor;
             originalPosition = transform.position;
             transform.eulerAngles = new Vector3(0, 0, angle);
             currentVelocity = velocity;
-            rigidbody2D.velocity = currentVelocity * projectileSpeed;
+            GetComponent<Rigidbody2D>().velocity = currentVelocity * projectileSpeed;
         }
 
     }

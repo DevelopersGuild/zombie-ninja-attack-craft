@@ -6,7 +6,7 @@ public class Health : MonoBehaviour {
     public int startingHealth = 10;
     public int currentHealth;
     public int CoinValue;
-    private bool isDead;
+    public bool isDead;
 
     private bool isQuitting;
 
@@ -15,6 +15,7 @@ public class Health : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        isDead = false;
         currentHealth = startingHealth;
 	}
 

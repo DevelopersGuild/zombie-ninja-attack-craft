@@ -1,7 +1,8 @@
 fileFormatVersion: 2
 guid: 8aa13179800afd741aec78fe8ff53d4b
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: moneybag
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

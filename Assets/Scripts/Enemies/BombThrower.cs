@@ -4,6 +4,7 @@ using System.Collections;
 public class BombThrower : MonoBehaviour {
 
     public Transform playerPosition;
+    public Health player;
     public BombScript bomb;
 
     public BombScript bombObject;
@@ -16,13 +17,13 @@ public class BombThrower : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (isAggroed) {
+        if (isAggroed && player.isDead == false) {
             //Throw a bomb with a cooldown towards the direction of the player if the player is within aggro range
             currentTime += Time.deltaTime;
             if (currentTime >= throwCooldown) {
                 bombObject = Instantiate(bomb, transform.position, transform.rotation) as BombScript;
                 Vector2 toPlayer = new Vector2(playerPosition.position.x - transform.position.x, playerPosition.position.y - transform.position.y);
-                bombObject.rigidbody2D.velocity = (toPlayer * throwForce);
+                bombObject.GetComponent<Rigidbody2D>().velocity = (toPlayer * throwForce);
                 currentTime = 0;
             }
         }
@@ -37,6 +38,7 @@ public class BombThrower : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.tag == "Player") {
+            Debug.Log("NOTAFFTSO");
             isAggroed = false;
             currentTime = 0;
         }

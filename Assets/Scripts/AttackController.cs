@@ -19,7 +19,7 @@ public class AttackController : MonoBehaviour {
         isAttacking = false;
         animator = GetComponent<Animator>(); ;
         moveController = GetComponent<PlayerMoveController>();
-        attackCollider.collider2D.enabled = false;
+        attackCollider.GetComponent<Collider2D>().enabled = false;
         ammo = 5;
 	}
 	
@@ -65,7 +65,7 @@ public class AttackController : MonoBehaviour {
             moveController.canDash = false;
 
             //Activate the attack collider so whatever was in the collider gets hurt
-            attackCollider.collider2D.enabled = true;
+            attackCollider.GetComponent<Collider2D>().enabled = true;
 
             alreadyAttacked = true;
         }
@@ -108,7 +108,7 @@ public class AttackController : MonoBehaviour {
         isAttacking = false;
         alreadyAttacked = false;
         moveController.canDash = true;
-        attackCollider.collider2D.enabled = false;
+        attackCollider.GetComponent<Collider2D>().enabled = false;
     }
 
     public bool CanAttack() {

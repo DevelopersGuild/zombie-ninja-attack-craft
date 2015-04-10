@@ -1,7 +1,8 @@
 fileFormatVersion: 2
 guid: 5102ff08f3f1b544595b1010ed749c3c
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: ff4outdoors
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

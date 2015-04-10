@@ -1,7 +1,8 @@
 fileFormatVersion: 2
 guid: c8f577bd39ff49d4da99e206d51ee8f5
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Firechain
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
