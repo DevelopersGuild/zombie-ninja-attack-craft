@@ -83,7 +83,7 @@ namespace AssemblyCSharp
 				//Debug.Log ("is");
 				if (t < 1) {
 					Debug.Log("1");
-					if(rigidbody2D.velocity.magnitude != 0) {
+					if(GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
 						speed = new Vector2 (0, 0);
 						t = 3;
 						Debug.Log ("All clear");
@@ -106,16 +106,16 @@ namespace AssemblyCSharp
 					}
 				}
 				t -= Time.deltaTime;
-				rigidbody2D.velocity = speed;
+				GetComponent<Rigidbody2D>().velocity = speed;
 	   
 			}
 			//Debug.Log (t);
-			rigidbody2D.velocity = speed;
+			GetComponent<Rigidbody2D>().velocity = speed;
 			//Debug.Log (rigidbody2D.velocity.magnitude);
 		}
 
 		public Vector2 getIdle() {
-			facing = moveController.getFacing ();
+			// facing = moveController.getFacing ();
 			float thisX = transform.position.x;
 			float thisY = transform.position.y;
 			if (facing.x == 1) {

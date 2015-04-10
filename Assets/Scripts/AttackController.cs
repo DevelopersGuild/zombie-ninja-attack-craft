@@ -68,7 +68,7 @@ public class AttackController : MonoBehaviour {
                     enemyHealth.TakeDamage(1);
 
                     //Knockback according to where the player is
-                    Vector3 contactPoint = enemy.collider2D.transform.position;
+                    Vector3 contactPoint = enemy.GetComponent<Collider2D>().transform.position;
                     Vector3 center = attackCollider.transform.position;
 
                     MoveController enemyMoveController = enemy.gameObject.GetComponent<MoveController>();

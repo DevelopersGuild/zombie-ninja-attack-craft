@@ -25,14 +25,14 @@ public class EnemyAI : MonoBehaviour {
 		x = new Vector2 (0, 0);
 		t = 10;
 		moveController = GetComponent<MoveController> ();
-		rigidbody2D.mass = 5;
+		GetComponent<Rigidbody2D>().mass = 5;
 	}
 
 	void Update() {
 		rnd = new System.Random ();
 		//playerPosition = dude.moveController.transform.position;
 		if (t <= 0.9) {
-			if(rigidbody2D.velocity.magnitude != 0) {
+			if(GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
 				x = new Vector2 (0, 0);
 				t = 2;
 				//rand 1.5-3?
@@ -61,7 +61,7 @@ public class EnemyAI : MonoBehaviour {
 		else {
 						t -= Time.deltaTime;
 				}
-		rigidbody2D.velocity = x;
+		GetComponent<Rigidbody2D>().velocity = x;
 		Debug.Log (Time.deltaTime);
 		//this.transform.position = x;
 	}

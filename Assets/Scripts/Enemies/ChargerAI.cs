@@ -43,7 +43,7 @@ public class ChargerAI : MonoBehaviour {
 		isAggroed = false;
         isTired = false;
         isCharging = false;
-		rigidbody2D.mass = 5;
+		GetComponent<Rigidbody2D>().mass = 5;
 	}
 
 	void Update() {
@@ -79,7 +79,7 @@ public class ChargerAI : MonoBehaviour {
 				speed = speed;
 				//speed = new Vector2(5 * xSpeed, 5 * ySpeed);
 				//speed = speed * 3;
-                rigidbody2D.velocity = speed;
+                GetComponent<Rigidbody2D>().velocity = speed;
             }
             //Dont move if charger has already charged and is now tired
             if (isTired) {
@@ -89,7 +89,7 @@ public class ChargerAI : MonoBehaviour {
 		} //If the player isnt aggroed, it moves randomly
         else {
 			if (t < 1) {
-				if(rigidbody2D.velocity.magnitude != 0) {
+				if(GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
 					speed = new Vector2 (0, 0);
 					t = 2;
                 }
@@ -112,7 +112,7 @@ public class ChargerAI : MonoBehaviour {
 		}
         //Debug.Log(isCharging);
 		t -= Time.deltaTime;
-	    rigidbody2D.velocity = speed;
+	    GetComponent<Rigidbody2D>().velocity = speed;
 	}
 
     public void DoneCharging() {

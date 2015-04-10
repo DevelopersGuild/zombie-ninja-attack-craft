@@ -115,7 +115,7 @@ public class MoveControllerNoAnimation : MonoBehaviour {
         //rigidbody2D.AddForce(movementVector);
 
         if (canMove) {
-            rigidbody2D.velocity = movementVector;
+            GetComponent<Rigidbody2D>().velocity = movementVector;
         }
 
         //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
@@ -134,12 +134,12 @@ public class MoveControllerNoAnimation : MonoBehaviour {
 
     /*pushes a character in a direction by an amount*/
     internal void Push(Vector2 direction, float amount) {
-        rigidbody2D.AddForce(direction * amount);
+        GetComponent<Rigidbody2D>().AddForce(direction * amount);
     }
 
     public void Knockback(Vector2 direction, float amount) {
         ToDashPhysics();
-        rigidbody2D.AddForce(direction * amount);
+        GetComponent<Rigidbody2D>().AddForce(direction * amount);
         ToWalkPhysics();
     }
 
@@ -149,7 +149,7 @@ public class MoveControllerNoAnimation : MonoBehaviour {
         if (canDash) {
             //Change these rigidbody parameters so the dashing feels better
             ToDashPhysics();
-            rigidbody2D.velocity = facing * dashSpeed;
+            GetComponent<Rigidbody2D>().velocity = facing * dashSpeed;
 
             //Reset dash parameters
             dashIn = 1;
@@ -168,13 +168,13 @@ public class MoveControllerNoAnimation : MonoBehaviour {
     }
 
     public void ToDashPhysics() {
-        rigidbody2D.mass = 1;
-        rigidbody2D.drag = 33;
+        GetComponent<Rigidbody2D>().mass = 1;
+        GetComponent<Rigidbody2D>().drag = 33;
     }
 
     public void ToWalkPhysics() {
-        rigidbody2D.drag = 75;
-        rigidbody2D.mass = 2;
+        GetComponent<Rigidbody2D>().drag = 75;
+        GetComponent<Rigidbody2D>().mass = 2;
     }
 
 	public Vector2 getFacing() {

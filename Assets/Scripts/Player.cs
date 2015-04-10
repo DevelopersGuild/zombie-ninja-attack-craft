@@ -72,11 +72,11 @@ public class Player : MonoBehaviour {
 
             if (timeSpentInvincible <= 3f) {
                 float remainder = timeSpentInvincible % .3f;
-                renderer.enabled = remainder > .15f;
+                GetComponent<Renderer>().enabled = remainder > .15f;
             }else {
                 isInvincible = false;
                 timeSpentInvincible = 0;
-                renderer.enabled = true;
+                GetComponent<Renderer>().enabled = true;
             }
 		}
 
