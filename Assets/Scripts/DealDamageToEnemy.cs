@@ -14,10 +14,10 @@ public class DealDamageToEnemy : MonoBehaviour {
             //Find components necessary to take damage and knockback
             Health enemyHealth = other.gameObject.GetComponent<Health>();
 
-            //Deal damage to the enemy
+            //Deal damage and knockback the enemy
             enemyHealth.CalculateKnockback(other, transform.position);
             enemyHealth.TakeDamage(damageAmount);
-        }
+        } else
 
         //Destroy gameobject if its a projectile
         if (GetComponent<Projectile>()) {
@@ -39,7 +39,7 @@ public class DealDamageToEnemy : MonoBehaviour {
             }
         }
 
-        //Destroy gameobject if its a projectile
+        //Destroy itself if its a projectile
         if (GetComponent<Projectile>()) {
             Destroy(gameObject);
         }

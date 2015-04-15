@@ -170,7 +170,7 @@ public class PlayerMoveController : MonoBehaviour {
 
         //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
         //Debug.Log("speed:" + speed + "direction:" + direction + "movementVector" + movementVector);
-        Debug.Log(canMove);
+        //Debug.Log(canMove);
 
     }
 

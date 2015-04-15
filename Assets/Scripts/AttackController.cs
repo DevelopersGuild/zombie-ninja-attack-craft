@@ -19,7 +19,8 @@ public class AttackController : MonoBehaviour {
         isAttacking = false;
         animator = GetComponent<Animator>(); ;
         moveController = GetComponent<PlayerMoveController>();
-        attackCollider.GetComponent<Collider2D>().enabled = false;
+        attackCollider = FindObjectOfType<ColliderInteractions>().GetComponent<BoxCollider2D>();
+        attackCollider.enabled = true;
         ammo = 5;
 	}
 	
@@ -38,15 +39,15 @@ public class AttackController : MonoBehaviour {
 
         //Move and rotate the collider relative to where the player is facing
         if (moveController.facing.x > 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x + 0.25f, playerPosition.y);
+            attackCollider.transform.position = new Vector2(playerPosition.x + 0.25f, playerPosition.y - 0.10f);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 90);
         }
         else if (moveController.facing.x < 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x - 0.25f, playerPosition.y);
+            attackCollider.transform.position = new Vector2(playerPosition.x - 0.25f, playerPosition.y - 0.10f);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 90);
         }
         else if (moveController.facing.y > 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y + 0.25f);
+            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y + 0.10f);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
         else if (moveController.facing.y < 0) {
@@ -64,7 +65,7 @@ public class AttackController : MonoBehaviour {
             moveController.isDashing = false;
             moveController.canDash = false;
 
-            //Activate the attack collider so whatever was in the collider gets hurt
+            //Activate the attack collider so whatever was in the collider gets hurt. This collider has a DealDamageToEnemy script
             attackCollider.GetComponent<Collider2D>().enabled = true;
         }
     }

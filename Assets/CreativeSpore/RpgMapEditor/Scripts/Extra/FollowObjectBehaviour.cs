@@ -9,6 +9,10 @@ namespace CreativeSpore
 		public Transform Target;
 
 		private Vector3 velocity = Vector3.zero;
+
+        void Start() {
+            Target = FindObjectOfType<Player>().transform;
+        }
 		
 		// Update is called once per frame
 		void Update () 
