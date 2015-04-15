@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: ee223091319680444bdd654cbfa5d144
+timeCreated: 1429079279
+licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: macks_B
@@ -21,6 +23,9 @@ TextureImporter:
   isReadable: 1
   grayScaleToAlpha: 0
   generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: 5
   maxTextureSize: 2048
@@ -31,6 +36,7 @@ TextureImporter:
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
+  rGBM: 0
   compressionQuality: 100
   spriteMode: 0
   spriteExtrude: 1
@@ -46,3 +52,5 @@ TextureImporter:
     sprites: []
   spritePackingTag: Tileset
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

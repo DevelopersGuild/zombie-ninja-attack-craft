@@ -1,8 +1,9 @@
 fileFormatVersion: 2
-guid: 8c5166832eecf79449ca1b6eeeadd5a6
+guid: 62f00bb1d79ee794985252e6171f8971
+timeCreated: 1429079279
+licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: macks_A3
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -21,6 +22,9 @@ TextureImporter:
   isReadable: 1
   grayScaleToAlpha: 0
   generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: 5
   maxTextureSize: 2048
@@ -31,6 +35,7 @@ TextureImporter:
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
+  rGBM: 0
   compressionQuality: 100
   spriteMode: 0
   spriteExtrude: 1
@@ -44,5 +49,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites: []
-  spritePackingTag: Tileset
+  spritePackingTag: 
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 
