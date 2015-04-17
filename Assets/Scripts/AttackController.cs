@@ -20,7 +20,7 @@ public class AttackController : MonoBehaviour {
         animator = GetComponent<Animator>(); ;
         moveController = GetComponent<PlayerMoveController>();
         attackCollider = FindObjectOfType<ColliderInteractions>().GetComponent<BoxCollider2D>();
-        attackCollider.enabled = true;
+        attackCollider.enabled = false;
         ammo = 5;
 	}
 	

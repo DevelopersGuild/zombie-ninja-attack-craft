@@ -67,7 +67,7 @@ public class PlayerMoveController : MonoBehaviour {
         }
 
         //The player can move after the dash cool down
-        if (dashIn < -0.5) {
+        if (dashIn < -0.3) {
             canDash = true;
             isDashing = false;
             dashCooldown = false;
