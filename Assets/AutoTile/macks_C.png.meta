@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: 8d753062ac0a33b4e841bd2cf57a4291
-timeCreated: 1429079279
+guid: 77202f13b9053fb4ea16e4000c8552e2
+timeCreated: 1429760913
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: macks_C
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -50,7 +49,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites: []
-  spritePackingTag: Tileset
+  spritePackingTag: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 
