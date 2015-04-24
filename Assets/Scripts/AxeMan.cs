@@ -18,7 +18,7 @@ namespace AssemblyCSharp
 		public Player player;
 		public float AgroRange;
 
-		private MoveControllerNoAnimation moveController;
+		private EnemyMoveController moveController;
 		private Health health;
 
 		private bool isAgro;
@@ -26,7 +26,7 @@ namespace AssemblyCSharp
 		System.Random rnd;
 
 		private Vector2 distance, speed, facing;
-		private double t;
+		private double t,temp;
 
 		//private Animator animator;
 
@@ -34,85 +34,103 @@ namespace AssemblyCSharp
 		public void Start ()
 		{
 			//animator = GetComponent<Animator>();
-			moveController = GetComponent<MoveControllerNoAnimation> ();
+			moveController = GetComponent<EnemyMoveController> ();
 			health = GetComponent<Health> ();
 			//rigidbody2D.mass = 10;
 			distance = new Vector2 (0, 0);
 			speed = new Vector2 (0, 0);
 			isAgro = false;
 			t = 3;
+			//temp is the number for exponential speed when running away
+			temp = 1.0000001;
 
 			facing = new Vector2 (0, 0);
 
 		}
 
 		public void Update() {
-			//rigidbody2D.mass = 10;
-			//rigidbody2D.drag = 0;
-			rnd = new System.Random ();
-			//Debug.Log ("My speed is : " + rigidbody2D.velocity);
-			//rigidbody2D.velocity = speed;
-			//Debug.Log("Now it's : " + rigidbody2D.velocity);
+						//rigidbody2D.mass = 10;
+						//rigidbody2D.drag = 0;
+						rnd = new System.Random ();
+						//Debug.Log ("My speed is : " + rigidbody2D.velocity);
+						//rigidbody2D.velocity = speed;
+						//Debug.Log("Now it's : " + rigidbody2D.velocity);
+						if (player != null) {
+								//basic aggression range formula
+								distance = player.transform.position - transform.position;
+								if (distance.magnitude <= AgroRange) {
+										isAgro = true;
+										//animator.SetBool("isCharging", true);
+								}
+								if (distance.magnitude > AgroRange) {
+										isAgro = false;
+								}
 
-			//basic aggression range formula
-			distance = player.transform.position - transform.position;
-			if (distance.magnitude <= AgroRange) {
-				isAgro = true;
-				//animator.SetBool("isCharging", true);
-			}
-			if (distance.magnitude > AgroRange) {
-				isAgro = false;
-			}
-
-			if (isAgro) {
-				double xSp = player.transform.position.x - transform.position.x;
-				double ySp = player.transform.position.y - transform.position.y;
-				if(distance.magnitude < 1.5) {
-					xSp *= -10;
-					ySp *= -10;
-				}
-				else if(distance.magnitude < 1.8) {
-					xSp = 0;
-					ySp = 0;
-				}
-				speed = new Vector2 ((float)xSp, (float)ySp);
-				//Debug.Log ("Que es x and y? : " + xSp + " and " + ySp);
-				speed = speed.normalized * 3;
-			}
-			else {
-				//Debug.Log ("is");
-				if (t < 1) {
-					Debug.Log("1");
-					if(GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
-						speed = new Vector2 (0, 0);
-						t = 3;
-						Debug.Log ("All clear");
-					}
-				} else if(t < 2 && t > 1.3) {
-					Debug.Log ("it happening?");
-					int rand = rnd.Next (1, 5);
-					if (rand == 1) {
-						speed = new Vector2 (2,0);
-						t = 1.3;
-					} else if (rand == 2) {
-						speed = new Vector2 (-2,0);
-						t=1.3;
-					} else if (rand == 3) {
-						speed = new Vector2 (0,2);
-						t=1.3;
-					} else {
-						speed = new Vector2 (0,-2);
-						t=1.3;
-					}
-				}
-				t -= Time.deltaTime;
-				GetComponent<Rigidbody2D>().velocity = speed;
+								if (isAgro) {
+										float xSp = player.transform.position.x - transform.position.x;
+										float ySp = player.transform.position.y - transform.position.y;
+										//exponential speed
+										/*if (distance.magnitude < 1.5) {
+												xSp *= -temp;
+												ySp *= -temp;
+												temp *= 1.2;
+												
+										} else if (distance.magnitude < 2) {
+												xSp = 0;
+												ySp = 0;
+												//temp = 0;
+										}
+										else {
+												temp = 0.5;
+										}
+										speed = new Vector2 ((float)xSp, (float)ySp);
+										//Debug.Log ("Que es x and y? : " + xSp + " and " + ySp);
+										speed = speed.normalized;*/
+										moveController.Move (xSp/15, ySp/15);
+										if(distance.magnitude < 1.1) {
+										moveController.Move (-xSp/10,-ySp/10);
+										}
+										
+								} else {
+										//Debug.Log ("is");
+										if (t < 1) {
+												if (moveController.getMove () != 0) {
+														//speed = new Vector2 (0, 0);
+														moveController.Move (0,0);
+														t = 3;
+												}
+										} else if (t < 2 && t > 1.3) {
+												moveController.setSpd (2);
+												Debug.Log ("it happening?");
+												int rand = rnd.Next (1, 5);
+												if (rand == 1) {
+														//speed = new Vector2 (2, 0);
+														moveController.Move (1,0);
+														t = 1.3;
+												} else if (rand == 2) {
+														//speed = new Vector2 (-2, 0);
+														moveController.Move (-1,0);
+														t = 1.3;
+												} else if (rand == 3) {
+														//speed = new Vector2 (0, 2);
+														moveController.Move (0,1);
+														t = 1.3;
+												} else {
+														//speed = new Vector2 (0, -2);
+														moveController.Move (0,-1);							
+														t = 1.3;
+												}
+												moveController.setSpd (8);
+										}
+										t -= Time.deltaTime;
+										//GetComponent<Rigidbody2D> ().velocity = speed;
 	   
-			}
-			//Debug.Log (t);
-			GetComponent<Rigidbody2D>().velocity = speed;
-			//Debug.Log (rigidbody2D.velocity.magnitude);
-		}
+								}
+								//Debug.Log (t);
+								//GetComponent<Rigidbody2D> ().velocity = speed;
+								//Debug.Log (rigidbody2D.velocity.magnitude);
+						}
+				}
 
 		public Vector2 getIdle() {
 			// facing = moveController.getFacing ();

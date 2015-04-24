@@ -144,8 +144,13 @@ public class EnemyMoveController : MonoBehaviour {
         GetComponent<Rigidbody2D>().mass = 2;
     }
 
+	public float getMove() {
+		return movementVector.magnitude;
+	}
 
-
+	public void setSpd(float sp) {
+		speed = sp;
+	}
 
 
 
