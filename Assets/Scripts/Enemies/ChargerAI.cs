@@ -23,6 +23,7 @@ public class ChargerAI : MonoBehaviour {
 
     //Components
 	private Animator animator;
+    private Rigidbody2D rb;
     //private MoveControllerNoAnimation moveControllerNoAnimation;
 	
 	System.Random rnd;
@@ -32,6 +33,8 @@ public class ChargerAI : MonoBehaviour {
 	public void Start() {
   		//moveControllerNoAnimation = GetComponent<MoveControllerNoAnimation> ();
         animator = GetComponent<Animator>();
+        player = FindObjectOfType<Player>();
+        rb = GetComponent<Rigidbody2D>();
 
 		distance = new Vector2 (0, 0);
 		speed = new Vector2 (0, 0);
@@ -76,10 +79,9 @@ public class ChargerAI : MonoBehaviour {
 				float ySpeed = player.transform.position.y - transform.position.y;
 				RunStraight(xSpeed, ySpeed, temp);
 				temp = 5;
-				speed = speed;
 				//speed = new Vector2(5 * xSpeed, 5 * ySpeed);
 				//speed = speed * 3;
-                GetComponent<Rigidbody2D>().velocity = speed;
+                //rb.velocity = speed;
             }
             //Dont move if charger has already charged and is now tired
             if (isTired) {
@@ -110,9 +112,11 @@ public class ChargerAI : MonoBehaviour {
 				}
 			}
 		}
-        //Debug.Log(isCharging);
+        Debug.Log(isCharging);
 		t -= Time.deltaTime;
-	    GetComponent<Rigidbody2D>().velocity = speed;
+        Debug.Log(speed);
+        speed = speed / 1.03f;
+	    rb.velocity= speed;
 	}
 
     public void DoneCharging() {
