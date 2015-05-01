@@ -112,9 +112,9 @@ public class ChargerAI : MonoBehaviour {
 				}
 			}
 		}
-        Debug.Log(isCharging);
+        //Debug.Log(isCharging);
 		t -= Time.deltaTime;
-        Debug.Log(speed);
+        //Debug.Log(speed);
         speed = speed / 1.03f;
 	    rb.velocity= speed;
 	}
