@@ -12,6 +12,7 @@ public class Health : MonoBehaviour {
 
     private Animator anim;
     private AudioSource enemyAudio;
+    public ParticleSystem particle;
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +33,13 @@ public class Health : MonoBehaviour {
     public void TakeDamage(int amount) {
         currentHealth -= amount;
 
+        // Instantiate a particle effect if it has one
+        if (particle != null) {
+            Instantiate(particle, transform.position, transform.rotation);
+        }
+
         if (currentHealth <= 0) {
+            
             Death();
         }
     }
@@ -84,8 +91,7 @@ public class Health : MonoBehaviour {
         isQuitting = true;
     }
     
-    //Droop loot on death
-    //Droop loot on death
+    //Drop loot on death
     public void OnDestroy() {
         if (!isQuitting) {
             DropLoot dropLoot;
