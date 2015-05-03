@@ -13,6 +13,7 @@ public class Health : MonoBehaviour {
     private Animator anim;
     private AudioSource enemyAudio;
     public ParticleSystem particle;
+    public ParticleSystem deathParticle;
 
 	// Use this for initialization
 	void Start () {
@@ -34,12 +35,14 @@ public class Health : MonoBehaviour {
         currentHealth -= amount;
 
         // Instantiate a particle effect if it has one
-        if (particle != null) {
+        if (particle != null && currentHealth > 0) {
             Instantiate(particle, transform.position, transform.rotation);
         }
+        else if (deathParticle != null && currentHealth <= 0) {
+            Instantiate(deathParticle, transform.position, transform.rotation);
+        }
 
-        if (currentHealth <= 0) {
-            
+        if (currentHealth <= 0) {    
             Death();
         }
     }
