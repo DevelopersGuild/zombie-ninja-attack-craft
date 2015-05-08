@@ -6,6 +6,8 @@ public class PlayerMoveController : MonoBehaviour {
     // Components
     private Animator animator;
     public AttackController attackController;
+    public ParticleSystem dashParticle;
+    private ParticleSystem dashParticleInstance;
     // Speed of object
     [Range(0, 10)]
     public float speed = 8;
@@ -71,6 +73,10 @@ public class PlayerMoveController : MonoBehaviour {
             canDash = true;
             isDashing = false;
             dashCooldown = false;
+        }
+
+        if (dashParticleInstance != null) {
+            dashParticleInstance.transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z);
         }
 
         //The player faces according to player input
@@ -191,6 +197,7 @@ public class PlayerMoveController : MonoBehaviour {
             //Change these rigidbody parameters so the dashing feels better
             ToDashPhysics();
             GetComponent<Rigidbody2D>().velocity = facing * dashSpeed;
+            dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z), transform.rotation) as ParticleSystem;
 
             //Reset dash parameters
             dashIn = .25f;
@@ -215,7 +222,8 @@ public class PlayerMoveController : MonoBehaviour {
     public void GotAttacked() {
         gotAttacked = true;
     }
-
+    
+    // Gets called in the end of the animation
     public void FinishedGettingAttacked() {
         gotAttacked = false;
     }
