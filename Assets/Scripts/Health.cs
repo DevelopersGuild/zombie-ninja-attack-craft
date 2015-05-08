@@ -21,6 +21,11 @@ public class Health : MonoBehaviour {
         currentHealth = startingHealth;
 	}
 
+    public int currentHp()
+    {
+        return currentHealth;
+    }
+
 	public void replenish(int amt) {
 		currentHealth += amt;
 		if (currentHealth > startingHealth)
@@ -69,6 +74,7 @@ public class Health : MonoBehaviour {
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
             playerMoveController.Knockback(pushDirection.normalized);
         }
+		Debug.Log ("This guy got knocked back, but not that far");
 
     }
 
@@ -88,6 +94,7 @@ public class Health : MonoBehaviour {
             Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
             playerMoveController.Knockback(pushDirection.normalized);
         }
+		Debug.Log ("This guy got knocked back really far");
 
     }
 

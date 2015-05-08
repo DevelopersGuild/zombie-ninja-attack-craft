@@ -6,7 +6,7 @@ using Pathfinding;
 [RequireComponent(typeof (Rigidbody2D))]
 public class Hugger : MonoBehaviour {
 
-    public Transform target;
+    public Player target;
     public float updateRate = 2f;
 
     private Seeker seeker;
@@ -33,7 +33,7 @@ public class Hugger : MonoBehaviour {
             return;
         }
 
-        seeker.StartPath(transform.position, target.position, OnPathComplete);
+        seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
         StartCoroutine(UpdatePath());
     }
 
@@ -49,7 +49,7 @@ public class Hugger : MonoBehaviour {
             //return;
         } 
 
-        seeker.StartPath(transform.position, target.position, OnPathComplete);
+        seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
 
         yield return new WaitForSeconds(1f / updateRate);
         StartCoroutine(UpdatePath());

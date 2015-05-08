@@ -26,7 +26,7 @@ namespace AssemblyCSharp
 				public void Start ()
 				{
 					angle = 0;
-					speed = 2.5;
+					speed = 4;
 					speedScale = (0.1 * Math.PI) / speed;
 				}
 

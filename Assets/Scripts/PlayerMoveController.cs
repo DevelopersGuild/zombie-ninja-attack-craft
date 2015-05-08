@@ -187,8 +187,6 @@ public class PlayerMoveController : MonoBehaviour {
 
         //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
         //Debug.Log("speed:" + speed + "direction:" + direction + "movementVector" + movementVector);
-        //Debug.Log(canMove);
-
     }
 
     /* Moves the object in a direction by a small amount (used for player input) */

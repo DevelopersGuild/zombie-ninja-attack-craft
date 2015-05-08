@@ -109,11 +109,18 @@ public class EnemyMoveController : MonoBehaviour {
         direction = new Vector2(input_X, input_Y);
     }
 
+	internal void Move(float input_X, float input_Y, float input_Extra) {
+		direction = new Vector2(input_X/input_Extra, input_Y/input_Extra);
+	}
+
     /* Moves the object towards a destination by a small amount (used for enemy input)*/
     internal void Move(Vector2 _direction) {
         direction = _direction;
     }
 
+	internal void Move(Vector2 _direction, float input_E) {
+		direction = _direction / input_E;
+	}
     //public void Knockback(Vector2 direction, float amount) {
     //    isKnockedBack = true;
     //    knockbackForce = amount;
@@ -144,9 +151,17 @@ public class EnemyMoveController : MonoBehaviour {
         GetComponent<Rigidbody2D>().mass = 2;
     }
 
+	public float getMove() {
+		return movementVector.magnitude;
+	}
 
+	public void setSpd(float sp) {
+		speed = sp;
+	}
 
-
+	public float getSpd() {
+				return speed;
+		}
 
 
 }
