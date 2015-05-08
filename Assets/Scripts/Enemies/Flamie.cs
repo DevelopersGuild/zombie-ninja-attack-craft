@@ -18,6 +18,7 @@ namespace AssemblyCSharp
 		public Player player;
 		public float AgroRange;
 		public Projectile fireBlock, fireBlockObject;
+        public Explosion explBlock, explBlockObject;
 		
 		private EnemyMoveController moveController;
 		private Health health;
@@ -28,8 +29,8 @@ namespace AssemblyCSharp
 		
 		private float currentX, currentY;
 		private Transform playerPos;
-		private Vector2 distance, speed, facing;
-		private double t,temp;
+		private Vector2 distance, speed, facing, direction;
+		private double t,temp,fireBlock_CD;
 		
 		//private Animator animator;
 		
@@ -38,10 +39,7 @@ namespace AssemblyCSharp
 		{
 			//animator = GetComponent<Animator>();
 			moveController = GetComponent<EnemyMoveController> ();
-			//laser = GetComponent<Projectile> ();
-			//laserObject = GetComponent <Projectile> ();
 			health = GetComponent<Health> ();
-			//rigidbody2D.mass = 10;
 			
 			distance = new Vector2 (0, 0);
 			speed = new Vector2 (0, 0);
@@ -49,32 +47,50 @@ namespace AssemblyCSharp
 			t = 3;
 			//temp is the number for exponential speed when running away
 			temp = 1.0000001;
+			fireBlock_CD = 0;
 			
 			facing = new Vector2 (0, 0);
 			
 		}
 		
 		public void Update() {
+            if (health.currentHp() == 0)
+            {
+                onDeath();
+            }
 			rnd = new System.Random ();
 			currentX = transform.position.x;
 			currentY = transform.position.y;
 			playerPos = player.transform;
+            float xSp = player.transform.position.x - transform.position.x;
+            float ySp = player.transform.position.y - transform.position.y;
+
+            direction = new Vector2(xSp, ySp);
+
+            //to offset fireblocks to be a bit behind the flamie, so arrows and sword swings hit the flamie instead of the blocks
+            //Vector3 fireVect = new Vector3(direction.normalized.x/(-8), direction.normalized.y/(-8), 0);
 
 			//place fire block that deals damage to enemy (projectile that stays in one spot?)
-			fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
+			if (fireBlock_CD < 0.5) {
+				fireBlock = Instantiate (fireBlockObject, transform.position, transform.rotation) as Projectile;
+			}
 			if (player != null) {
 				//basic aggression range formula
 				distance = playerPos.position - transform.position;
 				if (distance.magnitude <= AgroRange) {
 					isAgro = true;
+
 				}
 				if (distance.magnitude > AgroRange) {
 					isAgro = false;
 				}
 				
 				if (isAgro) {
-					float xSp = player.transform.position.x - transform.position.x;
-					float ySp = player.transform.position.y - transform.position.y;
+                    if (fireBlock_CD < 0.4 || fireBlock_CD > 0.6) {
+					    fireBlock_CD = 0.6;
+                    }
+
+					moveController.Move (direction.normalized, 8);
 					
 				} else {
 					//Debug.Log ("is");
@@ -82,36 +98,50 @@ namespace AssemblyCSharp
 						if (GetComponent<Rigidbody2D> ().velocity.magnitude != 0) {
 							//speed = new Vector2 (0, 0);
 							moveController.Move (0,0);
+                            fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
+							fireBlock_CD = 10;
 							t = 3;
 						}
 					} else if (t < 2 && t > 1.3) {
-						Debug.Log ("it happening?");
 						int rand = rnd.Next (1, 5);
 						if (rand == 1) {
 							//speed = new Vector2 (2, 0);
-							moveController.Move (1/4,0);
+							moveController.Move (1,0,5);
+							fireBlock_CD = 0.6;
 							t = 1.3;
 						} else if (rand == 2) {
 							//speed = new Vector2 (-2, 0);
-							moveController.Move (-1/4,0);
+							moveController.Move (-1,0,5);
+                            fireBlock_CD = 0.6;
 							t = 1.3;
 						} else if (rand == 3) {
 							//speed = new Vector2 (0, 2);
-							moveController.Move (0,1/4);
+							moveController.Move (0,1,5);
+                            fireBlock_CD = 0.6;
 							t = 1.3;
-						} else {
+						} else if (rand == 4) {
 							//speed = new Vector2 (0, -2);
-							moveController.Move (0,-1/4);							
+							moveController.Move (0,-1,5);
+                            fireBlock_CD = 0.6;
 							t = 1.3;
 						}
 					}
 					t -= Time.deltaTime;
+
 					//GetComponent<Rigidbody2D> ().velocity = speed;
 					
 				}
+                if (fireBlock_CD >= 0.5)
+                {
+                    fireBlock_CD -= Time.deltaTime;
+                }
 				//cd1 += Time.deltaTime;
 				//cd2 += Time.deltaTime;
 			}
+            if (health.currentHp() == 0)
+            {
+                onDeath();
+            }
 		}
 		
 		public Vector2 getIdle() {
@@ -140,6 +170,13 @@ namespace AssemblyCSharp
 		public int currentHp() {
 			return health.currentHealth;
 		}
+
+        public void onDeath() {
+            //play pre-explosion animation
+            Explosion lnd = Instantiate(explBlockObject, transform.position, transform.rotation) as Explosion;
+            Debug.Log("WOW!");
+            //death animation
+        }
 		
 		
 	}

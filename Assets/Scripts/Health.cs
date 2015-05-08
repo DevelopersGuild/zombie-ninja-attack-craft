@@ -19,6 +19,11 @@ public class Health : MonoBehaviour {
         currentHealth = startingHealth;
 	}
 
+    public int currentHp()
+    {
+        return currentHealth;
+    }
+
 	public void replenish(int amt) {
 		currentHealth += amt;
 		if (currentHealth > startingHealth)
@@ -33,6 +38,7 @@ public class Health : MonoBehaviour {
         currentHealth -= amount;
 
         if (currentHealth <= 0) {
+           
             Death();
         }
     }

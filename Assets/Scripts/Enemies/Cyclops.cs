@@ -28,7 +28,7 @@ namespace AssemblyCSharp
 
 		private float currentX, currentY, throwF;
 		private Transform playerPos;
-		private Vector2 distance, speed, facing;
+		private Vector2 distance, speed, facing, vTemp, v_Transform;
 		private double t,temp, teleportCD, laserCD;
 		
 		//private Animator animator;
@@ -73,6 +73,7 @@ namespace AssemblyCSharp
 				if (isAgro) {
 					float xSp = player.transform.position.x - transform.position.x;
 					float ySp = player.transform.position.y - transform.position.y;
+					//Debug.Log ("xSp: " + xSp + " ySp: " + ySp);
 					moveController.Move (0,0);
 
 					if(distance.magnitude < 0.7 && teleportCD >= 8) {
@@ -80,11 +81,15 @@ namespace AssemblyCSharp
 						teleportCD = 0;
 					}
 					else if(laserCD >= 2.5) {
-						laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
+						if(xSp < 0) {
+							xSp = player.transform.position.x - transform.position.x + (float)(1.0/4);
+							laser = Instantiate(laserObject, transform.position + new Vector3((float)(-1.0/4),0,0), transform.rotation) as Projectile;
+						}
+						else {
+							laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
+						}
 						Vector2 toPlayer = new Vector2(xSp,ySp);
-						//if(moveController.facing.x < 0) {
-						//	throwF = -throwF;
-						//}
+						Debug.Log (toPlayer);
 						laser.GetComponent<Rigidbody2D>().velocity = (toPlayer * throwF);
 						laserCD = 0;
 						//throwF = 3;
@@ -102,23 +107,23 @@ namespace AssemblyCSharp
 							t = 3;
 						}
 					} else if (t < 2 && t > 1.3) {
-						Debug.Log ("it happening?");
 						int rand = rnd.Next (1, 5);
 						if (rand == 1) {
 							//speed = new Vector2 (2, 0);
-							moveController.Move (1/4,0);
+							moveController.Move (1,0,5);
+
 							t = 1.3;
 						} else if (rand == 2) {
 							//speed = new Vector2 (-2, 0);
-							moveController.Move (-1/4,0);
+							moveController.Move (-1,0,5);
 							t = 1.3;
 						} else if (rand == 3) {
 							//speed = new Vector2 (0, 2);
-							moveController.Move (0,1/4);
+							moveController.Move (0,1,5);
 							t = 1.3;
 						} else {
 							//speed = new Vector2 (0, -2);
-							moveController.Move (0,-1/4);							
+							moveController.Move (0,-1,5);							
 							t = 1.3;
 						}
 					}

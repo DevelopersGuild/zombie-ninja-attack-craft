@@ -90,38 +90,40 @@ public class ChargerAI : MonoBehaviour {
 								moveController.Move (0, 0);
 						}
 				} //If the player isnt aggroed, it moves randomly
-        		else {
-					if (t < 1) {
-						if (moveController.getMove () != 0) {
-										//speed = new Vector2 (0, 0);
-										moveController.Move (0, 0);
-										t = 3;
-								}
-						} else if (t < 3 && t > 1.3) {
-								Debug.Log ("it happening?");
-								int rand = rnd.Next (1, 5);
-								if (rand == 1) {
-										//speed = new Vector2 (2, 0);
-										moveController.Move (1, 0);
-										t = 1.3;
-								} else if (rand == 2) {
-										//speed = new Vector2 (-2, 0);
-										moveController.Move (-1, 0);
-										t = 1.3;
-								} else if (rand == 3) {
-										//speed = new Vector2 (0, 2);
-										moveController.Move (0, 1);
-										t = 1.3;
-								} else {
-										//speed = new Vector2 (0, -2);
-										moveController.Move (0, -1);							
-										t = 1.3;
-								}
-						}
-						//Debug.Log(isCharging);
-						temp -= Time.deltaTime;
-						t -= Time.deltaTime;
+		else {
+			//Debug.Log ("is");
+			if (t < 1) {
+				if (GetComponent<Rigidbody2D> ().velocity.magnitude != 0) {
+					//speed = new Vector2 (0, 0);
+					moveController.Move (0,0);
+					t = 3;
 				}
+			} else if (t < 2 && t > 1.3) {
+				int rand = rnd.Next (1, 5);
+				if (rand == 1) {
+					//speed = new Vector2 (2, 0);
+					moveController.Move (1,0,5);
+					
+					t = 1.3;
+				} else if (rand == 2) {
+					//speed = new Vector2 (-2, 0);
+					moveController.Move (-1,0,5);
+					t = 1.3;
+				} else if (rand == 3) {
+					//speed = new Vector2 (0, 2);
+					moveController.Move (0,1,5);
+					t = 1.3;
+				} else {
+					//speed = new Vector2 (0, -2);
+					moveController.Move (0,-1,5);							
+					t = 1.3;
+				}
+			}
+			temp -= Time.deltaTime;
+			t -= Time.deltaTime;
+			//GetComponent<Rigidbody2D> ().velocity = speed;
+			
+		}
 		}
 
     public void DoneCharging() {
