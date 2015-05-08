@@ -6,6 +6,8 @@ public class Player : MonoBehaviour {
     //Components
     private PlayerMoveController playerMoveController;
     private AttackController attackController;
+    public Health health;
+    public bool gotAttacked;
 
     //Double tap flags
     private float ButtonCooler;

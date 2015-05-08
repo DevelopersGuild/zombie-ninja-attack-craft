@@ -67,16 +67,27 @@ public class PlayerMoveController : MonoBehaviour {
             dashCooldown = true;
             ToWalkPhysics();
         }
+        if (dashParticleInstance != null) {
+            if (newFacing == (int)facingDirection.up) {
+                dashParticleInstance.transform.position = new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z);
+            }
+            else if (newFacing == (int)facingDirection.right) {
+                dashParticleInstance.transform.position =  new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z);
+            }
+            else if (newFacing == (int)facingDirection.down) {
+                dashParticleInstance.transform.position =  new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z);
+            }
+            else {
+                dashParticleInstance.transform.position = new Vector3(transform.position.x + 0.15f, transform.position.y - 0.15f, transform.position.z);
+            }
+        }
+
 
         //The player can move after the dash cool down
         if (dashIn < -0.3) {
             canDash = true;
             isDashing = false;
             dashCooldown = false;
-        }
-
-        if (dashParticleInstance != null) {
-            dashParticleInstance.transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z);
         }
 
         //The player faces according to player input
@@ -194,10 +205,23 @@ public class PlayerMoveController : MonoBehaviour {
         // Debug.Log("Facing:" + facing);
         // Only let the player dash if the cooldown is < 0. If he can, dash and reset the timer       
         if (canDash) {
-            //Change these rigidbody parameters so the dashing feels better
+            // Change these rigidbody parameters so the dashing feels better
             ToDashPhysics();
             GetComponent<Rigidbody2D>().velocity = facing * dashSpeed;
-            dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z), transform.rotation) as ParticleSystem;
+
+            // Instantiate particle effects
+            if (newFacing == (int)facingDirection.up) {
+                dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(90,-90,90)) as ParticleSystem;
+            }
+            else if (newFacing == (int)facingDirection.right) {
+                dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(0, -90, 90)) as ParticleSystem;
+            }
+            else if (newFacing == (int)facingDirection.down) {
+                dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(-90, 0, 0)) as ParticleSystem;
+            }
+            else {
+                dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x + 0.15f, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(0, 90, -90)) as ParticleSystem;
+            }
 
             //Reset dash parameters
             dashIn = .25f;
@@ -207,12 +231,6 @@ public class PlayerMoveController : MonoBehaviour {
             canMove = true;
         }
     }
-
-    //public void Knockback(Vector2 direction, float amount) {
-    //    isKnockedBack = true;
-    //    knockbackForce = amount;
-    //    knockbackDirection = direction;
-    //}
 
     public void Knockback(Vector2 direction) {
         isKnockedBack = true;

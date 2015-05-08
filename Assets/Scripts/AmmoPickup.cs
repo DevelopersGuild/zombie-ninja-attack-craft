@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using DG.Tweening;
 using System.Collections;
 
 public class AmmoPickup : MonoBehaviour {
 
     public int ammoValue;
+    private Tween target;
+    private bool grabbed;
 
     private AttackController attackController;
 
@@ -11,14 +14,24 @@ public class AmmoPickup : MonoBehaviour {
 	void Start () {
         ammoValue = Random.Range(1, 4);
 	}
+
 	
 	// Update is called once per frame
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Player") {
+            grabbed = true;
             attackController = other.gameObject.GetComponent<AttackController>();
             attackController.ammo += ammoValue;
-            Destroy(gameObject);
+
+            Tweener tween = transform.DOMove(Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth - 100, Camera.main.pixelHeight - 10)), 1, false)
+                            .OnStepComplete(() => {
+                                Destroy(gameObject);
+                            });
+            //tween.OnUpdate(() => {
+            //    tween.ChangeEndValue(new Vector3(Camera.main.pixelWidth - 100, Camera.main.pixelHeight - 10));
+            //    Debug.Log("test");
+            //});
         }
     }
 }

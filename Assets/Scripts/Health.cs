@@ -42,6 +42,12 @@ public class Health : MonoBehaviour {
             Instantiate(deathParticle, transform.position, transform.rotation);
         }
 
+        if (GetComponent<Player>()) {
+            Debug.Log("TALKSHITGETHIT");
+            FindObjectOfType<CreativeSpore.FollowObjectBehaviour>().CameraShake(); 
+        }
+
+        // Kill the instance if its health is below 0
         if (currentHealth <= 0) {    
             Death();
         }
