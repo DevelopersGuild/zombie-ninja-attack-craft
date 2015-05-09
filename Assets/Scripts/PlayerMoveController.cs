@@ -207,18 +207,20 @@ public class PlayerMoveController : MonoBehaviour {
             ToDashPhysics();
             GetComponent<Rigidbody2D>().velocity = facing * dashSpeed;
 
-            // Instantiate particle effects
-            if (newFacing == (int)facingDirection.up) {
-                dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(90,-90,90)) as ParticleSystem;
-            }
-            else if (newFacing == (int)facingDirection.right) {
-                dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(0, -90, 90)) as ParticleSystem;
-            }
-            else if (newFacing == (int)facingDirection.down) {
-                dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(-90, 0, 0)) as ParticleSystem;
-            }
-            else {
-                dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x + 0.15f, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(0, 90, -90)) as ParticleSystem;
+            // Instantiate particle effects if they exist
+            if (dashParticle != null) {
+                if (newFacing == (int)facingDirection.up) {
+                    dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(90, -90, 90)) as ParticleSystem;
+                }
+                else if (newFacing == (int)facingDirection.right) {
+                    dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(0, -90, 90)) as ParticleSystem;
+                }
+                else if (newFacing == (int)facingDirection.down) {
+                    dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(-90, 0, 0)) as ParticleSystem;
+                }
+                else {
+                    dashParticleInstance = Instantiate(dashParticle, new Vector3(transform.position.x + 0.15f, transform.position.y - 0.15f, transform.position.z), Quaternion.Euler(0, 90, -90)) as ParticleSystem;
+                }
             }
 
             //Reset dash parameters

@@ -52,12 +52,9 @@ public class ChargerAlt : MonoBehaviour {
     void Update() {
         rnd = new System.Random();
 
-        //Nir, this isnt necessary. You can get the position of the object the script is attached to by
-        //transform.position because it assumes that it's its own transform if its not stated. thx bb delete this
-        //enemyPosition = Enemy.position; WRONG
-        //transform.position; woooo
-        distance = player.transform.position - transform.position;
-
+        if (player != null) {
+            distance = player.transform.position - transform.position;
+        }
 
         //Check distance between the player and charger. If its close enough, aggro
         if (distance.magnitude <= AgroRange && isTired == false) {

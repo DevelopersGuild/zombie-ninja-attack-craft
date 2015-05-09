@@ -62,11 +62,6 @@ namespace AssemblyCSharp
 			rnd = new System.Random ();
 			currentX = transform.position.x;
 			currentY = transform.position.y;
-			playerPos = player.transform;
-            float xSp = player.transform.position.x - transform.position.x;
-            float ySp = player.transform.position.y - transform.position.y;
-
-            direction = new Vector2(xSp, ySp);
 
             //to offset fireblocks to be a bit behind the flamie, so arrows and sword swings hit the flamie instead of the blocks
             //Vector3 fireVect = new Vector3(direction.normalized.x/(-8), direction.normalized.y/(-8), 0);
@@ -77,6 +72,11 @@ namespace AssemblyCSharp
 			}
 			if (player != null) {
 				//basic aggression range formula
+                playerPos = player.transform;
+                float xSp = player.transform.position.x - transform.position.x;
+                float ySp = player.transform.position.y - transform.position.y;
+                direction = new Vector2(xSp, ySp);
+
 				distance = playerPos.position - transform.position;
 				if (distance.magnitude <= AgroRange) {
 					isAgro = true;

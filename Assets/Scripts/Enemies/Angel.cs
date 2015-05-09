@@ -59,13 +59,15 @@ namespace AssemblyCSharp
             rnd = new System.Random();
             currentX = transform.position.x;
             currentY = transform.position.y;
-            playerPos = player.transform;
-            float xSp = player.transform.position.x - transform.position.x;
-            float ySp = player.transform.position.y - transform.position.y;
 
             //get distance and direction between angel and player
-            distance = playerPos.position - transform.position;
-            direction = new Vector2(xSp, ySp);
+            if (player != null) {
+                playerPos = player.transform;
+                float xSp = player.transform.position.x - transform.position.x;
+                float ySp = player.transform.position.y - transform.position.y;
+                distance = playerPos.position - transform.position;
+                direction = new Vector2(xSp, ySp);
+            }
 
             //Check if player is in range of angel (aggression range)
             if (distance.magnitude <= AgroRange)

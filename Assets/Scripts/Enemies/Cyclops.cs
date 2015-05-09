@@ -60,8 +60,8 @@ namespace AssemblyCSharp
 			rnd = new System.Random ();
 			currentX = transform.position.x;
 			currentY = transform.position.y;
-			playerPos = player.transform;
 			if (player != null) {
+                playerPos = player.transform;
 				//basic aggression range formula
 				distance = playerPos.position - transform.position;
 				if (distance.magnitude <= AgroRange) {
