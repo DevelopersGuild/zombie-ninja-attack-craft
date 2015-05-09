@@ -7,19 +7,26 @@ using System.Collections;
 
 public class ShopGUI : MonoBehaviour
 {
+     //GUI Text 
      public Text HowManyThePlayerWants = null;
-     public string ItemName = null;
      public Text ItemNameGUI;
+     public Text NumberAvailable;
+     public Text CostOfItem;
+     public Text ResultMessage = null;
 
+
+     public string ItemName = null;
      public Shop Store = null;
-
      private int AmountToBuy = 1;
 
 
      void Start()
      {
-          Store.GetItemPrice(ItemName);
           HowManyThePlayerWants.text = "1";
+          ItemNameGUI.text = ItemName;
+          NumberAvailable.text = Store.GetItemQuantity(ItemName).ToString();
+          CostOfItem.text = Store.GetItemPrice(ItemName).ToString();
+          ResultMessage.text = "";
      }
 
      public void AddToAmountToBuy(int number)
@@ -31,23 +38,18 @@ public class ShopGUI : MonoBehaviour
                AmountToBuy = 1;
           }
           HowManyThePlayerWants.text = AmountToBuy.ToString();
+
+
      }
 
      public void AttemptToBuyItem(string ItemName)
      {
-          string Result;
-          Result = Store.BuyItem(ItemName, AmountToBuy);
+          string ResultOfTransaction;
+          ResultOfTransaction = Store.BuyItem(ItemName, AmountToBuy);
+          ResultMessage.text = ResultOfTransaction;
+          NumberAvailable.text = Store.GetItemQuantity(ItemName).ToString();
      }
 
-     public void NotEnoughMoney()
-     {
-
-     }
-
-     public void NotEnoughItem()
-     {
-
-     }
 
 
 
