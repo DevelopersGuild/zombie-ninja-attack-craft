@@ -7,7 +7,6 @@ using CreativeSpore.RpgMapEditor;
 
         public float projectileSpeed;
         public float angle;
-        public float range;
 
         public float TimeToLive;
 

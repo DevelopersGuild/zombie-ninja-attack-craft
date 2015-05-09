@@ -15,7 +15,7 @@ namespace AssemblyCSharp
 {
 	public class Cyclops : MonoBehaviour
 	{
-		public Player player;
+		private Player player;
 		public float AgroRange;
 		public Projectile laser, laserObject;
 		
@@ -41,6 +41,7 @@ namespace AssemblyCSharp
 			//laser = GetComponent<Projectile> ();
 			//laserObject = GetComponent <Projectile> ();
 			health = GetComponent<Health> ();
+            player = FindObjectOfType<Player>();
 			//rigidbody2D.mass = 10;
 
 			distance = new Vector2 (0, 0);
