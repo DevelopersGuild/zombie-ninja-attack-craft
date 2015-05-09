@@ -2,21 +2,19 @@
 using DG.Tweening;
 using System.Collections;
 
-public class AmmoPickup : MonoBehaviour {
+public class AmmoPickup : Pickup
+{
 
     public int ammoValue;
     private Tween target;
     private bool grabbed;
-
     private AttackController attackController;
+
 
 	// Use this for initialization
 	void Start () {
         ammoValue = Random.Range(1, 4);
 	}
-
-	
-	// Update is called once per frame
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Player") {
@@ -33,5 +31,11 @@ public class AmmoPickup : MonoBehaviour {
             //    Debug.Log("test");
             //});
         }
+    }
+    
+    public override void AddItemToInventory(Collider2D player, int value)
+    {
+          attackController = player.gameObject.GetComponent<AttackController>();
+          attackController.ammo += value;
     }
 }

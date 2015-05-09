@@ -96,6 +96,7 @@ public class ChargerAI : MonoBehaviour {
                     moveController.Move(0, 0);
                     t = 3;
                 }
+
             }
             else if (t < 2 && t > 1.3) {
                 int rand = rnd.Next(1, 5);
@@ -126,7 +127,6 @@ public class ChargerAI : MonoBehaviour {
             //GetComponent<Rigidbody2D> ().velocity = speed;
         }
     }
-
 
     public void DoneCharging() {
         isTired = true;
