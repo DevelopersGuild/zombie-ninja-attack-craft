@@ -10,7 +10,7 @@ namespace AssemblyCSharp
     //One copy flies at the player and then the real angel re-appears.
     public class Angel : MonoBehaviour
     {
-        public Player player;
+        private Player player;
         public float AgroRange;
         public FakeAngel angelFakeObject;
         public RealAngel angelRealObject;
@@ -38,6 +38,7 @@ namespace AssemblyCSharp
             //animator = GetComponent<Animator>();
             moveController = GetComponent<EnemyMoveController>();
             health = GetComponent<Health>();
+            player = FindObjectOfType<Player>();
 
             distance = new Vector2(0, 0);
             isAgro = false;

@@ -4,24 +4,36 @@ using System.Collections;
 public class ArrowTrap : MonoBehaviour {
 
     public Projectile TrapArrow;
+    private SpriteRenderer sr;
+    private Transform parent;
+    public Sprite facingDown;
+    public Sprite facingRight;
 
     public enum ShootDirections { up, down, left, right}
     public ShootDirections direction;
 
 	// Use this for initialization
 	void Start () {
-        //Set the rotation/direction of the trigger collider depending on where the arrow will shoot
+        // Components of parent
+        sr = GetComponentInParent<SpriteRenderer>();
+        parent = transform.parent;
+
+        ///Set the rotation/direction of the trigger collider depending on where the arrow will shoot
         if (direction == ShootDirections.up) {
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
         else if (direction == ShootDirections.down) {
+            sr.sprite = facingDown;
             transform.eulerAngles = new Vector3(0, 0, 180);
         }
         else if (direction == ShootDirections.right) {
+            sr.sprite = facingRight;
             transform.eulerAngles = new Vector3(0, 0, 270);
         }
         else if (direction == ShootDirections.left) {
-            transform.eulerAngles = new Vector3(0, 0, 90);
+            sr.sprite = facingRight;
+            transform.eulerAngles = new Vector3(0, 0, 270);
+            parent.localScale = new Vector3(-1, 1, 1);
         }
 
 	}
