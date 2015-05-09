@@ -15,7 +15,7 @@ namespace AssemblyCSharp
 {
 	public class Flamie : MonoBehaviour
 	{
-		public Player player;
+		private Player player;
 		public float AgroRange;
 		public Projectile fireBlock, fireBlockObject;
         public Explosion explBlock, explBlockObject;
@@ -40,6 +40,7 @@ namespace AssemblyCSharp
 			//animator = GetComponent<Animator>();
 			moveController = GetComponent<EnemyMoveController> ();
 			health = GetComponent<Health> ();
+            player = FindObjectOfType<Player>();
 			
 			distance = new Vector2 (0, 0);
 			speed = new Vector2 (0, 0);
