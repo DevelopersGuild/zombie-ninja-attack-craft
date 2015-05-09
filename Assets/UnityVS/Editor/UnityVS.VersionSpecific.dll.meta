@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: fdfa9408c2e49bf45a26ab3832bad316
-timeCreated: 1429308265
-=======
-guid: b170cf68a92a4ec41a1019020531b264
-timeCreated: 1428703062
->>>>>>> MoreEnemies
-licenseType: Free
 PluginImporter:
   serializedVersion: 1
   iconMap: {}
