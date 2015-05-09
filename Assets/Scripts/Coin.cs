@@ -8,7 +8,7 @@ public class Coin : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.GetComponent<Player>() == null) return;
 
-        GameManager.instance.AddPoints(value);
+       GameManager.AddPoints(value);
         gameObject.SetActive(false);
     }
 

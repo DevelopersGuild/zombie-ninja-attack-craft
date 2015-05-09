@@ -4,7 +4,7 @@ using System.Collections;
 public class CheckPointCollider : MonoBehaviour 
 {
 
-     public NotificationManger Notifications = null;
+     public NotificationManager Notifications = null;
 
      void OnTriggerEnter2D(Collider2D collider)
      {

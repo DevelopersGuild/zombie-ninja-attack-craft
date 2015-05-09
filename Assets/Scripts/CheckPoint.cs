@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CheckPoint : MonoBehaviour 
 {
-     public NotificationManger Notifications = null;
+     public NotificationManager Notifications = null;
      private Vector3 respawnLocation;
      public Player player = null;
 

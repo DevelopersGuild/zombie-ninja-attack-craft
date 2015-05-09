@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class NotificationManger : MonoBehaviour
+public class NotificationManager : MonoBehaviour
 {
 
      private Dictionary<string, List<Component>> Listeners = new Dictionary<string, List<Component>>();
-     
+
      public void AddListener(Component Listener, string NotificationName)
      {
-          if(!Listeners.ContainsKey(NotificationName))
+          if (!Listeners.ContainsKey(NotificationName))
           {
                Listeners.Add(NotificationName, new List<Component>());
           }
@@ -19,12 +19,12 @@ public class NotificationManger : MonoBehaviour
 
      public void PostNotification(Component Sender, string NotificationName)
      {
-          if(!Listeners.ContainsKey(NotificationName))
+          if (!Listeners.ContainsKey(NotificationName))
           {
                return;
           }
 
-          foreach(Component Listener in Listeners[NotificationName])
+          foreach (Component Listener in Listeners[NotificationName])
           {
                Listener.SendMessage(NotificationName, Sender, SendMessageOptions.DontRequireReceiver);
           }
@@ -32,7 +32,7 @@ public class NotificationManger : MonoBehaviour
 
      public void RemoveListener(Component Sender, string NotificationName)
      {
-          if(!Listeners.ContainsKey(NotificationName))
+          if (!Listeners.ContainsKey(NotificationName))
           {
                return;
           }
@@ -54,16 +54,16 @@ public class NotificationManger : MonoBehaviour
      {
           Dictionary<string, List<Component>> TmpListeners = new Dictionary<string, List<Component>>();
 
-          foreach(KeyValuePair<string, List<Component>> Item in Listeners)
+          foreach (KeyValuePair<string, List<Component>> Item in Listeners)
           {
-               for(int i = Item.Value.Count-1; i>=0; i--)
+               for (int i = Item.Value.Count - 1; i >= 0; i--)
                {
-                    if(Item.Value[i] == null)
+                    if (Item.Value[i] == null)
                     {
                          Item.Value.RemoveAt(i);
                     }
 
-                    if(Item.Value.Count > 0)
+                    if (Item.Value.Count > 0)
                     {
                          TmpListeners.Add(Item.Key, Item.Value);
                     }

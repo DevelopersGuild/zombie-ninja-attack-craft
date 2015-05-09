@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Health : MonoBehaviour
 {
-     public NotificationManger Notifications = null;
      public int startingHealth = 10;
      public int currentHealth;
      public int CoinValue;
@@ -89,16 +88,15 @@ public class Health : MonoBehaviour
 
      public void Death()
      {
-          if(gameObject.tag == "Player")
+          if (gameObject.tag == "Player")
           {
-               Notifications.PostNotification(this, "OnPlayerDeath");
+               GameManager.Notifications.PostNotification(this, "OnPlayerDeath");
                this.setHealth(startingHealth);
           }
-          else
-          {
-               isDead = true;
-               Destroy(gameObject);
-          }
+
+          isDead = true;
+          Destroy(gameObject);
+
 
      }
 
