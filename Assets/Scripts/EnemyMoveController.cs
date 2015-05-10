@@ -5,7 +5,6 @@ public class EnemyMoveController : MonoBehaviour {
 
     // Components
     private Animator animator;
-    private Transform transform;
     // Speed of object
     [Range(0, 10)]
     public float speed = 8;
@@ -19,16 +18,26 @@ public class EnemyMoveController : MonoBehaviour {
     public bool isMoving;
     public bool canMove;
     public bool gotAttacked;
+    //Knockback flags
+    public bool isKnockedBack;
+    public float knockbackForce;
+    private float knockBackTime;
+    private float timeSpentKnockedBack;
+    private Vector2 knockbackDirection;
 
 
     void Awake() {
         animator = GetComponent<Animator>();
-        transform = GetComponent<Transform>();
 
         isMoving = false;
         movementVector = new Vector2(0, 0);
         direction = new Vector2(0, 0);
         facing = new Vector2(0, -1);
+
+        knockbackForce = 4;
+        isKnockedBack = false;
+        timeSpentKnockedBack = 0;
+        knockBackTime = 0.10f;
 
         canMove = true;
     }
@@ -37,13 +46,15 @@ public class EnemyMoveController : MonoBehaviour {
     void Update() {
 
         /* Check if character is moving */
-        if (rigidbody2D.velocity.normalized.x != 0 || rigidbody2D.velocity.normalized.y != 0) {
-            // Store the direction the player is facing in case they stop moving
-            facing = rigidbody2D.velocity.normalized;
-            isMoving = true;
-        }
-        if (movementVector.x == 0 && movementVector.y == 0) {
-            isMoving = false;
+        if (GetComponent<Rigidbody2D>() != null) {
+            if (GetComponent<Rigidbody2D>().velocity.normalized.x != 0 || GetComponent<Rigidbody2D>().velocity.normalized.y != 0) {
+                // Store the direction the player is facing in case they stop moving
+                facing = GetComponent<Rigidbody2D>().velocity.normalized;
+                isMoving = true;
+            }
+            if (movementVector.x == 0 && movementVector.y == 0) {
+                isMoving = false;
+            }
         }
 
         //Check whether sprite is facing left or right. Flip the sprite based on its direction
@@ -54,8 +65,19 @@ public class EnemyMoveController : MonoBehaviour {
             transform.localScale = new Vector3(-1, 1, 1);
         }
 
+
         // Calculate movement amount
         movementVector = direction * speed;
+
+        //Change movement vector if they are being knocked back
+        if (isKnockedBack) {
+            timeSpentKnockedBack += Time.deltaTime;
+            movementVector = knockbackDirection * knockbackForce;
+            if (timeSpentKnockedBack >= knockBackTime) {
+                isKnockedBack = false;
+                timeSpentKnockedBack = 0;
+            }
+        }
 
         if (animator != null) {
             //Play walking animations
@@ -74,11 +96,8 @@ public class EnemyMoveController : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        // Apply the movement to the rigidbody
-        //rigidbody2D.AddForce(movementVector);
-
         if (canMove) {
-            rigidbody2D.velocity = movementVector;
+            GetComponent<Rigidbody2D>().velocity = movementVector;
         }
 
         //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
@@ -90,16 +109,29 @@ public class EnemyMoveController : MonoBehaviour {
         direction = new Vector2(input_X, input_Y);
     }
 
+	internal void Move(float input_X, float input_Y, float input_Extra) {
+		direction = new Vector2(input_X/input_Extra, input_Y/input_Extra);
+	}
+
     /* Moves the object towards a destination by a small amount (used for enemy input)*/
     internal void Move(Vector2 _direction) {
         direction = _direction;
     }
 
-    public void Knockback(Vector2 direction, float amount) {
-        ToDashPhysics();
-        rigidbody2D.AddForce(direction * amount);
-        ToWalkPhysics();
+	internal void Move(Vector2 _direction, float input_E) {
+		direction = _direction / input_E;
+	}
+    //public void Knockback(Vector2 direction, float amount) {
+    //    isKnockedBack = true;
+    //    knockbackForce = amount;
+    //    knockbackDirection = direction;
+    //}
+
+    public void Knockback(Vector2 direction) {
+        isKnockedBack = true;
+        knockbackDirection = direction;
     }
+
 
     public void GotAttacked() {
         gotAttacked = true;
@@ -110,18 +142,26 @@ public class EnemyMoveController : MonoBehaviour {
     }
 
     public void ToDashPhysics() {
-        rigidbody2D.mass = 1;
-        rigidbody2D.drag = 33;
+        GetComponent<Rigidbody2D>().mass = 1;
+        GetComponent<Rigidbody2D>().drag = 33;
     }
 
     public void ToWalkPhysics() {
-        rigidbody2D.drag = 75;
-        rigidbody2D.mass = 2;
+        GetComponent<Rigidbody2D>().drag = 75;
+        GetComponent<Rigidbody2D>().mass = 2;
     }
 
+	public float getMove() {
+		return movementVector.magnitude;
+	}
 
+	public void setSpd(float sp) {
+		speed = sp;
+	}
 
-
+	public float getSpd() {
+				return speed;
+		}
 
 
 }

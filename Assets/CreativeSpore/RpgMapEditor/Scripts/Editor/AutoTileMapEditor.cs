@@ -73,8 +73,7 @@ namespace CreativeSpore.RpgMapEditor
 				int saveControl = GUIUtility.hotControl;
 				
 				if (currentEventType==EventType.Layout)      {skip=true;}
-				if (currentEventType==EventType.ScrollWheel) {skip=true;}
-				if (Event.current.button >= 2)               {skip=true;}
+				else if (currentEventType==EventType.ScrollWheel) {skip=true;}
 
 				if ( !skip) 
 				{
@@ -83,7 +82,11 @@ namespace CreativeSpore.RpgMapEditor
 
 					m_tilesetComponent.OnSceneGUI();
 
-					Event.current.Use();
+					if( currentEventType==EventType.MouseDrag && Event.current.button < 2 ) // 2 is for central mouse button
+					{
+						// avoid dragging the map
+						Event.current.Use();
+					}
 				}
 
 				GUIUtility.hotControl = saveControl;

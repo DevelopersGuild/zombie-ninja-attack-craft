@@ -5,12 +5,12 @@ public class MoveController : MonoBehaviour {
 
     // Components
     private Animator animator;
-    private Transform transform;
     public AttackController attackController;
     // Speed of object
     [Range(0, 10)]
     public float speed = 8;
     public float dashSpeed = 100;
+    public float sdas;
     // Direction of object
     internal Vector2 direction;
     public Vector2 facing;
@@ -33,7 +33,6 @@ public class MoveController : MonoBehaviour {
     void Awake() {
         attackController = GetComponent<AttackController>();
         animator = GetComponent<Animator>();
-        transform = GetComponent<Transform>();
 
         isMoving = false;
         movementVector = new Vector2(0, 0);
@@ -55,7 +54,10 @@ public class MoveController : MonoBehaviour {
             isDashing = false;
             ToWalkPhysics();
         }
-        if (dashIn < 0.2) canDash = true;
+        if (dashIn < 0.2) {
+            canDash = true;
+            canMove = true;
+        }
 
         //The player faces according to player input
         if (canMove) {
@@ -137,7 +139,7 @@ public class MoveController : MonoBehaviour {
         //rigidbody2D.AddForce(movementVector);
 
         if (canMove) {
-            rigidbody2D.velocity = movementVector;
+            GetComponent<Rigidbody2D>().velocity = movementVector;
         }
 
         //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
@@ -156,12 +158,12 @@ public class MoveController : MonoBehaviour {
 
     /*pushes a character in a direction by an amount*/
     internal void Push(Vector2 direction, float amount) {
-        rigidbody2D.AddForce(direction * amount);
+        GetComponent<Rigidbody2D>().AddForce(direction * amount);
     }
 
     public void Knockback(Vector2 direction, float amount) {
         ToDashPhysics();
-        rigidbody2D.AddForce(direction * amount);
+        GetComponent<Rigidbody2D>().AddForce(direction * amount);
         ToWalkPhysics();
     }
 
@@ -171,13 +173,14 @@ public class MoveController : MonoBehaviour {
         if (canDash) {
             //Change these rigidbody parameters so the dashing feels better
             ToDashPhysics();
-            rigidbody2D.velocity = facing * dashSpeed;
+            GetComponent<Rigidbody2D>().velocity = facing * dashSpeed;
 
             //Reset dash parameters
             dashIn = 1;
             isMoving = true;
             isDashing = true;
             canDash = false;
+            canMove = false;
         }
     }
 
@@ -190,13 +193,17 @@ public class MoveController : MonoBehaviour {
     }
 
     public void ToDashPhysics() {
-        rigidbody2D.mass = 1;
-        rigidbody2D.drag = 33;
+        GetComponent<Rigidbody2D>().mass = 1;
+        GetComponent<Rigidbody2D>().drag = 33;
     }
 
     public void ToWalkPhysics() {
-        rigidbody2D.drag = 75;
-        rigidbody2D.mass = 2;
+        GetComponent<Rigidbody2D>().drag = 75;
+        GetComponent<Rigidbody2D>().mass = 2;
+    }
+
+	public Vector2 getFacing() {
+		return facing;
     }
 
 

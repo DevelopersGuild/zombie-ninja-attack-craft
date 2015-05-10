@@ -1,0 +1,197 @@
+fileFormatVersion: 2
+guid: f9a075ade13dfe041a1cff22f4945f30
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: PC Computer - Maple Story - Fire Boar
+    21300002: Idle2
+    21300004: Idle1
+    21300006: Idle4
+    21300008: Idle5
+    21300010: Idle6
+    21300012: Hit1
+    21300014: walk1
+    21300016: Dead1
+    21300018: walk2
+    21300020: Dead2
+    21300022: Hit2
+    21300024: walk3
+    21300026: Idle3
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 120
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Idle2
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 315
+        width: 76
+        height: 61
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Idle1
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 314
+        width: 72
+        height: 61
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Idle4
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 314
+        width: 95
+        height: 66
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Idle5
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 315
+        width: 103
+        height: 63
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Idle6
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 313
+        width: 105
+        height: 66
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Hit1
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 109
+        width: 76
+        height: 53
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walk1
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 207
+        width: 76
+        height: 54
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Dead1
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 8
+        width: 73
+        height: 39
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walk2
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 207
+        width: 78
+        height: 53
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Dead2
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 7
+        width: 73
+        height: 38
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Hit2
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 108
+        width: 83
+        height: 58
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: walk3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 206
+        width: 79
+        height: 57
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Idle3
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 315
+        width: 76
+        height: 65
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
