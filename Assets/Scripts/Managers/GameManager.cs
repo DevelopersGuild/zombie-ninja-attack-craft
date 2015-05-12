@@ -80,4 +80,9 @@ public class GameManager : MonoBehaviour
      {
           Application.LoadLevel(level);
      }
+
+     public void QuitGame()
+     {
+          Application.Quit();
+     }
 }
