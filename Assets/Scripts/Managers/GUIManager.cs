@@ -73,4 +73,10 @@ public class GUIManager : MonoBehaviour
           MainTitleMenu.enabled = false;
           LoadLevelCanvas.enabled = true;
      }
+
+     public void ShowTitleScreen()
+     {
+          MainTitleMenu.enabled = true;
+          LoadLevelCanvas.enabled = false;
+     }
 }
