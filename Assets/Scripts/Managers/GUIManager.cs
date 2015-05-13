@@ -3,7 +3,6 @@
  */
 
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class GUIManager : MonoBehaviour
@@ -12,8 +11,7 @@ public class GUIManager : MonoBehaviour
      public Canvas restartCanvas = null;
      public Canvas StoreCanvas = null;
      public Canvas LoadLevelCanvas = null;
-     public Button restartButton = null;
-     public Button TitleScreenButton = null;
+
 
 
      void Start()
@@ -34,18 +32,7 @@ public class GUIManager : MonoBehaviour
 
           if (restartCanvas != null)
           {
-               if(restartButton != null)
-               {
-                    restartButton.interactable = false;
-               }
-               if (restartButton != null)
-               {
-                    TitleScreenButton.interactable = false;
-               }
-
                restartCanvas.enabled = false;
-
-
           }
 
           if (LoadLevelCanvas != null)
@@ -60,14 +47,6 @@ public class GUIManager : MonoBehaviour
           if (restartCanvas != null)
           {
                restartCanvas.enabled = true;
-               if (restartButton != null)
-               {
-                    restartButton.interactable = true;
-               }
-               if (restartButton != null)
-               {
-                    TitleScreenButton.interactable = true;
-               }
                Cursor.visible = true;
           }
      }
