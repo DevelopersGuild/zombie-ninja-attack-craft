@@ -62,26 +62,26 @@ public class Player : MonoBehaviour {
         }
 
         //Check for attack input
-        if (Input.GetButtonDown("Fire1") && attackController.CanAttack()) {
+        if (Input.GetKeyDown(KeyCode.X) && attackController.CanAttack()) {
             attackController.Attack();
         }
 
-        if (Input.GetButtonDown("Fire2") && attackController.CanAttack()) {
+        if (Input.GetKeyDown(KeyCode.Z) && attackController.CanAttack()) {
             attackController.ShootProjectile();
         }
 
 
         //Check for how many keys are being pressed and act accordingly
-        if (Input.GetKey("w")) {
+        if (Input.GetKey("up")) {
             keyCount++;
         }
-        if (Input.GetKey("s")) {
+        if (Input.GetKey("down")) {
             keyCount++;
         }
-        if (Input.GetKey("a")) {
+        if (Input.GetKey("left")) {
             keyCount++;
         }
-        if (Input.GetKey("d")) {
+        if (Input.GetKey("right")) {
             keyCount++;
         }
         if (keyCount >= 2) {
@@ -95,45 +95,55 @@ public class Player : MonoBehaviour {
         if (keyCount < 3 && keyCount > 0) {
 
             //Handle double taps for dashing
-            if (Input.GetKeyDown("w")) {
+            if (Input.GetKeyDown("up")) {
+                //playerMoveController.newFacing = (int)MoveController.facingDirection.up;
+
                 if ((Time.time - lastTapTimeW) < tapSpeed) {
                     playerMoveController.Dash();
                 }
                 lastTapTimeW = Time.time;
             }
-            if (Input.GetKeyDown("s")) {
+            if (Input.GetKeyDown("down")) {
+                //playerMoveController.newFacing = (int)MoveController.facingDirection.down;
+
                 if ((Time.time - lastTapTimeS) < tapSpeed) {
                     playerMoveController.Dash();
                 }
                 lastTapTimeS = Time.time;
             }
-            if (Input.GetKeyDown("a")) {
+            if (Input.GetKeyDown("left")) {
+                //playerMoveController.newFacing = (int)MoveController.facingDirection.left;
+
                 if ((Time.time - lastTapTimeA) < tapSpeed) {
                     playerMoveController.Dash();
                 }
                 lastTapTimeA = Time.time;
             }
-            if (Input.GetKeyDown("d")) {
+            if (Input.GetKeyDown("right")) {
+                //playerMoveController.newFacing = (int)MoveController.facingDirection.right;
+
                 if ((Time.time - lastTapTimeD) < tapSpeed) {
                     playerMoveController.Dash();
                 }
                 lastTapTimeD = Time.time;
             }
 
+
             //Face the player depending on the button being pressed
-            if (Input.GetKey("w")) {
+            if (Input.GetKey("up")) {
                 playerMoveController.newFacing = (int)MoveController.facingDirection.up;
             }
-            if (Input.GetKey("s")) {
+            if (Input.GetKey("down")) {
                 playerMoveController.newFacing = (int)MoveController.facingDirection.down;
 
             }
-            if (Input.GetKey("a")) {
+            if (Input.GetKey("left")) {
                 playerMoveController.newFacing = (int)MoveController.facingDirection.left;
             }
-            if (Input.GetKey("d")) {
+            if (Input.GetKey("right")) {
                 playerMoveController.newFacing = (int)MoveController.facingDirection.right;
             }
+
             playerMoveController.isMoving = true;
             playerMoveController.Move(inputX, inputY);
         }
