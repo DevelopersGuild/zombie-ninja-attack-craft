@@ -24,8 +24,9 @@ public class ShopGUI : MonoBehaviour
      {
           HowManyThePlayerWants.text = "1";
           ItemNameGUI.text = ItemName;
-          NumberAvailable.text = Store.GetItemQuantity(ItemName).ToString();
           CostOfItem.text = Store.GetItemPrice(ItemName).ToString();
+          NumberAvailable.text = Store.GetItemQuantity(ItemName).ToString();
+
           ResultMessage.text = "";
      }
 
