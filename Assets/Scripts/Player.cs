@@ -62,11 +62,11 @@ public class Player : MonoBehaviour {
         }
 
         //Check for attack input
-        if (Input.GetKeyDown(KeyCode.X) && attackController.CanAttack()) {
+        if (Input.GetButtonDown("Fire1") && attackController.CanAttack()) {
             attackController.Attack();
         }
 
-        if (Input.GetKeyDown(KeyCode.Z) && attackController.CanAttack()) {
+        if (Input.GetButtonDown("Fire2") && attackController.CanAttack()) {
             attackController.ShootProjectile();
         }
 
