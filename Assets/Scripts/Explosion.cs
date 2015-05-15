@@ -3,17 +3,18 @@ using System.Collections;
 
 public class Explosion : MonoBehaviour {
 
+    private CircleCollider2D collider;
+
 	// Use this for initialization
 	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+        collider = GetComponent<CircleCollider2D>();
 	}
 
     void DestroySelf() {
         Destroy(gameObject);
+    }
+
+    void disableCollider() {
+        collider.enabled = false;
     }
 }
