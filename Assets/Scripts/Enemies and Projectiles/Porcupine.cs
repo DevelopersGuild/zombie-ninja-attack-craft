@@ -6,6 +6,7 @@ namespace AssemblyCSharp {
         private Player player;
         public GameObject SparkParticle, SparkParticleInstance;
         public float sparkTime;
+        private float sparkTimer;
 
         private EnemyMoveController moveController;
         private Health health;
@@ -36,10 +37,10 @@ namespace AssemblyCSharp {
             currentY = transform.position.y;
 
             if (player != null) {
-                if (sparkTime <= 0) {
+                if (sparkTimer <= 0) {
                     moveController.Move(0, 0);
                     t = 2;
-                    sparkTime = 6;
+                    sparkTimer = sparkTime;
                     Instantiate(SparkParticle, transform.position, Quaternion.identity);
                 }else if (t < 1) {
                     if (GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
@@ -68,7 +69,7 @@ namespace AssemblyCSharp {
                 }
             }
             t -= Time.deltaTime;
-            sparkTime -= Time.deltaTime;
+            sparkTimer -= Time.deltaTime;
 
         }
 

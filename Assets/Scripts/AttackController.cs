@@ -47,7 +47,7 @@ public class AttackController : MonoBehaviour {
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 90);
         }
         else if (moveController.facing.y > 0) {
-            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y + 0.10f);
+            attackCollider.transform.position = new Vector2(playerPosition.x, playerPosition.y + 0.15f);
             attackCollider.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
         else if (moveController.facing.y < 0) {
