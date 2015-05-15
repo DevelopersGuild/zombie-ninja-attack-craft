@@ -105,7 +105,6 @@ public class GameManager : MonoBehaviour
                {
                     stateManager.GameState.GameLevels[currentLevel - 1].Score = points;
                }
-
           }
           else
           {
