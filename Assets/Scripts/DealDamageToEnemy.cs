@@ -37,11 +37,11 @@ public class DealDamageToEnemy : MonoBehaviour {
             if (enemyHealth.GetComponent<Rigidbody2D>()) {
                 enemyHealth.CalculateKnockback(other, transform.position);
             }
-        }
 
-        //Destroy itself if its a projectile
-        if (GetComponent<Projectile>()) {
-            Destroy(gameObject);
+            //Destroy itself if its a projectile
+            if (GetComponent<Projectile>()) {
+                Destroy(gameObject);
+            }
         }
     }
 }

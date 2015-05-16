@@ -34,7 +34,6 @@ public class DropLoot : MonoBehaviour {
             if (item != null) {
                 Instantiate(item, transform.position, transform.rotation);
             }
-            Debug.Log("spawnitem");
         }
     }
 
