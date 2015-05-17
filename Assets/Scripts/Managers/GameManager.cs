@@ -56,6 +56,8 @@ public class GameManager : MonoBehaviour
      private static int currentLevel;
 
      public static int points;
+     public static int Score;
+     public static float timeToCompleteLevel;
 
      // Use this for initialization
      void Start()
@@ -63,6 +65,7 @@ public class GameManager : MonoBehaviour
           currentLevel = Application.loadedLevel;
           points = 0;
           LoadGameData();
+          GameManager.Notifications.AddListener(this, "EndOfLevelReached");
 
      }
 
@@ -96,12 +99,19 @@ public class GameManager : MonoBehaviour
           StateManager.Load(Application.persistentDataPath + "/SaveGame.xml");
      }
 
+     public void EndOfLevelReached()
+     {
+          LevelComplete();
+          CalculateScore();
+          SaveGame();
+     }
+
      public static void LevelComplete()
      {
           bool isActive = StateManager.isActiveAndEnabled;
-          if(stateManager.GameState.GameLevels.Count > currentLevel)
+          if (stateManager.GameState.GameLevels.Count >= currentLevel)
           {
-               if(stateManager.GameState.GameLevels[currentLevel - 1].Score < points)
+               if (stateManager.GameState.GameLevels[currentLevel - 1].Score < points)
                {
                     stateManager.GameState.GameLevels[currentLevel - 1].Score = points;
                }
@@ -115,9 +125,13 @@ public class GameManager : MonoBehaviour
           }
      }
 
+     public void CalculateScore()
+     {
+          timeToCompleteLevel = Time.time;
+     }
+
      public void SaveGame()
      {
-          LevelComplete();
           StateManager.Save(Application.persistentDataPath + "/SaveGame.xml");
      }
 

@@ -11,6 +11,7 @@ public class GUIManager : MonoBehaviour
      public Canvas restartCanvas = null;
      public Canvas StoreCanvas = null;
      public Canvas LoadLevelCanvas = null;
+     public Canvas EndOfLevelCanvas = null;
 
 
 
@@ -19,6 +20,7 @@ public class GUIManager : MonoBehaviour
           GameManager.Notifications.AddListener(this, "OnPlayerDeath");
           GameManager.Notifications.AddListener(this, "OnPlayerEnterShop");
           GameManager.Notifications.AddListener(this, "OnPlayerExitShop");
+          GameManager.Notifications.AddListener(this, "EndOfLevelReached");
 
           if (Application.loadedLevelName != "titleScreen")
           {
@@ -38,6 +40,11 @@ public class GUIManager : MonoBehaviour
           if (LoadLevelCanvas != null)
           {
                LoadLevelCanvas.enabled = false;
+          }
+
+          if (EndOfLevelCanvas != null)
+          {
+               EndOfLevelCanvas.enabled = false;
           }
 
      }
@@ -69,6 +76,15 @@ public class GUIManager : MonoBehaviour
           }
      }
 
+     public void EndOfLevelReached()
+     {
+          if (EndOfLevelCanvas != null)
+          {
+               EndOfLevelCanvas.enabled = true;
+               Cursor.visible = true;
+          }
+     }
+
      public void ShowLoadLevel()
      {
           MainTitleMenu.enabled = false;
@@ -80,4 +96,7 @@ public class GUIManager : MonoBehaviour
           MainTitleMenu.enabled = true;
           LoadLevelCanvas.enabled = false;
      }
+
+
 }
+ 
