@@ -2,11 +2,7 @@
 using UnityEngine;
 
 namespace AssemblyCSharp {
-    public class Porcupine : MonoBehaviour {
-        public GameObject SparkParticle, SparkParticleInstance;
-        public float sparkTime;
-        private float sparkTimer;
-
+    public class DummyEnemy : MonoBehaviour {
         private EnemyMoveController moveController;
         private Health health;
 
@@ -24,22 +20,15 @@ namespace AssemblyCSharp {
             transform.gameObject.tag = "Attackable";
             health = GetComponent<Health>();
 
-            distance = new Vector2(0, 0);
             t = 3;
         }
 
         public void Update() {
             rnd = new System.Random();
-            currentX = transform.position.x;
-            currentY = transform.position.y;
 
-            if (sparkTimer <= 0) {
-                moveController.Move(0, 0);
-                t = 2;
-                sparkTimer = sparkTime;
-                Instantiate(SparkParticle, transform.position, Quaternion.identity);
-            }else if (t < 1) {
+            if (t < 1) {
                 if (GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
+                    //speed = new Vector2 (0, 0);
                     moveController.Move(0, 0);
                     t = 3;
                 }
@@ -47,25 +36,27 @@ namespace AssemblyCSharp {
             else if (t < 2 && t > 1.3) {
                 int rand = rnd.Next(1, 5);
                 if (rand == 1) {
+                    //speed = new Vector2 (2, 0);
                     moveController.Move(1, 0, 5);
                     t = 1.3;
                 }
                 else if (rand == 2) {
+                    //speed = new Vector2 (-2, 0);
                     moveController.Move(-1, 0, 5);
                     t = 1.3;
                 }
                 else if (rand == 3) {
+                    //speed = new Vector2 (0, 2);
                     moveController.Move(0, 1, 5);
                     t = 1.3;
                 }
                 else if (rand == 4) {
+                    //speed = new Vector2 (0, -2);
                     moveController.Move(0, -1, 5);
                     t = 1.3;
                 }
             }
-            
             t -= Time.deltaTime;
-            sparkTimer -= Time.deltaTime;
 
         }
 
