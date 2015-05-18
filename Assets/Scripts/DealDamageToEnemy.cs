@@ -28,7 +28,6 @@ public class DealDamageToEnemy : MonoBehaviour {
 
     //For triggers
     public void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("TRIGGER!");
         //Check for enemy collision
         if (other.tag == "Attackable") {
             //Deal damage, knock back what it collided with, and destory itselfz

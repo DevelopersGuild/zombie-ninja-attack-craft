@@ -9,8 +9,13 @@ public class DropLoot : MonoBehaviour {
     public Coin coin;
     private GameObject item;
     private int randomDropChance;
+
     public List<GameObject> items = new List<GameObject>();
-    public int dropChance;
+    public List<int> itemDropRates = new List<int>();
+    private List<GameObject> itemDrop = new List<GameObject>();
+
+    private int itemDropRate; // Probability that item will drop out of 10
+    public int dropChance; // Probability that item will drop out of 100
 
     public void DropCoins(int amount) {
         coin.setValue(amount);
@@ -18,11 +23,21 @@ public class DropLoot : MonoBehaviour {
     }
 
     public void DropItem() {
-        //Fifty percent chance to drop nothing if its 0
-        randomDropChance = Random.Range(dropChance, 2);
-        if (randomDropChance >= 1) {
+        // Check if an item will drop
+        randomDropChance = Random.Range(0, 100);
+
+        // If an item does drop, pick one randomly with the given drop chances
+        if (randomDropChance <= dropChance) {
+            itemDropRate = Random.Range(0, 10);
+
+            for (int i = 0; i < items.Count; i++) {
+                for (int j = 0; j < itemDropRates[i]; j++) {
+                    itemDrop.Add(items[i]);
+                }
+            }
             //If it will drop an item, set the item it will drop to a random item that it can drop
-            item = items[Random.Range(0, items.Count)];
+            Debug.Log(itemDropRate);
+            item = itemDrop[itemDropRate];
 
             //If it was a coin, give it a value
             if (item.GetComponent<Coin>()) {
