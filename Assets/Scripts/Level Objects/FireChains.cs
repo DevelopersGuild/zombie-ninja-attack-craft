@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class FireChains : MonoBehaviour {
     public Fireballs fireball;
@@ -10,23 +11,39 @@ public class FireChains : MonoBehaviour {
     public float spacing;
     private float currentRotation;
     private float angleBetween;
+    private List<Fireballs> fireballList = new List<Fireballs>();
 
-	// Use this for initialization
+	// Create the fire chain
 	void Start () {
+        // Initialize variables
+        float height = 0.12f;
         angleBetween = 360 / numChains;
 
-        float currentY = 0 ;
+        float currentY = 0;
+        float currentAngle = 0;
         for (int j = 0; j < numChains; j++) {
+            // Create the fireballs and place them so they arent relative to the rotation
             for (int i = 0; i < length; i++) {
-                Fireballs fireballInstance = Instantiate(fireball) as Fireballs;
-                fireballInstance.transform.parent = gameObject.transform;
-                fireballInstance.transform.position = new Vector2(gameObject.transform.position.x, currentY + spacing);
-                currentY += spacing;
+                fireballInstance = Instantiate(fireball) as Fireballs;
+                fireballList.Add(fireballInstance);
+                fireballInstance.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + currentY + spacing + height);
+                currentY = currentY + height + spacing;
             }
+
+            // Parent the fireballs to the chain so the fireballs rotate with the chain
+            for (int k = 0; k < fireballList.Count; k++) {
+                fireballList[k].transform.parent = gameObject.transform;
+            }
+            fireballList.Clear();
+
+            // Rotate the parent object 
+            currentY = 0;
+            currentAngle += angleBetween;
+            transform.eulerAngles = new Vector3(0, 0, currentAngle);
         }
 	}
 	
-	// Update is called once per frame
+	// Rotate the firechain every frame
 	void Update () {
         // Rotate the gameobject
         currentRotation += speed;
