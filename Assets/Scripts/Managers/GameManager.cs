@@ -6,6 +6,7 @@ using System;
 [RequireComponent(typeof(NotificationManager))]
 public class GameManager : MonoBehaviour
 {
+     //Get Components
      public static GameManager Instance
      {
           get
@@ -52,6 +53,8 @@ public class GameManager : MonoBehaviour
           }
      }
 
+     //Variables
+
      private static GameManager instance = null;
      private static NotificationManager notifications = null;
      private static LoadAndSaveManager stateManager = null;
@@ -71,12 +74,19 @@ public class GameManager : MonoBehaviour
 
      }
 
-     public static void AddPoints(int added)
+     public void LoadGameData()
+     {
+          StateManager.Load(Application.persistentDataPath + "/SaveGame.xml");
+     }
+
+
+     //Coin methods
+     public static void AddCoins(int added)
      {
           Coins += added;
      }
 
-     public static void SubtractPoints(int subtract)
+     public static void SubtractCoins(int subtract)
      {
           Coins -= subtract;
      }
@@ -86,7 +96,7 @@ public class GameManager : MonoBehaviour
           Coins = 0;
      }
 
-     public static void setPoints(int coinsSet)
+     public static void setCoins(int coinsSet)
      {
           Coins = coinsSet;
      }
@@ -96,15 +106,12 @@ public class GameManager : MonoBehaviour
           return Coins;
      }
 
-     public static int getScore()
-     {
-          return Score;
-     }
 
+     //Time methods
      public static float getTime()
      {
           timeToCompleteLevel = Time.time;
-          if(timeToCompleteLevel > 60)
+          if (timeToCompleteLevel > 60)
           {
                timeToCompleteLevel = timeToCompleteLevel / 60;
           }
@@ -112,9 +119,10 @@ public class GameManager : MonoBehaviour
      }
 
 
-     public void LoadGameData()
+     //Score methods
+     public static int getScore()
      {
-          StateManager.Load(Application.persistentDataPath + "/SaveGame.xml");
+          return Score;
      }
 
      public void EndOfLevelReached()
@@ -122,6 +130,14 @@ public class GameManager : MonoBehaviour
           CalculateScore();
           LevelComplete();
           SaveGame();
+     }
+
+     public void CalculateScore()
+     {
+          timeToCompleteLevel = Time.time;
+          Score = (int)Math.Round(Coins - timeToCompleteLevel);
+
+
      }
 
      public static void LevelComplete()
@@ -143,13 +159,6 @@ public class GameManager : MonoBehaviour
           }
      }
 
-     public void CalculateScore()
-     {
-          timeToCompleteLevel = Time.time;
-          Score = (int)Math.Round(Coins - timeToCompleteLevel);
-
-
-     }
 
      public void SaveGame()
      {
@@ -157,6 +166,7 @@ public class GameManager : MonoBehaviour
      }
 
 
+     //Game state controls
      public void SwitchLevel(int level)
      {
           Application.LoadLevel(level);

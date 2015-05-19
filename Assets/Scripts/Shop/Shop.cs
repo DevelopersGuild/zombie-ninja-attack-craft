@@ -47,7 +47,7 @@ public class Shop : MonoBehaviour
                if(GameManager.getCoins() >= (Inventory[desiredItem].PriceOfItem * desiredQuantity))
                {
                     SpawnItem(desiredItem, desiredQuantity);
-                    GameManager.SubtractPoints(Inventory[desiredItem].PriceOfItem * desiredQuantity);
+                    GameManager.SubtractCoins(Inventory[desiredItem].PriceOfItem * desiredQuantity);
                     Inventory[desiredItem].QuantityOfItem -= desiredQuantity;
 
                }
