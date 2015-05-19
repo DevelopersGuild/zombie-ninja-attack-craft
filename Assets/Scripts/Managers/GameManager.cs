@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
      public static int Coins;
      public static int Score;
      public static float timeToCompleteLevel;
+     public static bool IsCurrentLevelComplete = false;
+     public int PassingScore = 0;
 
      // Use this for initialization
      void Start()
@@ -72,6 +74,14 @@ public class GameManager : MonoBehaviour
           LoadGameData();
           GameManager.Notifications.AddListener(this, "EndOfLevelReached");
 
+     }
+
+     public void OnLevelWasLoaded(int level)
+     {
+          Coins = 0;
+          Score = 0;
+          IsCurrentLevelComplete = false;
+          timeToCompleteLevel = 0;
      }
 
      public void LoadGameData()
@@ -125,6 +135,11 @@ public class GameManager : MonoBehaviour
           return Score;
      }
 
+     public static bool getIsLevelComplete()
+     {
+          return IsCurrentLevelComplete;
+     }
+
      public void EndOfLevelReached()
      {
           CalculateScore();
@@ -136,8 +151,10 @@ public class GameManager : MonoBehaviour
      {
           timeToCompleteLevel = Time.time;
           Score = (int)Math.Round(Coins - timeToCompleteLevel);
-
-
+          if (Score >= PassingScore)
+          {
+               IsCurrentLevelComplete = true;
+          }
      }
 
      public static void LevelComplete()
