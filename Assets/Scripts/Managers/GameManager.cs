@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+
 
 [RequireComponent(typeof(NotificationManager))]
 public class GameManager : MonoBehaviour
@@ -55,7 +57,7 @@ public class GameManager : MonoBehaviour
      private static LoadAndSaveManager stateManager = null;
      private static int currentLevel;
 
-     public static int points;
+     public static int Coins;
      public static int Score;
      public static float timeToCompleteLevel;
 
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour
      void Start()
      {
           currentLevel = Application.loadedLevel;
-          points = 0;
+          Coins = 0;
           LoadGameData();
           GameManager.Notifications.AddListener(this, "EndOfLevelReached");
 
@@ -71,28 +73,44 @@ public class GameManager : MonoBehaviour
 
      public static void AddPoints(int added)
      {
-          points += added;
+          Coins += added;
      }
 
      public static void SubtractPoints(int subtract)
      {
-          points -= subtract;
+          Coins -= subtract;
      }
 
      public void Reset()
      {
-          points = 0;
+          Coins = 0;
      }
 
-     public static void setPoints(int pointsSet)
+     public static void setPoints(int coinsSet)
      {
-          points = pointsSet;
+          Coins = coinsSet;
      }
 
-     public static int getPoints()
+     public static int getCoins()
      {
-          return points;
+          return Coins;
      }
+
+     public static int getScore()
+     {
+          return Score;
+     }
+
+     public static float getTime()
+     {
+          timeToCompleteLevel = Time.time;
+          if(timeToCompleteLevel > 60)
+          {
+               timeToCompleteLevel = timeToCompleteLevel / 60;
+          }
+          return timeToCompleteLevel;
+     }
+
 
      public void LoadGameData()
      {
@@ -101,8 +119,8 @@ public class GameManager : MonoBehaviour
 
      public void EndOfLevelReached()
      {
-          LevelComplete();
           CalculateScore();
+          LevelComplete();
           SaveGame();
      }
 
@@ -111,16 +129,16 @@ public class GameManager : MonoBehaviour
           bool isActive = StateManager.isActiveAndEnabled;
           if (stateManager.GameState.GameLevels.Count >= currentLevel)
           {
-               if (stateManager.GameState.GameLevels[currentLevel - 1].Score < points)
+               if (stateManager.GameState.GameLevels[currentLevel - 1].Score < Score)
                {
-                    stateManager.GameState.GameLevels[currentLevel - 1].Score = points;
+                    stateManager.GameState.GameLevels[currentLevel - 1].Score = Score;
                }
           }
           else
           {
                LoadAndSaveManager.GameStateData.GameLevelData newLevel = new LoadAndSaveManager.GameStateData.GameLevelData();
                newLevel.LevelUnlocked = true;
-               newLevel.Score = points;
+               newLevel.Score = Score;
                stateManager.GameState.GameLevels.Add(newLevel);
           }
      }
@@ -128,6 +146,9 @@ public class GameManager : MonoBehaviour
      public void CalculateScore()
      {
           timeToCompleteLevel = Time.time;
+          Score = (int)Math.Round(Coins - timeToCompleteLevel);
+
+
      }
 
      public void SaveGame()

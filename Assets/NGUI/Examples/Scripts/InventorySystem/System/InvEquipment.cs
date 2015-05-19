@@ -41,7 +41,7 @@ public class InvEquipment : MonoBehaviour
 			InvGameItem prev = mItems[(int)slot - 1];
 			mItems[(int)slot - 1] = item;
 
-			// Get the list of all attachment points
+			// Get the list of all attachment Coins
 			if (mAttachments == null) mAttachments = GetComponentsInChildren<InvAttachmentPoint>();
 
 			// Equip the item visually

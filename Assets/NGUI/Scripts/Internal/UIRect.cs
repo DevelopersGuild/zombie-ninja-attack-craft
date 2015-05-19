@@ -7,7 +7,7 @@ using UnityEngine;
 
 /// <summary>
 /// Abstract UI rectangle containing functionality common to both panels and widgets.
-/// A UI rectangle contains 4 anchor points (one for each side), and it ensures that they are updated in the proper order.
+/// A UI rectangle contains 4 anchor Coins (one for each side), and it ensures that they are updated in the proper order.
 /// </summary>
 
 public abstract class UIRect : MonoBehaviour
@@ -474,7 +474,7 @@ public abstract class UIRect : MonoBehaviour
 	public void UpdateAnchors () { if (isAnchored) OnAnchor(); }
 
 	/// <summary>
-	/// Update the dimensions of the rectangle using anchor points.
+	/// Update the dimensions of the rectangle using anchor Coins.
 	/// </summary>
 
 	protected abstract void OnAnchor ();

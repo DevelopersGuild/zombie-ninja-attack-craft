@@ -181,7 +181,7 @@ public class UIAtlas : MonoBehaviour
 
 	/// <summary>
 	/// Setting a replacement atlas value will cause everything using this atlas to use the replacement atlas instead.
-	/// Suggested use: set up all your widgets to use a dummy atlas that points to the real atlas. Switching that atlas
+	/// Suggested use: set up all your widgets to use a dummy atlas that Coins to the real atlas. Switching that atlas
 	/// to another one (for example an HD atlas) is then a simple matter of setting this field on your dummy atlas.
 	/// </summary>
 

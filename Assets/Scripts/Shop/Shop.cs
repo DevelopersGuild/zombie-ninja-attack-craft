@@ -44,7 +44,7 @@ public class Shop : MonoBehaviour
           string displayMessage = "You have purchased this item";
           if (Inventory[desiredItem].QuantityOfItem >= desiredQuantity)
           {
-               if(GameManager.getPoints() >= (Inventory[desiredItem].PriceOfItem * desiredQuantity))
+               if(GameManager.getCoins() >= (Inventory[desiredItem].PriceOfItem * desiredQuantity))
                {
                     SpawnItem(desiredItem, desiredQuantity);
                     GameManager.SubtractPoints(Inventory[desiredItem].PriceOfItem * desiredQuantity);

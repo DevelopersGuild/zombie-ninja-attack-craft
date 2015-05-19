@@ -352,7 +352,7 @@ public class UIFont : MonoBehaviour
 
 	/// <summary>
 	/// Setting a replacement atlas value will cause everything using this font to use the replacement font instead.
-	/// Suggested use: set up all your widgets to use a dummy font that points to the real font. Switching that font to
+	/// Suggested use: set up all your widgets to use a dummy font that Coins to the real font. Switching that font to
 	/// another one (for example an eastern language one) is then a simple matter of setting this field on your dummy font.
 	/// </summary>
 

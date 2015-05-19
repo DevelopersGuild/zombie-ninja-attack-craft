@@ -722,7 +722,7 @@ public class UIPanel : UIRect
 	{
 		UpdateTransformMatrix();
 
-		// Transform the specified points from world space to local space
+		// Transform the specified Coins from world space to local space
 		a = worldToLocal.MultiplyPoint3x4(a);
 		b = worldToLocal.MultiplyPoint3x4(b);
 		c = worldToLocal.MultiplyPoint3x4(c);

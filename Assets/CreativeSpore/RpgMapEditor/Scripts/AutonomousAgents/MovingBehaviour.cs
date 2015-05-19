@@ -99,7 +99,7 @@ namespace CreativeSpore
             Vector3 target = Vector3.zero;
             float worldRecord = float.MaxValue;  // Start with a very high record distance that can easily be beaten
 
-            // Loop through all points of the path
+            // Loop through all Coins of the path
             for (int i = 0; i < pathList.Count - 1; i++)
             {
 

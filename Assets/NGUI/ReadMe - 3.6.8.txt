@@ -465,7 +465,7 @@ and it will not be included in the build of your game. It's only used in the edi
 3.2.1 (previously 3.0.7 f1)
 - NEW: Further improved the layout system's presentation, making it less daunting.
 - NEW: Enabling anchoring will automatically anchor to the first parent by default.
-- NEW: It's now possible to automatically anchor to the mid-points (sides, center).
+- NEW: It's now possible to automatically anchor to the mid-Coins (sides, center).
 - NEW: Made it possible to move and scale anchored widgets.
 - FIX: Rotating a widget should no longer hide its side handles.
 - FIX: Mobile keyboard will now have the multi-line option.
@@ -1407,7 +1407,7 @@ http://www.tasharen.com/forum/index.php?topic=11.msg27296#msg27296
 - NEW: UISlider now has horizontal and vertical styles.
 - NEW: Selected widgets now have their gizmos colored green.
 - FIX: UISlider now uses the collider's bounds instead of the target's bounds.
-- FIX: Sliced sprite will now behave better when scaled with all pivot points, not just top-left.
+- FIX: Sliced sprite will now behave better when scaled with all pivot Coins, not just top-left.
 
 1.25:
 - NEW: Added a UIGrid script that can be used to easily arrange icons into a grid.
