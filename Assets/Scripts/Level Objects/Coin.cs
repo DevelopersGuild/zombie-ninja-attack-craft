@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Coin : MonoBehaviour {
+public class Coin : Pickup
+{
+     
 
-    public int value = 25;
+     public override void AddItemToInventory(Collider2D player, int value)
+     {
+          GameManager.AddCoins(value);
+     }
+     
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.GetComponent<Player>() == null) return;
-
-       GameManager.AddCoins(value);
-        gameObject.SetActive(false);
-    }
-
-    public void setValue(int newValue) {
-        value = newValue;
-    }
+     public void setValue(int newValue)
+     {
+          ValueOfPickup = newValue;
+     }
 }
