@@ -82,6 +82,8 @@ public class GameManager : MonoBehaviour
           Score = 0;
           IsCurrentLevelComplete = false;
           timeToCompleteLevel = 0;
+          LoadGameData();
+          GameManager.Notifications.PostNotification(this, "LevelLoaded");
      }
 
      public void LoadGameData()
@@ -176,6 +178,7 @@ public class GameManager : MonoBehaviour
 
      public void SaveGame()
      {
+          GameManager.Notifications.PostNotification(this, "PrepareToSave");
           StateManager.Save(Application.persistentDataPath + "/SaveGame.xml");
      }
 
