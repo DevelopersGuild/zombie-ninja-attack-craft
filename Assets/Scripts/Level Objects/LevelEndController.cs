@@ -14,17 +14,30 @@ public class LevelEndController : MonoBehaviour
      public Button NextLevelButton = null;
      // Use this for initialization
 
+
      public void Start()
      {
           NextLevelButton.enabled = false;
-          GameManager.Notifications.AddListener(this, "EndOfLevelReached");
+          GameManager.Notifications.AddListener(this, "ScoreReadyToDisplay");
      }
 
-     public void EndOfLevelReached()
+     public void ScoreReadyToDisplay()
      {
+          int minutes = 0;
+          int seconds = 0;
           ScoreGUI.text = GameManager.getScore().ToString();
           CoinsGUI.text = GameManager.getCoins().ToString();
-          TimeGUI.text = GameManager.getTime().ToString();
+          float time = GameManager.getTime();
+          if(time > 60)
+          {
+               minutes = (int)time / 60;
+               seconds = (int)time % 60;
+          }
+          else
+          {
+               seconds = (int)time;
+          }
+          TimeGUI.text = minutes + " Minutes and " + seconds + " Seconds";
 
           if(GameManager.getIsLevelComplete() == true)
           {

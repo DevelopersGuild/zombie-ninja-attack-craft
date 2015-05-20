@@ -121,10 +121,6 @@ public class GameManager : MonoBehaviour
      public static float getTime()
      {
           timeToCompleteLevel = Time.time;
-          if (timeToCompleteLevel > 60)
-          {
-               timeToCompleteLevel = timeToCompleteLevel / 60;
-          }
           return timeToCompleteLevel;
      }
 
@@ -145,6 +141,7 @@ public class GameManager : MonoBehaviour
           CalculateScore();
           LevelComplete();
           SaveGame();
+          GameManager.Notifications.PostNotification(this, "ScoreReadyToDisplay");
      }
 
      public void CalculateScore()
