@@ -64,7 +64,7 @@ public class PlayerMoveController : MonoBehaviour {
 
         //Dash Cooldown
         if (dashIn < 0.1) {
-            dashCooldown = true;
+            dashCooldown = false;
             ToWalkPhysics();
         }
         if (dashParticleInstance != null) {

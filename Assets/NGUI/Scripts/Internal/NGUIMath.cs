@@ -635,7 +635,7 @@ static public class NGUIMath
 	}
 
 	/// <summary>
-	/// Determine the distance from the mouse position to the screen space rectangle specified by the 4 points.
+	/// Determine the distance from the mouse position to the screen space rectangle specified by the 4 Coins.
 	/// </summary>
 
 	static public float DistanceToRectangle (Vector2[] screenPoints, Vector2 mousePos)
@@ -677,7 +677,7 @@ static public class NGUIMath
 	}
 
 	/// <summary>
-	/// Determine the distance from the mouse position to the world rectangle specified by the 4 points.
+	/// Determine the distance from the mouse position to the world rectangle specified by the 4 Coins.
 	/// </summary>
 
 	static public float DistanceToRectangle (Vector3[] worldPoints, Vector2 mousePos, Camera cam)

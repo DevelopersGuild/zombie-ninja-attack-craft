@@ -7,7 +7,11 @@ public class Pickup : MonoBehaviour
 
      void Start()
      {
-          ValueOfPickup = Random.Range(1, 4);
+          if(ValueOfPickup  == 0)
+          {
+               ValueOfPickup = Random.Range(1, 4);
+          }
+
      }
 
      void OnTriggerEnter2D(Collider2D other)

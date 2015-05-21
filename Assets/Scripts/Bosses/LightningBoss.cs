@@ -31,7 +31,7 @@ namespace AssemblyCSharp
         //Boss should have high knockback
         //slow normal attack, player can hit first
         //more hp though, so player can't just fist fight to death
-        //runs away at some points?
+        //runs away at some Coins?
         private double overload_Range, charge_Spd, field_Spd, speed_Return;
         //Move order?
         //overload -> normal attack if in range -> lightning storm (effect) -> lightning bolt projectile(to set up other moves) -> thunder (put bolt here instead? depends on thunder activation speed)-> shot -> field -> speed -> charge
