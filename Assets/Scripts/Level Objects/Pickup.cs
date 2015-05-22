@@ -5,7 +5,7 @@ public class Pickup : MonoBehaviour
 {
      public int ValueOfPickup;
 
-     void Start()
+     public virtual void Start()
      {
           if(ValueOfPickup  == 0)
           {
