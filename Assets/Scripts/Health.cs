@@ -96,12 +96,21 @@ public class Health : MonoBehaviour {
     }
 
     public void Death() {
+        isDead = true;
         if (gameObject.tag == "Player") {
             GameManager.Notifications.PostNotification(this, "OnPlayerDeath");
             this.setHealth(startingHealth);
         }
 
-        isDead = true;
+        DropLoot dropLoot;
+        if (dropLoot = GetComponent<DropLoot>()) {
+            //Dont drop loot if its a enemy spawning barrel
+            if (!GetComponent<BarrelSpawn>()) {
+                dropLoot.DropItem();
+            }
+        }
+
+
         Destroy(gameObject);
 
 
@@ -115,13 +124,7 @@ public class Health : MonoBehaviour {
     //Droop loot on death
     public void OnDestroy() {
         if (!isQuitting) {
-            DropLoot dropLoot;
-            if (dropLoot = GetComponent<DropLoot>()) {
-                //Dont drop loot if its a enemy spawning barrel
-                if (!GetComponent<BarrelSpawn>()) {
-                    dropLoot.DropItem();
-                }
-            }
+
         }
     }
 }
