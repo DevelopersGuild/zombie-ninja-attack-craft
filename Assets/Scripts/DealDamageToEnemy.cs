@@ -7,12 +7,13 @@ public class DealDamageToEnemy : MonoBehaviour {
 
     //For colliders
     public void OnCollisionStay2D(Collision2D other) {
-        Debug.Log("COLLIDER!");
+        //Debug.Log("COLLIDER!");
 
         //Check for enemy collision
-        if (other.gameObject.tag == "Attackable") {
+        if (other.gameObject.CompareTag("Attackable")|| other.gameObject.CompareTag("Boss")) {
             //Find components necessary to take damage and knockback
             Health enemyHealth = other.gameObject.GetComponent<Health>();
+            Debug.Log("Ooh baebii" + other.gameObject.tag);
 
             //Deal damage and knockback the enemy
             enemyHealth.CalculateKnockback(other, transform.position);
@@ -28,7 +29,7 @@ public class DealDamageToEnemy : MonoBehaviour {
 
     //For triggers
     public void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("TRIGGER!");
+       // Debug.Log("TRIGGER!");
         //Check for enemy collision
         if (other.tag == "Attackable") {
             //Deal damage, knock back what it collided with, and destory itselfz

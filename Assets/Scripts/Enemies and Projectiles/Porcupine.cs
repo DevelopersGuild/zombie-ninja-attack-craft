@@ -15,7 +15,7 @@ namespace AssemblyCSharp {
         private float currentX, currentY;
         private Transform playerPos;
         private Vector2 distance, direction;
-        private double t;
+        private double t, stop;
 
         //private Animator animator;
 
@@ -28,25 +28,35 @@ namespace AssemblyCSharp {
 
             distance = new Vector2(0, 0);
             t = 3;
+            stop = 1;
         }
 
         public void Update() {
             rnd = new System.Random();
             currentX = transform.position.x;
             currentY = transform.position.y;
-
+            
             if (player != null) {
                 if (sparkTime <= 0) {
                     moveController.Move(0, 0);
                     t = 2;
                     sparkTime = 6;
+                    stop = 0;
                     Instantiate(SparkParticle, transform.position, Quaternion.identity);
-                }else if (t < 1) {
+                }
+
+
+                if (stop < 1)
+                {
+                    moveController.Move(0, 0);
+                }
+                else if (t < 1)
+                {
                     if (GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
                         moveController.Move(0, 0);
                         t = 3;
                     }
-                }
+                } 
                 else if (t < 2 && t > 1.3) {
                     int rand = rnd.Next(1, 5);
                     if (rand == 1) {
@@ -67,6 +77,7 @@ namespace AssemblyCSharp {
                     }
                 }
             }
+            stop += Time.deltaTime;
             t -= Time.deltaTime;
             sparkTime -= Time.deltaTime;
 

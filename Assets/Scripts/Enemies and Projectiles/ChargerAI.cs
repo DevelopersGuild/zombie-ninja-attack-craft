@@ -10,11 +10,11 @@
 using UnityEngine;
 using System;
 
-public class ChargerAI : MonoBehaviour {
+public class ChargerAI : Enemy {
     //Positions
-    public Player player;
-    public float AgroRange;
-    public EnemyMoveController moveController;
+    //public Player player;
+    //public float AgroRange;
+    //public EnemyMoveController moveController;
 
     private Vector2 speed, distance;
 
@@ -90,38 +90,7 @@ public class ChargerAI : MonoBehaviour {
         } //If the player isnt aggroed, it moves randomly
         else {
             //Debug.Log ("is");
-            if (t < 1) {
-                if (GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
-                    //speed = new Vector2 (0, 0);
-                    moveController.Move(0, 0);
-                    t = 3;
-                }
-
-            }
-            else if (t < 2 && t > 1.3) {
-                int rand = rnd.Next(1, 5);
-                if (rand == 1) {
-                    //speed = new Vector2 (2, 0);
-                    moveController.Move(1, 0, 5);
-
-                    t = 1.3;
-                }
-                else if (rand == 2) {
-                    //speed = new Vector2 (-2, 0);
-                    moveController.Move(-1, 0, 5);
-                    t = 1.3;
-                }
-                else if (rand == 3) {
-                    //speed = new Vector2 (0, 2);
-                    moveController.Move(0, 1, 5);
-                    t = 1.3;
-                }
-                else {
-                    //speed = new Vector2 (0, -2);
-                    moveController.Move(0, -1, 5);
-                    t = 1.3;
-                }
-            }
+            idle(t);
             temp -= Time.deltaTime;
             t -= Time.deltaTime;
             //GetComponent<Rigidbody2D> ().velocity = speed;
@@ -147,6 +116,11 @@ public class ChargerAI : MonoBehaviour {
             moveController.Move(xSp / 4, ySp / 4);
         }
 
+    }
+
+    public void onDeath()
+    {
+        //animation
     }
 }
 

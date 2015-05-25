@@ -13,14 +13,15 @@ using UnityEngine;
 namespace AssemblyCSharp
 	
 {
-	public class Flamie : MonoBehaviour
+	public class Flamie : Enemy
 	{
-		private Player player;
-		public float AgroRange;
+		//private Player player;
+		//public float AgroRange;
 		public Projectile fireBlock, fireBlockObject;
         public Explosion explBlock, explBlockObject;
 		
-		private EnemyMoveController moveController;
+		//private EnemyMoveController moveController;
+        private Rigidbody2D rigidbody;
 		private Health health;
 		
 		private bool isAgro;
@@ -31,7 +32,8 @@ namespace AssemblyCSharp
 		private Transform playerPos;
 		private Vector2 distance, speed, facing, direction;
 		private double t,temp,fireBlock_CD;
-		
+
+        private double fireDist, vel;
 		//private Animator animator;
 		
 		
@@ -41,6 +43,7 @@ namespace AssemblyCSharp
 			moveController = GetComponent<EnemyMoveController> ();
 			health = GetComponent<Health> ();
             player = FindObjectOfType<Player>();
+            rigidbody = GetComponent<Rigidbody2D>();
 			
 			distance = new Vector2 (0, 0);
 			speed = new Vector2 (0, 0);
@@ -51,14 +54,11 @@ namespace AssemblyCSharp
 			fireBlock_CD = 0;
 			
 			facing = new Vector2 (0, 0);
-			
+            fireDist = fireBlockObject.GetComponent<Collider2D>().bounds.size.magnitude;
 		}
 		
 		public void Update() {
-            if (health.currentHp() == 0)
-            {
-                onDeath();
-            }
+            vel = rigidbody.velocity.magnitude;
 			rnd = new System.Random ();
 			currentX = transform.position.x;
 			currentY = transform.position.y;
@@ -67,9 +67,17 @@ namespace AssemblyCSharp
             //Vector3 fireVect = new Vector3(direction.normalized.x/(-8), direction.normalized.y/(-8), 0);
 
 			//place fire block that deals damage to enemy (projectile that stays in one spot?)
-			if (fireBlock_CD < 0.5) {
+            //time = distance/speed, create new block after passing the old one.
+			if (vel > 0.2 && fireBlock_CD < fireDist/vel) {
 				fireBlock = Instantiate (fireBlockObject, transform.position, transform.rotation) as Projectile;
+                fireBlock_CD = 0;
 			}
+            else if (vel < 0.2 && fireBlock_CD < 1)
+            {
+                fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
+                fireBlock_CD = 0;
+
+            }
 			if (player != null) {
 				//basic aggression range formula
                 playerPos = player.transform;
@@ -80,6 +88,7 @@ namespace AssemblyCSharp
 				distance = playerPos.position - transform.position;
 				if (distance.magnitude <= AgroRange) {
 					isAgro = true;
+                    fireBlock_CD = fireDist/vel;
 
 				}
 				if (distance.magnitude > AgroRange) {
@@ -87,55 +96,17 @@ namespace AssemblyCSharp
 				}
 				
 				if (isAgro) {
-                    if (fireBlock_CD < 0.4 || fireBlock_CD > 0.6) {
-					    fireBlock_CD = 0.6;
-                    }
 
 					moveController.Move (direction.normalized, 8);
 					
 				} else {
-					//Debug.Log ("is");
-					if (t < 1) {
-						if (GetComponent<Rigidbody2D> ().velocity.magnitude != 0) {
-							//speed = new Vector2 (0, 0);
-							moveController.Move (0,0);
-                            fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
-							fireBlock_CD = 10;
-							t = 3;
-						}
-					} else if (t < 2 && t > 1.3) {
-						int rand = rnd.Next (1, 5);
-						if (rand == 1) {
-							//speed = new Vector2 (2, 0);
-							moveController.Move (1,0,5);
-							fireBlock_CD = 0.6;
-							t = 1.3;
-						} else if (rand == 2) {
-							//speed = new Vector2 (-2, 0);
-							moveController.Move (-1,0,5);
-                            fireBlock_CD = 0.6;
-							t = 1.3;
-						} else if (rand == 3) {
-							//speed = new Vector2 (0, 2);
-							moveController.Move (0,1,5);
-                            fireBlock_CD = 0.6;
-							t = 1.3;
-						} else if (rand == 4) {
-							//speed = new Vector2 (0, -2);
-							moveController.Move (0,-1,5);
-                            fireBlock_CD = 0.6;
-							t = 1.3;
-						}
-					}
+                    idle(t);
 					t -= Time.deltaTime;
-
+                    //fireBlock_CD
 					//GetComponent<Rigidbody2D> ().velocity = speed;
 					
 				}
-                if (fireBlock_CD >= 0.5)
-                {
-                    fireBlock_CD -= Time.deltaTime;
-                }
+                fireBlock_CD += Time.deltaTime;
 				//cd1 += Time.deltaTime;
 				//cd2 += Time.deltaTime;
 			}
@@ -143,25 +114,6 @@ namespace AssemblyCSharp
             {
                 onDeath();
             }
-		}
-		
-		public Vector2 getIdle() {
-			// facing = moveController.getFacing ();
-			float thisX = transform.position.x;
-			float thisY = transform.position.y;
-			if (facing.x == 1) {
-				return new Vector2(thisX - 1, thisY - 1);  
-			}
-			else if (facing.x == -1) {
-				return new Vector2(thisX + 1, thisY - 1);  
-			}
-			else if (facing.y == 1) {
-				return new Vector2(thisX + 1, thisY - 1);  
-			}
-			else if (facing.y == -1) {
-				return new Vector2(thisX - 1, thisY + 1);  
-			}
-			return new Vector2(0,0);
 		}
 		
 		public bool getAgro() {
@@ -175,7 +127,7 @@ namespace AssemblyCSharp
         public void onDeath() {
             //play pre-explosion animation
             Explosion lnd = Instantiate(explBlockObject, transform.position, transform.rotation) as Explosion;
-            Debug.Log("WOW!");
+            Debug.Log("WOW! I JUST EXPLODED!");
             //death animation
         }
 		

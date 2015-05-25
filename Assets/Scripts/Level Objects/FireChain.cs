@@ -4,7 +4,8 @@ using System.Collections;
 public class FireChain : MonoBehaviour {
 
     public float speed;
-    private float rotation;
+    public bool laserOne, laserTwo;
+    private float rotation, fin;
 
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -14,5 +15,36 @@ public class FireChain : MonoBehaviour {
         if (rotation > 360) {
             rotation = 0;
         }
+        if (laserOne)
+        {
+            if (rotation > fin)
+            {
+                Destroy(gameObject);
+            }
+
+        }
+        else if (laserTwo)
+        {
+            if (rotation < fin)
+            {
+                Destroy(gameObject);
+            }
+        }
+        
 	}
+
+    public void setLaserOne(float start,float finish)
+    {
+        rotation = start;
+        fin = finish;
+        laserOne = true;
+    }
+
+    public void setLaserTwo(float start, float finish)
+    {
+        rotation = start;
+        fin = finish;
+        speed *= -1;
+        laserTwo = true;
+    }
 }

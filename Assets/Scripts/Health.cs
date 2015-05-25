@@ -97,7 +97,11 @@ public class Health : MonoBehaviour {
             GameManager.Notifications.PostNotification(this, "OnPlayerDeath");
             this.setHealth(startingHealth);
         }
-
+        else if (gameObject.GetComponent<Enemy>() != null)
+        {
+            Enemy enem = gameObject.GetComponent<Enemy>();
+            enem.onDeath();
+        }
         isDead = true;
         Destroy(gameObject);
 
@@ -108,8 +112,7 @@ public class Health : MonoBehaviour {
         isQuitting = true;
     }
 
-    //Droop loot on death
-    //Droop loot on death
+    //Drop loot on death
     public void OnDestroy() {
         if (!isQuitting) {
             DropLoot dropLoot;
