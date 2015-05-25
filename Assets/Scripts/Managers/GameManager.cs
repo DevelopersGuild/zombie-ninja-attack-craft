@@ -142,6 +142,7 @@ public class GameManager : MonoBehaviour
      {
           CalculateScore();
           LevelComplete();
+          GameManager.Notifications.PostNotification(this, "PrepareToSave");
           SaveGame();
           GameManager.Notifications.PostNotification(this, "ScoreReadyToDisplay");
      }

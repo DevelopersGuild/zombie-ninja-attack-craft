@@ -17,8 +17,11 @@ public class LoadAndSaveManager : MonoBehaviour
 
           public class PlayerData
           {
-               public bool BowUnlocked;
-
+               public bool IsBowUnlocked;
+               public bool IsBowHoldDownUnlocked;
+               public bool IsShieldUnlocked;
+               public int StartingHealth;
+               public float DashSpeed;
           }
           public List<GameLevelData> GameLevels = new List<GameLevelData>();
 

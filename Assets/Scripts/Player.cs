@@ -9,8 +9,11 @@ public class Player : MonoBehaviour
      private AttackController attackController;
      public Health health;
      public bool gotAttacked;
-     //Change later once the player progression system exists 
+
+     //Variabls for player progression
      public bool BowUnlocked;
+     public bool UpgradedBow;
+     LoadAndSaveManager.GameStateData.PlayerData DataAboutPlayer;
 
      //Double tap flags
      private float ButtonCooler;
@@ -22,11 +25,14 @@ public class Player : MonoBehaviour
      private float tapSpeed;
 
      private int keyCount;
+     private bool keyHeldDown;
 
      //Timers
      public bool isInvincible;
      public float timeSpentInvincible;
      public float attackedTimer;
+     public float TimeBowCharging;
+     public float BaseTime;
 
 
      void Awake()
@@ -37,8 +43,26 @@ public class Player : MonoBehaviour
           attackController = GetComponent<AttackController>();
           tapSpeed = .25f;
           BowUnlocked = true;
+          GameManager.Notifications.AddListener(this, "LevelLoaded");
+          GameManager.Notifications.AddListener(this, "PrepareToSave");
      }
 
+     public void LevelLoaded()
+     {
+          DataAboutPlayer = GameManager.StateManager.GameState.Player;
+          BowUnlocked = DataAboutPlayer.IsBowUnlocked;
+          playerMoveController.setDashSpeed(DataAboutPlayer.DashSpeed);
+
+
+     }
+
+     public void PrepareToSave()
+     {
+          BowUnlocked = true;
+          DataAboutPlayer.IsBowUnlocked = BowUnlocked;
+          DataAboutPlayer.DashSpeed = playerMoveController.getDashSpeed();
+          GameManager.StateManager.GameState.Player = DataAboutPlayer;
+     }
 
      // Update is called once per frame
      void Update()
@@ -78,9 +102,27 @@ public class Player : MonoBehaviour
                attackController.Attack();
           }
 
-          if (Input.GetButtonDown("Fire2") && attackController.CanAttack() && BowUnlocked == true)
+          if (Input.GetButtonDown("Fire2"))
           {
-               attackController.ShootProjectile();
+               if(BaseTime == 0)
+               {
+                    BaseTime = Time.time;
+               }
+          }
+          if (Input.GetButtonUp("Fire2") && attackController.CanAttack() && BowUnlocked == true)
+          {
+               TimeBowCharging = Time.time;
+               double timeDifference = TimeBowCharging - BaseTime;
+               if (timeDifference  < 1.0f)
+               {
+                    attackController.ShootProjectile();
+               }
+               else
+               {
+                    attackController.ShootProjectile(3);
+               }
+               BaseTime = 0;
+
           }
 
 

@@ -1,127 +1,147 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Health : MonoBehaviour {
-    public int startingHealth = 10;
-    public int currentHealth;
-    public int CoinValue;
-    public bool isDead;
+public class Health : MonoBehaviour
+{
+     public int startingHealth = 10;
+     public int currentHealth;
+     public int CoinValue;
+     public bool isDead;
 
-    private bool isQuitting;
+     private bool isQuitting;
 
-    private Animator anim;
-    private AudioSource enemyAudio;
-    public ParticleSystem particle;
-    public ParticleSystem deathParticle;
+     private Animator anim;
+     private AudioSource enemyAudio;
+     public ParticleSystem particle;
+     public ParticleSystem deathParticle;
 
-    // Use this for initialization
-    void Start() {
-        isDead = false;
-        currentHealth = startingHealth;
-    }
+     // Use this for initialization
+     void Start()
+     {
+          isDead = false;
+          currentHealth = startingHealth;
+     }
 
-    public void replenish(int amt) {
-        currentHealth += amt;
-        if (currentHealth > startingHealth)
-            currentHealth = startingHealth;
-    }
+     public void replenish(int amt)
+     {
+          currentHealth += amt;
+          if (currentHealth > startingHealth)
+               currentHealth = startingHealth;
+     }
 
-    public void setHealth(int amt) {
-        currentHealth = amt;
-    }
-    public int currentHp() {
-        return currentHealth;
-    }
+     public void setHealth(int amt)
+     {
+          currentHealth = amt;
+     }
+     public int currentHp()
+     {
+          return currentHealth;
+     }
 
-    public void TakeDamage(int amount) {
-        currentHealth -= amount;
+     public void TakeDamage(int amount)
+     {
+          currentHealth -= amount;
 
-        // Instantiate a particle effect if it has one
-        if (particle != null && currentHealth > 0) {
-            Instantiate(particle, transform.position, transform.rotation);
-        }
-        else if (deathParticle != null && currentHealth <= 0) {
-            Instantiate(deathParticle, transform.position, transform.rotation);
-        }
+          // Instantiate a particle effect if it has one
+          if (particle != null && currentHealth > 0)
+          {
+               Instantiate(particle, transform.position, transform.rotation);
+          }
+          else if (deathParticle != null && currentHealth <= 0)
+          {
+               Instantiate(deathParticle, transform.position, transform.rotation);
+          }
 
-        if (GetComponent<Player>()) {
-            FindObjectOfType<CreativeSpore.FollowObjectBehaviour>().CameraShake();
-        }
-
-
-        if (currentHealth <= 0) {
-            Death();
-        }
-    }
-
-    //For triggers
-    public void CalculateKnockback(Collider2D other, Vector2 currentPosition) {
-        //Calculate point of collision and knockback accordingly
-        Vector3 contactPoint = other.transform.position;
-        Vector3 center = currentPosition;
-        EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
-        PlayerMoveController playerMoveController = other.gameObject.GetComponent<PlayerMoveController>();
-
-        if (enemyMoveController != null) {
-            Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            enemyMoveController.Knockback(pushDirection.normalized);
-        }
-        else {
-            Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            playerMoveController.Knockback(pushDirection.normalized);
-        }
-
-    }
-
-    //For colliders
-    public void CalculateKnockback(Collision2D other, Vector2 currentPosition)
-    {
-         //Calculate point of collision and knockback accordingly
-         Vector3 contactPoint = other.transform.position;
-         Vector3 center = currentPosition;
-         EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
-         PlayerMoveController playerMoveController = other.gameObject.GetComponent<PlayerMoveController>();
-
-         if (enemyMoveController != null)
-         {
-              Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-              enemyMoveController.Knockback(pushDirection.normalized);
-         }
-         else if (playerMoveController != null)
-         {
-              Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-              playerMoveController.Knockback(pushDirection.normalized);
-         }
-
-    }
-
-    public void Death() {
-        if (gameObject.tag == "Player") {
-            GameManager.Notifications.PostNotification(this, "OnPlayerDeath");
-            this.setHealth(startingHealth);
-        }
-
-        isDead = true;
-        Destroy(gameObject);
+          if (GetComponent<Player>())
+          {
+               FindObjectOfType<CreativeSpore.FollowObjectBehaviour>().CameraShake();
+          }
 
 
-    }
+          if (currentHealth <= 0)
+          {
+               Death();
+          }
+     }
 
-    void OnApplicationQuit() {
-        isQuitting = true;
-    }
+     //For triggers
+     public void CalculateKnockback(Collider2D other, Vector2 currentPosition)
+     {
+          //Calculate point of collision and knockback accordingly
+          Vector3 contactPoint = other.transform.position;
+          Vector3 center = currentPosition;
+          EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
+          PlayerMoveController playerMoveController = other.gameObject.GetComponent<PlayerMoveController>();
 
-    //Droop loot on death
-    //Droop loot on death
-    public void OnDestroy() {
-        if (!isQuitting) {
-            DropLoot dropLoot;
-            if (dropLoot = GetComponent<DropLoot>()) {
-                //Dont drop loot if its a enemy spawning barrel
-                if (!GetComponent<BarrelSpawn>()) {
-                    dropLoot.DropItem();
-                }
-            }
-        }
-    }
+          if (enemyMoveController != null)
+          {
+               Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+               enemyMoveController.Knockback(pushDirection.normalized);
+          }
+          else
+          {
+               Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+               playerMoveController.Knockback(pushDirection.normalized);
+          }
+
+     }
+
+     //For colliders
+     public void CalculateKnockback(Collision2D other, Vector2 currentPosition)
+     {
+          //Calculate point of collision and knockback accordingly
+          Vector3 contactPoint = other.transform.position;
+          Vector3 center = currentPosition;
+          EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
+          PlayerMoveController playerMoveController = other.gameObject.GetComponent<PlayerMoveController>();
+
+          if (enemyMoveController != null)
+          {
+               Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+               enemyMoveController.Knockback(pushDirection.normalized);
+          }
+          else if (playerMoveController != null)
+          {
+               Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+               playerMoveController.Knockback(pushDirection.normalized);
+          }
+
+     }
+
+     public void Death()
+     {
+          if (gameObject.tag == "Player")
+          {
+               GameManager.Notifications.PostNotification(this, "OnPlayerDeath");
+               this.setHealth(startingHealth);
+          }
+
+          isDead = true;
+          Destroy(gameObject);
+
+
+     }
+
+     void OnApplicationQuit()
+     {
+          isQuitting = true;
+     }
+
+     //Droop loot on death
+     //Droop loot on death
+     public void OnDestroy()
+     {
+          if (!isQuitting)
+          {
+               DropLoot dropLoot;
+               if (dropLoot = GetComponent<DropLoot>())
+               {
+                    //Dont drop loot if its a enemy spawning barrel
+                    if (!GetComponent<BarrelSpawn>())
+                    {
+                         dropLoot.DropItem();
+                    }
+               }
+          }
+     }
 }
