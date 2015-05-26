@@ -3,20 +3,22 @@ using System.Collections;
 
 public class Door : MonoBehaviour {
 
-    Sprite opened;
-    Sprite closed;
+    public Sprite opened;
+    public Sprite closed;
 
     SpriteRenderer sr;
-    private BoxCollider2D collider;
+    public BoxCollider2D collider;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         collider = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
 	}
 
     // Open the door by disabling the collider and changin the sprite 
     public void OpenDoor() {
+        Debug.Log("as");
         collider.enabled = false;
+        Debug.Log("asa");
         if (opened != null) {
             sr.sprite = opened;
         }else{

@@ -17,10 +17,13 @@ public class RoomUnlock : MonoBehaviour {
         isActive = false;
 
         foreach (Door door in doors) {
+            Debug.Log("preopened" + doors.Count);
             door.OpenDoor();
+            Debug.Log("opened" + doors.Count);
         }
         foreach (GameObject enemy in enemies) {
             enemy.SetActive(false);
+            Debug.Log("enemies");
         }
         foreach (GameObject reward in rewards) {
             reward.SetActive(false);
@@ -69,6 +72,6 @@ public class RoomUnlock : MonoBehaviour {
         foreach (GameObject reward in rewards) {
             reward.SetActive(true);
         }
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 }
