@@ -8,7 +8,7 @@ public class DealDamageToEnemy : MonoBehaviour
      private Projectile projectile;
      private bool isProjectile = false;
      private bool isPowerShot = false;
-     private int eneniesHit = 0;
+     private int enemiesHit = 0;
 
      //For colliders
      public void OnCollisionStay2D(Collision2D other)
@@ -25,7 +25,7 @@ public class DealDamageToEnemy : MonoBehaviour
                //Deal damage and knockback the enemy
                enemyHealth.CalculateKnockback(other, transform.position);
                enemyHealth.TakeDamage(damageAmount);
-               eneniesHit++;
+               enemiesHit++;
           }
 
           //Destroy gameobject if its a projectile
@@ -47,7 +47,7 @@ public class DealDamageToEnemy : MonoBehaviour
                {
                     enemyHealth.CalculateKnockback(other, transform.position);
                }
-               eneniesHit++;
+               enemiesHit++;
           }
 
           //Destroy itself if its a projectile
@@ -71,7 +71,7 @@ public class DealDamageToEnemy : MonoBehaviour
      {
           if(isPowerShot == true)
           {
-               if (isObjectProjectile == true && eneniesHit == 2)
+               if (isObjectProjectile == true && enemiesHit == 2)
                {
                     Destroy(gameObject);
                }

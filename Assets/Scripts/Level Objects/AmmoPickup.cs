@@ -20,7 +20,7 @@ public class AmmoPickup : Pickup
         if (other.gameObject.tag == "Player") {
             grabbed = true;
             attackController = other.gameObject.GetComponent<AttackController>();
-            attackController.ammo += ammoValue;
+            attackController.Ammo += ammoValue;
 
             Tweener tween = transform.DOMove(Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth - 100, Camera.main.pixelHeight - 10)), 1, false)
                             .OnStepComplete(() => {
@@ -36,6 +36,6 @@ public class AmmoPickup : Pickup
     public override void AddItemToInventory(Collider2D player, int value)
     {
           attackController = player.gameObject.GetComponent<AttackController>();
-          attackController.ammo += value;
+          attackController.Ammo += value;
     }
 }

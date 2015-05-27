@@ -13,7 +13,10 @@ public class Player : MonoBehaviour
      //Variabls for player progression
      public bool BowUnlocked;
      public bool UpgradedBow;
+     public bool OtherWeaponsUnlocked;
      LoadAndSaveManager.GameStateData.PlayerData DataAboutPlayer;
+     public enum SecondaryWeapons {Projectile, Mine};
+     public SecondaryWeapons ChosenWeapon;
 
      //Double tap flags
      private float ButtonCooler;
@@ -45,6 +48,9 @@ public class Player : MonoBehaviour
           BowUnlocked = true;
           GameManager.Notifications.AddListener(this, "LevelLoaded");
           GameManager.Notifications.AddListener(this, "PrepareToSave");
+          ChosenWeapon = SecondaryWeapons.Projectile;
+          //-----------------------------------------------------------change after varible intergrated into player progression system.
+          OtherWeaponsUnlocked = true;
      }
 
      public void LevelLoaded()
@@ -96,6 +102,18 @@ public class Player : MonoBehaviour
                playerMoveController.Dash();
           }
 
+          if (Input.GetButtonDown("Switch") && OtherWeaponsUnlocked == true)
+          {
+               if(ChosenWeapon == SecondaryWeapons.Projectile)
+               {
+                    ChosenWeapon = SecondaryWeapons.Mine;
+               }
+               else if(ChosenWeapon == SecondaryWeapons.Mine)
+               {
+                    ChosenWeapon = SecondaryWeapons.Projectile;
+               }
+          }
+
           //Check for attack input
           if (Input.GetButtonDown("Fire1") && attackController.CanAttack())
           {
@@ -104,25 +122,36 @@ public class Player : MonoBehaviour
 
           if (Input.GetButtonDown("Fire2"))
           {
-               if(BaseTime == 0)
+               if(ChosenWeapon == SecondaryWeapons.Projectile)
                {
-                    BaseTime = Time.time;
+                    if (BaseTime == 0)
+                    {
+                         BaseTime = Time.time;
+                    }
                }
+               if(ChosenWeapon == SecondaryWeapons.Mine)
+               {
+                    attackController.PlaceMine();
+               }
+
           }
+
           if (Input.GetButtonUp("Fire2") && attackController.CanAttack() && BowUnlocked == true)
           {
-               TimeBowCharging = Time.time;
-               double timeDifference = TimeBowCharging - BaseTime;
-               if (timeDifference  < 1.0f)
+               if(ChosenWeapon == SecondaryWeapons.Projectile)
                {
-                    attackController.ShootProjectile();
+                    TimeBowCharging = Time.time;
+                    double timeDifference = TimeBowCharging - BaseTime;
+                    if (timeDifference < 1.0f)
+                    {
+                         attackController.ShootProjectile();
+                    }
+                    else
+                    {
+                         attackController.ShootProjectile(3);
+                    }
+                    BaseTime = 0;
                }
-               else
-               {
-                    attackController.ShootProjectile(3);
-               }
-               BaseTime = 0;
-
           }
 
 
