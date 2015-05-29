@@ -194,4 +194,13 @@ public class GameManager : MonoBehaviour
      {
           Application.Quit();
      }
+
+     public void ResetGameProgression()
+     {
+          foreach(LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
+          {
+
+          }
+
+     }
 }

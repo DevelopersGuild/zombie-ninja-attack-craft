@@ -36,6 +36,8 @@ public class PlayerMoveController : MonoBehaviour
      private float knockBackTime;
      private float timeSpentKnockedBack;
      private Vector2 knockbackDirection;
+     //Player Progression
+     public bool IsDashUnlocked = true;
 
 
      public float getDashSpeed()
@@ -246,7 +248,7 @@ public class PlayerMoveController : MonoBehaviour
      {
           // Debug.Log("Facing:" + facing);
           // Only let the player dash if the cooldown is < 0. If he can, dash and reset the timer       
-          if (canDash)
+          if (canDash == true && IsDashUnlocked == true)
           {
                // Change these rigidbody parameters so the dashing feels better
                ToDashPhysics();
@@ -311,9 +313,8 @@ public class PlayerMoveController : MonoBehaviour
           GetComponent<Rigidbody2D>().mass = 2;
      }
 
-
-
-
-
-
+     public void SetDashLockState(bool value)
+     {
+          IsDashUnlocked = value;
+     }
 }

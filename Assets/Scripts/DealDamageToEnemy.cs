@@ -5,6 +5,7 @@ public class DealDamageToEnemy : MonoBehaviour
 {
 
      public int damageAmount = 1;
+     public int NumberOfEnemiesCanHit = 2;
      private Projectile projectile;
      private bool isProjectile = false;
      private bool isPowerShot = false;
@@ -71,7 +72,7 @@ public class DealDamageToEnemy : MonoBehaviour
      {
           if(isPowerShot == true)
           {
-               if (isObjectProjectile == true && enemiesHit == 2)
+               if (isObjectProjectile == true && enemiesHit == NumberOfEnemiesCanHit)
                {
                     Destroy(gameObject);
                }

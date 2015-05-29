@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
      public Health health;
      public bool gotAttacked;
 
-     //Variabls for player progression
+     //Player progression
      public bool BowUnlocked;
      public bool UpgradedBow;
      public bool OtherWeaponsUnlocked;
@@ -57,6 +57,9 @@ public class Player : MonoBehaviour
      {
           DataAboutPlayer = GameManager.StateManager.GameState.Player;
           BowUnlocked = DataAboutPlayer.IsBowUnlocked;
+          UpgradedBow = DataAboutPlayer.IsBowHoldDownUnlocked;
+          playerMoveController.SetDashLockState(DataAboutPlayer.IsDashUnlocked);
+          OtherWeaponsUnlocked = DataAboutPlayer.IsLandMineUnlocked;
           playerMoveController.setDashSpeed(DataAboutPlayer.DashSpeed);
 
 

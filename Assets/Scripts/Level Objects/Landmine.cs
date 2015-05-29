@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Landmine : MonoBehaviour
+public class Landmine : Pickup
 {
 
      public Explosion explosion;
      public SpriteRenderer sprite;
 
+
      private bool isActive;
      public float timeToExplode;
      private float currentTime;
      private Collider2D enemy;
+     private AttackController attackController;
 
      // Use this for initialization
      void Start()
@@ -52,5 +54,11 @@ public class Landmine : MonoBehaviour
                isActive = true;
           }
 
+     }
+
+     public override void AddItemToInventory(Collider2D player, int value)
+     {
+          attackController = player.gameObject.GetComponent<AttackController>();
+          attackController.Ammo += value;
      }
 }
