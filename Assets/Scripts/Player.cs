@@ -9,8 +9,14 @@ public class Player : MonoBehaviour
      private AttackController attackController;
      public Health health;
      public bool gotAttacked;
-     //Change later once the player progression system exists 
+
+     //Player progression
      public bool BowUnlocked;
+     public bool UpgradedBow;
+     public bool OtherWeaponsUnlocked;
+     LoadAndSaveManager.GameStateData.PlayerData DataAboutPlayer;
+     public enum SecondaryWeapons {Projectile, Mine};
+     public SecondaryWeapons ChosenWeapon;
 
      //Double tap flags
      private float ButtonCooler;
@@ -22,11 +28,14 @@ public class Player : MonoBehaviour
      private float tapSpeed;
 
      private int keyCount;
+     private bool keyHeldDown;
 
      //Timers
      public bool isInvincible;
      public float timeSpentInvincible;
      public float attackedTimer;
+     public float TimeBowCharging;
+     public float BaseTime;
 
 
      void Awake()
@@ -37,8 +46,32 @@ public class Player : MonoBehaviour
           attackController = GetComponent<AttackController>();
           tapSpeed = .25f;
           BowUnlocked = true;
+          GameManager.Notifications.AddListener(this, "LevelLoaded");
+          GameManager.Notifications.AddListener(this, "PrepareToSave");
+          ChosenWeapon = SecondaryWeapons.Projectile;
+          //-----------------------------------------------------------change after varible intergrated into player progression system.
+          OtherWeaponsUnlocked = true;
      }
 
+     public void LevelLoaded()
+     {
+          DataAboutPlayer = GameManager.StateManager.GameState.Player;
+          BowUnlocked = DataAboutPlayer.IsBowUnlocked;
+          UpgradedBow = DataAboutPlayer.IsBowHoldDownUnlocked;
+          playerMoveController.SetDashLockState(DataAboutPlayer.IsDashUnlocked);
+          OtherWeaponsUnlocked = DataAboutPlayer.IsLandMineUnlocked;
+          playerMoveController.setDashSpeed(DataAboutPlayer.DashSpeed);
+
+
+     }
+
+     public void PrepareToSave()
+     {
+          BowUnlocked = true;
+          DataAboutPlayer.IsBowUnlocked = BowUnlocked;
+          DataAboutPlayer.DashSpeed = playerMoveController.getDashSpeed();
+          GameManager.StateManager.GameState.Player = DataAboutPlayer;
+     }
 
      // Update is called once per frame
      void Update()
@@ -72,15 +105,56 @@ public class Player : MonoBehaviour
                playerMoveController.Dash();
           }
 
+          if (Input.GetButtonDown("Switch") && OtherWeaponsUnlocked == true)
+          {
+               if(ChosenWeapon == SecondaryWeapons.Projectile)
+               {
+                    ChosenWeapon = SecondaryWeapons.Mine;
+               }
+               else if(ChosenWeapon == SecondaryWeapons.Mine)
+               {
+                    ChosenWeapon = SecondaryWeapons.Projectile;
+               }
+          }
+
           //Check for attack input
           if (Input.GetButtonDown("Fire1") && attackController.CanAttack())
           {
                attackController.Attack();
           }
 
-          if (Input.GetButtonDown("Fire2") && attackController.CanAttack() && BowUnlocked == true)
+          if (Input.GetButtonDown("Fire2"))
           {
-               attackController.ShootProjectile();
+               if(ChosenWeapon == SecondaryWeapons.Projectile)
+               {
+                    if (BaseTime == 0)
+                    {
+                         BaseTime = Time.time;
+                    }
+               }
+               if(ChosenWeapon == SecondaryWeapons.Mine)
+               {
+                    attackController.PlaceMine();
+               }
+
+          }
+
+          if (Input.GetButtonUp("Fire2") && attackController.CanAttack() && BowUnlocked == true)
+          {
+               if(ChosenWeapon == SecondaryWeapons.Projectile)
+               {
+                    TimeBowCharging = Time.time;
+                    double timeDifference = TimeBowCharging - BaseTime;
+                    if (timeDifference < 1.0f)
+                    {
+                         attackController.ShootProjectile();
+                    }
+                    else
+                    {
+                         attackController.ShootProjectile(3);
+                    }
+                    BaseTime = 0;
+               }
           }
 
 

@@ -22,6 +22,6 @@ public class GUIScript : MonoBehaviour {
 	void Update () {
         healthLabel.text = playerHealth.currentHealth.ToString();
         scoreLabel.text = GameManager.getCoins().ToString();
-        ammoLabel.text = playerAttackController.ammo.ToString();
+        ammoLabel.text = playerAttackController.Ammo.ToString();
 	}
 }

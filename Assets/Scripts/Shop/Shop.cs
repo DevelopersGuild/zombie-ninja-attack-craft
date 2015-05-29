@@ -16,6 +16,14 @@ public class Shop : MonoBehaviour
           Inventory["Arrows"].TypeOfItem = temp.GetComponent<Pickup>();
           Inventory["Arrows"].QuantityOfItem = 5;
           Inventory["Arrows"].PriceOfItem = 1;
+
+          temp = new GameObject();
+          temp.AddComponent<Landmine>();
+          Inventory.Add("LandMine", new InventoryItem());
+          Inventory["LandMine"].TypeOfItem = temp.GetComponent<Pickup>();
+          Inventory["LandMine"].QuantityOfItem = 5;
+          Inventory["LandMine"].PriceOfItem = 1;
+
           /*
           Inventory.Add("Health", new InventoryItem());
           Inventory["Health"].TypeOfItem = new HealthPickup();

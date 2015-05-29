@@ -142,6 +142,7 @@ public class GameManager : MonoBehaviour
      {
           CalculateScore();
           LevelComplete();
+          GameManager.Notifications.PostNotification(this, "PrepareToSave");
           SaveGame();
           GameManager.Notifications.PostNotification(this, "ScoreReadyToDisplay");
      }
@@ -192,5 +193,14 @@ public class GameManager : MonoBehaviour
      public void QuitGame()
      {
           Application.Quit();
+     }
+
+     public void ResetGameProgression()
+     {
+          foreach(LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
+          {
+
+          }
+
      }
 }

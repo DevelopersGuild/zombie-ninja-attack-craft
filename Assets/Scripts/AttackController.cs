@@ -13,7 +13,9 @@ public class AttackController : MonoBehaviour
      private Vector2 playerPosition;
 
      public Projectile PlayerArrow;
-     public int ammo;
+     public Landmine PlayerMine;
+     public int Ammo;
+     public int Mines;
 
      // Use this for initialization
      void Start()
@@ -23,7 +25,8 @@ public class AttackController : MonoBehaviour
           moveController = GetComponent<PlayerMoveController>();
           attackCollider = FindObjectOfType<ColliderInteractions>().GetComponent<BoxCollider2D>();
           attackCollider.enabled = false;
-          ammo = 5;
+          Ammo = 5;
+          Mines = 3;
      }
 
      // Update is called once per frame
@@ -81,11 +84,11 @@ public class AttackController : MonoBehaviour
           }
      }
 
-     public void ShootProjectile()
+     public void ShootProjectile(int damage = 1)
      {
-          if (ammo > 0)
+          if (Ammo > 0)
           {
-               ammo--;
+               Ammo--;
                //Set Attack Flags
                isAttacking = true;
                moveController.isDashing = false;
@@ -96,26 +99,42 @@ public class AttackController : MonoBehaviour
                if (moveController.facing.x > 0)
                {
                     Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x + 0.25f, transform.position.y), transform.rotation) as Projectile;
-                    projectile.Shoot(0, new Vector2(1, 0));
+                    projectile.Shoot(0, new Vector2(1, 0), damage);
                }
                else if (moveController.facing.x < 0)
                {
                     Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x - 0.25f, transform.position.y), transform.rotation) as Projectile;
-                    projectile.Shoot(180, new Vector2(-1, 0));
+                    projectile.Shoot(180, new Vector2(-1, 0), damage);
                }
                else if (moveController.facing.y > 0)
                {
                     Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x, transform.position.y + 0.25f), transform.rotation) as Projectile;
-                    projectile.Shoot(90, new Vector2(0, 1));
+                    projectile.Shoot(90, new Vector2(0, 1), damage);
                }
                else if (moveController.facing.y < 0)
                {
                     Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x, transform.position.y - 0.25f), transform.rotation) as Projectile;
-                    projectile.Shoot(-90, new Vector2(0, -1));
+                    projectile.Shoot(-90, new Vector2(0, -1), damage);
                }
 
                FinishedAttacking();
           }
+     }
+
+     public void PlaceMine(int damage = 1)
+     {
+          if(Mines > 0)
+          {
+               Mines--;
+               isAttacking = true;
+               moveController.isDashing = false;
+               moveController.canDash = false;
+
+               Landmine mine = Instantiate(PlayerMine, new Vector2(transform.position.x, transform.position.y), Quaternion.identity) as Landmine;
+
+
+          }
+          FinishedAttacking();
      }
 
      public void FinishedAttacking()
