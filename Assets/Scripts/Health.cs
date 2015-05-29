@@ -74,25 +74,29 @@ public class Health : MonoBehaviour {
     }
 
     //For colliders
-    public void CalculateKnockback(Collision2D other, Vector2 currentPosition) {
-        //Calculate point of collision and knockback accordingly
-        Vector3 contactPoint = other.transform.position;
-        Vector3 center = currentPosition;
-        EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
-        PlayerMoveController playerMoveController = other.gameObject.GetComponent<PlayerMoveController>();
+    public void CalculateKnockback(Collision2D other, Vector2 currentPosition)
+    {
+         //Calculate point of collision and knockback accordingly
+         Vector3 contactPoint = other.transform.position;
+         Vector3 center = currentPosition;
+         EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
+         PlayerMoveController playerMoveController = other.gameObject.GetComponent<PlayerMoveController>();
 
-        if (enemyMoveController != null) {
-            Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            enemyMoveController.Knockback(pushDirection.normalized);
-        }
-        else if (playerMoveController != null) {
-            Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-            playerMoveController.Knockback(pushDirection.normalized);
-        }
+         if (enemyMoveController != null)
+         {
+              Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+              enemyMoveController.Knockback(pushDirection.normalized);
+         }
+         else if (playerMoveController != null)
+         {
+              Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+              playerMoveController.Knockback(pushDirection.normalized);
+         }
 
     }
 
     public void Death() {
+        isDead = true;
         if (gameObject.tag == "Player") {
             GameManager.Notifications.PostNotification(this, "OnPlayerDeath");
             this.setHealth(startingHealth);
@@ -103,6 +107,16 @@ public class Health : MonoBehaviour {
             enem.onDeath();
         }
         isDead = true;
+
+        DropLoot dropLoot;
+        if (dropLoot = GetComponent<DropLoot>()) {
+            //Dont drop loot if its a enemy spawning barrel
+            if (!GetComponent<BarrelSpawn>()) {
+                dropLoot.DropItem();
+            }
+        }
+
+
         Destroy(gameObject);
 
 
@@ -115,13 +129,8 @@ public class Health : MonoBehaviour {
     //Drop loot on death
     public void OnDestroy() {
         if (!isQuitting) {
-            DropLoot dropLoot;
-            if (dropLoot = GetComponent<DropLoot>()) {
-                //Dont drop loot if its a enemy spawning barrel
-                if (!GetComponent<BarrelSpawn>()) {
-                    dropLoot.DropItem();
-                }
-            }
+
         }
     }
 }
+

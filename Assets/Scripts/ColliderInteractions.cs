@@ -10,7 +10,6 @@ public class ColliderInteractions : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.GetComponent<Chest>()) {
-            Debug.Log("CHEST!");
             other.GetComponent<Chest>().OpenChest();
         }
     }

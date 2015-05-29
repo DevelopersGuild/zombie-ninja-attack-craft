@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace AssemblyCSharp {
     public class Porcupine : MonoBehaviour {
-        private Player player;
         public GameObject SparkParticle, SparkParticleInstance;
         public float sparkTime;
+        private float sparkTimer;
 
         private EnemyMoveController moveController;
         private Health health;
@@ -13,7 +13,6 @@ namespace AssemblyCSharp {
         System.Random rnd;
 
         private float currentX, currentY;
-        private Transform playerPos;
         private Vector2 distance, direction;
         private double t, stop;
 
@@ -24,7 +23,6 @@ namespace AssemblyCSharp {
             moveController = GetComponent<EnemyMoveController>();
             transform.gameObject.tag = "Attackable";
             health = GetComponent<Health>();
-            player = FindObjectOfType<Player>();
 
             distance = new Vector2(0, 0);
             t = 3;
@@ -78,8 +76,9 @@ namespace AssemblyCSharp {
                 }
             }
             stop += Time.deltaTime;
+
             t -= Time.deltaTime;
-            sparkTime -= Time.deltaTime;
+            sparkTimer -= Time.deltaTime;
 
         }
 

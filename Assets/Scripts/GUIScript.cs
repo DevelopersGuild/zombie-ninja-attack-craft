@@ -21,7 +21,7 @@ public class GUIScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         healthLabel.text = playerHealth.currentHealth.ToString();
-        scoreLabel.text = GameManager.getPoints().ToString();
-        ammoLabel.text = playerAttackController.ammo.ToString();
+        scoreLabel.text = GameManager.getCoins().ToString();
+        ammoLabel.text = playerAttackController.Ammo.ToString();
 	}
 }

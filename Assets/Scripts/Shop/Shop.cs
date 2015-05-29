@@ -16,6 +16,14 @@ public class Shop : MonoBehaviour
           Inventory["Arrows"].TypeOfItem = temp.GetComponent<Pickup>();
           Inventory["Arrows"].QuantityOfItem = 5;
           Inventory["Arrows"].PriceOfItem = 1;
+
+          temp = new GameObject();
+          temp.AddComponent<Landmine>();
+          Inventory.Add("LandMine", new InventoryItem());
+          Inventory["LandMine"].TypeOfItem = temp.GetComponent<Pickup>();
+          Inventory["LandMine"].QuantityOfItem = 5;
+          Inventory["LandMine"].PriceOfItem = 1;
+
           /*
           Inventory.Add("Health", new InventoryItem());
           Inventory["Health"].TypeOfItem = new HealthPickup();
@@ -44,10 +52,10 @@ public class Shop : MonoBehaviour
           string displayMessage = "You have purchased this item";
           if (Inventory[desiredItem].QuantityOfItem >= desiredQuantity)
           {
-               if(GameManager.getPoints() >= (Inventory[desiredItem].PriceOfItem * desiredQuantity))
+               if(GameManager.getCoins() >= (Inventory[desiredItem].PriceOfItem * desiredQuantity))
                {
                     SpawnItem(desiredItem, desiredQuantity);
-                    GameManager.SubtractPoints(Inventory[desiredItem].PriceOfItem * desiredQuantity);
+                    GameManager.SubtractCoins(Inventory[desiredItem].PriceOfItem * desiredQuantity);
                     Inventory[desiredItem].QuantityOfItem -= desiredQuantity;
 
                }
