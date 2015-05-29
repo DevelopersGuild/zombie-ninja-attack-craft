@@ -37,10 +37,12 @@ public class Player : MonoBehaviour
     public float attackedTimer;
     public float TimeBowCharging;
     public float BaseTime;
+    private float stun_Timer;
 
 
     void Awake()
     {
+        stun_Timer = 0;
         isInvincible = false;
         timeSpentInvincible = 1;
         playerMoveController = GetComponent<PlayerMoveController>();
@@ -270,6 +272,11 @@ public class Player : MonoBehaviour
 
             keyCount = 0;
         }
+    }
+
+    public void setStun(float st)
+    {
+        stun_Timer = st;
     }
 }
 

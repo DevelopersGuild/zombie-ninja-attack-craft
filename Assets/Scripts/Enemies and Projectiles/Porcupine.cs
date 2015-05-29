@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace AssemblyCSharp {
     public class Porcupine : MonoBehaviour {
+
+        public Player player;
         public GameObject SparkParticle, SparkParticleInstance;
         public float sparkTime;
         private float sparkTimer;
@@ -20,6 +22,7 @@ namespace AssemblyCSharp {
 
         public void Start() {
             //animator = GetComponent<Animator>();
+            player = FindObjectOfType<Player>();
             moveController = GetComponent<EnemyMoveController>();
             transform.gameObject.tag = "Attackable";
             health = GetComponent<Health>();

@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
 
     public float projectileSpeed;
     public float angle;
+    public int damageAmount;
 
     public float stun;
     private bool homing, shot;

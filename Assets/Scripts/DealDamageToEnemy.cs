@@ -71,7 +71,7 @@ public class DealDamageToEnemy : MonoBehaviour
         //Debug.Log("TRIGGER!");
         CheckForProjectile();
         //Check for enemy collision
-        if (other.tag == "Attackable")
+        if (other.gameObject.CompareTag("Attackable"))
         {
 
             //Find components necessary to take damage and knockback
