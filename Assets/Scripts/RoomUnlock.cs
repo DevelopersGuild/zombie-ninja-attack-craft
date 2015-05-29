@@ -71,7 +71,8 @@ public class RoomUnlock : MonoBehaviour {
         }
         foreach (GameObject reward in rewards) {
             reward.SetActive(true);
+            Debug.Log("rewards!");
         }
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }
