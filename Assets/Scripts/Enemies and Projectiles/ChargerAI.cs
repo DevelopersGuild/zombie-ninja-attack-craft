@@ -16,7 +16,7 @@ public class ChargerAI : Enemy {
     //public float AgroRange;
     //public EnemyMoveController moveController;
 
-    private Vector2 speed, distance;
+    private Vector2 speed, distance, moveDir;
 
     //State checks
     private bool isAggroed;
@@ -29,7 +29,7 @@ public class ChargerAI : Enemy {
     //private MoveControllerNoAnimation moveControllerNoAnimation;
 
     System.Random rnd;
-    private double t, timer;
+    private double t, timer, runTime, restTime;
     private float temp;
 
     public void Start() {
@@ -42,7 +42,9 @@ public class ChargerAI : Enemy {
         distance = new Vector2(0, 0);
         speed = new Vector2(0, 0);
 
-        temp = 0;
+        runTime = 0;
+        restTime = 0;
+        temp = 1;
         t = 1;
         timer = 5;
 
@@ -57,7 +59,7 @@ public class ChargerAI : Enemy {
         distance = player.transform.position - transform.position;
         //Check distance between the player and charger. If its close enough, aggro
         if (distance.magnitude <= AgroRange && isTired == false) {
-            Debug.Log("aggroed:" + isAggroed);
+            moveDir = direction;
             isAggroed = true;
             isCharging = true;
             animator.SetBool("isCharging", true);
@@ -68,24 +70,43 @@ public class ChargerAI : Enemy {
         }
         // speed = new Vector2(0, 0);
 
-        if (isAggroed) {
-            //Charge while the charge animation is playing
-            if (isCharging) {
+        if (isTired)
+        {
+            Debug.Log("Test Point 3");
+            Debug.Log("TiRED" + isTired);
+            temp = 1;
+            moveController.Move(0, 0);
+        }
+        if (distance.magnitude < (AgroRange - 1))
+        {
+            if (isCharging)
+            {
+                animator.SetBool("isCharging", true);
                 Debug.Log("Test Point 2");
                 findPos();
-
-                RunStraight(direction, temp);
+                runTime += Time.deltaTime;
+                RunStraight(moveDir / 4, temp);
                 temp = 5;
+                DoneCharging();
                 //speed = new Vector2(5 * xSpeed, 5 * ySpeed);
                 //speed = speed * 3;
             }
-            //Dont move isaf charger has already charged and is now tired
-            if (isTired) {
-                Debug.Log("Test Point 3");
-                Debug.Log("TiRED" + isTired);
-                temp = 1;
+            else
+            {
                 moveController.Move(0, 0);
+                animator.SetBool("isTired", true);
+                restTime += Time.deltaTime;
+                isTired = true;
+                DoneResting();
             }
+        }
+        
+        if (isAggroed) {
+            
+            //Charge while the charge animation is playing
+            
+            //Dont move isaf charger has already charged and is now tired
+           
         } //If the player isnt aggroed, it moves randomly
         else {
             //Debug.Log ("is");
@@ -97,14 +118,21 @@ public class ChargerAI : Enemy {
     }
 
     public void DoneCharging() {
-        isTired = true;
-        animator.SetBool("isCharging", false);
-        animator.SetBool("isTired", true);
+        if (runTime >= 1)
+        {
+            runTime = 0;
+            isTired = true;
+            animator.SetBool("isCharging", false);
+            animator.SetBool("isTired", true);
+        }
     }
 
     public void DoneResting() {
-        isTired = false;
-        animator.SetBool("isTired", false);
+        if (restTime >= 1.5)
+        {
+            isTired = false;
+            animator.SetBool("isTired", false);
+        }
     }
 
     private void RunStraight(Vector2 sp, float extra) {
@@ -112,7 +140,17 @@ public class ChargerAI : Enemy {
             //speed = new Vector2(xSp, ySp);
             //speed = 2 * speed;
             Debug.Log("RUNNING STRAIGHT toward : " + sp);
-            moveController.Move(sp, 4);
+            moveController.Move(sp);
+        }
+
+    }
+
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        //Check for player collision
+        if (other.gameObject.tag == "Player")
+        {
+            runTime = 1;
         }
 
     }

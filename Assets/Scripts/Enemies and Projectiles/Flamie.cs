@@ -81,9 +81,8 @@ namespace AssemblyCSharp
                 {
                     fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
                     fireBlock_CD = 0;
-                    Debug.Log(isInvincible);
                 }
-                else if (vel < 0.1 && fireBlock_CD < 1)
+                else if (vel < 0.1 && fireBlock_CD > 1)
                 {
                     fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
                     fireBlock_CD = 0;
