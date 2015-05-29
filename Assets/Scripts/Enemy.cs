@@ -6,12 +6,22 @@ public class Enemy : MonoBehaviour
     public Player player;
     public float AgroRange;
     public EnemyMoveController moveController;
+    public bool isInvincible, blink;
+    public float timeSpentInvincible, stunTimer;
+
+    [HideInInspector]
+    public float currentX, currentY, playerX, playerY, angle;
+
+    [HideInInspector]
+    public Vector2 direction;
 
     private double t;
     System.Random rnd;
 
     void Awake() {
-
+        blink = false;
+        isInvincible = false;
+        timeSpentInvincible = 0;
     }
 
     void Start() {
@@ -21,6 +31,32 @@ public class Enemy : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void checkInvincibility()
+    {
+        if (isInvincible)
+        {
+            timeSpentInvincible += Time.deltaTime;
+
+            if (timeSpentInvincible > 0.2f)
+            {
+                setStun(0.2f);
+            }
+
+            if (timeSpentInvincible <= 0.4f)
+            {
+                blink = !blink;
+                GetComponent<Renderer>().enabled = blink;
+            }
+            
+            else
+            {
+                isInvincible = false;
+                timeSpentInvincible = 0;
+                GetComponent<Renderer>().enabled = true;
+            }
+        }
     }
 
     public void idle(double someDub)
@@ -67,6 +103,29 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    public void findPos()
+    {
+        currentX = transform.position.x;
+        currentY = transform.position.y;
+        playerX = player.transform.position.x;
+        playerY = player.transform.position.y;
+
+        angle = Vector2.Angle(player.transform.position, transform.position);
+        direction = new Vector2(playerX - currentX, playerY - currentY);
+        direction = direction.normalized;
+    }
+
+    public bool checkStun()
+    {
+        return (stunTimer > 0);
+    }
+
+    public void setStun(float st)
+    {
+        stunTimer = st;
+    }
+
 
     public void onDeath()
     {

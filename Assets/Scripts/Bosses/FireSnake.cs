@@ -15,14 +15,14 @@ namespace AssemblyCSharp
         {
             //animator = GetComponent<Animator>();
 
-            bite_CD = 6;
-            spawn_CD = 5;
-            acid_CD = 8;
+            bite_CD = 5;
+            spawn_CD = 4;
+            acid_CD = 6;
             fireBall_CD = 6;
-            fireTrail_CD = 10;
+            fireTrail_CD = 8;
             iceBall_CD = 6;
-            iceTrail_CD = 10;
-            laser_CD = 13;
+            iceTrail_CD = 8;
+            laser_CD = 10;
             cooldown_CD = 0.8f;
 
 
@@ -55,23 +55,23 @@ namespace AssemblyCSharp
                         cooldown_CD = 0;
                         moveController.Move(0, 0);
 
-                        if (bite_CD > 6)
+                        if (bite_CD > 5)
                         {
                             biteAttack();
                         }
-                        else if (spawn_CD > 5)
+                        else if (spawn_CD > 4)
                         {
                             spawnAttack();
                         }
-                        else if (laser_CD > 13)
+                        else if (laser_CD > 10)
                         {
                             laserAttack();
                         }
-                        else if (acid_CD > 8)
+                        else if (acid_CD > 6)
                         {
                             acidAttack();
                         }
-                        else if (fireTrail_CD > 10)
+                        else if (fireTrail_CD > 8)
                         {
                             trailAttack();
                         }

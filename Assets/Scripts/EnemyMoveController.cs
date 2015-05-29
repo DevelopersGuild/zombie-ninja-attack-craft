@@ -5,6 +5,7 @@ public class EnemyMoveController : MonoBehaviour {
 
     // Components
     private Animator animator;
+    private Enemy enemy;
     // Speed of object
     [Range(0, 10)]
     public float speed = 8;
@@ -20,6 +21,8 @@ public class EnemyMoveController : MonoBehaviour {
     public bool gotAttacked;
     //Knockback flags
     public bool isKnockedBack;
+    public bool isStationary;
+    private float recoveryTime;
     public float knockbackForce;
     private float knockBackTime;
     private float timeSpentKnockedBack;
@@ -28,6 +31,7 @@ public class EnemyMoveController : MonoBehaviour {
 
     void Awake() {
         animator = GetComponent<Animator>();
+        enemy = GetComponent<Enemy>();
 
         isMoving = false;
         movementVector = new Vector2(0, 0);
@@ -37,7 +41,8 @@ public class EnemyMoveController : MonoBehaviour {
         knockbackForce = 4;
         isKnockedBack = false;
         timeSpentKnockedBack = 0;
-        knockBackTime = 0.10f;
+        knockBackTime = 0.15f;
+        recoveryTime = 0.5f;
 
         canMove = true;
     }
@@ -45,51 +50,68 @@ public class EnemyMoveController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        /* Check if character is moving */
-        if (GetComponent<Rigidbody2D>() != null) {
-            if (GetComponent<Rigidbody2D>().velocity.normalized.x != 0 || GetComponent<Rigidbody2D>().velocity.normalized.y != 0) {
-                // Store the direction the player is facing in case they stop moving
-                facing = GetComponent<Rigidbody2D>().velocity.normalized;
-                isMoving = true;
-            }
-            if (movementVector.x == 0 && movementVector.y == 0) {
-                isMoving = false;
-            }
+        if (recoveryTime > 0.5)
+        {
+            
         }
-
-        //Check whether sprite is facing left or right. Flip the sprite based on its direction
-        if (facing.x > 0) {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-        else {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-
-
-        // Calculate movement amount
-        movementVector = direction * speed;
-
-        //Change movement vector if they are being knocked back
-        if (isKnockedBack) {
-            timeSpentKnockedBack += Time.deltaTime;
-            movementVector = knockbackDirection * knockbackForce;
-            if (timeSpentKnockedBack >= knockBackTime) {
-                isKnockedBack = false;
-                timeSpentKnockedBack = 0;
+        else
+        {
+            /* Check if character is moving */
+            if (GetComponent<Rigidbody2D>() != null)
+            {
+                if (GetComponent<Rigidbody2D>().velocity.normalized.x != 0 || GetComponent<Rigidbody2D>().velocity.normalized.y != 0)
+                {
+                    // Store the direction the player is facing in case they stop moving
+                    facing = GetComponent<Rigidbody2D>().velocity.normalized;
+                    isMoving = true;
+                }
+                if (movementVector.x == 0 && movementVector.y == 0)
+                {
+                    isMoving = false;
+                }
             }
-        }
 
-        if (animator != null) {
-            //Play walking animations
-            animator.SetFloat("facing_x", facing.x);
-            animator.SetFloat("facing_y", facing.y);
-            animator.SetFloat("movement_x", movementVector.x);
-            animator.SetFloat("movement_y", movementVector.y);
-            if (isMoving == true) {
-                animator.SetBool("IsMoving", isMoving);
+            //Check whether sprite is facing left or right. Flip the sprite based on its direction
+            if (facing.x > 0)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
             }
-            else {
-                animator.SetBool("IsMoving", false);
+            else
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+
+
+            // Calculate movement amount
+            movementVector = direction * speed;
+
+            //Change movement vector if they are being knocked back
+            if (isKnockedBack && !isStationary)
+            {
+                timeSpentKnockedBack += Time.deltaTime;
+                movementVector = knockbackDirection * knockbackForce;
+                if (timeSpentKnockedBack >= knockBackTime)
+                {
+                    isKnockedBack = false;
+                    timeSpentKnockedBack = 0;
+                }
+            }
+
+            if (animator != null)
+            {
+                //Play walking animations
+                animator.SetFloat("facing_x", facing.x);
+                animator.SetFloat("facing_y", facing.y);
+                animator.SetFloat("movement_x", movementVector.x);
+                animator.SetFloat("movement_y", movementVector.y);
+                if (isMoving == true)
+                {
+                    animator.SetBool("IsMoving", isMoving);
+                }
+                else
+                {
+                    animator.SetBool("IsMoving", false);
+                }
             }
         }
 
@@ -128,8 +150,8 @@ public class EnemyMoveController : MonoBehaviour {
     //}
 
     public void Knockback(Vector2 direction) {
-        isKnockedBack = true;
-        knockbackDirection = direction;
+            isKnockedBack = true;
+            knockbackDirection = direction;
     }
 
 

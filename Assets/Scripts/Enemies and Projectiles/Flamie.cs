@@ -11,128 +11,149 @@ using System;
 using UnityEngine;
 
 namespace AssemblyCSharp
-	
 {
-	public class Flamie : Enemy
-	{
-		//private Player player;
-		//public float AgroRange;
-		public Projectile fireBlock, fireBlockObject;
+    public class Flamie : Enemy
+    {
+        //private Player player;
+        //public float AgroRange;
+        public Projectile fireBlock, fireBlockObject;
         public Explosion explBlock, explBlockObject;
-		
-		//private EnemyMoveController moveController;
+
+        //private EnemyMoveController moveController;
         private Rigidbody2D rigidbody;
-		private Health health;
-		
-		private bool isAgro;
-		
-		System.Random rnd;
-		
-		private float currentX, currentY;
-		private Transform playerPos;
-		private Vector2 distance, speed, facing, direction;
-		private double t,temp,fireBlock_CD;
+        private Health health;
+
+        private bool isAgro;
+
+        System.Random rnd;
+
+        private float currentX, currentY;
+        private Transform playerPos;
+        private Vector2 distance, speed, facing, direction;
+        private double t, temp, fireBlock_CD;
 
         private double fireDist, vel;
-		//private Animator animator;
-		
-		
-		public void Start ()
-		{
-			//animator = GetComponent<Animator>();
-			moveController = GetComponent<EnemyMoveController> ();
-			health = GetComponent<Health> ();
+        //private Animator animator;
+
+
+        public void Start()
+        {
+            //animator = GetComponent<Animator>();
+            moveController = GetComponent<EnemyMoveController>();
+            health = GetComponent<Health>();
             player = FindObjectOfType<Player>();
             rigidbody = GetComponent<Rigidbody2D>();
-			
-			distance = new Vector2 (0, 0);
-			speed = new Vector2 (0, 0);
-			isAgro = false;
-			t = 3;
-			//temp is the number for exponential speed when running away
-			temp = 1.0000001;
-			fireBlock_CD = 0;
-			
-			facing = new Vector2 (0, 0);
+
+            distance = new Vector2(0, 0);
+            speed = new Vector2(0, 0);
+            isAgro = false;
+            t = 3;
+            //temp is the number for exponential speed when running away
+            temp = 1.0000001;
+            fireBlock_CD = 0;
+
+            facing = new Vector2(0, 0);
             fireDist = fireBlockObject.GetComponent<Collider2D>().bounds.size.magnitude;
-		}
-		
-		public void Update() {
-            vel = rigidbody.velocity.magnitude;
-			rnd = new System.Random ();
-			currentX = transform.position.x;
-			currentY = transform.position.y;
+        }
 
-            //to offset fireblocks to be a bit behind the flamie, so arrows and sword swings hit the flamie instead of the blocks
-            //Vector3 fireVect = new Vector3(direction.normalized.x/(-8), direction.normalized.y/(-8), 0);
 
-			//place fire block that deals damage to enemy (projectile that stays in one spot?)
-            //time = distance/speed, create new block after passing the old one.
-			if (vel > 0.2 && fireBlock_CD < fireDist/vel) {
-				fireBlock = Instantiate (fireBlockObject, transform.position, transform.rotation) as Projectile;
-                fireBlock_CD = 0;
-			}
-            else if (vel < 0.2 && fireBlock_CD < 1)
+        public void Update()
+        {
+            checkInvincibility();
+            if (checkStun())
             {
-                fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
-                fireBlock_CD = 0;
-
+                stunTimer -= Time.deltaTime;
+                moveController.Move(0, 0);
             }
-			if (player != null) {
-				//basic aggression range formula
-                playerPos = player.transform;
-                float xSp = player.transform.position.x - transform.position.x;
-                float ySp = player.transform.position.y - transform.position.y;
-                direction = new Vector2(xSp, ySp);
+            else
+            {
+                vel = rigidbody.velocity.magnitude;
+                rnd = new System.Random();
+                currentX = transform.position.x;
+                currentY = transform.position.y;
 
-				distance = playerPos.position - transform.position;
-				if (distance.magnitude <= AgroRange) {
-					isAgro = true;
-                    fireBlock_CD = fireDist/vel;
+                //to offset fireblocks to be a bit behind the flamie, so arrows and sword swings hit the flamie instead of the blocks
+                //Vector3 fireVect = new Vector3(direction.normalized.x/(-8), direction.normalized.y/(-8), 0);
 
-				}
-				if (distance.magnitude > AgroRange) {
-					isAgro = false;
-				}
-				
-				if (isAgro) {
+                //place fire block that deals damage to enemy (projectile that stays in one spot?)
+                //time = distance/speed, create new block after passing the old one.
+                if (vel > 0.1 && fireBlock_CD > .28 / vel)
+                {
+                    fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
+                    fireBlock_CD = 0;
+                    Debug.Log(isInvincible);
+                }
+                else if (vel < 0.1 && fireBlock_CD < 1)
+                {
+                    fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
+                    fireBlock_CD = 0;
 
-					moveController.Move (direction.normalized, 8);
-					
-				} else {
-                    idle(t);
-					t -= Time.deltaTime;
-                    //fireBlock_CD
-					//GetComponent<Rigidbody2D> ().velocity = speed;
-					
-				}
-                fireBlock_CD += Time.deltaTime;
-				//cd1 += Time.deltaTime;
-				//cd2 += Time.deltaTime;
-			}
+                }
+                if (player != null)
+                {
+                    //basic aggression range formula
+                    playerPos = player.transform;
+                    float xSp = player.transform.position.x - transform.position.x;
+                    float ySp = player.transform.position.y - transform.position.y;
+                    direction = new Vector2(xSp, ySp);
+
+                    distance = playerPos.position - transform.position;
+                    if (distance.magnitude <= AgroRange)
+                    {
+                        isAgro = true;
+
+                    }
+                    if (distance.magnitude > AgroRange)
+                    {
+                        isAgro = false;
+                    }
+
+                    if (isAgro)
+                    {
+
+                        moveController.Move(direction.normalized, 8);
+
+                    }
+                    else
+                    {
+                        idle(t);
+                        t -= Time.deltaTime;
+                        //fireBlock_CD
+                        //GetComponent<Rigidbody2D> ().velocity = speed;
+
+                    }
+                    fireBlock_CD += Time.deltaTime;
+                    //cd1 += Time.deltaTime;
+                    //cd2 += Time.deltaTime;
+                }
+            }
             if (health.currentHp() == 0)
             {
                 onDeath();
             }
-		}
-		
-		public bool getAgro() {
-			return isAgro;
-		}
-		
-		public int currentHp() {
-			return health.currentHealth;
-		}
 
-        public void onDeath() {
+        }
+
+        public bool getAgro()
+        {
+            return isAgro;
+        }
+
+        public int currentHp()
+        {
+            return health.currentHealth;
+        }
+
+        public void onDeath()
+        {
             //play pre-explosion animation
             Explosion lnd = Instantiate(explBlockObject, transform.position, transform.rotation) as Explosion;
             Debug.Log("WOW! I JUST EXPLODED!");
             //death animation
         }
-		
-		
-	}
+
+
+    }
 }
 
 

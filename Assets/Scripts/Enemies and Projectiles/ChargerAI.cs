@@ -54,7 +54,6 @@ public class ChargerAI : Enemy {
 
     void Update() {
         rnd = new System.Random();
-
         distance = player.transform.position - transform.position;
         //Check distance between the player and charger. If its close enough, aggro
         if (distance.magnitude <= AgroRange && isTired == false) {
@@ -73,9 +72,9 @@ public class ChargerAI : Enemy {
             //Charge while the charge animation is playing
             if (isCharging) {
                 Debug.Log("Test Point 2");
-                float xSpeed = player.transform.position.x - transform.position.x;
-                float ySpeed = player.transform.position.y - transform.position.y;
-                RunStraight(xSpeed, ySpeed, temp);
+                findPos();
+
+                RunStraight(direction, temp);
                 temp = 5;
                 //speed = new Vector2(5 * xSpeed, 5 * ySpeed);
                 //speed = speed * 3;
@@ -108,12 +107,12 @@ public class ChargerAI : Enemy {
         animator.SetBool("isTired", false);
     }
 
-    private void RunStraight(float xSp, float ySp, float extra) {
+    private void RunStraight(Vector2 sp, float extra) {
         if (extra == 1) {
             //speed = new Vector2(xSp, ySp);
             //speed = 2 * speed;
-            Debug.Log("RUNNING STRAIGHT x:" + xSp + " y: " + ySp);
-            moveController.Move(xSp / 4, ySp / 4);
+            Debug.Log("RUNNING STRAIGHT toward : " + sp);
+            moveController.Move(sp, 4);
         }
 
     }
