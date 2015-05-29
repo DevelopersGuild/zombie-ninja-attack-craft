@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-public class SuicideBomber : MonoBehaviour {
+public class SuicideBomber : Enemy {
     private Player player;
     public float AgroRange;
     public float explodeRange;
@@ -48,6 +48,12 @@ public class SuicideBomber : MonoBehaviour {
     }
 
     public void Update() {
+        checkInvincibility();
+        if (checkStun())
+        {
+            stunTimer -= Time.deltaTime;
+            moveController.Move(0, 0);
+        }
         if (health.currentHp() == 0) {
             onDeath();
         }

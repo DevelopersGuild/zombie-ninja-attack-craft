@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-public class EnemyHugger : MonoBehaviour {
+public class EnemyHugger : Enemy {
     private Player player;
     public float AgroRange;
 
@@ -46,6 +46,12 @@ public class EnemyHugger : MonoBehaviour {
     }
 
     public void Update() {
+        checkInvincibility();
+        if (checkStun())
+        {
+            stunTimer -= Time.deltaTime;
+            moveController.Move(0, 0);
+        }
         if (health.currentHp() == 0) {
             onDeath();
         }
@@ -117,24 +123,6 @@ public class EnemyHugger : MonoBehaviour {
         }
     }
 
-    public Vector2 getIdle() {
-        // facing = moveController.getFacing ();
-        float thisX = transform.position.x;
-        float thisY = transform.position.y;
-        if (facing.x == 1) {
-            return new Vector2(thisX - 1, thisY - 1);
-        }
-        else if (facing.x == -1) {
-            return new Vector2(thisX + 1, thisY - 1);
-        }
-        else if (facing.y == 1) {
-            return new Vector2(thisX + 1, thisY - 1);
-        }
-        else if (facing.y == -1) {
-            return new Vector2(thisX - 1, thisY + 1);
-        }
-        return new Vector2(0, 0);
-    }
 
     public bool getAgro() {
         return isAgro;

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace AssemblyCSharp {
-    public class Porcupine : MonoBehaviour {
+    public class Porcupine : Enemy {
 
         public Player player;
         public GameObject SparkParticle, SparkParticleInstance;
@@ -33,6 +33,12 @@ namespace AssemblyCSharp {
         }
 
         public void Update() {
+            checkInvincibility();
+            if (checkStun())
+            {
+                stunTimer -= Time.deltaTime;
+                moveController.Move(0, 0);
+            }
             rnd = new System.Random();
             currentX = transform.position.x;
             currentY = transform.position.y;

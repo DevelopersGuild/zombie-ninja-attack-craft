@@ -42,6 +42,10 @@ public class DealDamageToEnemy : MonoBehaviour
             {
                 enemyHealth.CalculateKnockback(other, transform.position);
             }
+            else
+            {
+                enemyHealth.TakeDamage(damageAmount);
+            }
         }
         else if (other.gameObject.CompareTag("Boss"))
         {
@@ -93,6 +97,10 @@ public class DealDamageToEnemy : MonoBehaviour
             else if (enemyHealth.GetComponent<Rigidbody2D>())
             {
                 enemyHealth.CalculateKnockback(other, transform.position);
+            }
+            else
+            {
+                enemyHealth.TakeDamage(damageAmount);
             }
         }
         else if (other.gameObject.CompareTag("Boss"))

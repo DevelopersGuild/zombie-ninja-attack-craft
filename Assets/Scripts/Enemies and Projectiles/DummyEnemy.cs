@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace AssemblyCSharp {
-    public class DummyEnemy : MonoBehaviour {
+    public class DummyEnemy : Enemy {
         private EnemyMoveController moveController;
         private Health health;
 
@@ -24,6 +24,12 @@ namespace AssemblyCSharp {
         }
 
         public void Update() {
+            checkInvincibility();
+            if (checkStun())
+            {
+                stunTimer -= Time.deltaTime;
+                moveController.Move(0, 0);
+            }
             rnd = new System.Random();
 
             if (t < 1) {
