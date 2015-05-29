@@ -10,11 +10,11 @@
 using System;
 namespace AssemblyCSharp
 {
-		public class TornadoAI
-		{
-				public TornadoAI ()
-				{
-				}
-		}
+     public class TornadoAI
+     {
+          public TornadoAI()
+          {
+          }
+     }
 }
 

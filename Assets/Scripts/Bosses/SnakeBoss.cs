@@ -29,156 +29,156 @@ using UnityEngine;
  */
 public class SnakeBoss : Boss
 {
-    public Player player;
-    public float AgroRange;
+     public Player player;
+     public float AgroRange;
 
-    public FireChain laserObj;
-    private FireChain laser;
+     public FireChain laserObj;
+     private FireChain laser;
 
-    public TrailProj trailObj;
-    private TrailProj trail;
+     public TrailProj trailObj;
+     private TrailProj trail;
 
-    public Projectile ballObj;
-    private Projectile ball;
+     public Projectile ballObj;
+     private Projectile ball;
 
-    public Enemy snakeObj;
-    private Enemy snake;
+     public Enemy snakeObj;
+     private Enemy snake;
 
-    public Projectile acidballObj;
-    private Projectile acidball;
+     public Projectile acidballObj;
+     private Projectile acidball;
 
-    public Projectile acidFieldObj;
-    private Projectile acidField;
+     public Projectile acidFieldObj;
+     private Projectile acidField;
 
-    public Vector2 targetPos;
+     public Vector2 targetPos;
 
-    [HideInInspector]
-    public EnemyMoveController moveController;
-    [HideInInspector]
-    public Health health;
+     [HideInInspector]
+     public EnemyMoveController moveController;
+     [HideInInspector]
+     public Health health;
 
-    [HideInInspector]
-    public bool isAgro;
-    [HideInInspector]
-    public System.Random rnd;
+     [HideInInspector]
+     public bool isAgro;
+     [HideInInspector]
+     public System.Random rnd;
 
-    [HideInInspector]
-    public Vector2 distance, speed, direction;
-    //Boss should have high knockback
-    //Move order?
-    //Fire Snake - Bite -> Spawn Snakes -> -> Laser -> Acid Ball -> fire trail -> fireball
-    //Ice Snake - Acid Ball -> Spawn Snakes -> Laser -> Bite -> ice trail -> iceball
+     [HideInInspector]
+     public Vector2 distance, speed, direction;
+     //Boss should have high knockback
+     //Move order?
+     //Fire Snake - Bite -> Spawn Snakes -> -> Laser -> Acid Ball -> fire trail -> fireball
+     //Ice Snake - Acid Ball -> Spawn Snakes -> Laser -> Bite -> ice trail -> iceball
 
-    //????Bite -> Spawn Snakes -> Acid Ball -> Fire/Ice trail -> Fire/Ice ball -> Laser
-    //small room
+     //????Bite -> Spawn Snakes -> Acid Ball -> Fire/Ice trail -> Fire/Ice ball -> Laser
+     //small room
 
-    //private Animator animator;
+     //private Animator animator;
 
-    [HideInInspector]
-    public float currentX, currentY, playerX, playerY, angle;
+     [HideInInspector]
+     public float currentX, currentY, playerX, playerY, angle;
 
-    [HideInInspector]
-    public float bite_CD, spawn_CD, acid_CD, fireBall_CD, iceBall_CD, fireTrail_CD, iceTrail_CD, laser_CD, cooldown_CD;
+     [HideInInspector]
+     public float bite_CD, spawn_CD, acid_CD, fireBall_CD, iceBall_CD, fireTrail_CD, iceTrail_CD, laser_CD, cooldown_CD;
 
-    public void Start()
-    {
-        //animator = GetComponent<Animator>();
-        player = FindObjectOfType<Player>();
-        moveController = GetComponent<EnemyMoveController>();
-        health = GetComponent<Health>();
+     public void Start()
+     {
+          //animator = GetComponent<Animator>();
+          player = FindObjectOfType<Player>();
+          moveController = GetComponent<EnemyMoveController>();
+          health = GetComponent<Health>();
 
-        isInvincible = true;
-        bite_CD = 6;
-        spawn_CD = 5;
-        acid_CD = 8;
-        fireBall_CD = 6;
-        fireTrail_CD = 10;
-        iceBall_CD = 6;
-        iceTrail_CD = 10;
-        laser_CD = 13;
-        cooldown_CD = 0.8f;
+          isInvincible = true;
+          bite_CD = 6;
+          spawn_CD = 5;
+          acid_CD = 8;
+          fireBall_CD = 6;
+          fireTrail_CD = 10;
+          iceBall_CD = 6;
+          iceTrail_CD = 10;
+          laser_CD = 13;
+          cooldown_CD = 0.8f;
 
-        distance = new Vector2(0, 0);
-        speed = new Vector2(0, 0);
-        isAgro = false;
+          distance = new Vector2(0, 0);
+          speed = new Vector2(0, 0);
+          isAgro = false;
 
-    }
-
-
-    public int currentHp()
-    {
-        return health.currentHealth;
-    }
-
-    public void prep()
-    {
-        isInvincible = false;
-        //playAnimation
-        isInvincible = true;
-
-    }
-
-    public void biteAttack()
-    {
-        //After prep
-        //Either
-        //Fire Projectile that looks like snake + z+1
-        //or
-        //Create a variable collider during animation
-    }
-
-    public void laserAttack()
-    {
-        //After prep
-        //animation
-        laser = Instantiate(laserObj, transform.position, transform.rotation) as FireChain;
-        laser.setLaserOne(190, 255);
-        //create laser
-        //after 0.5s, rotate around point from ~190 degrees to ~255 degrees
-        //Ice snake mirrors that, from ~350 to ~285
-        //laser ends
-    }
-
-    public void trailAttack()
-    {
-        //After prep
-        trail = Instantiate(trailObj, transform.position, transform.rotation) as TrailProj;
-        trail.setDir(angle, direction);
-        //if fire, shoot fire in an arc/cone shape on ground
-        //if ice, shoot ice in a rectangle on ground
-        //trails^
-    }
-
-    public void ballAttack()
-    {
-        ball = Instantiate(ballObj, transform.position, transform.rotation) as Projectile;
-        ball.Shoot(0, direction * 0.7f);
-    }
-
-    public void spawnAttack()
-    {
-        Vector2 newPos = (Vector2)transform.position + new Vector2(0, -0.8f);
-        snake = Instantiate(snakeObj, newPos, transform.rotation) as Enemy;
-
-    }
-
-    public void acidAttack()
-    {
-        acidField = Instantiate(acidFieldObj, transform.position, transform.rotation) as Projectile;
-    }
+     }
 
 
-    public void findPos()
-    {
-        currentX = transform.position.x;
-        currentY = transform.position.y;
-        playerX = player.transform.position.x;
-        playerY = player.transform.position.y;
+     public int currentHp()
+     {
+          return health.currentHealth;
+     }
 
-        angle = Vector2.Angle(player.transform.position, transform.position);
-        direction = new Vector2(playerX - currentX, playerY - currentY);
-        direction = direction.normalized;
-    }
+     public void prep()
+     {
+          isInvincible = false;
+          //playAnimation
+          isInvincible = true;
+
+     }
+
+     public void biteAttack()
+     {
+          //After prep
+          //Either
+          //Fire Projectile that looks like snake + z+1
+          //or
+          //Create a variable collider during animation
+     }
+
+     public void laserAttack()
+     {
+          //After prep
+          //animation
+          laser = Instantiate(laserObj, transform.position, transform.rotation) as FireChain;
+          laser.setLaserOne(190, 255);
+          //create laser
+          //after 0.5s, rotate around point from ~190 degrees to ~255 degrees
+          //Ice snake mirrors that, from ~350 to ~285
+          //laser ends
+     }
+
+     public void trailAttack()
+     {
+          //After prep
+          trail = Instantiate(trailObj, transform.position, transform.rotation) as TrailProj;
+          trail.setDir(angle, direction);
+          //if fire, shoot fire in an arc/cone shape on ground
+          //if ice, shoot ice in a rectangle on ground
+          //trails^
+     }
+
+     public void ballAttack()
+     {
+          ball = Instantiate(ballObj, transform.position, transform.rotation) as Projectile;
+          ball.Shoot(0, direction * 0.7f);
+     }
+
+     public void spawnAttack()
+     {
+          Vector2 newPos = (Vector2)transform.position + new Vector2(0, -0.8f);
+          snake = Instantiate(snakeObj, newPos, transform.rotation) as Enemy;
+
+     }
+
+     public void acidAttack()
+     {
+          acidField = Instantiate(acidFieldObj, transform.position, transform.rotation) as Projectile;
+     }
+
+
+     public void findPos()
+     {
+          currentX = transform.position.x;
+          currentY = transform.position.y;
+          playerX = player.transform.position.x;
+          playerY = player.transform.position.y;
+
+          angle = Vector2.Angle(player.transform.position, transform.position);
+          direction = new Vector2(playerX - currentX, playerY - currentY);
+          direction = direction.normalized;
+     }
 
 
 

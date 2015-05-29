@@ -28,7 +28,7 @@ public class LevelEndController : MonoBehaviour
           ScoreGUI.text = GameManager.getScore().ToString();
           CoinsGUI.text = GameManager.getCoins().ToString();
           float time = GameManager.getTime();
-          if(time > 60)
+          if (time > 60)
           {
                minutes = (int)time / 60;
                seconds = (int)time % 60;
@@ -39,7 +39,7 @@ public class LevelEndController : MonoBehaviour
           }
           TimeGUI.text = minutes + " Minutes and " + seconds + " Seconds";
 
-          if(GameManager.getIsLevelComplete() == true)
+          if (GameManager.getIsLevelComplete() == true)
           {
                NextLevelButton.enabled = true;
           }

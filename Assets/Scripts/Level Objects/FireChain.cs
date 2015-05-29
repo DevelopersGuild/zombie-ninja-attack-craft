@@ -1,50 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FireChain : MonoBehaviour {
+public class FireChain : MonoBehaviour
+{
 
-    public float speed;
-    public bool laserOne, laserTwo;
-    private float rotation, fin;
+     public float speed;
+     public bool laserOne, laserTwo;
+     private float rotation, fin;
 
-	// Update is called once per frame
-	void FixedUpdate () {
-        rotation += speed;
-        transform.eulerAngles = new Vector3(0, 0, rotation);
+     // Update is called once per frame
+     void FixedUpdate()
+     {
+          rotation += speed;
+          transform.eulerAngles = new Vector3(0, 0, rotation);
 
-        if (rotation > 360) {
-            rotation = 0;
-        }
-        if (laserOne)
-        {
-            if (rotation > fin)
-            {
-                Destroy(gameObject);
-            }
+          if (rotation > 360)
+          {
+               rotation = 0;
+          }
+          if (laserOne)
+          {
+               if (rotation > fin)
+               {
+                    Destroy(gameObject);
+               }
 
-        }
-        else if (laserTwo)
-        {
-            if (rotation < fin)
-            {
-                Destroy(gameObject);
-            }
-        }
-        
-	}
+          }
+          else if (laserTwo)
+          {
+               if (rotation < fin)
+               {
+                    Destroy(gameObject);
+               }
+          }
 
-    public void setLaserOne(float start,float finish)
-    {
-        rotation = start;
-        fin = finish;
-        laserOne = true;
-    }
+     }
 
-    public void setLaserTwo(float start, float finish)
-    {
-        rotation = start;
-        fin = finish;
-        speed *= -1;
-        laserTwo = true;
-    }
+     public void setLaserOne(float start, float finish)
+     {
+          rotation = start;
+          fin = finish;
+          laserOne = true;
+     }
+
+     public void setLaserTwo(float start, float finish)
+     {
+          rotation = start;
+          fin = finish;
+          speed *= -1;
+          laserTwo = true;
+     }
 }

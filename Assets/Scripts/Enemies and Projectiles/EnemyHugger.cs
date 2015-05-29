@@ -10,133 +10,152 @@
 using System;
 using UnityEngine;
 
-public class EnemyHugger : Enemy {
-    private Player player;
-    public float AgroRange;
+public class EnemyHugger : Enemy
+{
+     private Player player;
+     public float AgroRange;
 
-    private EnemyMoveController moveController;
-    private Health health;
+     private EnemyMoveController moveController;
+     private Health health;
 
-    private bool isAgro;
+     private bool isAgro;
 
-    System.Random rnd;
+     System.Random rnd;
 
-    private float currentX, currentY;
-    private Transform playerPos;
-    private Vector2 distance, speed, facing, direction;
-    private double t, temp, fireBlock_CD;
+     private float currentX, currentY;
+     private Transform playerPos;
+     private Vector2 distance, speed, facing, direction;
+     private double t, temp, fireBlock_CD;
 
-    //private Animator animator;
-
-
-    public void Start() {
-        //animator = GetComponent<Animator>();
-        moveController = GetComponent<EnemyMoveController>();
-        health = GetComponent<Health>();
-        player = FindObjectOfType<Player>();
-
-        distance = new Vector2(0, 0);
-        speed = new Vector2(0, 0);
-        isAgro = false;
-        t = 3;
-        //temp is the number for exponential speed when running away
-        temp = 1.0000001;
-        facing = new Vector2(0, 0);
-
-    }
-
-    public void Update() {
-        checkInvincibility();
-        if (checkStun())
-        {
-            stunTimer -= Time.deltaTime;
-            moveController.Move(0, 0);
-        }
-        if (health.currentHp() == 0) {
-            onDeath();
-        }
-
-        // Find the player and set its vector towards the player
-        rnd = new System.Random();
-        currentX = transform.position.x;
-        currentY = transform.position.y;
+     //private Animator animator;
 
 
-        // Check existence of player. Move the enemy if aggroed, otherwise move randomly
-        if (player != null) {
-            //basic aggression range formula
-            playerPos = player.transform;
-            float xSp = player.transform.position.x - transform.position.x;
-            float ySp = player.transform.position.y - transform.position.y;
-            direction = new Vector2(xSp, ySp);
+     public void Start()
+     {
+          //animator = GetComponent<Animator>();
+          moveController = GetComponent<EnemyMoveController>();
+          health = GetComponent<Health>();
+          player = FindObjectOfType<Player>();
 
-            distance = playerPos.position - transform.position;
-            if (distance.magnitude <= AgroRange) {
-                isAgro = true;
-            }
-            if (distance.magnitude > AgroRange) {
-                isAgro = false;
-            }
+          distance = new Vector2(0, 0);
+          speed = new Vector2(0, 0);
+          isAgro = false;
+          t = 3;
+          //temp is the number for exponential speed when running away
+          temp = 1.0000001;
+          facing = new Vector2(0, 0);
 
-            if (isAgro)
-            {
-                moveController.Move(direction.normalized, 8);
-            }
-            else {
-                //Debug.Log ("is");
-                if (t < 1) {
-                    if (GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
-                        //speed = new Vector2 (0, 0);
-                        moveController.Move(0, 0);
-                        t = 3;
+     }
+
+     public void Update()
+     {
+          checkInvincibility();
+          if (checkStun())
+          {
+               stunTimer -= Time.deltaTime;
+               moveController.Move(0, 0);
+          }
+          if (health.currentHp() == 0)
+          {
+               onDeath();
+          }
+
+          // Find the player and set its vector towards the player
+          rnd = new System.Random();
+          currentX = transform.position.x;
+          currentY = transform.position.y;
+
+
+          // Check existence of player. Move the enemy if aggroed, otherwise move randomly
+          if (player != null)
+          {
+               //basic aggression range formula
+               playerPos = player.transform;
+               float xSp = player.transform.position.x - transform.position.x;
+               float ySp = player.transform.position.y - transform.position.y;
+               direction = new Vector2(xSp, ySp);
+
+               distance = playerPos.position - transform.position;
+               if (distance.magnitude <= AgroRange)
+               {
+                    isAgro = true;
+               }
+               if (distance.magnitude > AgroRange)
+               {
+                    isAgro = false;
+               }
+
+               if (isAgro)
+               {
+                    moveController.Move(direction.normalized, 8);
+               }
+               else
+               {
+                    //Debug.Log ("is");
+                    if (t < 1)
+                    {
+                         if (GetComponent<Rigidbody2D>().velocity.magnitude != 0)
+                         {
+                              //speed = new Vector2 (0, 0);
+                              moveController.Move(0, 0);
+                              t = 3;
+                         }
                     }
-                }
-                else if (t < 2 && t > 1.3) {
-                    int rand = rnd.Next(1, 5);
-                    if (rand == 1) {
-                        //speed = new Vector2 (2, 0);
-                        moveController.Move(1, 0, 5);
-                        t = 1.3;
+                    else if (t < 2 && t > 1.3)
+                    {
+                         int rand = rnd.Next(1, 5);
+                         if (rand == 1)
+                         {
+                              //speed = new Vector2 (2, 0);
+                              moveController.Move(1, 0, 5);
+                              t = 1.3;
+                         }
+                         else if (rand == 2)
+                         {
+                              //speed = new Vector2 (-2, 0);
+                              moveController.Move(-1, 0, 5);
+                              t = 1.3;
+                         }
+                         else if (rand == 3)
+                         {
+                              //speed = new Vector2 (0, 2);
+                              moveController.Move(0, 1, 5);
+                              t = 1.3;
+                         }
+                         else if (rand == 4)
+                         {
+                              //speed = new Vector2 (0, -2);
+                              moveController.Move(0, -1, 5);
+                              t = 1.3;
+                         }
                     }
-                    else if (rand == 2) {
-                        //speed = new Vector2 (-2, 0);
-                        moveController.Move(-1, 0, 5);
-                        t = 1.3;
-                    }
-                    else if (rand == 3) {
-                        //speed = new Vector2 (0, 2);
-                        moveController.Move(0, 1, 5);
-                        t = 1.3;
-                    }
-                    else if (rand == 4) {
-                        //speed = new Vector2 (0, -2);
-                        moveController.Move(0, -1, 5);
-                        t = 1.3;
-                    }
-                }
-                t -= Time.deltaTime;
-            }
-        }
+                    t -= Time.deltaTime;
+               }
+          }
 
-        if (health.currentHp() == 0) {
-            onDeath();
-        }
-    }
+          if (health.currentHp() == 0)
+          {
+               onDeath();
+          }
+     }
 
 
-    public bool getAgro() {
-        return isAgro;
-    }
+     public bool getAgro()
+     {
+          return isAgro;
+     }
 
-    public int currentHp() {
-        return health.currentHealth;
-    }
+     public int currentHp()
+     {
+          return health.currentHealth;
+     }
 
-    public void onDeath() {
-        //play pre-explosion animation
-        Debug.Log("WOW!");
-        //death animation
-    }
+     public void onDeath()
+     {
+          //play pre-explosion animation
+          Debug.Log("WOW!");
+          //death animation
+     }
 
 
 }

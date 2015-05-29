@@ -3,113 +3,113 @@ using UnityEngine;
 
 namespace AssemblyCSharp
 {
-    
-    public class FireSnake : SnakeBoss
-    {
+
+     public class FireSnake : SnakeBoss
+     {
 
 
-        private float currentX, currentY, playerX, playerY, angle;
-
-        
-        public void Start()
-        {
-            //animator = GetComponent<Animator>();
-
-            bite_CD = 5;
-            spawn_CD = 4;
-            acid_CD = 6;
-            fireBall_CD = 6;
-            fireTrail_CD = 8;
-            iceBall_CD = 6;
-            iceTrail_CD = 8;
-            laser_CD = 10;
-            cooldown_CD = 0.8f;
+          private float currentX, currentY, playerX, playerY, angle;
 
 
-        }
+          public void Start()
+          {
+               //animator = GetComponent<Animator>();
 
-        public void Update()
-        {
-            if (player != null)
-            {
-                //find position after animation? will it use the position from before the animation starts? be ready to change
-                findPos();
+               bite_CD = 5;
+               spawn_CD = 4;
+               acid_CD = 6;
+               fireBall_CD = 6;
+               fireTrail_CD = 8;
+               iceBall_CD = 6;
+               iceTrail_CD = 8;
+               laser_CD = 10;
+               cooldown_CD = 0.8f;
 
-                rnd = new System.Random();
 
-                distance = player.transform.position - transform.position;
-                if (distance.magnitude <= AgroRange)
-                {
-                    isAgro = true;
-                }
-                if (distance.magnitude > AgroRange)
-                {
-                    isAgro = false;
-                }
+          }
 
-                if (isAgro)
-                {
-                    //targetPos *= 0.8f;
-                    if (cooldown_CD > 0.8)
+          public void Update()
+          {
+               if (player != null)
+               {
+                    //find position after animation? will it use the position from before the animation starts? be ready to change
+                    findPos();
+
+                    rnd = new System.Random();
+
+                    distance = player.transform.position - transform.position;
+                    if (distance.magnitude <= AgroRange)
                     {
-                        cooldown_CD = 0;
-                        moveController.Move(0, 0);
-
-                        if (bite_CD > 5)
-                        {
-                            biteAttack();
-                        }
-                        else if (spawn_CD > 4)
-                        {
-                            spawnAttack();
-                        }
-                        else if (laser_CD > 10)
-                        {
-                            laserAttack();
-                        }
-                        else if (acid_CD > 6)
-                        {
-                            acidAttack();
-                        }
-                        else if (fireTrail_CD > 8)
-                        {
-                            trailAttack();
-                        }
-                        else if (fireBall_CD > 6)
-                        {
-                            ballAttack();
-                        }
-                        
-                        else
-                        {
-                            cooldown_CD = 0.6f;
-                        }
-
-                        //Fire Snake - Bite -> Spawn Snakes -> -> Laser -> Acid Ball -> fire trail -> fireball
-
-                        //Loop with array for less code   
-                        //attack
+                         isAgro = true;
+                    }
+                    if (distance.magnitude > AgroRange)
+                    {
+                         isAgro = false;
                     }
 
-                }
-                bite_CD += Time.deltaTime;
-                laser_CD += Time.deltaTime;
-                spawn_CD += Time.deltaTime;
-                acid_CD += Time.deltaTime;
-                fireBall_CD += Time.deltaTime;
-                fireTrail_CD += Time.deltaTime;
-                iceBall_CD += Time.deltaTime;
-                iceTrail_CD += Time.deltaTime;
-                cooldown_CD += Time.deltaTime;
+                    if (isAgro)
+                    {
+                         //targetPos *= 0.8f;
+                         if (cooldown_CD > 0.8)
+                         {
+                              cooldown_CD = 0;
+                              moveController.Move(0, 0);
 
-                findPos();
-            }
-        }
+                              if (bite_CD > 5)
+                              {
+                                   biteAttack();
+                              }
+                              else if (spawn_CD > 4)
+                              {
+                                   spawnAttack();
+                              }
+                              else if (laser_CD > 10)
+                              {
+                                   laserAttack();
+                              }
+                              else if (acid_CD > 6)
+                              {
+                                   acidAttack();
+                              }
+                              else if (fireTrail_CD > 8)
+                              {
+                                   trailAttack();
+                              }
+                              else if (fireBall_CD > 6)
+                              {
+                                   ballAttack();
+                              }
+
+                              else
+                              {
+                                   cooldown_CD = 0.6f;
+                              }
+
+                              //Fire Snake - Bite -> Spawn Snakes -> -> Laser -> Acid Ball -> fire trail -> fireball
+
+                              //Loop with array for less code   
+                              //attack
+                         }
+
+                    }
+                    bite_CD += Time.deltaTime;
+                    laser_CD += Time.deltaTime;
+                    spawn_CD += Time.deltaTime;
+                    acid_CD += Time.deltaTime;
+                    fireBall_CD += Time.deltaTime;
+                    fireTrail_CD += Time.deltaTime;
+                    iceBall_CD += Time.deltaTime;
+                    iceTrail_CD += Time.deltaTime;
+                    cooldown_CD += Time.deltaTime;
+
+                    findPos();
+               }
+          }
 
 
 
 
 
 
-    }
+     }
 }
