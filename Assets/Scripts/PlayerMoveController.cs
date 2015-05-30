@@ -78,7 +78,7 @@ public class PlayerMoveController : MonoBehaviour
           dashIn -= Time.deltaTime;
 
           //Dash Cooldown
-          if (dashIn < 0.1)
+          if (dashIn < -0.1)
           {
                dashCooldown = false;
                ToWalkPhysics();
@@ -105,7 +105,7 @@ public class PlayerMoveController : MonoBehaviour
 
 
           //The player can move after the dash cool down
-          if (dashIn < -0.3)
+          if (dashIn < -0.1)
           {
                canDash = true;
                isDashing = false;
