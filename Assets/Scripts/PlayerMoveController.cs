@@ -37,18 +37,10 @@ public class PlayerMoveController : MonoBehaviour
      private float timeSpentKnockedBack;
      private Vector2 knockbackDirection;
      //Player Progression
-     public bool IsDashUnlocked = true;
+     public bool IsDashUnlocked;
 
 
-     public float getDashSpeed()
-     {
-          return dashSpeed;
-     }
-
-     public void setDashSpeed(float newDashSpeed)
-     {
-          dashSpeed = newDashSpeed;
-     }
+  
 
      void Awake()
      {
@@ -313,8 +305,23 @@ public class PlayerMoveController : MonoBehaviour
           GetComponent<Rigidbody2D>().mass = 2;
      }
 
+     public float getDashSpeed()
+     {
+          return dashSpeed;
+     }
+
+     public void setDashSpeed(float newDashSpeed)
+     {
+          dashSpeed += newDashSpeed;
+     }
+
      public void SetDashLockState(bool value)
      {
           IsDashUnlocked = value;
+     }
+
+     public bool GetDashLockState()
+     {
+          return IsDashUnlocked;
      }
 }
