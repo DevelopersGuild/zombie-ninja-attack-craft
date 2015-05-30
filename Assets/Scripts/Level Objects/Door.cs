@@ -19,9 +19,7 @@ public class Door : MonoBehaviour
      // Open the door by disabling the collider and changin the sprite 
      public void OpenDoor()
      {
-          Debug.Log("as");
           collider.enabled = false;
-          Debug.Log("asa");
           if (opened != null)
           {
                sr.sprite = opened;

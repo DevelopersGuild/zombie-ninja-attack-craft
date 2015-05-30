@@ -10,6 +10,7 @@ public class RoomUnlock : MonoBehaviour
      public List<GameObject> rewards = new List<GameObject>();
 
      private bool isCleared;
+     private bool hasBeenActivated;
      private bool isActive;
 
      // Make sure the doors are open and the enemies arent spawned
@@ -17,17 +18,15 @@ public class RoomUnlock : MonoBehaviour
      {
           isCleared = false;
           isActive = false;
+          hasBeenActivated = false;
 
           foreach (Door door in doors)
           {
-               Debug.Log("preopened" + doors.Count);
                door.OpenDoor();
-               Debug.Log("opened" + doors.Count);
           }
           foreach (GameObject enemy in enemies)
           {
                enemy.SetActive(false);
-               Debug.Log("enemies");
           }
           foreach (GameObject reward in rewards)
           {
@@ -38,8 +37,9 @@ public class RoomUnlock : MonoBehaviour
      // Check for the player to activate the room
      void OnTriggerEnter2D(Collider2D other)
      {
-          if (other.tag == "Player")
+          if (other.tag == "Player" && hasBeenActivated == false)
           {
+              hasBeenActivated = true;
                ActivateRoom();
           }
      }
@@ -82,6 +82,7 @@ public class RoomUnlock : MonoBehaviour
      // Open the doors and spawn the reward items
      void closeRoom()
      {
+         isActive = false;
           foreach (Door door in doors)
           {
                door.OpenDoor();
@@ -89,7 +90,6 @@ public class RoomUnlock : MonoBehaviour
           foreach (GameObject reward in rewards)
           {
                reward.SetActive(true);
-               Debug.Log("rewards!");
           }
           //Destroy(gameObject);
      }

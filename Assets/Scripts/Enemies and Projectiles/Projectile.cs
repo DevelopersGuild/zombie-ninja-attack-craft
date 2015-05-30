@@ -22,13 +22,14 @@ public class Projectile : MonoBehaviour
 
      public void Start()
      {
-          Destroy(transform.gameObject, TimeToLive);
+          Destroy(transform.gameObject, 1);
           homing = shot = false;
           player = FindObjectOfType<Player>();
      }
 
      public void Update()
      {
+         Debug.Log(TimeToLive);
           if (AutoTileMap.Instance.GetAutotileCollisionAtPosition(transform.position) == AutoTileMap.eTileCollisionType.BLOCK)
           {
                Destroy(transform.gameObject);

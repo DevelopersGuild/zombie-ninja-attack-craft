@@ -16,6 +16,6 @@ public class Chest : MonoBehaviour {
     public void OpenChest() {
         Debug.Log("OPEN");
         isOpen = true;
-        sr.sprite = openSprite;
+        //sr.sprite = openSprite;
     }
 }

@@ -49,11 +49,11 @@ namespace AssemblyCSharp
 
                if (player != null)
                {
-                    if (sparkTime <= 0)
+                    if (sparkTimer <= 0)
                     {
                          moveController.Move(0, 0);
                          t = 2;
-                         sparkTime = 6;
+                         sparkTimer = sparkTime;
                          stop = 0;
                          Instantiate(SparkParticle, transform.position, Quaternion.identity);
                     }

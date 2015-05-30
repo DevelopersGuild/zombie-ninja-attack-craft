@@ -16,6 +16,7 @@ public class GUIScript : MonoBehaviour
      // Use this for initialization
      void Start()
      {
+         player = FindObjectOfType<Player>();
           playerHealth = player.GetComponent<Health>();
           playerAttackController = player.GetComponent<AttackController>();
      }
