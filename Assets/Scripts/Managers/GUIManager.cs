@@ -62,6 +62,7 @@ public class GUIManager : MonoBehaviour
      {
           if (StoreCanvas != null)
           {
+               GameManager.Notifications.PostNotification(this, "PlayerInMenu");
                StoreCanvas.enabled = true;
                Cursor.visible = true;
           }
@@ -71,6 +72,7 @@ public class GUIManager : MonoBehaviour
      {
           if (StoreCanvas != null)
           {
+               GameManager.Notifications.PostNotification(this, "PlayerExitMenu");
                StoreCanvas.enabled = false;
                Cursor.visible = false;
           }
@@ -80,6 +82,7 @@ public class GUIManager : MonoBehaviour
      {
           if (EndOfLevelCanvas != null)
           {
+               GameManager.Notifications.PostNotification(this, "PlayerInMenu");
                EndOfLevelCanvas.enabled = true;
                Cursor.visible = true;
           }
