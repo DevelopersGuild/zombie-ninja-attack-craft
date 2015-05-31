@@ -81,8 +81,8 @@ public class Player : MonoBehaviour
      {
           /* Player Input */
           // Retrieve axis information from keyboard
-          float inputX = Input.GetAxisRaw("Horizontal");
-          float inputY = Input.GetAxisRaw("Vertical");
+          float inputX = 0;
+          float inputY = 0;
 
           //Check for the invincibility timer. If the player is invincible, add to the timer. When the timers over, reset the flags
           if (isInvincible)
@@ -169,19 +169,19 @@ public class Player : MonoBehaviour
 
 
                //Check for how many keys are being pressed and act accordingly
-               if (Input.GetKey("up"))
+               if (Input.GetButton("Up"))
                {
                     keyCount++;
                }
-               if (Input.GetKey("down"))
+               if (Input.GetButton("Down"))
                {
                     keyCount++;
                }
-               if (Input.GetKey("left"))
+               if (Input.GetButton("Left"))
                {
                     keyCount++;
                }
-               if (Input.GetKey("right"))
+               if (Input.GetButton("Right"))
                {
                     keyCount++;
                }
@@ -199,7 +199,7 @@ public class Player : MonoBehaviour
                {
 
                     //Handle double taps for dashing
-                    if (Input.GetKeyDown("up"))
+                    if (Input.GetButtonDown("Up"))
                     {
                          //playerMoveController.newFacing = (int)MoveController.facingDirection.up;
 
@@ -209,7 +209,7 @@ public class Player : MonoBehaviour
                          }
                          lastTapTimeW = Time.time;
                     }
-                    if (Input.GetKeyDown("down"))
+                    if (Input.GetButtonDown("Down"))
                     {
                          //playerMoveController.newFacing = (int)MoveController.facingDirection.down;
 
@@ -219,7 +219,7 @@ public class Player : MonoBehaviour
                          }
                          lastTapTimeS = Time.time;
                     }
-                    if (Input.GetKeyDown("left"))
+                    if (Input.GetButtonDown("Left"))
                     {
                          //playerMoveController.newFacing = (int)MoveController.facingDirection.left;
 
@@ -229,7 +229,7 @@ public class Player : MonoBehaviour
                          }
                          lastTapTimeA = Time.time;
                     }
-                    if (Input.GetKeyDown("right"))
+                    if (Input.GetButtonDown("Right"))
                     {
                          //playerMoveController.newFacing = (int)MoveController.facingDirection.right;
 
@@ -242,21 +242,25 @@ public class Player : MonoBehaviour
 
 
                     //Face the player depending on the button being pressed
-                    if (Input.GetKey("up"))
+                    if (Input.GetButton("Up"))
                     {
+                          inputY = 1;
                          playerMoveController.newFacing = (int)MoveController.facingDirection.up;
                     }
-                    if (Input.GetKey("down"))
+                    if (Input.GetButton("Down"))
                     {
+                          inputY = -1;
                          playerMoveController.newFacing = (int)MoveController.facingDirection.down;
 
                     }
-                    if (Input.GetKey("left"))
+                    if (Input.GetButton("Left"))
                     {
+                          inputX = -1;
                          playerMoveController.newFacing = (int)MoveController.facingDirection.left;
                     }
-                    if (Input.GetKey("right"))
+                    if (Input.GetButton("Right"))
                     {
+                          inputX = 1;
                          playerMoveController.newFacing = (int)MoveController.facingDirection.right;
                     }
 

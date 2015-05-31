@@ -78,7 +78,7 @@ public class PlayerMoveController : MonoBehaviour
           dashIn -= Time.deltaTime;
 
           //Dash Cooldown
-          if (dashIn < -0.1)
+          if (dashIn < 0)
           {
                dashCooldown = false;
                ToWalkPhysics();

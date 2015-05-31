@@ -23,7 +23,6 @@ public class FollowPath : MonoBehaviour
      {
           if (pathway == null)
           {
-               Debug.LogError("path is null", gameObject);
                return;
           }
 
