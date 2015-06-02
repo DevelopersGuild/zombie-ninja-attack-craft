@@ -49,7 +49,7 @@ public class Landmine : Pickup
      {
           //Set the landmine to active and explode if the player has stepped into its trigger
 
-          if (other.gameObject.tag == "Attackable")
+          if (other.gameObject.tag == "Attackable" || other.gameObject.tag == "Player")
           {
                isActive = true;
           }

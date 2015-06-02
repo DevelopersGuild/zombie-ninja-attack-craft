@@ -148,7 +148,7 @@ public class Player : MonoBehaviour
                     }
                     if (ChosenWeapon == SecondaryWeapons.Mine)
                     {
-                         attackController.PlaceMine();
+                         attackController.ThrowBomb();
                     }
 
                }
