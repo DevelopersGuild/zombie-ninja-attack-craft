@@ -217,6 +217,10 @@ public class PlayerMoveController : MonoBehaviour
                }
                previousFacing = facing;
           }
+          else
+          {
+               canMove = false;
+          }
      }
 
      void FixedUpdate()
@@ -341,6 +345,7 @@ public class PlayerMoveController : MonoBehaviour
 
      public void PlayerInMenu()
      {
+          canMove = false;
           IsInMenu = true;
      }
 }
