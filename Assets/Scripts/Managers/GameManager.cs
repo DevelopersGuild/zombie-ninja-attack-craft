@@ -72,8 +72,7 @@ public class GameManager : MonoBehaviour
      void Start()
      {
           currentLevel = Application.loadedLevel;
-          Coins = 0;
-          LoadGameData();
+          OnLevelWasLoaded(currentLevel);
           if (UnlockAllUnlocks == true)
           {
                UnlockEverything();

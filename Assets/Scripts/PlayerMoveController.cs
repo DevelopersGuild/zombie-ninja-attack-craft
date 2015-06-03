@@ -12,7 +12,7 @@ public class PlayerMoveController : MonoBehaviour
      // Speed of object
      [Range(0, 10)]
      public float speed = 10;
-     public float dashSpeed = 100;
+     public float dashSpeed;
      // Direction of object
      internal Vector2 direction;
      public Vector2 facing;
@@ -39,6 +39,7 @@ public class PlayerMoveController : MonoBehaviour
      private Vector2 knockbackDirection;
      //Player Progression
      public bool IsDashUnlocked;
+     public float DashSpeedUpgrade = 0;
 
 
   
@@ -257,7 +258,7 @@ public class PlayerMoveController : MonoBehaviour
           {
                // Change these rigidbody parameters so the dashing feels better
                ToDashPhysics();
-               GetComponent<Rigidbody2D>().velocity = facing * dashSpeed;
+               GetComponent<Rigidbody2D>().velocity = facing * (dashSpeed + DashSpeedUpgrade);
 
                // Instantiate particle effects if they exist
                if (dashParticle != null)
@@ -320,12 +321,12 @@ public class PlayerMoveController : MonoBehaviour
 
      public float getDashSpeed()
      {
-          return dashSpeed;
+          return DashSpeedUpgrade;
      }
 
      public void setDashSpeed(float newDashSpeed)
      {
-          dashSpeed += newDashSpeed;
+          DashSpeedUpgrade += newDashSpeed;
      }
 
      public void SetDashLockState(bool value)
