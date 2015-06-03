@@ -7,6 +7,12 @@ public class Pathway : MonoBehaviour
 {
 
      public Transform[] Points;
+     public enum PathType
+     {
+          Iterate,
+          Loop
+     }
+     public PathType type = PathType.Iterate;
 
      public IEnumerator<Transform> GetPathsEnumerator()
      {
@@ -25,10 +31,21 @@ public class Pathway : MonoBehaviour
                //If the length of the Points is 1, then just make the platform stay there and do nothing
                if (Points.Length == 1) continue;
 
-               if (index <= 0) direction = 1;
-               else if (index >= Points.Length - 1) direction = -1;
+               if (type == PathType.Iterate)
+               {
+                    if (index <= 0) direction = 1;
+                    else if (index >= Points.Length - 1) direction = -1;
 
-               index += direction;
+                    index += direction;
+               }
+               else
+               {
+                    if ((index >= Points.Length - 1)) index = -1;
+                    Debug.Log(index);
+
+                    index++;
+               }
+
           }
 
      }
