@@ -11,7 +11,10 @@ public class GameManager : MonoBehaviour
      {
           get
           {
-               if (instance == null) instance = new GameObject("GameManager").AddComponent<GameManager>();
+               if (instance == null)
+               {
+                    instance = new GameObject("GameManager").AddComponent<GameManager>();
+               }
                return instance;
           }
      }
@@ -35,11 +38,13 @@ public class GameManager : MonoBehaviour
                if (stateManager == null)
                {
                     stateManager = instance.GetComponent<LoadAndSaveManager>();
-
                }
                return stateManager;
           }
      }
+
+
+
      void Awake()
      {
           if ((instance) && (instance.GetInstanceID() != GetInstanceID()))

@@ -45,6 +45,10 @@ public class Coin : Pickup
           GameManager.AddCoins(value);
      }
 
+     public override void sendPickupMessage()
+     {
+          GameManager.Notifications.PostNotification(this, "CoinPickedUp");
+     }
 
      public void setValue(int newValue)
      {
