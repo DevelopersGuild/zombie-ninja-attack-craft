@@ -66,7 +66,6 @@ public class ChargerAI : Enemy {
         }
         if (distance.magnitude > AgroRange) {
             isAggroed = false;
-            Debug.Log("aggroed:" + isAggroed);
         }
         // speed = new Vector2(0, 0);
 

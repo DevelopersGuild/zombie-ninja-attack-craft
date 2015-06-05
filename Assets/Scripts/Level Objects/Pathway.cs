@@ -41,8 +41,6 @@ public class Pathway : MonoBehaviour
                else
                {
                     if ((index >= Points.Length - 1)) index = -1;
-                    Debug.Log(index);
-
                     index++;
                }
 

@@ -100,22 +100,22 @@ public class EnemyMoveController : MonoBehaviour
                     }
                }
 
-               if (animator != null)
-               {
-                    //Play walking animations
-                    animator.SetFloat("facing_x", facing.x);
-                    animator.SetFloat("facing_y", facing.y);
-                    animator.SetFloat("movement_x", movementVector.x);
-                    animator.SetFloat("movement_y", movementVector.y);
-                    if (isMoving == true)
-                    {
-                         animator.SetBool("IsMoving", isMoving);
-                    }
-                    else
-                    {
-                         animator.SetBool("IsMoving", false);
-                    }
-               }
+               //if (animator != null)
+               //{
+               //     //Play walking animations
+               //     animator.SetFloat("facing_x", facing.x);
+               //     animator.SetFloat("facing_y", facing.y);
+               //     animator.SetFloat("movement_x", movementVector.x);
+               //     animator.SetFloat("movement_y", movementVector.y);
+               //     if (isMoving == true)
+               //     {
+               //          animator.SetBool("IsMoving", isMoving);
+               //     }
+               //     else
+               //     {
+               //          animator.SetBool("IsMoving", false);
+               //     }
+               //}
           }
 
      }

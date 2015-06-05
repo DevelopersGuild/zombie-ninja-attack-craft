@@ -29,7 +29,6 @@ public class Projectile : MonoBehaviour
 
      public void Update()
      {
-         Debug.Log(TimeToLive);
           if (AutoTileMap.Instance.GetAutotileCollisionAtPosition(transform.position) == AutoTileMap.eTileCollisionType.BLOCK)
           {
                Destroy(transform.gameObject);
