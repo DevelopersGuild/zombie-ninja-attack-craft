@@ -25,13 +25,10 @@ namespace AssemblyCSharp
 
           private bool isAgro;
 
-          System.Random rnd;
-
-          private float currentX, currentY;
           private Transform playerPos;
-          private Vector2 distance, speed, facing, direction;
-          private double t, temp, fireBlock_CD;
-
+          private Vector2 distance, speed, facing;
+          private double temp, fireBlock_CD, idleTime;
+          private Vector3 someVec;
           private double fireDist, vel;
           //private Animator animator;
 
@@ -47,7 +44,10 @@ namespace AssemblyCSharp
                distance = new Vector2(0, 0);
                speed = new Vector2(0, 0);
                isAgro = false;
-               t = 3;
+
+               rnd = new System.Random(Guid.NewGuid().GetHashCode());
+               t = 3 + rnd.Next(0, 3000) / 1000f;
+
                //temp is the number for exponential speed when running away
                temp = 1.0000001;
                fireBlock_CD = 0;
@@ -115,12 +115,17 @@ namespace AssemblyCSharp
                          }
                          else
                          {
-                              idle(t);
-                              t -= Time.deltaTime;
-                              //fireBlock_CD
-                              //GetComponent<Rigidbody2D> ().velocity = speed;
-
+                              if (idleTime > 0.4)
+                              {
+                                   someVec = idle(t, rnd);
+                                   t = someVec.z;
+                                   idleTime = 0;
+                              }
+                              moveController.Move(someVec.x, someVec.y);
                          }
+
+                         idleTime += Time.deltaTime;
+                         t -= Time.deltaTime;
                          fireBlock_CD += Time.deltaTime;
                          //cd1 += Time.deltaTime;
                          //cd2 += Time.deltaTime;

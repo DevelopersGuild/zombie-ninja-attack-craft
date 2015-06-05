@@ -14,6 +14,7 @@ namespace AssemblyCSharp
           public void Start()
           {
                //animator = GetComponent<Animator>();
+               player = FindObjectOfType<Player>();
 
                bite_CD = 5;
                spawn_CD = 4;
@@ -34,13 +35,14 @@ namespace AssemblyCSharp
                {
                     //find position after animation? will it use the position from before the animation starts? be ready to change
                     findPos();
+                    updatePos();
 
                     rnd = new System.Random();
 
                     distance = player.transform.position - transform.position;
                     if (distance.magnitude <= AgroRange)
                     {
-                         isAgro = true;
+                         isAgro = false;
                     }
                     if (distance.magnitude > AgroRange)
                     {
@@ -102,7 +104,6 @@ namespace AssemblyCSharp
                     iceTrail_CD += Time.deltaTime;
                     cooldown_CD += Time.deltaTime;
 
-                    findPos();
                }
           }
 

@@ -6,19 +6,15 @@ namespace AssemblyCSharp
      public class Porcupine : Enemy
      {
 
-          public Player player;
           public GameObject SparkParticle, SparkParticleInstance;
           public float sparkTime;
           private float sparkTimer;
 
-          private EnemyMoveController moveController;
           private Health health;
 
-          System.Random rnd;
-
-          private float currentX, currentY;
-          private Vector2 distance, direction;
-          private double t, stop;
+          private Vector2 distance;
+          private Vector3 someVec;
+          private double stop, idleTime;
 
           //private Animator animator;
 
@@ -30,8 +26,10 @@ namespace AssemblyCSharp
                transform.gameObject.tag = "Attackable";
                health = GetComponent<Health>();
 
+               rnd = new System.Random(Guid.NewGuid().GetHashCode());
+               t = 3 + rnd.Next(0, 3000) / 1000f;
+
                distance = new Vector2(0, 0);
-               t = 3;
                stop = 1;
           }
 
@@ -63,41 +61,21 @@ namespace AssemblyCSharp
                     {
                          moveController.Move(0, 0);
                     }
-                    else if (t < 1)
+ 
+                    else
                     {
-                         if (GetComponent<Rigidbody2D>().velocity.magnitude != 0)
+                         if (idleTime > 0.4)
                          {
-                              moveController.Move(0, 0);
-                              t = 3;
+                              someVec = idle(t, rnd);
+                              t = someVec.z;
+                              idleTime = 0;
                          }
-                    }
-                    else if (t < 2 && t > 1.3)
-                    {
-                         int rand = rnd.Next(1, 5);
-                         if (rand == 1)
-                         {
-                              moveController.Move(1, 0, 5);
-                              t = 1.3;
-                         }
-                         else if (rand == 2)
-                         {
-                              moveController.Move(-1, 0, 5);
-                              t = 1.3;
-                         }
-                         else if (rand == 3)
-                         {
-                              moveController.Move(0, 1, 5);
-                              t = 1.3;
-                         }
-                         else if (rand == 4)
-                         {
-                              moveController.Move(0, -1, 5);
-                              t = 1.3;
-                         }
+                         moveController.Move(someVec.x, someVec.y);
                     }
                }
-               stop += Time.deltaTime;
 
+               idleTime += Time.deltaTime;  
+               stop += Time.deltaTime;
                t -= Time.deltaTime;
                sparkTimer -= Time.deltaTime;
 

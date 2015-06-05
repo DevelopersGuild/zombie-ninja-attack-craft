@@ -50,7 +50,12 @@ public class SnakeBoss : Boss
      public Projectile acidFieldObj;
      private Projectile acidField;
 
+     public GameObject ball1, ball2, ball3, ball4;
+     private GameObject b1, b2, b3, b4;
+
      public Vector2 targetPos;
+
+     public float snakeFactor, mDeg;
 
      [HideInInspector]
      public EnemyMoveController moveController;
@@ -73,6 +78,11 @@ public class SnakeBoss : Boss
      //small room
 
      //private Animator animator;
+
+    
+
+     [HideInInspector]
+     public Vector2 initialPos;
 
      [HideInInspector]
      public float currentX, currentY, playerX, playerY, angle;
@@ -101,6 +111,17 @@ public class SnakeBoss : Boss
           distance = new Vector2(0, 0);
           speed = new Vector2(0, 0);
           isAgro = false;
+
+     }
+
+     public void Awake()
+     {
+          Vector3 tempVec = new Vector3(0,1,0);
+         // b1 = Instantiate(ball1, transform.position + tempVec, transform.rotation) as GameObject;
+         // b2 = Instantiate(ball2, transform.position + tempVec * 2, transform.rotation) as GameObject;
+         // b3 = Instantiate(ball3, transform.position + tempVec * 3, transform.rotation) as GameObject;
+         // b4 = Instantiate(ball4, transform.position + tempVec * 4, transform.rotation) as GameObject;
+
 
      }
 
@@ -178,6 +199,23 @@ public class SnakeBoss : Boss
           angle = Vector2.Angle(player.transform.position, transform.position);
           direction = new Vector2(playerX - currentX, playerY - currentY);
           direction = direction.normalized;
+     }
+
+     public void updatePos()
+     {
+          
+//          transform.position = new Vector3(initialPos.x + (float)Math.Sin(snakeFactor % Math.PI),initialPos.y,0);
+          //snakeFactor = Mathf.PingPong(Time.time / 2.2f, 0.7f);
+          //transform.position = new Vector3(initialPos.x + snakeFactor, initialPos.y, 0);
+
+          float degreesPerSecond = 60.0f;
+          mDeg = Mathf.Repeat(mDeg + (Time.deltaTime * degreesPerSecond), 360.0f);
+          float radians = mDeg * Mathf.Deg2Rad;
+
+          Vector3 offset = new Vector3(Mathf.Sin(radians)/36f, 0, 0);
+          transform.position = transform.position + offset;
+          //snakeFactor += 0f;
+          Debug.Log(transform.position + "VS" + offset);
      }
 
 

@@ -3,17 +3,21 @@ using System.Collections;
 
 public class BasicAttack : MonoBehaviour
 {
-
+     private double t;
     // Use this for initialization
     void Start()
     {
-
+         t = 0.7;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+         if (t <= 0)
+         {
+             // Destroy(gameObject);
+         }
+         t -= Time.deltaTime;
     }
 
     void DestroySelf()

@@ -8,26 +8,22 @@ namespace AssemblyCSharp
     //Has one move:
     //1) Charge at player, then disappear and have multiple copies appear surrounding the player. 
     //One copy flies at the player and then the real angel re-appears.
-    public class Angel : MonoBehaviour
+    public class Angel : Enemy
     {
-        private Player player;
-        public float AgroRange;
         public FakeAngel angelFakeObject;
         public RealAngel angelRealObject;
 
-        private EnemyMoveController moveController;
         private Health health;
 
         private bool isAgro, isFaking, stageThree, stageFour;
 
-        System.Random rnd;
-
         private int rand;
-        private float currentX, currentY,i;
+        private float i;
         private Transform playerPos;
-        private Vector2 distance, direction;
+        private Vector2 distance;
         private Vector3 fakeVec;
-        private double t, fake_CD, invis_CD, radius, running;
+        private double fake_CD, invis_CD, radius, running, idleTime;
+        private Vector3 someVec;
 
         //private Animator animator;
 
@@ -43,7 +39,10 @@ namespace AssemblyCSharp
             distance = new Vector2(0, 0);
             isAgro = false;
             isFaking = stageThree = stageFour = false;
-            t = 3;
+
+
+            rnd = new System.Random(Guid.NewGuid().GetHashCode());
+            t = 3 + rnd.Next(0, 3000) / 1000f;
 
             fake_CD = 0;
             invis_CD = 0;
@@ -132,54 +131,24 @@ namespace AssemblyCSharp
                     }
                     else if (isAgro)
                     {
-                        if (transform.position.z == 0)
-                        {
-                            moveController.Move(direction.normalized, 7);
-                        }
+                         if (transform.position.z == 0)
+                         {
+                              moveController.Move(direction.normalized, 7);
+                         }
 
                     }
-                else
-                {
-                    if (t < 1)
+                    else
                     {
-                        if (GetComponent<Rigidbody2D>().velocity.magnitude != 0)
-                        {
-                            moveController.Move(0, 0);
-                            t = 3;
-                        }
+                         if (idleTime > 0.4)
+                         {
+                              someVec = idle(t, rnd);
+                              t = someVec.z;
+                              idleTime = 0;
+                         }
+                         moveController.Move(someVec.x, someVec.y);
                     }
-                    else if (t < 2 && t > 1.3)
-                    {
-                        int random = rnd.Next(1, 5);
-                        if (random == 1)
-                        {
-                            moveController.Move(1, 0, 5);
-                            
-                            t = 1.3;
-                        }
-                        else if (random == 2)
-                        {
-                            moveController.Move(-1, 0, 5);
-                            
-                            t = 1.3;
-                        }
-                        else if (random == 3)
-                        {
-                            moveController.Move(0, 1, 5);
-                            
-                            t = 1.3;
-                        }
-                        else if (random == 4)
-                        {
-                            moveController.Move(0, -1, 5);
-                            
-                            t = 1.3;
-                        }
-                    }
-                    t -= Time.deltaTime;
 
-                
-                    }   
+                    idleTime += Time.deltaTime;
                 invis_CD -= Time.deltaTime;
                 fake_CD -= Time.deltaTime;
                 running -= Time.deltaTime;
