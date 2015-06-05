@@ -7,6 +7,7 @@ public class InventoryItem
      public string NameOfItem;
      public int QuantityOfItem;
      public int PriceOfItem;
+     public int QuantitySoldIn;
 
 
 

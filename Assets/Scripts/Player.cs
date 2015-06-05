@@ -48,12 +48,14 @@ public class Player : MonoBehaviour
           playerMoveController = GetComponent<PlayerMoveController>();
           attackController = GetComponent<AttackController>();
           tapSpeed = .25f;
-          BowUnlocked = true;
           GameManager.Notifications.AddListener(this, "LevelLoaded");
           GameManager.Notifications.AddListener(this, "PrepareToSave");
+          GameManager.Notifications.AddListener(this, "UnlockBow");
+          GameManager.Notifications.AddListener(this, "UnlockPowerShot");
+          GameManager.Notifications.AddListener(this, "UnlockDash");
+          GameManager.Notifications.AddListener(this, "UnlockGrenade");
+          GameManager.Notifications.AddListener(this, "UpgradeDashSpeed");
           ChosenWeapon = SecondaryWeapons.Projectile;
-          //-----------------------------------------------------------change after varible intergrated into player progression system.
-          OtherWeaponsUnlocked = true;
      }
 
      public void LevelLoaded()
@@ -70,8 +72,10 @@ public class Player : MonoBehaviour
 
      public void PrepareToSave()
      {
-          BowUnlocked = true;
           DataAboutPlayer.IsBowUnlocked = BowUnlocked;
+          DataAboutPlayer.IsBowHoldDownUnlocked = UpgradedBow;
+          DataAboutPlayer.IsDashUnlocked = playerMoveController.GetDashLockState();
+          DataAboutPlayer.IsLandMineUnlocked = OtherWeaponsUnlocked;
           DataAboutPlayer.DashSpeed = playerMoveController.getDashSpeed();
           GameManager.StateManager.GameState.Player = DataAboutPlayer;
      }
@@ -144,7 +148,7 @@ public class Player : MonoBehaviour
                     }
                     if (ChosenWeapon == SecondaryWeapons.Mine)
                     {
-                         attackController.PlaceMine();
+                         attackController.ThrowBomb();
                     }
 
                }
@@ -281,6 +285,29 @@ public class Player : MonoBehaviour
      public void setStun(float st)
      {
           stun_Timer = st;
+     }
+
+     //Player Progression
+     public void UnlockBow()
+     {
+          BowUnlocked = true;
+     }
+     public void UnlockPowerShot()
+     {
+          UpgradedBow = true;
+     }
+
+     public void UnlockDash()
+     {
+          playerMoveController.SetDashLockState(true);
+     }
+     public void UnlockGrenade()
+     {
+          OtherWeaponsUnlocked = true;
+     }
+     public void UpgradeDashSpeed()
+     {
+          playerMoveController.setDashSpeed(1);
      }
 }
 

@@ -7,6 +7,20 @@ public class Shop : MonoBehaviour
      private Dictionary<string, InventoryItem> Inventory = new Dictionary<string, InventoryItem>();
      private Pickup boughtItem;
      Collider2D player;
+     //Projectile
+     public int QuantityOfArrows;
+     public int PriceOfArrows;
+     public int QuantityArrowsSoldIn;
+
+     //Bomb
+     public int QuantityOfBombs;
+     public int PriceOfBombs;
+     public int QuantityBombsSoldIn;
+
+     //Health
+     public int QuantityOfHealth;
+     public int PriceOfHealth;
+     public int QuantityHealthSoldIn;
 
      void Start()
      {
@@ -14,22 +28,25 @@ public class Shop : MonoBehaviour
           temp.AddComponent<AmmoPickup>();
           Inventory.Add("Arrows", new InventoryItem());
           Inventory["Arrows"].TypeOfItem = temp.GetComponent<Pickup>();
-          Inventory["Arrows"].QuantityOfItem = 5;
-          Inventory["Arrows"].PriceOfItem = 1;
+          Inventory["Arrows"].QuantityOfItem = QuantityOfArrows;
+          Inventory["Arrows"].PriceOfItem = PriceOfArrows;
+          Inventory["Arrows"].QuantitySoldIn = QuantityArrowsSoldIn;
 
           temp = new GameObject();
-          temp.AddComponent<Landmine>();
-          Inventory.Add("LandMine", new InventoryItem());
-          Inventory["LandMine"].TypeOfItem = temp.GetComponent<Pickup>();
-          Inventory["LandMine"].QuantityOfItem = 5;
-          Inventory["LandMine"].PriceOfItem = 1;
+          temp.AddComponent<BombScript>();
+          Inventory.Add("Bomb", new InventoryItem());
+          Inventory["Bomb"].TypeOfItem = temp.GetComponent<Pickup>();
+          Inventory["Bomb"].QuantityOfItem = QuantityOfBombs;
+          Inventory["Bomb"].PriceOfItem = PriceOfBombs;
+          Inventory["Bomb"].QuantitySoldIn = QuantityBombsSoldIn;
 
-          /*
+          temp = new GameObject();
+          temp.AddComponent<HealthPickup>();
           Inventory.Add("Health", new InventoryItem());
-          Inventory["Health"].TypeOfItem = new HealthPickup();
-          Inventory["Health"].QuantityOfItem = 20;
-          Inventory["Health"].PriceOfItem = 2;
-           */
+          Inventory["Health"].TypeOfItem = temp.GetComponent<Pickup>();
+          Inventory["Health"].QuantityOfItem = QuantityOfHealth;
+          Inventory["Health"].PriceOfItem = PriceOfHealth;
+          Inventory["Health"].QuantitySoldIn = QuantityHealthSoldIn;
      }
 
      void BuildInventory()
@@ -47,17 +64,17 @@ public class Shop : MonoBehaviour
           return Inventory[Name].QuantityOfItem;
      }
 
-     public string BuyItem(string desiredItem, int desiredQuantity)
+     public string BuyItem(string desiredItem, int desiredQuantity = 1)
      {
+          desiredQuantity = Inventory[desiredItem].QuantitySoldIn;
           string displayMessage = "You have purchased this item";
           if (Inventory[desiredItem].QuantityOfItem >= desiredQuantity)
           {
-               if(GameManager.getCoins() >= (Inventory[desiredItem].PriceOfItem * desiredQuantity))
+               if (GameManager.getCoins() >= Inventory[desiredItem].PriceOfItem)
                {
                     SpawnItem(desiredItem, desiredQuantity);
-                    GameManager.SubtractCoins(Inventory[desiredItem].PriceOfItem * desiredQuantity);
+                    GameManager.SubtractCoins(Inventory[desiredItem].PriceOfItem);
                     Inventory[desiredItem].QuantityOfItem -= desiredQuantity;
-
                }
                else
                {

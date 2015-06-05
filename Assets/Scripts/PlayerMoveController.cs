@@ -12,7 +12,7 @@ public class PlayerMoveController : MonoBehaviour
      // Speed of object
      [Range(0, 10)]
      public float speed = 10;
-     public float dashSpeed = 100;
+     public float dashSpeed;
      // Direction of object
      internal Vector2 direction;
      public Vector2 facing;
@@ -30,6 +30,7 @@ public class PlayerMoveController : MonoBehaviour
      private bool dashCooldown;
      public bool canMove;
      public bool gotAttacked;
+     public bool IsInMenu;
      //Knockback flags
      public bool isKnockedBack;
      public float knockbackForce;
@@ -37,18 +38,11 @@ public class PlayerMoveController : MonoBehaviour
      private float timeSpentKnockedBack;
      private Vector2 knockbackDirection;
      //Player Progression
-     public bool IsDashUnlocked = true;
+     public bool IsDashUnlocked;
+     public float DashSpeedUpgrade = 0;
 
 
-     public float getDashSpeed()
-     {
-          return dashSpeed;
-     }
 
-     public void setDashSpeed(float newDashSpeed)
-     {
-          dashSpeed = newDashSpeed;
-     }
 
      void Awake()
      {
@@ -64,158 +58,176 @@ public class PlayerMoveController : MonoBehaviour
           canMove = true;
           isDashing = false;
           dashIn = 0;
+          IsInMenu = false;
 
           knockbackForce = 8;
           isKnockedBack = false;
           timeSpentKnockedBack = 0;
           knockBackTime = 0.12f;
+          GameManager.Notifications.AddListener(this, "PlayerExitMenu");
+          GameManager.Notifications.AddListener(this, "PlayerInMenu");
      }
 
      // Update is called once per frame
      void Update()
      {
-          //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
-          dashIn -= Time.deltaTime;
-
-          //Dash Cooldown
-          if (dashIn < 0)
+          if (IsInMenu == false)
           {
-               dashCooldown = false;
-               ToWalkPhysics();
-          }
-          if (dashParticleInstance != null)
-          {
-               if (newFacing == (int)facingDirection.up)
+               //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
+               dashIn -= Time.deltaTime;
+               
+               //The player can move after the dash cool down
+               if (dashIn < -0.1)
                {
-                    dashParticleInstance.transform.position = new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z);
-               }
-               else if (newFacing == (int)facingDirection.right)
-               {
-                    dashParticleInstance.transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z);
-               }
-               else if (newFacing == (int)facingDirection.down)
-               {
-                    dashParticleInstance.transform.position = new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z);
-               }
-               else
-               {
-                    dashParticleInstance.transform.position = new Vector3(transform.position.x + 0.15f, transform.position.y - 0.15f, transform.position.z);
-               }
-          }
-
-
-          //The player can move after the dash cool down
-          if (dashIn < -0.1)
-          {
-               canDash = true;
-               isDashing = false;
-               dashCooldown = false;
-          }
-
-          //The player faces according to player input
-          if (canMove)
-          {
-               if (newFacing == (int)facingDirection.up)
-               {
-                    facing.y = 1;
-                    facing.x = 0;
-               }
-               else if (newFacing == (int)facingDirection.right)
-               {
-                    facing.x = 1;
-                    facing.y = 0;
-               }
-               else if (newFacing == (int)facingDirection.down)
-               {
-                    facing.y = -1;
-                    facing.x = 0;
-               }
-               else if (newFacing == (int)facingDirection.left)
-               {
-                    facing.x = -1;
-                    facing.y = 0;
-               }
-          }
-
-
-          // If the player is going diagonal, dont change the direction its facing
-          if (facing.Equals(previousFacing) == false)
-          {
-               if (isPressingMultiple)
-               {
-                    facing = previousFacing;
-               }
-          }
-
-
-          // Check whether sprite is facing left or right. Flip the sprite based on its direction
-          if (facing.x > 0)
-          {
-               transform.localScale = new Vector3(1, 1, 1);
-          }
-          else if (facing.x < 0)
-          {
-               transform.localScale = new Vector3(-1, 1, 1);
-          }
-
-          // Calculate movement amount
-          movementVector = direction * speed;
-
-          // Movement vector if its dashing
-          if (isDashing)
-          {
-               movementVector = facing * dashSpeed;
-          }
-
-          //Change the movement vector to the knockbackvector if they are being knocked back
-          if (isKnockedBack)
-          {
-               timeSpentKnockedBack += Time.deltaTime;
-               movementVector = knockbackDirection * knockbackForce;
-               if (timeSpentKnockedBack >= knockBackTime)
-               {
-                    isKnockedBack = false;
-                    timeSpentKnockedBack = 0;
-               }
-          }
-
-          if (animator != null)
-          {
-               //Play walking animations
-               animator.SetFloat("facing_x", facing.x);
-               animator.SetFloat("facing_y", facing.y);
-               animator.SetFloat("movement_x", movementVector.x);
-               animator.SetFloat("movement_y", movementVector.y);
-               if (isMoving == true)
-               {
-                    animator.SetBool("IsMoving", isMoving);
-               }
-               else
-               {
-                    animator.SetBool("IsMoving", false);
+                    canDash = true;
+                    isDashing = false;
+                    dashCooldown = false;
                }
 
-               //Play dashing animations
+               //Dash Cooldown
+               if (dashIn < 0.1)
+               {
+                    dashCooldown = false;
+                    ToWalkPhysics();
+               }
+               if (dashParticleInstance != null)
+               {
+                    if (newFacing == (int)facingDirection.up)
+                    {
+                         dashParticleInstance.transform.position = new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z);
+                    }
+                    else if (newFacing == (int)facingDirection.right)
+                    {
+                         dashParticleInstance.transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y - 0.15f, transform.position.z);
+                    }
+                    else if (newFacing == (int)facingDirection.down)
+                    {
+                         dashParticleInstance.transform.position = new Vector3(transform.position.x, transform.position.y - 0.15f, transform.position.z);
+                    }
+                    else
+                    {
+                         dashParticleInstance.transform.position = new Vector3(transform.position.x + 0.15f, transform.position.y - 0.15f, transform.position.z);
+                    }
+               }
+
+
+               //The player can move after the dash cool down
+               if (dashIn < -0.3)
+               {
+                    canDash = true;
+                    isDashing = false;
+                    dashCooldown = false;
+               }
+
+               //The player faces according to player input
+               if (canMove)
+               {
+                    if (newFacing == (int)facingDirection.up)
+                    {
+                         facing.y = 1;
+                         facing.x = 0;
+                    }
+                    else if (newFacing == (int)facingDirection.right)
+                    {
+                         facing.x = 1;
+                         facing.y = 0;
+                    }
+                    else if (newFacing == (int)facingDirection.down)
+                    {
+                         facing.y = -1;
+                         facing.x = 0;
+                    }
+                    else if (newFacing == (int)facingDirection.left)
+                    {
+                         facing.x = -1;
+                         facing.y = 0;
+                    }
+               }
+
+
+               // If the player is going diagonal, dont change the direction its facing
+               if (facing.Equals(previousFacing) == false)
+               {
+                    if (isPressingMultiple)
+                    {
+                         facing = previousFacing;
+                    }
+               }
+
+
+               // Check whether sprite is facing left or right. Flip the sprite based on its direction
+               if (facing.x > 0)
+               {
+                    transform.localScale = new Vector3(1, 1, 1);
+               }
+               else if (facing.x < 0)
+               {
+                    transform.localScale = new Vector3(-1, 1, 1);
+               }
+
+               // Calculate movement amount
+               movementVector = direction * speed;
+
+               // Movement vector if its dashing
                if (isDashing)
                {
-                    animator.SetBool("IsDashing", true);
+                    movementVector = facing * dashSpeed;
+               }
+
+               //Change the movement vector to the knockbackvector if they are being knocked back
+               if (isKnockedBack)
+               {
+                    timeSpentKnockedBack += Time.deltaTime;
+                    movementVector = knockbackDirection * knockbackForce;
+                    if (timeSpentKnockedBack >= knockBackTime)
+                    {
+                         isKnockedBack = false;
+                         timeSpentKnockedBack = 0;
+                    }
+               }
+
+               if (animator != null)
+               {
+                    //Play walking animations
+                    animator.SetFloat("facing_x", facing.x);
+                    animator.SetFloat("facing_y", facing.y);
+                    animator.SetFloat("movement_x", movementVector.x);
+                    animator.SetFloat("movement_y", movementVector.y);
+                    if (isMoving == true)
+                    {
+                         animator.SetBool("IsMoving", isMoving);
+                    }
+                    else
+                    {
+                         animator.SetBool("IsMoving", false);
+                    }
+
+                    //Play dashing animations
+                    if (isDashing)
+                    {
+                         animator.SetBool("IsDashing", true);
+                    }
+                    else
+                    {
+                         animator.SetBool("IsDashing", false);
+                    }
+               }
+
+               //Check the players state. If its already doing something, prevent the player from being able to move
+               if (attackController.isAttacking || dashCooldown)
+               {
+                    canMove = false;
                }
                else
                {
-                    animator.SetBool("IsDashing", false);
+                    canMove = true;
                }
-          }
-
-          //Check the players state. If its already doing something, prevent the player from being able to move
-          if (attackController.isAttacking || dashCooldown)
-          {
-               canMove = false;
+               previousFacing = facing;
           }
           else
           {
-               canMove = true;
+               canMove = false;
           }
-          previousFacing = facing;
      }
 
      void FixedUpdate()
@@ -252,7 +264,7 @@ public class PlayerMoveController : MonoBehaviour
           {
                // Change these rigidbody parameters so the dashing feels better
                ToDashPhysics();
-               GetComponent<Rigidbody2D>().velocity = facing * dashSpeed;
+               GetComponent<Rigidbody2D>().velocity = facing * (dashSpeed + DashSpeedUpgrade);
 
                // Instantiate particle effects if they exist
                if (dashParticle != null)
@@ -313,8 +325,34 @@ public class PlayerMoveController : MonoBehaviour
           GetComponent<Rigidbody2D>().mass = 2;
      }
 
+     public float getDashSpeed()
+     {
+          return DashSpeedUpgrade;
+     }
+
+     public void setDashSpeed(float newDashSpeed)
+     {
+          DashSpeedUpgrade += newDashSpeed;
+     }
+
      public void SetDashLockState(bool value)
      {
           IsDashUnlocked = value;
+     }
+
+     public bool GetDashLockState()
+     {
+          return IsDashUnlocked;
+     }
+
+     public void PlayerExitMenu()
+     {
+          IsInMenu = false;
+     }
+
+     public void PlayerInMenu()
+     {
+          canMove = false;
+          IsInMenu = true;
      }
 }

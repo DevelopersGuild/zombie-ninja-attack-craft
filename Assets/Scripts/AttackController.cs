@@ -13,9 +13,9 @@ public class AttackController : MonoBehaviour
      private Vector2 playerPosition;
 
      public Projectile PlayerArrow;
-     public Landmine PlayerMine;
+     public BombScript PlayerBomb;
      public int Ammo;
-     public int Mines;
+     public int Bombs;
 
      // Use this for initialization
      void Start()
@@ -26,7 +26,7 @@ public class AttackController : MonoBehaviour
           attackCollider = FindObjectOfType<ColliderInteractions>().GetComponent<BoxCollider2D>();
           attackCollider.enabled = false;
           Ammo = 5;
-          Mines = 3;
+          Bombs = 3;
      }
 
      // Update is called once per frame
@@ -121,16 +121,16 @@ public class AttackController : MonoBehaviour
           }
      }
 
-     public void PlaceMine(int damage = 1)
+     public void ThrowBomb(int damage = 1)
      {
-          if(Mines > 0)
+          if(Bombs > 0)
           {
-               Mines--;
+               Bombs--;
                isAttacking = true;
                moveController.isDashing = false;
                moveController.canDash = false;
 
-               Landmine mine = Instantiate(PlayerMine, new Vector2(transform.position.x, transform.position.y), Quaternion.identity) as Landmine;
+               BombScript Bomb = Instantiate(PlayerBomb, new Vector2(transform.position.x, transform.position.y), Quaternion.identity) as BombScript;
 
 
           }

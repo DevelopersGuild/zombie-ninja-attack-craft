@@ -11,7 +11,10 @@ public class GameManager : MonoBehaviour
      {
           get
           {
-               if (instance == null) instance = new GameObject("GameManager").AddComponent<GameManager>();
+               if (instance == null)
+               {
+                    instance = new GameObject("GameManager").AddComponent<GameManager>();
+               }
                return instance;
           }
      }
@@ -35,11 +38,13 @@ public class GameManager : MonoBehaviour
                if (stateManager == null)
                {
                     stateManager = instance.GetComponent<LoadAndSaveManager>();
-
                }
                return stateManager;
           }
      }
+
+
+
      void Awake()
      {
           if ((instance) && (instance.GetInstanceID() != GetInstanceID()))
@@ -65,13 +70,22 @@ public class GameManager : MonoBehaviour
      public static float timeToCompleteLevel;
      public static bool IsCurrentLevelComplete = false;
      public int PassingScore = 0;
+     public bool UnlockAllUnlocks = false;
+     public bool ResetUnlocks = false;
 
      // Use this for initialization
      void Start()
      {
           currentLevel = Application.loadedLevel;
-          Coins = 0;
-          LoadGameData();
+          OnLevelWasLoaded(currentLevel);
+          if (UnlockAllUnlocks == true)
+          {
+               UnlockEverything();
+          }
+          if(ResetUnlocks == true)
+          {
+               ResetGameProgression();
+          }
           GameManager.Notifications.AddListener(this, "EndOfLevelReached");
 
      }
@@ -195,12 +209,39 @@ public class GameManager : MonoBehaviour
           Application.Quit();
      }
 
+     //Player Progression
+
      public void ResetGameProgression()
      {
           foreach (LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
           {
-
+               level.LevelUnlocked = false;
+               level.Score = 0;
           }
+          stateManager.GameState.Player.IsBowHoldDownUnlocked = false;
+          stateManager.GameState.Player.IsBowUnlocked = false;
+          stateManager.GameState.Player.IsDashUnlocked = false;
+          stateManager.GameState.Player.DashSpeed = 0;
+          stateManager.GameState.Player.IsLandMineUnlocked = false;
+          stateManager.GameState.Player.StartingHealth = 0;
+          StateManager.Save(Application.persistentDataPath + "/SaveGame.xml");
+          GameManager.Notifications.PostNotification(this, "LevelLoaded");
+     }
 
+     public void UnlockEverything()
+     {
+          foreach (LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
+          {
+               level.LevelUnlocked = true;
+               level.Score = 0;
+          }
+          stateManager.GameState.Player.IsBowHoldDownUnlocked = true;
+          stateManager.GameState.Player.IsBowUnlocked = true;
+          stateManager.GameState.Player.IsDashUnlocked = true;
+          stateManager.GameState.Player.DashSpeed = 0;
+          stateManager.GameState.Player.IsLandMineUnlocked = true;
+          stateManager.GameState.Player.StartingHealth = 0;
+          SaveGame();
+          GameManager.Notifications.PostNotification(this, "LevelLoaded");
      }
 }
