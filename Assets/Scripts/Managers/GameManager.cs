@@ -241,6 +241,7 @@ public class GameManager : MonoBehaviour
           stateManager.GameState.Player.DashSpeed = 0;
           stateManager.GameState.Player.IsLandMineUnlocked = true;
           stateManager.GameState.Player.StartingHealth = 0;
+          StateManager.Save(Application.persistentDataPath + "/SaveGame.xml");
           GameManager.Notifications.PostNotification(this, "LevelLoaded");
      }
 }
