@@ -51,21 +51,11 @@ public class EnemyHugger : Enemy
           {
                stunTimer -= Time.deltaTime;
                moveController.Move(0, 0);
-          }
-          if (health.currentHp() == 0)
+          }// Check existence of player. Move the enemy if aggroed, otherwise move randomly
+          else if (player != null)
           {
-               onDeath();
-          }
-
-          // Find the player and set its vector towards the player
-          rnd = new System.Random();
-          currentX = transform.position.x;
-          currentY = transform.position.y;
-
-
-          // Check existence of player. Move the enemy if aggroed, otherwise move randomly
-          if (player != null)
-          {
+               rnd = new System.Random();
+               findPos();
                //basic aggression range formula
                playerPos = player.transform;
                float xSp = player.transform.position.x - transform.position.x;

@@ -33,13 +33,11 @@ public class RealAngel : MonoBehaviour
           }
           else if (currentTime > 0)
           {
-               Debug.Log("I'm blinking");
                float remainder = currentTime % .1f;
                GetComponent<Renderer>().enabled = remainder > .05f;
           }
           else
           {
-               Debug.Log("I'm dead");
                Projectile x = Instantiate(angelProjObject, transform.position, transform.rotation) as Projectile;
                Destroy(gameObject);
           }

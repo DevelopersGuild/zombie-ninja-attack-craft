@@ -46,10 +46,10 @@ public class Enemy : MonoBehaviour
 
                if (timeSpentInvincible > 0.2f)
                {
-                    setStun(0.2f);
+                    setStun(0.1f);
                }
 
-               if (timeSpentInvincible <= 0.4f)
+               if (timeSpentInvincible <= 0.3f)
                {
                     blink = !blink;
                     GetComponent<Renderer>().enabled = blink;

@@ -27,15 +27,14 @@ namespace AssemblyCSharp
           public void Update()
           {
                checkInvincibility();
-               rnd = new System.Random();
                if (checkStun())
                {
                     stunTimer -= Time.deltaTime;
                     moveController.Move(0, 0);
                }
-
                else
                {
+                    rnd = new System.Random();
                     if (idleTime > 0.4)
                     {
                          someVec = idle(t, rnd);

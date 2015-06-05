@@ -55,14 +55,15 @@ namespace AssemblyCSharp
           public void Update()
           {
                checkInvincibility();
+               rnd = new System.Random();
                if (checkStun())
                {
                     stunTimer -= Time.deltaTime;
                     moveController.Move(0, 0);
                }
-               rnd = new System.Random();
-               if (player != null)
+               else if (player != null)
                {
+                    findPos();
                     //basic aggression range formula
                     distance = player.transform.position - transform.position;
                     if (distance.magnitude <= AgroRange)
