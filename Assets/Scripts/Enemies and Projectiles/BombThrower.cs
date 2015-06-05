@@ -14,6 +14,7 @@ public class BombThrower : MonoBehaviour {
     private bool isAggroed;
     public float throwCooldown;
     private float currentTime;
+    
 
 	// Update is called once per frame
 	void Update () {

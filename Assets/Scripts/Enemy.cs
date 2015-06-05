@@ -15,14 +15,17 @@ public class Enemy : MonoBehaviour
      [HideInInspector]
      public Vector2 direction;
 
-     private double t;
-     System.Random rnd;
+     public double t;
+     public System.Random rnd;
 
      void Awake()
      {
           blink = false;
           isInvincible = false;
           timeSpentInvincible = 0;
+          GetComponent<Rigidbody2D>().gravityScale = 0;
+          
+         
      }
 
      void Start()
@@ -61,49 +64,47 @@ public class Enemy : MonoBehaviour
           }
      }
 
-     public void idle(double someDub)
+     public Vector3 idle(double someDub, System.Random ran)
      {
-          t = someDub;
-          rnd = new System.Random();
-          if (t < 1)
+          ran = new System.Random(Guid.NewGuid().GetHashCode());
+          Vector3 returnVec = new Vector3(0,0,(float)someDub);
+          //Debug.Log("I am a " + ToString() + "and my t is " + someDub);
+          if (someDub < 1 && someDub > 0)
           {
-               if (GetComponent<Rigidbody2D>().velocity.magnitude != 0)
-               {
-                    //speed = new Vector2 (0, 0);
-                    moveController.Move(0, 0);
-                    t = 3;
-               }
+             returnVec = new Vector3(0, 0, 3);
 
           }
-          else if (t < 2 && t > 1.3)
+          else if (someDub < 2 && someDub > 1.3)
           {
-               int rand = rnd.Next(1, 5);
+               int rand = ran.Next(1, 5);
                if (rand == 1)
                {
                     //speed = new Vector2 (2, 0);
-                    moveController.Move(1, 0, 5);
+                    returnVec = new Vector3(1/3f, 0, 1.3f);
 
-                    t = 1.3;
+                    someDub = 1.3;
                }
                else if (rand == 2)
                {
                     //speed = new Vector2 (-2, 0);
-                    moveController.Move(-1, 0, 5);
-                    t = 1.3;
+                    returnVec = new Vector3(-1/3f, 0, 1.3f);
+                    someDub = 1.3;
                }
                else if (rand == 3)
                {
                     //speed = new Vector2 (0, 2);
-                    moveController.Move(0, 1, 5);
-                    t = 1.3;
+
+                    returnVec = new Vector3(0, 1/3f, 1.3f);
+                    someDub = 1.3;
                }
                else
                {
                     //speed = new Vector2 (0, -2);
-                    moveController.Move(0, -1, 5);
-                    t = 1.3;
+                    returnVec = new Vector3(0, -1/3f, 1.3f);
+                    someDub = 1.3;
                }
           }
+          return returnVec;
      }
 
      public void findPos()

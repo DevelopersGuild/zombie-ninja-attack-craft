@@ -11,163 +11,175 @@ using System;
 using UnityEngine;
 
 
-	public class Cyclops : Enemy
-	{
-		public float AgroRange;
-		public Projectile laser, laserObject;
-        public bool canTeleport;
-		
-		private EnemyMoveController moveController;
-		private Health health;
-        private SpriteRenderer sprRend;
-        private BoxCollider2D collider;
-		
-		private bool isAgro, teleporting;
-		
-		System.Random rnd;
+public class Cyclops : Enemy
+{
+     public Projectile laser, laserObject;
+     public bool canTeleport;
 
-		private float currentX, currentY, throwF;
-		private Transform playerPos;
-		private Vector2 distance, speed, facing, vTemp, v_Transform, teleportRun;
-		private double t,temp, teleportCD, laserCD;
-		
-		//private Animator animator;
-		
-		
-		public void Start ()
-		{
-			//animator = GetComponent<Animator>();
-			moveController = GetComponent<EnemyMoveController> ();
-            sprRend = GetComponent<SpriteRenderer>();
-            collider = GetComponent<BoxCollider2D>();
-			//laser = GetComponent<Projectile> ();
-			//laserObject = GetComponent <Projectile> ();
-			health = GetComponent<Health> ();
-            player = FindObjectOfType<Player>();
-			//rigidbody2D.mass = 10;
+     private Health health;
+     private SpriteRenderer sprRend;
+     private BoxCollider2D collider;
 
-			distance = new Vector2 (0, 0);
-			speed = new Vector2 (0, 0);
-			isAgro = false;
-			t = 3;
-            teleporting = false;
-            teleportCD = 11;
-            temp = 0;
-            canTeleport = true;
-			
-			facing = new Vector2 (0, 0);
-			
-		}
-		
-		public void Update() {
-            checkInvincibility();
-            if (checkStun())
-            {
-                stunTimer -= Time.deltaTime;
-                moveController.Move(0, 0);
-            }
-            else
-            {
-                rnd = new System.Random();
-                findPos();
-                if (player != null)
-                {
+     private bool isAgro, teleporting;
+
+
+     private float throwF;
+     private Transform playerPos;
+     private Vector2 distance, speed, facing, vTemp, v_Transform, teleportRun;
+     private double temp, teleportCD, laserCD, idleTime;
+     private Vector3 someVec;
+
+     //private Animator animator;
+
+
+     public void Start()
+     {
+          //animator = GetComponent<Animator>();
+          moveController = GetComponent<EnemyMoveController>();
+          sprRend = GetComponent<SpriteRenderer>();
+          collider = GetComponent<BoxCollider2D>();
+          //laser = GetComponent<Projectile> ();
+          //laserObject = GetComponent <Projectile> ();
+          health = GetComponent<Health>();
+          player = FindObjectOfType<Player>();
+          //rigidbody2D.mass = 10;
+
+          distance = new Vector2(0, 0);
+          speed = new Vector2(0, 0);
+          isAgro = false;
+
+          rnd = new System.Random(Guid.NewGuid().GetHashCode());
+          t = 3 + rnd.Next(0, 3000) / 1000f;
+
+          teleporting = false;
+          teleportCD = 11;
+          temp = 0;
+          canTeleport = true;
+
+          facing = new Vector2(0, 0);
+
+     }
+
+     public void Update()
+     {
+          checkInvincibility();
+          if (checkStun())
+          {
+               stunTimer -= Time.deltaTime;
+               moveController.Move(0, 0);
+          }
+          else
+          {
+               rnd = new System.Random();
+               findPos();
+               if (player != null)
+               {
                     if (teleporting)
                     {
-                        if (temp > 0)
-                        {
-                            collider.enabled = false;
-                            sprRend.enabled = false;
-                            moveController.Move(teleportRun * 2);
-                            temp -= Time.deltaTime;
-                            Debug.Log("Running" + teleportRun);
-                        }
-                        else
-                        {
-                            collider.enabled = true;
-                            Debug.Log("From my heart");
-                            sprRend.enabled = true;
-                            moveController.Move(0, 0);
-                            teleporting = false;
-                        }
+                         if (temp > 0)
+                         {
+                              collider.enabled = false;
+                              sprRend.enabled = false;
+                              moveController.Move(teleportRun * 2);
+                              temp -= Time.deltaTime;
+                              Debug.Log("Running" + teleportRun);
+                         }
+                         else
+                         {
+                              collider.enabled = true;
+                              Debug.Log("From my heart");
+                              sprRend.enabled = true;
+                              moveController.Move(0, 0);
+                              teleporting = false;
+                         }
                     }
                     else
                     {
-                        
-                        playerPos = player.transform;
-                        //basic aggression range formula
-                        distance = playerPos.position - transform.position;
-                        if (distance.magnitude <= AgroRange)
-                        {
-                            isAgro = true;
-                        }
-                        if (distance.magnitude > AgroRange)
-                        {
-                            isAgro = false;
-                        }
 
-                        if (isAgro)
-                        {
-                            findPos();
-                            float xSp = player.transform.position.x - transform.position.x;
-                            float ySp = player.transform.position.y - transform.position.y;
-                            //Debug.Log ("xSp: " + xSp + " ySp: " + ySp);
-                            moveController.Move(0, 0);
+                         playerPos = player.transform;
+                         //basic aggression range formula
+                         distance = playerPos.position - transform.position;
+                         if (distance.magnitude <= AgroRange)
+                         {
+                              isAgro = true;
+                         }
+                         if (distance.magnitude > AgroRange)
+                         {
+                              isAgro = false;
+                         }
 
-                            if (distance.magnitude < 0.7 && teleportCD >= 10)
-                            {
-                                sprRend.enabled = false;
-                                collider.enabled = false;
-                                teleporting = true;
-                                teleportRun = direction;
-                                temp = 0.6f;
-                                teleportCD = 0;
-                            }
-                            else if (laserCD >= 3)
-                            {
-                                if (xSp < 0)
-                                {
-                                    xSp = player.transform.position.x - transform.position.x + (float)(1.0 / 4);
-                                    laser = Instantiate(laserObject, transform.position + new Vector3((float)(-1.0 / 4), 0, 0), transform.rotation) as Projectile;
-                                }
-                                else
-                                {
-                                    laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
-                                }
-                                //Vector2 toPlayer = new Vector2(xSp,ySp);
-                                //Debug.Log (toPlayer);
-                                laser.GetComponent<Rigidbody2D>().velocity = (direction * 4);
-                                laserCD = 0;
-                                //throwF = 3;
-                            }
-                            if (distance.magnitude < 2)
-                            {
-                                moveController.Move(-direction / 4);
-                            }
+                         if (isAgro)
+                         {
+                              findPos();
+                              float xSp = player.transform.position.x - transform.position.x;
+                              float ySp = player.transform.position.y - transform.position.y;
+                              //Debug.Log ("xSp: " + xSp + " ySp: " + ySp);
+                              moveController.Move(0, 0);
 
-                        }
-                        else
-                        {
-                            idle(t);
-                        }
-                        t += Time.deltaTime;
-                        laserCD += Time.deltaTime;
-                        teleportCD += Time.deltaTime;
-                        //Debug.Log (t);
-                        //GetComponent<Rigidbody2D> ().velocity = speed;
-                        //Debug.Log (rigidbody2D.velocity.magnitude);
+                              if (distance.magnitude < 0.7 && teleportCD >= 10)
+                              {
+                                   sprRend.enabled = false;
+                                   collider.enabled = false;
+                                   teleporting = true;
+                                   teleportRun = direction;
+                                   temp = 0.6f;
+                                   teleportCD = 0;
+                              }
+                              else if (laserCD >= 3)
+                              {
+                                   if (xSp < 0)
+                                   {
+                                        xSp = player.transform.position.x - transform.position.x + (float)(1.0 / 4);
+                                        laser = Instantiate(laserObject, transform.position + new Vector3((float)(-1.0 / 4), 0, 0), transform.rotation) as Projectile;
+                                   }
+                                   else
+                                   {
+                                        laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
+                                   }
+                                   //Vector2 toPlayer = new Vector2(xSp,ySp);
+                                   //Debug.Log (toPlayer);
+                                   laser.GetComponent<Rigidbody2D>().velocity = (direction * 4);
+                                   laserCD = 0;
+                                   //throwF = 3;
+                              }
+                              if (distance.magnitude < 2)
+                              {
+                                   moveController.Move(-direction / 4);
+                              }
+
+                         }
+                         else
+                         {
+                              if (idleTime > 0.4)
+                              {
+                                   someVec = idle(t, rnd);
+                                   t = someVec.z;
+                                   idleTime = 0;
+                              }
+                              moveController.Move(someVec.x, someVec.y);
+                         }
+
+                         idleTime += Time.deltaTime;
+                         t += Time.deltaTime;
+                         laserCD += Time.deltaTime;
+                         teleportCD += Time.deltaTime;
+                         //Debug.Log (t);
+                         //GetComponent<Rigidbody2D> ().velocity = speed;
+                         //Debug.Log (rigidbody2D.velocity.magnitude);
                     }
-                }
-            }
-		}
+               }
+          }
+     }
 
-		public bool getAgro() {
-			return isAgro;
-		}
-		
-		public int currentHp() {
-			return health.currentHealth;
-		}
-		
-		
-	}
+     public bool getAgro()
+     {
+          return isAgro;
+     }
+
+     public int currentHp()
+     {
+          return health.currentHealth;
+     }
+
+
+}

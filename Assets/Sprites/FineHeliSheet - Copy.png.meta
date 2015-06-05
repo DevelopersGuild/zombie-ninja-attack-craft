@@ -1,0 +1,143 @@
+fileFormatVersion: 2
+guid: 2f3f563b258c94545a451cdec030684a
+timeCreated: 1433382088
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: FineHeliSheet - Copy_0
+    21300002: FineHeliSheet - Copy_1
+    21300004: FineHeliSheet - Copy_2
+    21300006: FineHeliSheet - Copy_3
+    21300008: FineHeliSheet - Copy_4
+    21300010: FineHeliSheet - Copy_5
+    21300012: FineHeliSheet - Copy_6
+    21300014: FineHeliSheet - Copy_7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 60
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: FineHeliSheet - Copy_0
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 101
+        width: 32
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FineHeliSheet - Copy_1
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 101
+        width: 24
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FineHeliSheet - Copy_2
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 101
+        width: 32
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FineHeliSheet - Copy_3
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 101
+        width: 31
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FineHeliSheet - Copy_4
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 101
+        width: 32
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FineHeliSheet - Copy_5
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 101
+        width: 24
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FineHeliSheet - Copy_6
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 104
+        width: 31
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FineHeliSheet - Copy_7
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 104
+        width: 32
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

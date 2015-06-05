@@ -1,79 +1,65 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AssemblyCSharp {
-    public class DummyEnemy : Enemy {
-        private EnemyMoveController moveController;
-        private Health health;
+namespace AssemblyCSharp
+{
+     public class DummyEnemy : Enemy
+     {
+          private Health health;
 
-        System.Random rnd;
+          private Vector2 distance;
+          private double idleTime;
+          private Vector3 someVec;
 
-        private float currentX, currentY;
-        private Vector2 distance, direction;
-        private double t;
+          //private Animator animator;
 
-        //private Animator animator;
+          public void Start()
+          {
+               //animator = GetComponent<Animator>();
+               moveController = GetComponent<EnemyMoveController>();
+               transform.gameObject.tag = "Attackable";
+               health = GetComponent<Health>();
 
-        public void Start() {
-            //animator = GetComponent<Animator>();
-            moveController = GetComponent<EnemyMoveController>();
-            transform.gameObject.tag = "Attackable";
-            health = GetComponent<Health>();
+               rnd = new System.Random(Guid.NewGuid().GetHashCode());
+               t = 3 + rnd.Next(0, 3000) / 1000f;
+          }
 
-            t = 3;
-        }
-
-        public void Update() {
-            checkInvincibility();
-            if (checkStun())
-            {
-                stunTimer -= Time.deltaTime;
-                moveController.Move(0, 0);
-            }
-            rnd = new System.Random();
-
-            if (t < 1) {
-                if (GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
-                    //speed = new Vector2 (0, 0);
+          public void Update()
+          {
+               checkInvincibility();
+               rnd = new System.Random();
+               if (checkStun())
+               {
+                    stunTimer -= Time.deltaTime;
                     moveController.Move(0, 0);
-                    t = 3;
-                }
-            }
-            else if (t < 2 && t > 1.3) {
-                int rand = rnd.Next(1, 5);
-                if (rand == 1) {
-                    //speed = new Vector2 (2, 0);
-                    moveController.Move(1, 0, 5);
-                    t = 1.3;
-                }
-                else if (rand == 2) {
-                    //speed = new Vector2 (-2, 0);
-                    moveController.Move(-1, 0, 5);
-                    t = 1.3;
-                }
-                else if (rand == 3) {
-                    //speed = new Vector2 (0, 2);
-                    moveController.Move(0, 1, 5);
-                    t = 1.3;
-                }
-                else if (rand == 4) {
-                    //speed = new Vector2 (0, -2);
-                    moveController.Move(0, -1, 5);
-                    t = 1.3;
-                }
-            }
-            t -= Time.deltaTime;
+               }
 
-        }
+               else
+               {
+                    if (idleTime > 0.4)
+                    {
+                         someVec = idle(t, rnd);
+                         t = someVec.z;
+                         idleTime = 0;
+                    }
+                    moveController.Move(someVec.x, someVec.y);
+               }
 
-        public int currentHp() {
-            return health.currentHealth;
-        }
+               idleTime += Time.deltaTime;
+               t -= Time.deltaTime;
 
-        public void onDeath() {
-            //death animation
-        }
-    }
+          }
+
+          public int currentHp()
+          {
+               return health.currentHealth;
+          }
+
+          public void onDeath()
+          {
+               //death animation
+          }
+     }
 }
 
 

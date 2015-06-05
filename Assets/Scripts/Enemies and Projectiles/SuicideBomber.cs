@@ -12,22 +12,17 @@ using UnityEngine;
 
 public class SuicideBomber : Enemy
 {
-     private Player player;
-     public float AgroRange;
      public float explodeRange;
      public BombScript bomb;
 
-     private EnemyMoveController moveController;
      private Health health;
 
      private bool isAgro;
 
-     System.Random rnd;
-
-     private float currentX, currentY;
      private Transform playerPos;
-     private Vector2 distance, speed, facing, direction;
-     private double t, temp, fireBlock_CD;
+     private Vector2 distance, speed, facing;
+     private double temp, fireBlock_CD, idleTime;
+     private Vector3 someVec;
 
      //private Animator animator;
 
@@ -38,12 +33,14 @@ public class SuicideBomber : Enemy
           moveController = GetComponent<EnemyMoveController>();
           health = GetComponent<Health>();
           player = FindObjectOfType<Player>();
-
+          
           distance = new Vector2(0, 0);
           speed = new Vector2(0, 0);
           isAgro = false;
-          t = 3;
-          //temp is the number for exponential speed when running away
+
+          rnd = new System.Random(Guid.NewGuid().GetHashCode());
+          t = 3 + rnd.Next(0, 3000) / 1000f;
+
           temp = 1.0000001;
           facing = new Vector2(0, 0);
 
@@ -51,6 +48,7 @@ public class SuicideBomber : Enemy
 
      public void Update()
      {
+          
           checkInvincibility();
           if (checkStun())
           {
@@ -97,46 +95,18 @@ public class SuicideBomber : Enemy
                }
                else
                {
-                    //Debug.Log ("is");
-                    if (t < 1)
+                    if (idleTime > 0.4)
                     {
-                         if (GetComponent<Rigidbody2D>().velocity.magnitude != 0)
-                         {
-                              //speed = new Vector2 (0, 0);
-                              moveController.Move(0, 0);
-                              t = 3;
-                         }
+                         someVec = idle(t, rnd);
+                         t = someVec.z;
+                         idleTime = 0;
                     }
-                    else if (t < 2 && t > 1.3)
-                    {
-                         int rand = rnd.Next(1, 5);
-                         if (rand == 1)
-                         {
-                              //speed = new Vector2 (2, 0);
-                              moveController.Move(1, 0, 5);
-                              t = 1.3;
-                         }
-                         else if (rand == 2)
-                         {
-                              //speed = new Vector2 (-2, 0);
-                              moveController.Move(-1, 0, 5);
-                              t = 1.3;
-                         }
-                         else if (rand == 3)
-                         {
-                              //speed = new Vector2 (0, 2);
-                              moveController.Move(0, 1, 5);
-                              t = 1.3;
-                         }
-                         else if (rand == 4)
-                         {
-                              //speed = new Vector2 (0, -2);
-                              moveController.Move(0, -1, 5);
-                              t = 1.3;
-                         }
-                    }
-                    t -= Time.deltaTime;
+                    moveController.Move(someVec.x, someVec.y);
                }
+
+               idleTime += Time.deltaTime;
+               t -= Time.deltaTime;
+
           }
 
           if (health.currentHp() == 0)
