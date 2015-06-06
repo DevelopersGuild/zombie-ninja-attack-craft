@@ -1,15 +1,12 @@
 fileFormatVersion: 2
-guid: e1f7cd236ad08cd488cafce3b9fd2ada
-timeCreated: 1433576246
+guid: b61a876707967304b999455be0818522
+timeCreated: 1433577299
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: lightning-boss-sheet_0
-    21300002: lightning-boss-sheet_1
-    21300004: lightning-boss-sheet_2
-    21300006: lightning-boss-sheet_3
-    21300008: lightning-boss-sheet_4
-    21300010: lightning-boss-sheet_5
+    21300000: molered_0
+    21300002: molered_1
+    21300004: molered_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -55,63 +52,33 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: lightning-boss-sheet_0
+    - name: molered_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 292
+        x: 15
+        y: 115
+        width: 22
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: molered_1
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 115
+        width: 24
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: molered_2
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 115
         width: 27
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: lightning-boss-sheet_1
-      rect:
-        serializedVersion: 2
-        x: 75
-        y: 293
-        width: 28
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: lightning-boss-sheet_2
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 294
-        width: 28
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: lightning-boss-sheet_3
-      rect:
-        serializedVersion: 2
-        x: 183
-        y: 292
-        width: 28
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: lightning-boss-sheet_4
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 164
-        width: 87
-        height: 109
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: lightning-boss-sheet_5
-      rect:
-        serializedVersion: 2
-        x: 136
-        y: 229
-        width: 20
-        height: 20
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

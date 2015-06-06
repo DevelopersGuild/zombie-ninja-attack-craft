@@ -1,21 +1,21 @@
 fileFormatVersion: 2
-guid: 9164e841aae6a1f4487291622476cf30
-timeCreated: 1433576436
+guid: 3ecf52316cb5039448ccd2be3ee6904a
+timeCreated: 1433577097
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: spearwalk_0
-    21300002: spearwalk_1
-    21300004: spearwalk_2
-    21300006: spearwalk_3
-    21300008: spearwalk_4
-    21300010: spearwalk_5
-    21300012: spearwalk_6
-    21300014: spearwalk_7
-    21300016: spearwalk_8
-    21300018: spearwalk_9
-    21300020: spearwalk_10
-    21300022: spearwalk_11
+    21300000: docileman_walk (1)_0
+    21300002: docileman_walk (1)_1
+    21300004: docileman_walk (1)_2
+    21300006: docileman_walk (1)_3
+    21300008: docileman_walk (1)_4
+    21300010: docileman_walk (1)_5
+    21300012: docileman_walk (1)_6
+    21300014: docileman_walk (1)_7
+    21300016: docileman_walk (1)_8
+    21300018: docileman_walk (1)_9
+    21300020: docileman_walk (1)_10
+    21300022: docileman_walk (1)_11
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -61,7 +61,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: spearwalk_0
+    - name: docileman_walk (1)_0
       rect:
         serializedVersion: 2
         x: 115
@@ -71,7 +71,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_1
+    - name: docileman_walk (1)_1
       rect:
         serializedVersion: 2
         x: 179
@@ -81,17 +81,17 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_2
+    - name: docileman_walk (1)_2
       rect:
         serializedVersion: 2
-        x: 270
+        x: 272
         y: 232
-        width: 18
+        width: 14
         height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_3
+    - name: docileman_walk (1)_3
       rect:
         serializedVersion: 2
         x: 369
@@ -101,17 +101,17 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_4
+    - name: docileman_walk (1)_4
       rect:
         serializedVersion: 2
         x: 400
         y: 191
         width: 16
-        height: 27
+        height: 28
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_5
+    - name: docileman_walk (1)_5
       rect:
         serializedVersion: 2
         x: 114
@@ -121,7 +121,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_6
+    - name: docileman_walk (1)_6
       rect:
         serializedVersion: 2
         x: 209
@@ -131,7 +131,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_7
+    - name: docileman_walk (1)_7
       rect:
         serializedVersion: 2
         x: 240
@@ -141,7 +141,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_8
+    - name: docileman_walk (1)_8
       rect:
         serializedVersion: 2
         x: 110
@@ -151,7 +151,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_9
+    - name: docileman_walk (1)_9
       rect:
         serializedVersion: 2
         x: 145
@@ -161,7 +161,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_10
+    - name: docileman_walk (1)_10
       rect:
         serializedVersion: 2
         x: 269
@@ -171,7 +171,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spearwalk_11
+    - name: docileman_walk (1)_11
       rect:
         serializedVersion: 2
         x: 302
