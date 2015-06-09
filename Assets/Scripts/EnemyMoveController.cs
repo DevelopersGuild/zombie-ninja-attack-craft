@@ -15,9 +15,10 @@ public class EnemyMoveController : MonoBehaviour
      public Vector2 facing;
      public enum facingDirection { up, right, down, left }
      // Actual movement
-     internal Vector2 movementVector = new Vector2(0, 0);
+     public Vector2 movementVector = new Vector2(0, 0);
      // Flags for state checking
      public bool isMoving;
+     public bool isAttacking;
      public bool canMove;
      public bool gotAttacked;
      //Knockback flags
@@ -78,9 +79,6 @@ public class EnemyMoveController : MonoBehaviour
                /* Check if character is moving */
                if (GetComponent<Rigidbody2D>() != null)
                {
-                    Debug.Log("X:"+ movementVector.x);
-                    Debug.Log("Y:" + movementVector.y);
-                    Debug.Log(isMoving);
                     if (movementVector.x != 0 || movementVector.y != 0)
                     {
                          // Store the direction the player is facing in case they stop moving
@@ -105,16 +103,16 @@ public class EnemyMoveController : MonoBehaviour
                     }
                }
 
-               if (animator != null)
-               {
-                    //Play walking animations
-                    animator.SetFloat("facing_x", facing.x);
-                    animator.SetFloat("facing_y", facing.y);
-                    animator.SetFloat("movement_x", movementVector.x);
-                    animator.SetFloat("movement_y", movementVector.y);
+               //if (animator != null)
+               //{
+               //     //Play walking animations
+               //     animator.SetFloat("facing_x", facing.x);
+               //     animator.SetFloat("facing_y", facing.y);
+               //     animator.SetFloat("movement_x", movementVector.x);
+               //     animator.SetFloat("movement_y", movementVector.y);
 
-                    animator.SetBool("isMoving", isMoving);
-               }
+               //     animator.SetBool("isMoving", isMoving);
+               //}
           }
 
      }

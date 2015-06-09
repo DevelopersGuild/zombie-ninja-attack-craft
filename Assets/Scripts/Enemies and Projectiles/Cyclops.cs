@@ -15,11 +15,12 @@ public class Cyclops : Enemy
 {
      public Projectile laser, laserObject;
      public bool canTeleport;
+     public float projectileSpeed;
+     private AnimationController animationController;
 
      private Health health;
      private SpriteRenderer sprRend;
      private BoxCollider2D collider;
-
      private bool isAgro, teleporting;
 
 
@@ -34,14 +35,17 @@ public class Cyclops : Enemy
 
      public void Start()
      {
-          //animator = GetComponent<Animator>();
+          // Components
           moveController = GetComponent<EnemyMoveController>();
+          animationController = GetComponent<AnimationController>();
           sprRend = GetComponent<SpriteRenderer>();
           collider = GetComponent<BoxCollider2D>();
-          //laser = GetComponent<Projectile> ();
-          //laserObject = GetComponent <Projectile> ();
           health = GetComponent<Health>();
           player = FindObjectOfType<Player>();
+
+          //laser = GetComponent<Projectile> ();
+          //laserObject = GetComponent <Projectile> ();
+
           //rigidbody2D.mass = 10;
 
           distance = new Vector2(0, 0);
@@ -127,21 +131,21 @@ public class Cyclops : Enemy
                               }
                               else if (laserCD >= 3)
                               {
-                                   if (xSp < 0)
-                                   {
-                                        xSp = player.transform.position.x - transform.position.x + (float)(1.0 / 4);
-                                        laser = Instantiate(laserObject, transform.position + new Vector3((float)(-1.0 / 4), 0, 0), transform.rotation) as Projectile;
-                                   }
-                                   else
-                                   {
-                                        laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
-                                   }
-                                   //Vector2 toPlayer = new Vector2(xSp,ySp);
-                                   //Debug.Log (toPlayer);
-                                   laser.GetComponent<Rigidbody2D>().velocity = (direction * 4);
-                                   laserCD = 0;
-                                   //throwF = 3;
+                                   animationController.isAttacking = true;
+                                   //Vector3 offset;
+                                   //if (xSp < 0)
+                                   //{
+                                   //     xSp = player.transform.position.x - transform.position.x + (float)(1.0 / 4);
+                                   //     offset = new Vector3((float)(-1.0 / 4), 0, 0);
+                                   //     Shoot(offset);
+                                   //}
+                                   //else
+                                   //{
+                                   //     offset = new Vector3(0, 0, 0);
+                                   //     Shoot(offset);
+                                   //}
                               }
+
                               if (distance.magnitude < 2)
                               {
                                    moveController.Move(-direction / 4);
@@ -179,6 +183,20 @@ public class Cyclops : Enemy
      public int currentHp()
      {
           return health.currentHealth;
+     }
+
+     public void Shoot()
+     {
+          Vector3 offset;
+
+          laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
+          laser.GetComponent<Rigidbody2D>().velocity = (direction * projectileSpeed);
+          laserCD = 0;
+     }
+
+     public void DoneShooting()
+     {
+          animationController.isAttacking = false;
      }
 
 
