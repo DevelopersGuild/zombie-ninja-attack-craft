@@ -42,7 +42,6 @@ public class DropLoot : MonoBehaviour
                     }
                }
                //If it will drop an item, set the item it will drop to a random item that it can drop
-               Debug.Log(itemDropRate);
                item = itemDrop[itemDropRate];
 
                //If it was a coin, give it a value
