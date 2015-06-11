@@ -22,7 +22,7 @@ public class Projectile : MonoBehaviour
 
      public void Start()
      {
-          Destroy(transform.gameObject, 1);
+          Destroy(transform.gameObject, TimeToLive);
           homing = shot = false;
           player = FindObjectOfType<Player>();
      }

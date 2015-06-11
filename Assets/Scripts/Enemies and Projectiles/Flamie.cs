@@ -79,12 +79,12 @@ namespace AssemblyCSharp
                     //time = distance/speed, create new block after passing the old one.
                     if (vel > 0.1 && fireBlock_CD > .28 / vel)
                     {
-                         fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
+                         fireBlock = Instantiate(fireBlockObject, new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.1f), transform.rotation) as Projectile;
                          fireBlock_CD = 0;
                     }
                     else if (vel < 0.1 && fireBlock_CD > 1)
                     {
-                         fireBlock = Instantiate(fireBlockObject, transform.position, transform.rotation) as Projectile;
+                         fireBlock = Instantiate(fireBlockObject, new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.1f), transform.rotation) as Projectile;
                          fireBlock_CD = 0;
 
                     }
