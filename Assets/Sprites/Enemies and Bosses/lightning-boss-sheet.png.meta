@@ -1,9 +1,15 @@
 fileFormatVersion: 2
 guid: e1f7cd236ad08cd488cafce3b9fd2ada
-timeCreated: 1433536381
+timeCreated: 1433576246
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: lightning-boss-sheet_0
+    21300002: lightning-boss-sheet_1
+    21300004: lightning-boss-sheet_2
+    21300006: lightning-boss-sheet_3
+    21300008: lightning-boss-sheet_4
+    21300010: lightning-boss-sheet_5
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -29,26 +35,86 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
-    aniso: -1
+    filterMode: 0
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 70
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: lightning-boss-sheet_0
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 292
+        width: 27
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: lightning-boss-sheet_1
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 293
+        width: 28
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: lightning-boss-sheet_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 294
+        width: 28
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: lightning-boss-sheet_3
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 292
+        width: 28
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: lightning-boss-sheet_4
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 164
+        width: 87
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: lightning-boss-sheet_5
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 229
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
   assetBundleName: 

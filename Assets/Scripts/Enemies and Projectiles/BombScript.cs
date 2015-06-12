@@ -3,8 +3,6 @@ using System.Collections;
 
 public class BombScript : Pickup
 {
-
-
      public Explosion explosion;
      private AttackController attackController;
 

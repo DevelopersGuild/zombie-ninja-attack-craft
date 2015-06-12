@@ -15,9 +15,10 @@ public class EnemyMoveController : MonoBehaviour
      public Vector2 facing;
      public enum facingDirection { up, right, down, left }
      // Actual movement
-     internal Vector2 movementVector = new Vector2(0, 0);
+     public Vector2 movementVector = new Vector2(0, 0);
      // Flags for state checking
      public bool isMoving;
+     public bool isAttacking;
      public bool canMove;
      public bool gotAttacked;
      //Knockback flags
@@ -59,20 +60,7 @@ public class EnemyMoveController : MonoBehaviour
           }
           else
           {
-               /* Check if character is moving */
-               if (GetComponent<Rigidbody2D>() != null)
-               {
-                    if (GetComponent<Rigidbody2D>().velocity.normalized.x != 0 || GetComponent<Rigidbody2D>().velocity.normalized.y != 0)
-                    {
-                         // Store the direction the player is facing in case they stop moving
-                         facing = GetComponent<Rigidbody2D>().velocity.normalized;
-                         isMoving = true;
-                    }
-                    if (movementVector.x == 0 && movementVector.y == 0)
-                    {
-                         isMoving = false;
-                    }
-               }
+
 
                //Check whether sprite is facing left or right. Flip the sprite based on its direction
                if (facing.x > 0)
@@ -88,6 +76,21 @@ public class EnemyMoveController : MonoBehaviour
                // Calculate movement amount
                movementVector = direction * speed;
 
+               /* Check if character is moving */
+               if (GetComponent<Rigidbody2D>() != null)
+               {
+                    if (movementVector.x != 0 || movementVector.y != 0)
+                    {
+                         // Store the direction the player is facing in case they stop moving
+
+                         facing = GetComponent<Rigidbody2D>().velocity.normalized;
+                         isMoving = true;
+                    }
+                    else
+                    {
+                         isMoving = false;
+                    }
+               }
                //Change movement vector if they are being knocked back
                if (isKnockedBack && !isStationary)
                {
@@ -107,14 +110,8 @@ public class EnemyMoveController : MonoBehaviour
                //     animator.SetFloat("facing_y", facing.y);
                //     animator.SetFloat("movement_x", movementVector.x);
                //     animator.SetFloat("movement_y", movementVector.y);
-               //     if (isMoving == true)
-               //     {
-               //          animator.SetBool("IsMoving", isMoving);
-               //     }
-               //     else
-               //     {
-               //          animator.SetBool("IsMoving", false);
-               //     }
+
+               //     animator.SetBool("isMoving", isMoving);
                //}
           }
 

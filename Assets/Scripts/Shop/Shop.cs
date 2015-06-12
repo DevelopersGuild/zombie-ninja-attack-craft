@@ -33,7 +33,7 @@ public class Shop : MonoBehaviour
           Inventory["Arrows"].QuantitySoldIn = QuantityArrowsSoldIn;
 
           temp = new GameObject();
-          temp.AddComponent<BombScript>();
+          temp.AddComponent<BombAmmoPickup>();
           Inventory.Add("Bomb", new InventoryItem());
           Inventory["Bomb"].TypeOfItem = temp.GetComponent<Pickup>();
           Inventory["Bomb"].QuantityOfItem = QuantityOfBombs;

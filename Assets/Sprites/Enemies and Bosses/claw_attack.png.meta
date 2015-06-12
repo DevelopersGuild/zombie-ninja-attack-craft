@@ -1,9 +1,30 @@
 fileFormatVersion: 2
 guid: 41908aae37a402d4a8e934cb980fc2d6
-timeCreated: 1433536380
+timeCreated: 1433578489
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: claw_attack_0
+    21300002: claw_attack_1
+    21300004: claw_attack_2
+    21300006: claw_attack_3
+    21300008: claw_attack_4
+    21300010: claw_attack_5
+    21300012: claw_attack_6
+    21300014: claw_attack_7
+    21300016: claw_attack_8
+    21300018: claw_attack_9
+    21300020: claw_attack_10
+    21300022: claw_attack_11
+    21300024: claw_attack_12
+    21300026: claw_attack_13
+    21300028: claw_attack_14
+    21300030: claw_attack_15
+    21300032: claw_attack_16
+    21300034: claw_attack_17
+    21300036: claw_attack_18
+    21300038: claw_attack_19
+    21300040: claw_attack_20
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -29,26 +50,236 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
-    aniso: -1
+    filterMode: 0
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 70
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: claw_attack_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 220
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_1
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 220
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 220
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_3
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 220
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_4
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 220
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_5
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 220
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_6
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 220
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 165
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_8
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 165
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_9
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 165
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_10
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 165
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_11
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 165
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_12
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 165
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_13
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 165
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 110
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_15
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 110
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_16
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 110
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_17
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 110
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_18
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 110
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_19
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 110
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_attack_20
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 110
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
   assetBundleName: 

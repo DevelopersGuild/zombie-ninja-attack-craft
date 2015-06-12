@@ -1,9 +1,33 @@
 fileFormatVersion: 2
 guid: cd1c10d3bbcf55d4cbc6137be7c19c96
-timeCreated: 1433536380
+timeCreated: 1433576415
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: spear_attack_sheet_0
+    21300002: spear_attack_sheet_1
+    21300004: spear_attack_sheet_2
+    21300006: spear_attack_sheet_3
+    21300008: spear_attack_sheet_4
+    21300010: spear_attack_sheet_5
+    21300012: spear_attack_sheet_6
+    21300014: spear_attack_sheet_7
+    21300016: spear_attack_sheet_8
+    21300018: spear_attack_sheet_9
+    21300020: spear_attack_sheet_10
+    21300022: spear_attack_sheet_11
+    21300024: spear_attack_sheet_12
+    21300026: spear_attack_sheet_13
+    21300028: spear_attack_sheet_14
+    21300030: spear_attack_sheet_15
+    21300032: spear_attack_sheet_16
+    21300034: spear_attack_sheet_17
+    21300036: spear_attack_sheet_18
+    21300038: spear_attack_sheet_19
+    21300040: spear_attack_sheet_20
+    21300042: spear_attack_sheet_21
+    21300044: spear_attack_sheet_22
+    21300046: spear_attack_sheet_23
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -29,26 +53,266 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
-    aniso: -1
+    filterMode: 0
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 70
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: spear_attack_sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_1
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_4
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_5
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_6
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_7
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 181
+        width: 55
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_9
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 181
+        width: 55
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_10
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 181
+        width: 55
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_11
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 181
+        width: 55
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_12
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 181
+        width: 55
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_13
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 181
+        width: 55
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_14
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 181
+        width: 55
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_15
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 181
+        width: 55
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 100
+        width: 55
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_17
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 100
+        width: 55
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_18
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 100
+        width: 55
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_19
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 100
+        width: 55
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_20
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 100
+        width: 55
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_21
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 100
+        width: 55
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_22
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 100
+        width: 55
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: spear_attack_sheet_23
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 100
+        width: 55
+        height: 61
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
   assetBundleName: 

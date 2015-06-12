@@ -74,6 +74,7 @@ public class AttackController : MonoBehaviour
      {
           if (CanAttack())
           {
+               GameManager.Notifications.PostNotification(this, "PlayerWhipAttack");
                //Set attack flags so it doesnt interfere with other animations
                isAttacking = true;
                moveController.isDashing = false;
@@ -88,6 +89,7 @@ public class AttackController : MonoBehaviour
      {
           if (Ammo > 0)
           {
+               GameManager.Notifications.PostNotification(this, "PlayerProjectileAttack");
                Ammo--;
                //Set Attack Flags
                isAttacking = true;

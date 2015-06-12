@@ -10,6 +10,7 @@ public class Explosion : MonoBehaviour
      void Start()
      {
           collider = GetComponent<CircleCollider2D>();
+          GameManager.Notifications.PostNotification(this, "OnExplosion");
      }
 
      void DestroySelf()

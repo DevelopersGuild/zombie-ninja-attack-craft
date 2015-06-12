@@ -1,0 +1,473 @@
+fileFormatVersion: 2
+guid: 0c9c0607f53707a43b060bfb27bf2f87
+timeCreated: 1434093122
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: mole_blue_sheet__0
+    21300002: mole_blue_sheet__1
+    21300004: mole_blue_sheet__2
+    21300006: mole_blue_sheet__3
+    21300008: mole_blue_sheet__4
+    21300010: mole_blue_sheet__5
+    21300012: mole_blue_sheet__6
+    21300014: mole_blue_sheet__7
+    21300016: mole_blue_sheet__8
+    21300018: mole_blue_sheet__9
+    21300020: mole_blue_sheet__10
+    21300022: mole_blue_sheet__11
+    21300024: mole_blue_sheet__12
+    21300026: mole_blue_sheet__13
+    21300028: mole_blue_sheet__14
+    21300030: mole_blue_sheet__15
+    21300032: mole_blue_sheet__16
+    21300034: mole_blue_sheet__17
+    21300036: mole_blue_sheet__18
+    21300038: mole_blue_sheet__19
+    21300040: mole_blue_sheet__20
+    21300042: mole_blue_sheet__21
+    21300044: mole_blue_sheet__22
+    21300046: mole_blue_sheet__23
+    21300048: mole_blue_sheet__24
+    21300050: mole_blue_sheet__25
+    21300052: mole_blue_sheet__26
+    21300054: mole_blue_sheet__27
+    21300056: mole_blue_sheet__28
+    21300058: mole_blue_sheet__29
+    21300060: mole_blue_sheet__30
+    21300062: mole_blue_sheet__31
+    21300064: mole_blue_sheet__32
+    21300066: mole_blue_sheet__33
+    21300068: mole_blue_sheet__34
+    21300070: mole_blue_sheet__35
+    21300072: mole_blue_sheet__36
+    21300074: mole_blue_sheet__37
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 70
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: mole_blue_sheet__0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 320
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__1
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 320
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 320
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__3
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 320
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__4
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 320
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__5
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 320
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 265
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__7
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 265
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__8
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 265
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__9
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 265
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__10
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 265
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__11
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 265
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__12
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 265
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__13
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 265
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__14
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 265
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__16
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__17
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__18
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__19
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__20
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__21
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__22
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 210
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__23
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 100
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__24
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 100
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__25
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 100
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__26
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 100
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__27
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 100
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__28
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 100
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__29
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 45
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__30
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 45
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__31
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 45
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__32
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 45
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__33
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 45
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__34
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 45
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__35
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 45
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__36
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 45
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_blue_sheet__37
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 45
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

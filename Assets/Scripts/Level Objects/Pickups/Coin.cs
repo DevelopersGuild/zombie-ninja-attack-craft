@@ -52,6 +52,7 @@ public class Coin : Pickup
 
      public void setValue(int newValue)
      {
-          ValueOfPickup = newValue;
+          MinimumValueRange = newValue;
+          MaximumValueRange = newValue;
      }
 }

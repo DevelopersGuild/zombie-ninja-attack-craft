@@ -13,7 +13,8 @@ public class GUIManager : MonoBehaviour
      public Canvas LoadLevelCanvas = null;
      public Canvas EndOfLevelCanvas = null;
 
-
+     public GUIStyle myStyle;
+     public Font pixelFont;
 
      void Start()
      {
@@ -47,6 +48,8 @@ public class GUIManager : MonoBehaviour
                EndOfLevelCanvas.enabled = false;
           }
 
+          GUIStyle myStyle = new GUIStyle();
+          myStyle.font = pixelFont;
      }
 
      public void OnPlayerDeath()
@@ -100,6 +103,10 @@ public class GUIManager : MonoBehaviour
           LoadLevelCanvas.enabled = false;
      }
 
+     private void OnGUI()
+     {
+
+     }
 
 }
 

@@ -15,11 +15,12 @@ public class Cyclops : Enemy
 {
      public Projectile laser, laserObject;
      public bool canTeleport;
+     public float projectileSpeed;
+     private AnimationController animationController;
 
      private Health health;
      private SpriteRenderer sprRend;
      private BoxCollider2D collider;
-
      private bool isAgro, teleporting;
 
 
@@ -34,14 +35,17 @@ public class Cyclops : Enemy
 
      public void Start()
      {
-          //animator = GetComponent<Animator>();
+          // Components
           moveController = GetComponent<EnemyMoveController>();
+          animationController = GetComponent<AnimationController>();
           sprRend = GetComponent<SpriteRenderer>();
           collider = GetComponent<BoxCollider2D>();
-          //laser = GetComponent<Projectile> ();
-          //laserObject = GetComponent <Projectile> ();
           health = GetComponent<Health>();
           player = FindObjectOfType<Player>();
+
+          //laser = GetComponent<Projectile> ();
+          //laserObject = GetComponent <Projectile> ();
+
           //rigidbody2D.mass = 10;
 
           distance = new Vector2(0, 0);
@@ -87,6 +91,7 @@ public class Cyclops : Enemy
                          {
                               collider.enabled = true;
                               sprRend.enabled = true;
+                              animationController.isTeleporting = false;
                               moveController.Move(0, 0);
                               teleporting = false;
                          }
@@ -115,39 +120,28 @@ public class Cyclops : Enemy
                               moveController.Move(0, 0);
                               if (canTeleport)
                               {
-                                   if (distance.magnitude < 0.7 && teleportCD >= 10)
-                                   {
-                                        sprRend.enabled = false;
-                                        collider.enabled = false;
-                                        teleporting = true;
-                                        teleportRun = direction;
-                                        temp = 0.6f;
-                                        teleportCD = 0;
+                                   if (distance.magnitude < 0.5 && teleportCD >= 10) {
+                                   
+                                        animationController.isTeleporting = true;
+
                                    }
                               }
-                              else if (laserCD >= 3)
-                              {
-                                   moveController.Move(0, 0);
-                                   if (xSp < 0)
-                                   {
-                                        xSp = player.transform.position.x - transform.position.x + (float)(1.0 / 4);
-                                        laser = Instantiate(laserObject, transform.position + new Vector3((float)(-1.0 / 4), 0, 0), transform.rotation) as Projectile;
-                                   }
-                                   else
-                                   {
-                                        laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
-                                   }
-                                   //Vector2 toPlayer = new Vector2(xSp,ySp);
-                                   //Debug.Log (toPlayer);
-                                   laser.GetComponent<Rigidbody2D>().velocity = (direction * 4);
-                                   laserCD = 0;
-                                   //throwF = 3;
-                              }
-                              else if (distance.magnitude < 2)
+                              else if (distance.magnitude < 1.5)
                               {
                                    moveController.Move(-direction / 4);
                               }
 
+                              else if (laserCD >= 3)
+                              {
+                                   moveController.Move(0, 0);
+
+                                        animationController.isAttacking = true;
+                                       
+                                   
+
+                              }
+
+                             
                          }
                          else
                          {
@@ -182,5 +176,28 @@ public class Cyclops : Enemy
           return health.currentHealth;
      }
 
+     public void Shoot()
+     {
+          Vector3 offset;
 
+          laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
+          laser.GetComponent<Rigidbody2D>().velocity = (direction * projectileSpeed);
+          laserCD = 0;
+     }
+
+     public void DoneShooting()
+     {
+          animationController.isAttacking = false;
+     }
+
+     public void Teleporting()
+     {
+          sprRend.enabled = false;
+          collider.enabled = false;
+          teleporting = true;
+          animationController.isTeleporting = false;
+          teleportRun = direction;
+          temp = 0.6f;
+          teleportCD = 0;
+     }
 }
