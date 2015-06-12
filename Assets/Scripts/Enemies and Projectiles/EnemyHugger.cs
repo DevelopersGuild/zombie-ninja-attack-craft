@@ -13,13 +13,16 @@ using UnityEngine;
 public class EnemyHugger : Enemy
 {
      private Health health;
+     private Rigidbody2D rigid;
 
+     public bool isSnake;
+     
      private bool isAgro;
 
      private Transform playerPos;
      private Vector2 distance, speed, facing;
      private double temp, fireBlock_CD, idleTime;
-     private Vector3 someVec;
+     private Vector3 someVec, point;
 
      //private Animator animator;
 
@@ -30,6 +33,7 @@ public class EnemyHugger : Enemy
           moveController = GetComponent<EnemyMoveController>();
           health = GetComponent<Health>();
           player = FindObjectOfType<Player>();
+          rigid = GetComponent<Rigidbody2D>();
 
           distance = new Vector2(0, 0);
           speed = new Vector2(0, 0);
@@ -54,6 +58,7 @@ public class EnemyHugger : Enemy
           }// Check existence of player. Move the enemy if aggroed, otherwise move randomly
           else if (player != null)
           {
+               
                rnd = new System.Random();
                findPos();
                //basic aggression range formula
@@ -75,6 +80,7 @@ public class EnemyHugger : Enemy
                if (isAgro)
                {
                     moveController.Move(direction.normalized, 8);
+                    point = direction;
                }
                else
                     {
@@ -85,7 +91,7 @@ public class EnemyHugger : Enemy
                               idleTime = 0;
                          }
                          moveController.Move(someVec.x, someVec.y);
-                   
+                         point = new Vector3(someVec.x, someVec.y, 0);                   
                }
 
                idleTime += Time.deltaTime;
@@ -95,6 +101,13 @@ public class EnemyHugger : Enemy
           if (health.currentHp() == 0)
           {
                onDeath();
+          }
+          if (isSnake)
+          {
+               float angle = Mathf.Atan2(point.y, point.x) * Mathf.Rad2Deg;
+               Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+               transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 2);
+ 
           }
      }
 
@@ -113,6 +126,7 @@ public class EnemyHugger : Enemy
      {
           //play pre-explosion animation
           Debug.Log("WOW!");
+         // Destroy(gameObject);
           //death animation
      }
 

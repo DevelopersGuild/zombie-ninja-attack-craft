@@ -15,7 +15,7 @@ public class BasicAttack : MonoBehaviour
     {
          if (t <= 0)
          {
-             // Destroy(gameObject);
+             Destroy(gameObject);
          }
          t -= Time.deltaTime;
     }

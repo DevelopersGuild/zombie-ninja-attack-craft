@@ -45,6 +45,10 @@ public class DealDamageToPlayer : MonoBehaviour
                //Take damage if the player isnt already currently invincible
                if (!player.isInvincible)
                {
+                    if (GetComponent<Projectile>())
+                    {
+                         player.setStun(GetComponent<Projectile>().stun);
+                    }
                     //Deal damage, knockback, set the invinicility flag
                     playerHealth.CalculateKnockback(other, transform.position);
                     playerHealth.TakeDamage(damageAmount);
@@ -55,6 +59,7 @@ public class DealDamageToPlayer : MonoBehaviour
                if (GetComponent<Projectile>())
                {
                     Destroy(gameObject);
+                    
                }
           }
 

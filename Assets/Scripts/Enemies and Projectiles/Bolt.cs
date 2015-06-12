@@ -4,6 +4,8 @@ using CreativeSpore.RpgMapEditor;
 
 
     public class Bolt : Projectile {
+        
+
 
         void OnTriggerEnter2D(Collider2D other)
         {

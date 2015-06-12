@@ -22,8 +22,10 @@ public class FireChain : MonoBehaviour
           {
                if (rotation > fin)
                {
+                    FindObjectOfType<FireSnake>().laserEnd();
                     Destroy(gameObject);
                }
+
 
           }
           else if (laserTwo)

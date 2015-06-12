@@ -4,7 +4,7 @@ using System.Collections;
 public class TrailProj : Projectile
 {
 
-     public Projectile trailObj, trail;
+     public GameObject trailObj, trail;
      public float t, trailTime;
 
      public void start()
@@ -16,17 +16,20 @@ public class TrailProj : Projectile
      // Update is called once per frame
      void Update()
      {
-          if (t > 0.25)
+          t += Time.deltaTime;
+          if (t > 0.075)
           {
                t = 0;
-               trail = Instantiate(trailObj, transform.position, transform.rotation) as Projectile;
-               trail.TimeToLive = trailTime;
-               trailTime -= 0.25f;
+               trail = Instantiate(trailObj, transform.position, transform.rotation) as GameObject;
+               Destroy(trail, trailTime);
+               trailTime -= 0.1f;
+               Debug.Log("HOOHOHOJSD");
           }
 
-          t += Time.deltaTime;
+         
      }
 
+     //I must've have been dozing off when I made this method, keeping it here to remind me of my shame
      public void setDir(float ang, Vector2 dir)
      {
           Shoot(ang, dir);

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 66d1e76a9fa30424ab38c02fb4d1e624
-timeCreated: 1433382649
+timeCreated: 1433886268
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -93,6 +93,20 @@ TextureImporter:
     21300172: elementalExplosion_86
     21300174: elementalExplosion_87
     21300176: elementalExplosion_88
+    21300178: elementalExplosion_89
+    21300180: elementalExplosion_90
+    21300182: elementalExplosion_91
+    21300184: elementalExplosion_92
+    21300186: elementalExplosion_93
+    21300188: elementalExplosion_94
+    21300190: elementalExplosion_95
+    21300192: elementalExplosion_96
+    21300194: elementalExplosion_97
+    21300196: elementalExplosion_98
+    21300198: elementalExplosion_99
+    21300200: elementalExplosion_100
+    21300202: elementalExplosion_101
+    21300204: elementalExplosion_102
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -118,7 +132,7 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -132,7 +146,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 50
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -141,890 +155,740 @@ TextureImporter:
     - name: elementalExplosion_0
       rect:
         serializedVersion: 2
-        x: 30
-        y: 829
-        width: 41
-        height: 42
+        x: 0
+        y: 911
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_1
       rect:
         serializedVersion: 2
-        x: 126
-        y: 825
-        width: 48
-        height: 49
+        x: 113
+        y: 911
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_2
       rect:
         serializedVersion: 2
-        x: 223
-        y: 821
-        width: 55
-        height: 57
+        x: 226
+        y: 911
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_3
       rect:
         serializedVersion: 2
-        x: 320
-        y: 818
-        width: 61
-        height: 64
+        x: 339
+        y: 911
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_4
       rect:
         serializedVersion: 2
-        x: 417
-        y: 815
-        width: 67
-        height: 69
+        x: 452
+        y: 911
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_5
       rect:
         serializedVersion: 2
-        x: 514
-        y: 812
-        width: 72
-        height: 75
+        x: 565
+        y: 911
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_6
       rect:
         serializedVersion: 2
-        x: 612
-        y: 810
-        width: 76
-        height: 79
+        x: 678
+        y: 911
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_7
       rect:
         serializedVersion: 2
-        x: 710
-        y: 808
-        width: 80
-        height: 83
+        x: 791
+        y: 911
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_8
       rect:
         serializedVersion: 2
-        x: 809
-        y: 807
-        width: 82
-        height: 85
+        x: 904
+        y: 911
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_9
       rect:
         serializedVersion: 2
-        x: 8
-        y: 705
-        width: 84
-        height: 89
+        x: 0
+        y: 798
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_10
       rect:
         serializedVersion: 2
-        x: 106
-        y: 704
-        width: 87
-        height: 91
+        x: 113
+        y: 798
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_11
       rect:
         serializedVersion: 2
-        x: 205
-        y: 703
-        width: 89
-        height: 93
+        x: 226
+        y: 798
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_12
       rect:
         serializedVersion: 2
-        x: 305
-        y: 702
-        width: 90
-        height: 95
+        x: 339
+        y: 798
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_13
       rect:
         serializedVersion: 2
-        x: 404
-        y: 702
-        width: 91
-        height: 95
+        x: 452
+        y: 798
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_14
       rect:
         serializedVersion: 2
-        x: 503
-        y: 701
-        width: 93
-        height: 97
+        x: 565
+        y: 798
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_15
       rect:
         serializedVersion: 2
-        x: 603
-        y: 701
-        width: 93
-        height: 97
+        x: 678
+        y: 798
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_16
       rect:
         serializedVersion: 2
-        x: 702
-        y: 700
-        width: 95
-        height: 99
+        x: 791
+        y: 798
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_17
       rect:
         serializedVersion: 2
-        x: 802
-        y: 700
-        width: 95
-        height: 99
+        x: 904
+        y: 798
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_18
       rect:
         serializedVersion: 2
-        x: 2
-        y: 595
-        width: 95
-        height: 104
+        x: 0
+        y: 685
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_19
       rect:
         serializedVersion: 2
-        x: 101
-        y: 600
-        width: 96
-        height: 99
+        x: 113
+        y: 685
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_20
       rect:
         serializedVersion: 2
-        x: 201
-        y: 600
-        width: 97
-        height: 100
+        x: 226
+        y: 685
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_21
       rect:
         serializedVersion: 2
-        x: 301
-        y: 586
-        width: 97
-        height: 114
+        x: 339
+        y: 685
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_22
       rect:
         serializedVersion: 2
-        x: 432
-        y: 689
-        width: 6
-        height: 11
+        x: 452
+        y: 685
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_23
       rect:
         serializedVersion: 2
-        x: 532
-        y: 690
-        width: 5
-        height: 10
+        x: 565
+        y: 685
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_24
       rect:
         serializedVersion: 2
-        x: 632
-        y: 692
-        width: 5
-        height: 8
+        x: 678
+        y: 685
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_25
       rect:
         serializedVersion: 2
-        x: 732
-        y: 693
-        width: 4
-        height: 7
+        x: 791
+        y: 685
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_26
       rect:
         serializedVersion: 2
-        x: 832
-        y: 694
-        width: 4
-        height: 6
+        x: 904
+        y: 685
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_27
       rect:
         serializedVersion: 2
-        x: 605
-        y: 622
-        width: 7
-        height: 5
+        x: 0
+        y: 572
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_28
       rect:
         serializedVersion: 2
-        x: 705
-        y: 622
-        width: 6
-        height: 4
+        x: 113
+        y: 572
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_29
       rect:
         serializedVersion: 2
-        x: 805
-        y: 622
-        width: 5
-        height: 4
+        x: 226
+        y: 572
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_30
       rect:
         serializedVersion: 2
-        x: 830
-        y: 603
-        width: 4
-        height: 6
+        x: 339
+        y: 572
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_31
       rect:
         serializedVersion: 2
-        x: 100
-        y: 498
-        width: 98
-        height: 102
+        x: 452
+        y: 572
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_32
       rect:
         serializedVersion: 2
-        x: 200
-        y: 498
-        width: 108
-        height: 102
+        x: 565
+        y: 572
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_33
       rect:
         serializedVersion: 2
-        x: 353
-        y: 596
-        width: 4
-        height: 4
+        x: 678
+        y: 572
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_34
       rect:
         serializedVersion: 2
-        x: 391
-        y: 498
-        width: 107
-        height: 102
+        x: 791
+        y: 572
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_35
       rect:
         serializedVersion: 2
-        x: 500
-        y: 498
-        width: 98
-        height: 102
+        x: 904
+        y: 572
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_36
       rect:
         serializedVersion: 2
-        x: 600
-        y: 498
-        width: 98
-        height: 102
+        x: 0
+        y: 459
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_37
       rect:
         serializedVersion: 2
-        x: 700
-        y: 498
-        width: 97
-        height: 102
+        x: 113
+        y: 459
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_38
       rect:
         serializedVersion: 2
-        x: 801
-        y: 502
-        width: 96
-        height: 98
+        x: 226
+        y: 459
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_39
       rect:
         serializedVersion: 2
-        x: 306
-        y: 566
-        width: 4
-        height: 4
+        x: 339
+        y: 459
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_40
       rect:
         serializedVersion: 2
-        x: 4
-        y: 522
-        width: 6
-        height: 4
+        x: 452
+        y: 459
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_41
       rect:
         serializedVersion: 2
-        x: 1
-        y: 402
-        width: 96
-        height: 106
+        x: 565
+        y: 459
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_42
       rect:
         serializedVersion: 2
-        x: 101
-        y: 402
-        width: 96
-        height: 93
+        x: 678
+        y: 459
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_43
       rect:
         serializedVersion: 2
-        x: 201
-        y: 402
-        width: 96
-        height: 93
+        x: 791
+        y: 459
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_44
       rect:
         serializedVersion: 2
-        x: 301
-        y: 402
-        width: 96
-        height: 105
+        x: 904
+        y: 459
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_45
       rect:
         serializedVersion: 2
-        x: 401
-        y: 402
-        width: 96
-        height: 93
+        x: 0
+        y: 346
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_46
       rect:
         serializedVersion: 2
-        x: 501
-        y: 402
-        width: 96
-        height: 93
+        x: 113
+        y: 346
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_47
       rect:
         serializedVersion: 2
-        x: 601
-        y: 402
-        width: 96
-        height: 93
+        x: 226
+        y: 346
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_48
       rect:
         serializedVersion: 2
-        x: 701
-        y: 402
-        width: 96
-        height: 93
+        x: 339
+        y: 346
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_49
       rect:
         serializedVersion: 2
-        x: 811
-        y: 412
-        width: 76
-        height: 78
+        x: 452
+        y: 346
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_50
       rect:
         serializedVersion: 2
-        x: 12
-        y: 313
-        width: 74
-        height: 77
+        x: 565
+        y: 346
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_51
       rect:
         serializedVersion: 2
-        x: 112
-        y: 313
-        width: 73
-        height: 76
+        x: 678
+        y: 346
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_52
       rect:
         serializedVersion: 2
-        x: 212
-        y: 314
-        width: 72
-        height: 75
+        x: 791
+        y: 346
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_53
       rect:
         serializedVersion: 2
-        x: 313
-        y: 314
-        width: 70
-        height: 75
+        x: 904
+        y: 346
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_54
       rect:
         serializedVersion: 2
-        x: 413
-        y: 315
-        width: 68
-        height: 72
+        x: 0
+        y: 233
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_55
       rect:
         serializedVersion: 2
-        x: 514
-        y: 315
-        width: 66
-        height: 70
+        x: 113
+        y: 233
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_56
       rect:
         serializedVersion: 2
-        x: 616
-        y: 316
-        width: 63
-        height: 67
+        x: 226
+        y: 233
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_57
       rect:
         serializedVersion: 2
-        x: 717
-        y: 318
-        width: 61
-        height: 63
+        x: 339
+        y: 233
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_58
       rect:
         serializedVersion: 2
-        x: 819
-        y: 319
-        width: 58
-        height: 61
+        x: 452
+        y: 233
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_59
       rect:
         serializedVersion: 2
-        x: 19
-        y: 220
-        width: 56
-        height: 59
+        x: 565
+        y: 233
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_60
       rect:
         serializedVersion: 2
-        x: 120
-        y: 221
-        width: 55
-        height: 57
+        x: 678
+        y: 233
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_61
       rect:
         serializedVersion: 2
-        x: 220
-        y: 223
-        width: 54
-        height: 55
+        x: 791
+        y: 233
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_62
       rect:
         serializedVersion: 2
-        x: 322
-        y: 223
-        width: 52
-        height: 54
+        x: 904
+        y: 233
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_63
       rect:
         serializedVersion: 2
-        x: 424
-        y: 225
-        width: 49
-        height: 51
+        x: 0
+        y: 120
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_64
       rect:
         serializedVersion: 2
-        x: 530
-        y: 231
-        width: 37
-        height: 41
+        x: 113
+        y: 120
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_65
       rect:
         serializedVersion: 2
-        x: 656
-        y: 259
-        width: 9
-        height: 11
+        x: 226
+        y: 120
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_66
       rect:
         serializedVersion: 2
-        x: 756
-        y: 261
-        width: 5
-        height: 5
+        x: 339
+        y: 120
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_67
       rect:
         serializedVersion: 2
-        x: 829
-        y: 233
-        width: 30
-        height: 31
+        x: 452
+        y: 120
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_68
       rect:
         serializedVersion: 2
-        x: 629
-        y: 232
-        width: 28
-        height: 18
+        x: 565
+        y: 120
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_69
       rect:
         serializedVersion: 2
-        x: 729
-        y: 233
-        width: 9
-        height: 17
+        x: 678
+        y: 120
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_70
       rect:
         serializedVersion: 2
-        x: 29
-        y: 134
-        width: 7
-        height: 15
+        x: 791
+        y: 120
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_71
       rect:
         serializedVersion: 2
-        x: 34
-        y: 134
-        width: 24
-        height: 33
+        x: 904
+        y: 120
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_72
       rect:
         serializedVersion: 2
-        x: 129
-        y: 135
-        width: 7
-        height: 13
+        x: 0
+        y: 7
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: elementalExplosion_73
       rect:
         serializedVersion: 2
-        x: 157
-        y: 131
-        width: 11
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_74
-      rect:
-        serializedVersion: 2
-        x: 229
-        y: 137
-        width: 5
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_75
-      rect:
-        serializedVersion: 2
-        x: 235
-        y: 134
-        width: 20
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_76
-      rect:
-        serializedVersion: 2
-        x: 258
-        y: 133
-        width: 10
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_77
-      rect:
-        serializedVersion: 2
-        x: 330
-        y: 134
-        width: 24
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_78
-      rect:
-        serializedVersion: 2
-        x: 358
-        y: 135
-        width: 9
-        height: 13
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_79
-      rect:
-        serializedVersion: 2
-        x: 436
-        y: 134
-        width: 18
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_80
-      rect:
-        serializedVersion: 2
-        x: 458
-        y: 138
-        width: 8
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_81
-      rect:
-        serializedVersion: 2
-        x: 537
-        y: 134
-        width: 16
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_82
-      rect:
-        serializedVersion: 2
-        x: 559
-        y: 140
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_83
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 135
-        width: 13
-        height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_84
-      rect:
-        serializedVersion: 2
-        x: 659
-        y: 141
-        width: 5
-        height: 5
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_85
-      rect:
-        serializedVersion: 2
-        x: 742
-        y: 135
-        width: 21
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_86
-      rect:
-        serializedVersion: 2
-        x: 842
-        y: 136
-        width: 10
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_87
-      rect:
-        serializedVersion: 2
-        x: 43
-        y: 36
-        width: 8
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: elementalExplosion_88
-      rect:
-        serializedVersion: 2
-        x: 143
-        y: 39
-        width: 7
-        height: 18
+        x: 113
+        y: 7
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

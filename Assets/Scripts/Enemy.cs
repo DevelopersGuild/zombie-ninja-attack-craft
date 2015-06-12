@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
      public Player player;
      public float AgroRange;
      public EnemyMoveController moveController;
-     public bool isInvincible, blink;
+     public bool isInvincible, blink, canBlink;
      public float timeSpentInvincible, stunTimer;
 
      [HideInInspector]
@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
      {
           blink = false;
           isInvincible = false;
+          canBlink = true;
           timeSpentInvincible = 0;
           GetComponent<Rigidbody2D>().gravityScale = 0;
           
@@ -51,8 +52,11 @@ public class Enemy : MonoBehaviour
 
                if (timeSpentInvincible <= 0.3f)
                {
-                    blink = !blink;
-                    GetComponent<Renderer>().enabled = blink;
+                    if (canBlink)
+                    {
+                         blink = !blink;
+                         GetComponent<Renderer>().enabled = blink;
+                    }
                }
 
                else

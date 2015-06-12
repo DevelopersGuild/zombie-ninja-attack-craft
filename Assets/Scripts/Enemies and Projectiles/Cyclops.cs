@@ -82,12 +82,10 @@ public class Cyclops : Enemy
                               sprRend.enabled = false;
                               moveController.Move(teleportRun * 2);
                               temp -= Time.deltaTime;
-                              Debug.Log("Running" + teleportRun);
                          }
                          else
                          {
                               collider.enabled = true;
-                              Debug.Log("From my heart");
                               sprRend.enabled = true;
                               moveController.Move(0, 0);
                               teleporting = false;
@@ -115,18 +113,21 @@ public class Cyclops : Enemy
                               float ySp = player.transform.position.y - transform.position.y;
                               //Debug.Log ("xSp: " + xSp + " ySp: " + ySp);
                               moveController.Move(0, 0);
-
-                              if (distance.magnitude < 0.7 && teleportCD >= 10)
+                              if (canTeleport)
                               {
-                                   sprRend.enabled = false;
-                                   collider.enabled = false;
-                                   teleporting = true;
-                                   teleportRun = direction;
-                                   temp = 0.6f;
-                                   teleportCD = 0;
+                                   if (distance.magnitude < 0.7 && teleportCD >= 10)
+                                   {
+                                        sprRend.enabled = false;
+                                        collider.enabled = false;
+                                        teleporting = true;
+                                        teleportRun = direction;
+                                        temp = 0.6f;
+                                        teleportCD = 0;
+                                   }
                               }
                               else if (laserCD >= 3)
                               {
+                                   moveController.Move(0, 0);
                                    if (xSp < 0)
                                    {
                                         xSp = player.transform.position.x - transform.position.x + (float)(1.0 / 4);
@@ -142,7 +143,7 @@ public class Cyclops : Enemy
                                    laserCD = 0;
                                    //throwF = 3;
                               }
-                              if (distance.magnitude < 2)
+                              else if (distance.magnitude < 2)
                               {
                                    moveController.Move(-direction / 4);
                               }
