@@ -40,6 +40,7 @@ public class Health : MonoBehaviour
 
      public void TakeDamage(int amount)
      {
+          GameManager.Notifications.PostNotification(this, "OnHit");
           currentHealth -= amount;
 
           // Instantiate a particle effect if it has one
