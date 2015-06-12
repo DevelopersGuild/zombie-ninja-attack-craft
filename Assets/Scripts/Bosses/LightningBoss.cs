@@ -260,7 +260,7 @@ public class LightningBoss : Boss
                               //else move away from player
                               cooldown_CD = 0.8f;
                          }
-                         if (spark_CD > 1 + currentHp() / 10.0)
+                         if (spark_CD > 2 + currentHp() / 5.0)
                          {
                               sparkAttack();
                          }

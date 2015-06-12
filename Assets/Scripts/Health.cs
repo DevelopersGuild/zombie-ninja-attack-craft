@@ -15,11 +15,14 @@ public class Health : MonoBehaviour
      public ParticleSystem particle;
      public ParticleSystem deathParticle;
 
+     public float knockbackMult;
+
      // Use this for initialization
      void Start()
      {
           isDead = false;
           currentHealth = startingHealth;
+          knockbackMult = 1;
      }
 
      public void replenish(int amt)
@@ -77,12 +80,12 @@ public class Health : MonoBehaviour
           if (enemyMoveController != null)
           {
                Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-               enemyMoveController.Knockback(pushDirection.normalized);
+               enemyMoveController.Knockback(pushDirection.normalized * knockbackMult);
           }
           else
           {
                Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-               playerMoveController.Knockback(pushDirection.normalized);
+               playerMoveController.Knockback(pushDirection.normalized * knockbackMult);
           }
 
      }

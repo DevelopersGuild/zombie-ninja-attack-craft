@@ -33,6 +33,7 @@ public class DealDamageToEnemy : MonoBehaviour
                 if (!enemy.isInvincible)
                 {
                     //Deal damage, knockback, set the invinicility flag
+                     Debug.Log("WOW");
                     enemyHealth.CalculateKnockback(other, transform.position);
                     enemyHealth.TakeDamage(damageAmount);
                     enemy.isInvincible = true;
@@ -84,10 +85,11 @@ public class DealDamageToEnemy : MonoBehaviour
             if (enemObject.GetComponent<Enemy>() != null)
             {
                 Enemy enemy = enemObject.GetComponent<Enemy>();
-
+                Debug.Log("Wow");
                 //Deal damage and knockback the enemy
                 if (!enemy.isInvincible)
                 {
+                     Debug.Log("Hey");
                     //Deal damage, knockback, set the invinicility flag
                     enemyHealth.CalculateKnockback(other, transform.position);
                     enemyHealth.TakeDamage(damageAmount);

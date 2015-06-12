@@ -86,12 +86,10 @@ public class Cyclops : Enemy
                               sprRend.enabled = false;
                               moveController.Move(teleportRun * 2);
                               temp -= Time.deltaTime;
-                              Debug.Log("Running" + teleportRun);
                          }
                          else
                          {
                               collider.enabled = true;
-                              Debug.Log("From my heart");
                               sprRend.enabled = true;
                               animationController.isTeleporting = false;
                               moveController.Move(0, 0);
@@ -120,21 +118,30 @@ public class Cyclops : Enemy
                               float ySp = player.transform.position.y - transform.position.y;
                               //Debug.Log ("xSp: " + xSp + " ySp: " + ySp);
                               moveController.Move(0, 0);
-
-                              if (distance.magnitude < 0.7 && teleportCD >= 10)
+                              if (canTeleport)
                               {
-                                   animationController.isTeleporting = true;
-                              }
-                              else if (laserCD >= 3)
-                              {
-                                   animationController.isAttacking = true;
-                              }
+                                   if (distance.magnitude < 0.5 && teleportCD >= 10) {
+                                   
+                                        animationController.isTeleporting = true;
 
-                              if (distance.magnitude < 2)
+                                   }
+                              }
+                              else if (distance.magnitude < 1.5)
                               {
                                    moveController.Move(-direction / 4);
                               }
 
+                              else if (laserCD >= 3)
+                              {
+                                   moveController.Move(0, 0);
+
+                                        animationController.isAttacking = true;
+                                       
+                                   
+
+                              }
+
+                             
                          }
                          else
                          {

@@ -8,10 +8,10 @@ namespace AssemblyCSharp
           public BasicAttack attackCollider, LRAttack, UDAttack;
           private Health health;
 
-          private bool isAgro;
+          private bool isAgro, canAttack;
 
-          private Vector2 distance, speed, facing;
-          private double temp, idleTime, attackDelay;
+          private Vector2 distance, speed, facing, distanceFromPoint, point, up, down, left, right;
+          private double idleTime, attackDelay;
           private Vector3 someVec;
 
           //private Animator animator;
@@ -29,19 +29,23 @@ namespace AssemblyCSharp
                distance = new Vector2(0, 0);
                speed = new Vector2(0, 0);
                isAgro = false;
-               attackDelay = 1;
+               attackDelay = 3;
 
                rnd = new System.Random(Guid.NewGuid().GetHashCode());
                t = 3 + rnd.Next(0, 3000) / 1000f;
 
                facing = new Vector2(0, 0);
+               point = new Vector2(100, 100);
+               distanceFromPoint = new Vector2(100, 100);
+               up = new Vector2(0, 0.4f);
+               left = new Vector2(-0.4f, 0);
+               right = new Vector2(0.4f, 0);
+               down = new Vector2(0, -0.4f);
 
           }
 
           public void Update()
           {
-               float xSp = player.transform.position.x - transform.position.x;
-               float ySp = player.transform.position.y - transform.position.y;
                checkInvincibility();
                if (checkStun())
                {
@@ -53,6 +57,21 @@ namespace AssemblyCSharp
                {
                     //basic aggression range formula
                     distance = player.transform.position - transform.position;
+                    distanceFromPoint = distance + up;
+                    if (distanceFromPoint.magnitude > (distance + left).magnitude)
+                    {
+                         distanceFromPoint = distance + left;
+                    }
+                    if (distanceFromPoint.magnitude > (distance + right).magnitude)
+                    {
+                         distanceFromPoint = distance + right;
+                    }
+                    if (distanceFromPoint.magnitude > (distance + down).magnitude)
+                    {
+                         distanceFromPoint = distance + down;
+                    }
+                    float xSp = distanceFromPoint.normalized.x;
+                    float ySp = distanceFromPoint.normalized.y;
                     if (distance.magnitude <= AgroRange)
                     {
                          isAgro = true;
@@ -65,37 +84,21 @@ namespace AssemblyCSharp
 
                     if (isAgro)
                     {
-                         if (attackDelay <= 0)
+                         if (canAttack)
                          {
-                              attackDelay = 1;
-                              float xRot, yRot;
-                              xRot = yRot = 0;
-                              Debug.Log(xSp + " vs " + ySp);
-                              if (Math.Abs(xSp) >= Math.Abs(ySp))
-                                   attackCollider = Instantiate(LRAttack, transform.position + new Vector3(Math.Sign(xSp), 0, 0), Quaternion.identity) as BasicAttack;
-                              else
-                                   attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, Math.Sign(ySp), 0), UDAttack.transform.rotation) as BasicAttack;
-
-
-
-                              //attackCollider.transform.rotation = Quaternion.identity;
-
-                         }
-                         else if (attackDelay > 0 && attackDelay < 1)
-                         {
-                              attackDelay -= Time.deltaTime;
-                         }
-
-                         else if (distance.magnitude < 1)
-                         {
+                              if (distanceFromPoint.magnitude < 0.15f) {
                               moveController.Move(0, 0);
-                              attackDelay = 0.5;
+                              //animator.setBool("Attack", true)
+                              //when spear goes forward in animation, call Attack();
+                              
+                              }
+                              else
+                              {
+                                   direction = new Vector2(xSp, ySp);
+                                   moveController.Move(direction / 6f);
+                              }
                          }
-                         else
-                         {
-                              direction = new Vector2(xSp, ySp);
-                              moveController.Move(direction / 12f);
-                         }
+                         
                     }
                     else
                     {
@@ -124,6 +127,31 @@ namespace AssemblyCSharp
                return health.currentHealth;
           }
 
+          //Called by attack animation when spear is being thrusted forward
+          public void Attack()
+          {
+               if (Math.Abs(distance.x) >= Math.Abs(distance.y))
+                    attackCollider = Instantiate(LRAttack, transform.position + new Vector3(Math.Sign(distance.x) / 2f, 0, 0), Quaternion.identity) as BasicAttack;
+               else
+                    attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, Math.Sign(distance.y) / 2f, 0), UDAttack.transform.rotation) as BasicAttack;
+          }
+
+          //Called by attacking animation at end of animation
+          public void DoneAttacking()
+          {
+               canAttack = false;
+               //animator.setBool(attack,false)
+               //animator.setBool(rest, true)
+
+          }
+
+          //Called by Rest animation after animation finishes (Rest animation is idle but in it's own animation, so it can call methods seperately)
+          public void DoneResting()
+          {
+               canAttack = true;
+               //animator.setBool(rest,false)
+               //sets to walking as it is the default animation.
+          }
 
      }
 }

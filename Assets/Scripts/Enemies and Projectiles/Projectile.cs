@@ -4,7 +4,6 @@ using CreativeSpore.RpgMapEditor;
 
 public class Projectile : MonoBehaviour
 {
-
      public float projectileSpeed;
      public float angle;
      public int damageAmount;
@@ -14,8 +13,9 @@ public class Projectile : MonoBehaviour
 
      public float TimeToLive;
 
-     private Vector2 PlayerPos, direction;
-     private Player player;
+     [HideInInspector]
+     public Vector2 PlayerPos, direction;
+     public Player player;
      public Vector2 originalPosition;
      public Vector2 targetPosition;
      public Vector2 currentVelocity;
@@ -73,6 +73,8 @@ public class Projectile : MonoBehaviour
           return stun;
      }
 
-
-
+   
 }
+
+
+

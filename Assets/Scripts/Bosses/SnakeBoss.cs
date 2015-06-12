@@ -33,7 +33,7 @@ public class SnakeBoss : Boss
      public float AgroRange;
 
      public FireChain laserObj;
-     private FireChain laser;
+     public FireChain laser;
 
      public TrailProj trailObj;
      private TrailProj trail;
@@ -44,18 +44,17 @@ public class SnakeBoss : Boss
      public Enemy snakeObj;
      private Enemy snake;
 
-     public Projectile acidballObj;
-     private Projectile acidball;
+     public ProjectileTerrain acidballObj;
+     private ProjectileTerrain acidball;
 
-     public Projectile acidFieldObj;
-     private Projectile acidField;
-
-     public GameObject ball1, ball2, ball3, ball4;
-     private GameObject b1, b2, b3, b4;
+     public SnakeBall ball1, ball2, ball3, ball4;
+     [HideInInspector]
+     public SnakeBall b1, b2, b3, b4;
 
      public Vector2 targetPos;
+     public Vector3 biteDir;
 
-     public float snakeFactor, mDeg;
+     public float snakeFactor, mDeg, biteTime;
 
      [HideInInspector]
      public EnemyMoveController moveController;
@@ -63,7 +62,7 @@ public class SnakeBoss : Boss
      public Health health;
 
      [HideInInspector]
-     public bool isAgro;
+     public bool isAgro,isBiting, isLasering;
      [HideInInspector]
      public System.Random rnd;
 
@@ -85,10 +84,10 @@ public class SnakeBoss : Boss
      public Vector2 initialPos;
 
      [HideInInspector]
-     public float currentX, currentY, playerX, playerY, angle;
+     public float currentX, currentY, playerX, playerY, angle, mirrorSpawn;
 
      [HideInInspector]
-     public float bite_CD, spawn_CD, acid_CD, fireBall_CD, iceBall_CD, fireTrail_CD, iceTrail_CD, laser_CD, cooldown_CD;
+     public float bite_CD, spawn_CD, acid_CD, fireBall_CD, iceBall_CD, fireTrail_CD, iceTrail_CD, laser_CD, cooldown_CD, count;
 
      public void Start()
      {
@@ -107,6 +106,8 @@ public class SnakeBoss : Boss
           iceTrail_CD = 10;
           laser_CD = 13;
           cooldown_CD = 0.8f;
+          biteTime = 0;
+          count = 1;
 
           distance = new Vector2(0, 0);
           speed = new Vector2(0, 0);
@@ -116,12 +117,18 @@ public class SnakeBoss : Boss
 
      public void Awake()
      {
-          Vector3 tempVec = new Vector3(0,1,0);
-         // b1 = Instantiate(ball1, transform.position + tempVec, transform.rotation) as GameObject;
-         // b2 = Instantiate(ball2, transform.position + tempVec * 2, transform.rotation) as GameObject;
-         // b3 = Instantiate(ball3, transform.position + tempVec * 3, transform.rotation) as GameObject;
-         // b4 = Instantiate(ball4, transform.position + tempVec * 4, transform.rotation) as GameObject;
 
+          Vector3 tempVec = new Vector3(0,0.1f,0);
+          b1 = Instantiate(ball1, transform.position + tempVec, transform.rotation) as SnakeBall;
+          b2 = Instantiate(ball2, transform.position + tempVec * 2, transform.rotation) as SnakeBall;
+          b3 = Instantiate(ball3, transform.position + tempVec * 3, transform.rotation) as SnakeBall;
+          b4 = Instantiate(ball4, transform.position + tempVec * 4, transform.rotation) as SnakeBall;
+          b1.setPong(1f);
+          b2.setPong(1.3f);
+          b3.setPong(1.5f);
+          b4.setPong(1.35f);
+
+          initialPos = transform.position;
 
      }
 
@@ -134,18 +141,32 @@ public class SnakeBoss : Boss
      public void prep()
      {
           isInvincible = false;
-          //playAnimation
+          //playAnimation, speed based on hp
           isInvincible = true;
 
      }
 
      public void biteAttack()
      {
+
           //After prep
           //Either
           //Fire Projectile that looks like snake + z+1
           //or
           //Create a variable collider during animation
+          findPos();
+          biteDir = direction/4;
+          float diff = initialPos.y - playerY;
+          //mDeg = 180;
+
+          b1.setBite(true, biteDir * 4f/5);
+          b2.setBite(true, biteDir * 3f/5);
+          b3.setBite(true, biteDir * 2f/5);
+          b4.setBite(true, biteDir/5);
+          isBiting = true;
+          bite_CD = 0;
+
+
      }
 
      public void laserAttack()
@@ -168,6 +189,8 @@ public class SnakeBoss : Boss
           //if fire, shoot fire in an arc/cone shape on ground
           //if ice, shoot ice in a rectangle on ground
           //trails^
+          fireTrail_CD = 0;
+          iceTrail_CD = 0;
      }
 
      public void ballAttack()
@@ -178,14 +201,18 @@ public class SnakeBoss : Boss
 
      public void spawnAttack()
      {
-          Vector2 newPos = (Vector2)transform.position + new Vector2(0, -0.8f);
+          spawn_CD = 0;
+          Vector2 newPos = transform.position + new Vector3(mirrorSpawn, -1.3f);
           snake = Instantiate(snakeObj, newPos, transform.rotation) as Enemy;
 
      }
 
      public void acidAttack()
      {
-          acidField = Instantiate(acidFieldObj, transform.position, transform.rotation) as Projectile;
+          acidball = Instantiate(acidballObj, transform.position, transform.rotation) as ProjectileTerrain;
+          Vector2 tempDir = new Vector2(playerX - currentX, playerY - currentY);
+          acidball.Shoot(0, tempDir * 0.125f);
+          acid_CD = 0;
      }
 
 
@@ -208,14 +235,42 @@ public class SnakeBoss : Boss
           //snakeFactor = Mathf.PingPong(Time.time / 2.2f, 0.7f);
           //transform.position = new Vector3(initialPos.x + snakeFactor, initialPos.y, 0);
 
-          float degreesPerSecond = 60.0f;
+          float degreesPerSecond = 180.0f;
           mDeg = Mathf.Repeat(mDeg + (Time.deltaTime * degreesPerSecond), 360.0f);
-          float radians = mDeg * Mathf.Deg2Rad;
+          float radians = mDeg * Mathf.Deg2Rad + 90;
 
-          Vector3 offset = new Vector3(Mathf.Sin(radians)/36f, 0, 0);
+          Vector3 offset = new Vector3(Mathf.Sin(radians)/110f, 0, 0);
           transform.position = transform.position + offset;
           //snakeFactor += 0f;
-          Debug.Log(transform.position + "VS" + offset);
+     }
+
+     public void laserEnd()
+     {
+          isLasering = false;
+          b1.stopMove(true);
+          b2.stopMove(true);
+          b3.stopMove(true);
+          b4.stopMove(true);
+     }
+
+     public void onDeath()
+     {
+          b1.dead();
+          b2.dead();
+          b3.dead();
+          b4.dead();
+          //create bridge
+     }
+
+     public void OnCollisionEnter2D(Collision2D other)
+     {
+          if (!isInvincible)
+          {
+               if (other.gameObject.GetComponent<DealDamageToEnemy>() && other.gameObject.GetComponent<Projectile>()) 
+               {
+                    isInvincible = true;
+               }
+          }
      }
 
 
