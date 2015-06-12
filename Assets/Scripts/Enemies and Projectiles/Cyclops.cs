@@ -93,6 +93,7 @@ public class Cyclops : Enemy
                               collider.enabled = true;
                               Debug.Log("From my heart");
                               sprRend.enabled = true;
+                              animationController.isTeleporting = false;
                               moveController.Move(0, 0);
                               teleporting = false;
                          }
@@ -122,28 +123,11 @@ public class Cyclops : Enemy
 
                               if (distance.magnitude < 0.7 && teleportCD >= 10)
                               {
-                                   sprRend.enabled = false;
-                                   collider.enabled = false;
-                                   teleporting = true;
-                                   teleportRun = direction;
-                                   temp = 0.6f;
-                                   teleportCD = 0;
+                                   animationController.isTeleporting = true;
                               }
                               else if (laserCD >= 3)
                               {
                                    animationController.isAttacking = true;
-                                   //Vector3 offset;
-                                   //if (xSp < 0)
-                                   //{
-                                   //     xSp = player.transform.position.x - transform.position.x + (float)(1.0 / 4);
-                                   //     offset = new Vector3((float)(-1.0 / 4), 0, 0);
-                                   //     Shoot(offset);
-                                   //}
-                                   //else
-                                   //{
-                                   //     offset = new Vector3(0, 0, 0);
-                                   //     Shoot(offset);
-                                   //}
                               }
 
                               if (distance.magnitude < 2)
@@ -199,5 +183,14 @@ public class Cyclops : Enemy
           animationController.isAttacking = false;
      }
 
-
+     public void Teleporting()
+     {
+          sprRend.enabled = false;
+          collider.enabled = false;
+          teleporting = true;
+          animationController.isTeleporting = false;
+          teleportRun = direction;
+          temp = 0.6f;
+          teleportCD = 0;
+     }
 }

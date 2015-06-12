@@ -6,6 +6,7 @@ public class AnimationController : MonoBehaviour {
      private Animator animator;
      private EnemyMoveController moveController;
      public bool isAttacking;
+     public bool isTeleporting;
      public bool gotAttacked;
      public bool facesMultiple;
 
@@ -39,6 +40,7 @@ public class AnimationController : MonoBehaviour {
 
                animator.SetBool("isMoving", moveController.isMoving);
                animator.SetBool("isAttacking", isAttacking);
+               animator.SetBool("isTeleporting", isTeleporting);
           }
 	}
 }
