@@ -165,6 +165,9 @@ public class GameManager : MonoBehaviour
      {
           timeToCompleteLevel = Time.time;
           Score = (int)Math.Round(Coins - timeToCompleteLevel);
+          //Test purposes Delete once level switching is done
+          Score = 1000000;
+          //Test purposes Delete once level switching is done
           if (Score >= PassingScore)
           {
                IsCurrentLevelComplete = true;
