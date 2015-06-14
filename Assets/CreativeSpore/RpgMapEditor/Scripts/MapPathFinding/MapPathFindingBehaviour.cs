@@ -6,10 +6,10 @@ using CreativeSpore.PathFindingLib;
 
 namespace CreativeSpore.RpgMapEditor
 {
-
+    [RequireComponent(typeof(MovingBehaviour))]
     public class MapPathFindingBehaviour : MonoBehaviour
     {
-        public GameObject Target;
+        public Vector2 TargetPos;
 
         public delegate void OnComputedPathDelegate(MapPathFindingBehaviour source);
         public OnComputedPathDelegate OnComputedPath;
@@ -47,7 +47,10 @@ namespace CreativeSpore.RpgMapEditor
                     Vector3 vSeek = curTileNode.Position; vSeek.z = transform.position.z; // put at this object level
                     if (m_movingBehavior)
                     {
-                        m_movingBehavior.Seek(vSeek);
+                        if (m_curNode.Next != null)
+                            m_movingBehavior.Seek(vSeek);
+                        else
+                            m_movingBehavior.Arrive(vSeek);
                     }
                 }
                 else
@@ -56,10 +59,10 @@ namespace CreativeSpore.RpgMapEditor
                 }
             }
 
-            if (Target != null)
+            //if (TargetPos != null) //TODO: TargetPos can't be null
             {
                 int prevTileidx = m_startTileIdx;
-                m_startTileIdx = RpgMapHelper.GetTileIdxByPosition(Target.transform.position);
+                m_startTileIdx = RpgMapHelper.GetTileIdxByPosition(TargetPos);
                 m_isUpdatePath |= prevTileidx != m_startTileIdx;
                 if (m_isUpdatePath && !m_isComputing)
                 {

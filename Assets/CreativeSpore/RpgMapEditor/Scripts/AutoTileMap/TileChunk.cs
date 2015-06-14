@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace CreativeSpore.RpgMapEditor
 {
+    /// <summary>
+    /// Manage a chunk of tiles in the 3D world
+    /// </summary>
 	public class TileChunk : MonoBehaviour 
 	{
 		private Vector3[] m_vertices;
@@ -12,10 +15,28 @@ namespace CreativeSpore.RpgMapEditor
 
 		public AutoTileMap MyAutoTileMap;
 
-		public int TileWidth = 8; // width size of chunk
-        public int TileHeight = 4; // height size of chunk
+        /// <summary>
+        /// Width size of chunk in tiles ( change default value in TileChunkPool.k_TileChunkWidth )
+        /// </summary>
+        public int TileWidth = 8;
+        /// <summary>
+        /// Height size of chunk int tiles ( change default value in TileChunkPool.k_TileChunkHeight )
+        /// </summary>
+        public int TileHeight = 4;
+
+        /// <summary>
+        /// Map layer for this tilechunk
+        /// </summary>
 		public int TileLayer = 0;
+
+        /// <summary>
+        /// Position of top left tile of thins chunk in the map
+        /// </summary>
 		public int StartTileX = 0;
+
+        /// <summary>
+        /// Position of top left tile of thins chunk in the map
+        /// </summary>
 		public int StartTileY = 0;
 
 		private MeshFilter m_meshFilter;
@@ -37,7 +58,7 @@ namespace CreativeSpore.RpgMapEditor
 				m_uv = m_meshFilter.mesh.uv;
 
                 // Animated tiles
-				float fTextTileWidth = (float)AutoTileset.TileWidth / MyAutoTileMap.Tileset.TilesetsAtlasTexture.width;
+                float fTextTileWidth = (float)MyAutoTileMap.Tileset.TileWidth / MyAutoTileMap.Tileset.AtlasTexture.width;
 				float offset = fTextTileWidth * MyAutoTileMap.TileAnim3Frame * 2;
 				foreach( AnimTileData animTileData in m_animatedTiles )
 				{
@@ -47,7 +68,7 @@ namespace CreativeSpore.RpgMapEditor
 					m_uv[ animTileData.VertexIdx + 3 ].x = animTileData.U1 + offset;
 				}
                 // waterfall tiles
-                float fTextTilePartHeight = (float)AutoTileset.TilePartHeight / MyAutoTileMap.Tileset.TilesetsAtlasTexture.height;
+                float fTextTilePartHeight = (float)MyAutoTileMap.Tileset.TilePartHeight / MyAutoTileMap.Tileset.AtlasTexture.height;
                 foreach (AnimTileData animTileData in m_animatedWaterfallTiles)
                 {
                     int tilePartOff = (animTileData.SubTileRow + 4-MyAutoTileMap.TileAnim4Frame) % 4 - animTileData.SubTileRow;
@@ -61,6 +82,15 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
+        /// <summary>
+        /// Configure this chunk
+        /// </summary>
+        /// <param name="autoTileMap"></param>
+        /// <param name="layer"></param>
+        /// <param name="startTileX"></param>
+        /// <param name="startTileY"></param>
+        /// <param name="tileChunkWidth"></param>
+        /// <param name="tileChunkHeight"></param>
 		public void Configure (AutoTileMap autoTileMap, int layer, int startTileX, int startTileY, int tileChunkWidth, int tileChunkHeight)
 		{
 			MyAutoTileMap = autoTileMap;
@@ -72,8 +102,8 @@ namespace CreativeSpore.RpgMapEditor
 
 			transform.gameObject.name = "TileChunk"+startTileX+""+startTileY;
 			Vector3 vPosition = new Vector3();
-			vPosition.x = startTileX * AutoTileset.TileWorldWidth;
-			vPosition.y = -startTileY * AutoTileset.TileWorldHeight;
+            vPosition.x = startTileX * MyAutoTileMap.Tileset.TileWorldWidth;
+            vPosition.y = -startTileY * MyAutoTileMap.Tileset.TileWorldHeight;
 			transform.localPosition = vPosition;
 
 			MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
@@ -82,7 +112,11 @@ namespace CreativeSpore.RpgMapEditor
 				meshRenderer = transform.gameObject.AddComponent<MeshRenderer>();
 			}
 			meshRenderer.sharedMaterial = MyAutoTileMap.Tileset.AtlasMaterial;
+#if UNITY_5_0
+            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+#else
 			meshRenderer.castShadows = false;
+#endif
 			meshRenderer.receiveShadows = false;
 
             m_meshFilter = GetComponent<MeshFilter>();
@@ -92,7 +126,10 @@ namespace CreativeSpore.RpgMapEditor
             }
 		}
 
-		public void ApplyData()
+        /// <summary>
+        /// Regenerate the mesh for this tile chunk
+        /// </summary>
+		public void RefreshTileData()
 		{
 
             Mesh mesh;
@@ -122,6 +159,8 @@ namespace CreativeSpore.RpgMapEditor
             mesh.vertices = m_vertices;
             mesh.uv = m_uv;
             mesh.triangles = m_triangles;
+
+            mesh.RecalculateNormals(); // allow using lights
 		}
 
 		void FillData()
@@ -143,12 +182,12 @@ namespace CreativeSpore.RpgMapEditor
 					int tileX = StartTileX + subTileX/2;
 					int tileY = StartTileY + subTileY/2;
 					AutoTileMap.AutoTile autoTile = MyAutoTileMap.GetAutoTile( tileX, tileY, TileLayer);
-					if( autoTile.Type >= 0 )
+					if( autoTile.Idx >= 0 )
 					{
-						float px0 = subTileX*(AutoTileset.TileWorldWidth/2);
-						float py0 = -subTileY*(AutoTileset.TileWorldHeight/2);
-						float px1 = (subTileX+1)*(AutoTileset.TileWorldWidth/2);
-						float py1 = -(subTileY+1)*(AutoTileset.TileWorldHeight/2);
+                        float px0 = subTileX * (MyAutoTileMap.Tileset.TileWorldWidth / 2);
+                        float py0 = -subTileY * (MyAutoTileMap.Tileset.TileWorldHeight / 2);
+                        float px1 = (subTileX + 1) * (MyAutoTileMap.Tileset.TileWorldWidth / 2);
+                        float py1 = -(subTileY + 1) * (MyAutoTileMap.Tileset.TileWorldHeight / 2);
 
 						m_vertices[ vertexIdx + 0 ] = new Vector3( px0, py0, 0 );
 						m_vertices[ vertexIdx + 1 ] = new Vector3( px0, py1, 0 );
@@ -163,30 +202,30 @@ namespace CreativeSpore.RpgMapEditor
 						m_triangles[ triangleIdx + 5 ] = vertexIdx + 2;
 
 						float u0, u1, v0, v1;
-						if( autoTile.Type >= 128 )
+						if( autoTile.Type == AutoTileMap.eTileType.OBJECTS || autoTile.Type == AutoTileMap.eTileType.NORMAL )
 						{
 							int spriteIdx = autoTile.TilePartsIdx[ 0 ];
-							Sprite sprTile = MyAutoTileMap.Tileset.AutoTileSprites[spriteIdx];
-                            u0 = (((subTileX % 2) * sprTile.rect.width / 2) + sprTile.rect.x) / sprTile.texture.width;
-                            u1 = (((subTileX % 2) * sprTile.rect.width / 2) + sprTile.rect.x + sprTile.rect.width / 2 - 1f) / sprTile.texture.width;
-                            v0 = (((1 - subTileY % 2) * sprTile.rect.height / 2) + sprTile.rect.y + sprTile.rect.height / 2 - 1f) / sprTile.texture.height;
-                            v1 = (((1 - subTileY % 2) * sprTile.rect.height / 2) + sprTile.rect.y) / sprTile.texture.height;
+							Rect sprTileRect = MyAutoTileMap.Tileset.AutoTileRects[spriteIdx];
+                            u0 = (((subTileX % 2) * sprTileRect.width / 2) + sprTileRect.x) / MyAutoTileMap.Tileset.AtlasTexture.width;
+                            u1 = (((subTileX % 2) * sprTileRect.width / 2) + sprTileRect.x + sprTileRect.width / 2 - 1f) / MyAutoTileMap.Tileset.AtlasTexture.width;
+                            v0 = (((1 - subTileY % 2) * sprTileRect.height / 2) + sprTileRect.y + sprTileRect.height / 2 - 1f) / MyAutoTileMap.Tileset.AtlasTexture.height;
+                            v1 = (((1 - subTileY % 2) * sprTileRect.height / 2) + sprTileRect.y) / MyAutoTileMap.Tileset.AtlasTexture.height;
 						}
 						else
 						{
 							int tilePartIdx = (subTileY%2)*2 + (subTileX%2);
 							int spriteIdx = autoTile.TilePartsIdx[ tilePartIdx ];
-							Sprite sprTile = MyAutoTileMap.Tileset.AutoTileSprites[spriteIdx];
-                            u0 = sprTile.rect.x / sprTile.texture.width;
-                            u1 = (sprTile.rect.x + sprTile.rect.width - 1f) / sprTile.texture.width;
-                            v0 = (sprTile.rect.y + sprTile.rect.height - 1f) / sprTile.texture.height;
-                            v1 = sprTile.rect.y / sprTile.texture.height;
+							Rect sprTileRect = MyAutoTileMap.Tileset.AutoTileRects[spriteIdx];
+                            u0 = sprTileRect.x / MyAutoTileMap.Tileset.AtlasTexture.width;
+                            u1 = (sprTileRect.x + sprTileRect.width - 1f) / MyAutoTileMap.Tileset.AtlasTexture.width;
+                            v0 = (sprTileRect.y + sprTileRect.height - 1f) / MyAutoTileMap.Tileset.AtlasTexture.height;
+                            v1 = sprTileRect.y / MyAutoTileMap.Tileset.AtlasTexture.height;
 
-                            if (MyAutoTileMap.Tileset.IsAutoTileAnimated(autoTile.Type))
+                            if (MyAutoTileMap.Tileset.IsAutoTileAnimated(autoTile.Idx))
                             {
                                 m_animatedTiles.Add(new AnimTileData() { VertexIdx = vertexIdx, U0 = u0, U1 = u1 });
                             }
-                            else if (MyAutoTileMap.Tileset.IsAutoTileAnimatedWaterfall(autoTile.Type))
+                            else if (MyAutoTileMap.Tileset.IsAutoTileAnimatedWaterfall(autoTile.Idx))
                             {
                                 int subTileRow = (spriteIdx / 32);//32 = number of subtiles in a row;
                                 subTileRow %= 6; // make it relative to this autotile

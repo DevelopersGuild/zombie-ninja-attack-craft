@@ -11,32 +11,31 @@ namespace CreativeSpore.RpgMapEditor
 {
 	public class UtilsAutoTileMap 
 	{
-		public static Texture2D GenerateTilesetTexture( Texture2D _atlasTexture, AutoTileMap.eTilesetGroupType _tilesetGroupType )
+        /// <summary>
+        /// Generate a tileset texture for a given tilesetConf
+        /// </summary>
+        /// <param name="autoTileset"></param>
+        /// <param name="tilesetConf"></param>
+        /// <returns></returns>
+		public static Texture2D GenerateTilesetTexture( AutoTileset autoTileset, SubTilesetConf tilesetConf )
 		{
-			List<Sprite> sprList = new List<Sprite>();
-			FillWIthTilesetThumbnailSprites( sprList, _atlasTexture, _tilesetGroupType);
-			Texture2D tilesetTexture = new Texture2D( 256, 1024 );
+            //+++ old values for 32x32 tiles, now depend on tile size
+            int _1024 = 32 * autoTileset.TileWidth;
+            int _256 = 8 * autoTileset.TileWidth;
+            //---
+			List<Rect> sprList = new List<Rect>();
+            FillWithTilesetThumbnailSprites(sprList, autoTileset, tilesetConf);
+			Texture2D tilesetTexture = new Texture2D( _256, _1024 );
 
 			int sprIdx = 0;
-			Rect dstRect = new Rect( 0, tilesetTexture.height - AutoTileset.TileHeight, AutoTileset.TileWidth, AutoTileset.TileHeight);
-			for( ; dstRect.y >= 0; dstRect.y -= AutoTileset.TileHeight )
+            Rect dstRect = new Rect(0, tilesetTexture.height - autoTileset.TileHeight, autoTileset.TileWidth, autoTileset.TileHeight);
+            for (; dstRect.y >= 0; dstRect.y -= autoTileset.TileHeight)
 			{
-				for( dstRect.x = 0; dstRect.x < tilesetTexture.width && sprIdx < sprList.Count; dstRect.x += AutoTileset.TileWidth, ++sprIdx )
+                for (dstRect.x = 0; dstRect.x < tilesetTexture.width && sprIdx < sprList.Count; dstRect.x += autoTileset.TileWidth, ++sprIdx)
 				{
-					Rect srcRect = sprList[sprIdx].rect;
-                    //TODO: this code is for testing purposes
-                    #if UNITY_EDITOR
-                    if (Mathf.RoundToInt(srcRect.x) > 2016 || Mathf.RoundToInt(srcRect.y) > 2016 || Mathf.RoundToInt(srcRect.x) < 0 || Mathf.RoundToInt(srcRect.y) < 0 )
-                    {
-                        string sError = " Weird Error: group: " + _tilesetGroupType + " sprIdx " + sprIdx + " textureRect " + sprList[sprIdx].textureRect + " rect " + sprList[sprIdx].rect;
-                        Debug.LogError( sError );
-                        //EditorUtility.DisplayDialog("Weird bug", sError, "Ok");
-                        continue;
-                    }
-                    #endif
-                    //---                    
-					Color[] autotileColors = sprList[sprIdx].texture.GetPixels( Mathf.RoundToInt(srcRect.x), Mathf.RoundToInt(srcRect.y), AutoTileset.TileWidth, AutoTileset.TileHeight );
-					tilesetTexture.SetPixels( Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y), AutoTileset.TileWidth, AutoTileset.TileHeight, autotileColors);
+					Rect srcRect = sprList[sprIdx];
+                    Color[] autotileColors = autoTileset.AtlasTexture.GetPixels(Mathf.RoundToInt(srcRect.x), Mathf.RoundToInt(srcRect.y), autoTileset.TileWidth, autoTileset.TileHeight);
+                    tilesetTexture.SetPixels(Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y), autoTileset.TileWidth, autoTileset.TileHeight, autotileColors);
 				}
 			}
 			tilesetTexture.Apply();
@@ -44,169 +43,216 @@ namespace CreativeSpore.RpgMapEditor
 			return tilesetTexture;
 		}
 
-		public static void FillWIthTilesetThumbnailSprites( List<Sprite> _outList, Texture2D _atlasTexture, AutoTileMap.eTilesetGroupType _tilesetGroupType )
+        /// <summary>
+        /// Fill a list of rects with all rect sources for the thumbnails of the tiles. For normal tiles is the same tile, but autotiles are special.
+        /// </summary>
+        /// <param name="_outList"></param>
+        /// <param name="autoTileset"></param>
+        /// <param name="tilesetConf"></param>
+		public static void FillWithTilesetThumbnailSprites( List<Rect> _outList, AutoTileset autoTileset, SubTilesetConf tilesetConf)
 		{
-			Vector2 pivot = new Vector2(0f,1f);
-			Rect sprRect = new Rect(0, 0, AutoTileset.TileWidth, AutoTileset.TileHeight);
+            //+++ old values for 32x32 tiles, now depend on tile size
+            int _1024 = 32 * autoTileset.TileWidth;
+            int _768 = 24 * autoTileset.TileWidth;
+            int _640 = 20 * autoTileset.TileWidth;
+            int _512 = 16 * autoTileset.TileWidth;
+            int _384 = 12 * autoTileset.TileWidth;
+            int _256 = 8 * autoTileset.TileWidth;
+            //---
+
+            Rect sprRect = new Rect(0, 0, autoTileset.TileWidth, autoTileset.TileHeight);
             //+++fast fix> due a Unity Pro bug, Sprite.Create is very slow for values equal or above 32
             //TODO: check when this is fixed to remove this code
-            sprRect.width = 31.9f;
-            sprRect.height = 31.9f;
+            //sprRect.width = 31.9f;
+            //sprRect.height = 31.9f;
             //---
-			if( _tilesetGroupType == AutoTileMap.eTilesetGroupType.GROUND )
+            int AtlasPosX = (int)tilesetConf.AtlasRec.x;
+            int AtlasPosY = (int)tilesetConf.AtlasRec.y;
+            if (tilesetConf.HasAutotiles)
 			{
 				// animated
-				for( sprRect.y = 384-AutoTileset.TileHeight; sprRect.y >= 0; sprRect.y -= 3*AutoTileset.TileHeight )
+                for (sprRect.y = _384 - autoTileset.TileHeight; sprRect.y >= 0; sprRect.y -= 3 * autoTileset.TileHeight)
 				{
 					int tx;
-					for( tx = 0, sprRect.x = 0; sprRect.x < 512; sprRect.x += 2*AutoTileset.TileWidth, ++tx )
+                    for (tx = 0, sprRect.x = 0; sprRect.x < _512; sprRect.x += 2 * autoTileset.TileWidth, ++tx)
 					{
 						if( tx % 4 == 0 || tx % 4 == 3 )
 						{
-                            Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-							_outList.Add(sprAutoTile);
+                            Rect r = sprRect; r.position += tilesetConf.AtlasRec.position;
+                            _outList.Add(r);
 						}
 					}
 				}
 
 				// ground
-				for( sprRect.y = 768-AutoTileset.TileHeight; sprRect.y >= 384; sprRect.y -= 3*AutoTileset.TileHeight )
+                for (sprRect.y = _768 - autoTileset.TileHeight; sprRect.y >= _384; sprRect.y -= 3 * autoTileset.TileHeight)
 				{
-					for( sprRect.x = 0; sprRect.x < 512; sprRect.x += 2*AutoTileset.TileWidth )
+                    for (sprRect.x = 0; sprRect.x < _512; sprRect.x += 2 * autoTileset.TileWidth)
 					{
-                        Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-						_outList.Add(sprAutoTile);
+                        Rect r = sprRect; r.position += tilesetConf.AtlasRec.position;
+                        _outList.Add(r);
 					}
 				}
 
 				// building
-				for( sprRect.y = 512+3*AutoTileset.TileHeight; sprRect.y >= 512; sprRect.y -= AutoTileset.TileHeight )
+                for (sprRect.y = _512 + 3 * autoTileset.TileHeight; sprRect.y >= _512; sprRect.y -= autoTileset.TileHeight)
 				{
-					for( sprRect.x = 768; sprRect.x < 768+8*AutoTileset.TileWidth; sprRect.x += AutoTileset.TileWidth )
+                    for (sprRect.x = _768; sprRect.x < _768 + 8 * autoTileset.TileWidth; sprRect.x += autoTileset.TileWidth)
 					{
-                        Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-						_outList.Add(sprAutoTile);
+                        Rect r = sprRect; r.position += tilesetConf.AtlasRec.position;
+                        _outList.Add(r);
 					}
 				}
 
 				// walls
-				sprRect.y = (15-1)*AutoTileset.TileHeight;
-				for( sprRect.x = 512; sprRect.x < 1024; sprRect.x += 2*AutoTileset.TileWidth )
+                sprRect.y = (15 - 1) * autoTileset.TileHeight;
+                for (sprRect.x = _512; sprRect.x < _1024; sprRect.x += 2 * autoTileset.TileWidth)
 				{
-                    Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-					_outList.Add(sprAutoTile);
+                    Rect r = sprRect; r.position += tilesetConf.AtlasRec.position;
+                    _outList.Add(r);
 				}
-				sprRect.y = 640 + 2*AutoTileset.TileHeight;
-				for( sprRect.x = 768; sprRect.x < 768+8*AutoTileset.TileWidth; sprRect.x += AutoTileset.TileWidth )
+                sprRect.y = _640 + 2 * autoTileset.TileHeight;
+                for (sprRect.x = _768; sprRect.x < _768 + 8 * autoTileset.TileWidth; sprRect.x += autoTileset.TileWidth)
 				{
-                    Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-					_outList.Add(sprAutoTile);
+                    Rect r = sprRect; r.position += tilesetConf.AtlasRec.position;
+                    _outList.Add(r);
 				}
-				sprRect.y = (10-1)*AutoTileset.TileHeight;
-				for( sprRect.x = 512; sprRect.x < 1024; sprRect.x += 2*AutoTileset.TileWidth )
+                sprRect.y = (10 - 1) * autoTileset.TileHeight;
+                for (sprRect.x = _512; sprRect.x < _1024; sprRect.x += 2 * autoTileset.TileWidth)
 				{
-                    Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-					_outList.Add(sprAutoTile);
+                    Rect r = sprRect; r.position += tilesetConf.AtlasRec.position;
+                    _outList.Add(r);
 				}
-				sprRect.y = 640 + AutoTileset.TileHeight;
-				for( sprRect.x = 768; sprRect.x < 768+8*AutoTileset.TileWidth; sprRect.x += AutoTileset.TileWidth )
+                sprRect.y = _640 + autoTileset.TileHeight;
+                for (sprRect.x = _768; sprRect.x < _768 + 8 * autoTileset.TileWidth; sprRect.x += autoTileset.TileWidth)
 				{
-                    Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-					_outList.Add(sprAutoTile);
+                    Rect r = sprRect; r.position += tilesetConf.AtlasRec.position;
+                    _outList.Add(r);
 				}
-				sprRect.y = (5-1)*AutoTileset.TileHeight;
-				for( sprRect.x = 512; sprRect.x < 1024; sprRect.x += 2*AutoTileset.TileWidth )
+                sprRect.y = (5 - 1) * autoTileset.TileHeight;
+                for (sprRect.x = _512; sprRect.x < _1024; sprRect.x += 2 * autoTileset.TileWidth)
 				{
-                    Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-					_outList.Add(sprAutoTile);
+                    Rect r = sprRect; r.position += tilesetConf.AtlasRec.position;
+                    _outList.Add(r);
 				}
-				sprRect.y = 640;
-				for( sprRect.x = 768; sprRect.x < 768+8*AutoTileset.TileWidth; sprRect.x += AutoTileset.TileWidth )
+				sprRect.y = _640;
+                for (sprRect.x = _768; sprRect.x < _768 + 8 * autoTileset.TileWidth; sprRect.x += autoTileset.TileWidth)
 				{
-                    Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-					_outList.Add(sprAutoTile);
+                    Rect r = sprRect; r.position += tilesetConf.AtlasRec.position;
+                    _outList.Add(r);
 				}
 				//--- walls
 
 				//Normal
-				_FillSpritesFromRect(_outList, _atlasTexture, 512, 512, 256, 512);
+                _FillSpritesFromRect(_outList, autoTileset, _512 + AtlasPosX, _512 + AtlasPosY, _256, _512);
 			}
-			else if( _tilesetGroupType == AutoTileMap.eTilesetGroupType.OBJECTS_B )
-			{
-				_FillSpritesFromRect(_outList, _atlasTexture, 1024, 0, 256, 512);
-				_FillSpritesFromRect(_outList, _atlasTexture, 1280, 0, 256, 512);
-			}
-			else if( _tilesetGroupType == AutoTileMap.eTilesetGroupType.OBJECTS_C )
-			{
-				_FillSpritesFromRect(_outList, _atlasTexture, 1024, 512, 256, 512);
-				_FillSpritesFromRect(_outList, _atlasTexture, 1280, 512, 256, 512);
-			}
-			else if( _tilesetGroupType == AutoTileMap.eTilesetGroupType.OBJECTS_D )
-			{
-				_FillSpritesFromRect(_outList, _atlasTexture, 1536, 0, 256, 512);
-				_FillSpritesFromRect(_outList, _atlasTexture, 1792, 0, 256, 512);
-			}
-			else if( _tilesetGroupType == AutoTileMap.eTilesetGroupType.OBJECTS_E )
-			{
-				_FillSpritesFromRect(_outList, _atlasTexture, 1536, 512, 256, 512);
-				_FillSpritesFromRect(_outList, _atlasTexture, 1792, 512, 256, 512);
-			}
+            else
+            { // split the tileset to create a column of 8 tiles per row
+                _FillSpritesFromRect(_outList, autoTileset, AtlasPosX, AtlasPosY, _256, _512);
+                _FillSpritesFromRect(_outList, autoTileset, AtlasPosX+_256, AtlasPosY, _256, _512);
+            }
 		}
 
-		private static void _FillSpritesFromRect( List<Sprite> _outList, Texture2D _atlasTexture, int x, int y, int width, int height )
+		private static void _FillSpritesFromRect( List<Rect> _outList, AutoTileset autoTileset, int x, int y, int width, int height )
 		{
-			Vector2 pivot = new Vector2(0f,1f);
-			Rect srcRect = new Rect(0, 0, AutoTileset.TileWidth, AutoTileset.TileHeight);
+
+            Rect srcRect = new Rect(0, 0, autoTileset.TileWidth, autoTileset.TileHeight);
             //+++fast fix> due a Unity Pro bug, Sprite.Create is very slow for values equal or above 32
             //TODO: check when this is fixed to remove this code
-            srcRect.width = 31.9f;
-            srcRect.height = 31.9f;
+            //srcRect.width = 31.9f;
+            //srcRect.height = 31.9f;
             //---
-			for( srcRect.y = height - AutoTileset.TileHeight; srcRect.y >= 0; srcRect.y -= AutoTileset.TileHeight )
+            for (srcRect.y = height - autoTileset.TileHeight; srcRect.y >= 0; srcRect.y -= autoTileset.TileHeight)
 			{
-				for( srcRect.x = 0; srcRect.x < width; srcRect.x += AutoTileset.TileWidth )
+                for (srcRect.x = 0; srcRect.x < width; srcRect.x += autoTileset.TileWidth)
 				{
 					Rect sprRect = srcRect;
 					sprRect.x += x;
 					sprRect.y += y;
-                    Sprite sprAutoTile = Sprite.Create(_atlasTexture, sprRect, pivot, AutoTileset.PixelToUnits);
-					_outList.Add(sprAutoTile);
+                    _outList.Add(sprRect);
 				}
 			}
 		}
 
-		public static Texture2D GenerateAtlas( AutoTileset _autoTileset )
+        /// <summary>
+        /// Generate a tileset atlas
+        /// </summary>
+        /// <param name="autoTileset"></param>
+        /// <param name="hSlots"></param>
+        /// <param name="vSlots"></param>
+        /// <returns></returns>
+		public static Texture2D GenerateAtlas( AutoTileset autoTileset, int hSlots, int vSlots )
 		{
-			ImportTexture( _autoTileset.AnimatedTexture );
-			ImportTexture( _autoTileset.GroundTexture );
-			ImportTexture( _autoTileset.BuildingTexture );
-			ImportTexture( _autoTileset.WallTexture );
-			ImportTexture( _autoTileset.NormalTexture ); 
-			ImportTexture( _autoTileset.ObjectsTexture_B ); 
-			ImportTexture( _autoTileset.ObjectsTexture_C ); 
-			ImportTexture( _autoTileset.ObjectsTexture_D ); 
-			ImportTexture( _autoTileset.ObjectsTexture_E ); 
-			
-			Texture2D atlasTexture = new Texture2D(2048, 2048);
-			Color32[] atlasColors = Enumerable.Repeat<Color32>( new Color32(0, 0, 0, 0) , 2048*2048).ToArray();
+            int w = hSlots * autoTileset.TilesetSlotSize;
+            int h = vSlots * autoTileset.TilesetSlotSize;
+			Texture2D atlasTexture = new Texture2D(w, h);
+			Color32[] atlasColors = Enumerable.Repeat<Color32>( new Color32(0, 0, 0, 0) , w*h).ToArray();
 			atlasTexture.SetPixels32(atlasColors);
-			_CopyTilesetInAtlas(atlasTexture, _autoTileset.AnimatedTexture, 0, 0, 512, 384);
-			_CopyTilesetInAtlas(atlasTexture, _autoTileset.GroundTexture, 0, 384, 512, 384);
-			_CopyTilesetInAtlas(atlasTexture, _autoTileset.BuildingTexture, 0, 768, 512, 256);
-			_CopyTilesetInAtlas(atlasTexture, _autoTileset.WallTexture, 512, 0, 512, 480);
-			_CopyTilesetInAtlas(atlasTexture, _autoTileset.NormalTexture, 512, 512, 256, 512);
-			_CopyTilesetInAtlas(atlasTexture, _autoTileset.ObjectsTexture_B, 1024, 0, 512, 512);
-			_CopyTilesetInAtlas(atlasTexture, _autoTileset.ObjectsTexture_C, 1024, 512, 512, 512);
-			_CopyTilesetInAtlas(atlasTexture, _autoTileset.ObjectsTexture_D, 1536, 0, 512, 512);
-			_CopyTilesetInAtlas(atlasTexture, _autoTileset.ObjectsTexture_E, 1536, 512, 512, 512);
-			_CopyBuildingThumbnails(atlasTexture,  _autoTileset.BuildingTexture, 768, 512 );
-			_CopyWallThumbnails(atlasTexture,  _autoTileset.WallTexture, 768, 640 );
 			atlasTexture.Apply();
 
 			return atlasTexture;
 		}
 
+        /// <summary>
+        /// Copy a subtileset source textures in the atlas
+        /// </summary>
+        /// <param name="autoTileset"></param>
+        /// <param name="tilesetConf"></param>
+        public static void CopySubTilesetInAtlas( AutoTileset autoTileset, SubTilesetConf tilesetConf )
+        {
+            //+++ old values for 32x32 tiles, now depend on tile size
+            int _768 = 24 * autoTileset.TileWidth;
+            int _640 = 20 * autoTileset.TileWidth;
+            int _512 = 16 * autoTileset.TileWidth;
+            int _480 = 15 * autoTileset.TileWidth;
+            int _384 = 12 * autoTileset.TileWidth;
+            int _256 = 8 * autoTileset.TileWidth;
+            //---
 
+            for (int i = 0; i < tilesetConf.SourceTexture.Length; ++i )
+            {
+                ImportTexture(tilesetConf.SourceTexture[i]);
+            }
+
+            if (tilesetConf.HasAutotiles)
+            {
+                int xf = (int)tilesetConf.AtlasRec.x;
+                int yf = (int)tilesetConf.AtlasRec.y;
+                _CopyTilesetInAtlas(autoTileset.AtlasTexture, tilesetConf.SourceTexture[0], xf, yf, _512, _384); // animated
+                _CopyTilesetInAtlas(autoTileset.AtlasTexture, tilesetConf.SourceTexture[1], xf, yf+_384, _512, _384); // ground
+                _CopyTilesetInAtlas(autoTileset.AtlasTexture, tilesetConf.SourceTexture[2], xf, yf + _768, _512, _256); // building
+                _CopyTilesetInAtlas(autoTileset.AtlasTexture, tilesetConf.SourceTexture[3], xf+_512, yf, _512, _480); // wall
+                _CopyTilesetInAtlas(autoTileset.AtlasTexture, tilesetConf.SourceTexture[4], xf+_512, yf + _512, _256, _512); // normal
+
+                _CopyBuildingThumbnails(autoTileset, tilesetConf.SourceTexture[2], xf + _768, yf + _512);
+                _CopyWallThumbnails(autoTileset, tilesetConf.SourceTexture[3], xf+_768, yf+_640);
+            }
+            else
+            {
+                _CopyTilesetInAtlas(autoTileset.AtlasTexture, tilesetConf.SourceTexture[0], tilesetConf.AtlasRec); // object
+            }            
+        }
+
+        /// <summary>
+        /// Clear an area of the atlas texture
+        /// </summary>
+        /// <param name="atlasTexture"></param>
+        /// <param name="dstX"></param>
+        /// <param name="dstY"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public static void ClearAtlasArea(Texture2D atlasTexture, int dstX, int dstY, int width, int height)
+        {
+            Color[] atlasColors = Enumerable.Repeat<Color>(new Color(0f, 0f, 0f, 0f), width * height).ToArray();
+            atlasTexture.SetPixels(dstX, dstY, width, height, atlasColors);
+            atlasTexture.Apply();
+        }
+
+        /// <summary>
+        /// Import the texture making sure the texture import settings are properly set
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <returns></returns>
 		public static bool ImportTexture( Texture2D texture )
 		{
 	#if UNITY_EDITOR
@@ -218,6 +264,41 @@ namespace CreativeSpore.RpgMapEditor
 			return false;
 		}
 
+        /// <summary>
+        /// Save a texture asset
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <returns></returns>
+        public static bool SaveTextureAsset( Texture2D texture )
+        {
+#if UNITY_EDITOR
+            if (texture != null)
+            {
+                string filePath = AssetDatabase.GetAssetPath(texture);
+                if (filePath.Length > 0)
+                {
+                    byte[] bytes = texture.EncodeToPNG();
+                    File.WriteAllBytes(filePath, bytes);
+
+                    // Make sure LoadAssetAtPath and ImportTexture is going to work
+                    AssetDatabase.Refresh();
+
+                    UtilsAutoTileMap.ImportTexture(filePath);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+#endif
+            return false;
+        }
+
+        /// <summary>
+        /// Import the texture making sure the texture import settings are properly set
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
 		public static bool ImportTexture( string path )
 		{
 	#if UNITY_EDITOR
@@ -238,7 +319,7 @@ namespace CreativeSpore.RpgMapEditor
 					textureImporter.filterMode = FilterMode.Point;
 					textureImporter.textureFormat = TextureImporterFormat.ARGB32;
                     textureImporter.textureType = TextureImporterType.Advanced;
-					textureImporter.maxTextureSize = 2048;                    
+					textureImporter.maxTextureSize = AutoTileset.k_MaxTextureSize;                    
 					AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate); 
 				}
 				return true;
@@ -247,63 +328,68 @@ namespace CreativeSpore.RpgMapEditor
 			return false;
 		}
 		
-		private static void _CopyBuildingThumbnails( Texture2D _atlasTexture, Texture2D tilesetTex, int dstX, int dstY )
+		private static void _CopyBuildingThumbnails( AutoTileset autoTileset, Texture2D tilesetTex, int dstX, int dstY )
 		{
 			if( tilesetTex != null )
 			{
-				Rect srcRect = new Rect(0, 0, AutoTileset.TilePartWidth, AutoTileset.TilePartWidth);
-				Rect dstRect = new Rect(0, 0, AutoTileset.TileWidth, AutoTileset.TileHeight);
-				for( dstRect.y = dstY, srcRect.y = 0; dstRect.y < (dstY + 4*AutoTileset.TileHeight); dstRect.y += AutoTileset.TileHeight, srcRect.y += 2*AutoTileset.TileHeight )
+                Rect srcRect = new Rect(0, 0, autoTileset.TilePartWidth, autoTileset.TilePartWidth);
+                Rect dstRect = new Rect(0, 0, autoTileset.TileWidth, autoTileset.TileHeight);
+                for (dstRect.y = dstY, srcRect.y = 0; dstRect.y < (dstY + 4 * autoTileset.TileHeight); dstRect.y += autoTileset.TileHeight, srcRect.y += 2 * autoTileset.TileHeight)
 				{
-					for( dstRect.x = dstX, srcRect.x = 0; dstRect.x < dstX + AutoTileset.AutoTilesPerRow*AutoTileset.TileWidth; dstRect.x += AutoTileset.TileWidth, srcRect.x += 2*AutoTileset.TileWidth )
+                    for (dstRect.x = dstX, srcRect.x = 0; dstRect.x < dstX + autoTileset.AutoTilesPerRow * autoTileset.TileWidth; dstRect.x += autoTileset.TileWidth, srcRect.x += 2 * autoTileset.TileWidth)
 					{
 						Color[] thumbnailPartColors;
 						thumbnailPartColors = tilesetTex.GetPixels( Mathf.RoundToInt(srcRect.x), Mathf.RoundToInt(srcRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
-						_atlasTexture.SetPixels( Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
+                        autoTileset.AtlasTexture.SetPixels(Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
+
+                        thumbnailPartColors = tilesetTex.GetPixels(Mathf.RoundToInt(srcRect.x) + 3 * autoTileset.TilePartWidth, Mathf.RoundToInt(srcRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
+                        autoTileset.AtlasTexture.SetPixels(Mathf.RoundToInt(dstRect.x) + autoTileset.TilePartWidth, Mathf.RoundToInt(dstRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
+
+                        thumbnailPartColors = tilesetTex.GetPixels(Mathf.RoundToInt(srcRect.x), Mathf.RoundToInt(srcRect.y) + 3 * autoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
+                        autoTileset.AtlasTexture.SetPixels(Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y) + autoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
+
+                        thumbnailPartColors = tilesetTex.GetPixels(Mathf.RoundToInt(srcRect.x) + 3 * autoTileset.TilePartWidth, Mathf.RoundToInt(srcRect.y) + 3 * autoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
+                        autoTileset.AtlasTexture.SetPixels(Mathf.RoundToInt(dstRect.x) + autoTileset.TilePartWidth, Mathf.RoundToInt(dstRect.y) + autoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
 						
-						thumbnailPartColors = tilesetTex.GetPixels( Mathf.RoundToInt(srcRect.x) + 3*AutoTileset.TilePartWidth, Mathf.RoundToInt(srcRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
-						_atlasTexture.SetPixels( Mathf.RoundToInt(dstRect.x)+AutoTileset.TilePartWidth, Mathf.RoundToInt(dstRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
-						
-						thumbnailPartColors = tilesetTex.GetPixels( Mathf.RoundToInt(srcRect.x), Mathf.RoundToInt(srcRect.y) + 3*AutoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
-						_atlasTexture.SetPixels( Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y)+AutoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
-						
-						thumbnailPartColors = tilesetTex.GetPixels( Mathf.RoundToInt(srcRect.x) + 3*AutoTileset.TilePartWidth, Mathf.RoundToInt(srcRect.y) + 3*AutoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
-						_atlasTexture.SetPixels( Mathf.RoundToInt(dstRect.x)+AutoTileset.TilePartWidth, Mathf.RoundToInt(dstRect.y)+AutoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
+					}
+				}
+			}
+		}
+
+        private static void _CopyWallThumbnails(AutoTileset autoTileset, Texture2D tilesetTex, int dstX, int dstY)
+		{
+			if( tilesetTex != null )
+			{
+                Rect srcRect = new Rect(0, 3 * autoTileset.TileHeight, autoTileset.TilePartWidth, autoTileset.TilePartWidth);
+                Rect dstRect = new Rect(0, 0, autoTileset.TileWidth, autoTileset.TileHeight);
+                for (dstRect.y = dstY, srcRect.y = 0; dstRect.y < (dstY + 3 * autoTileset.TileHeight); dstRect.y += autoTileset.TileHeight, srcRect.y += 5 * autoTileset.TileHeight)
+				{
+                    for (dstRect.x = dstX, srcRect.x = 0; dstRect.x < dstX + autoTileset.AutoTilesPerRow * autoTileset.TileWidth; dstRect.x += autoTileset.TileWidth, srcRect.x += 2 * autoTileset.TileWidth)
+					{
+						Color[] thumbnailPartColors;
+						thumbnailPartColors = tilesetTex.GetPixels( Mathf.RoundToInt(srcRect.x), Mathf.RoundToInt(srcRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
+                        autoTileset.AtlasTexture.SetPixels(Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
+
+                        thumbnailPartColors = tilesetTex.GetPixels(Mathf.RoundToInt(srcRect.x) + 3 * autoTileset.TilePartWidth, Mathf.RoundToInt(srcRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
+                        autoTileset.AtlasTexture.SetPixels(Mathf.RoundToInt(dstRect.x) + autoTileset.TilePartWidth, Mathf.RoundToInt(dstRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
+
+                        thumbnailPartColors = tilesetTex.GetPixels(Mathf.RoundToInt(srcRect.x), Mathf.RoundToInt(srcRect.y) + 3 * autoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
+                        autoTileset.AtlasTexture.SetPixels(Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y) + autoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
+
+                        thumbnailPartColors = tilesetTex.GetPixels(Mathf.RoundToInt(srcRect.x) + 3 * autoTileset.TilePartWidth, Mathf.RoundToInt(srcRect.y) + 3 * autoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
+                        autoTileset.AtlasTexture.SetPixels(Mathf.RoundToInt(dstRect.x) + autoTileset.TilePartWidth, Mathf.RoundToInt(dstRect.y) + autoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
 						
 					}
 				}
 			}
 		}
 		
-		private static void _CopyWallThumbnails( Texture2D _atlasTexture, Texture2D tilesetTex, int dstX, int dstY )
-		{
-			if( tilesetTex != null )
-			{
-				Rect srcRect = new Rect(0, 3*AutoTileset.TileHeight, AutoTileset.TilePartWidth, AutoTileset.TilePartWidth);
-				Rect dstRect = new Rect(0, 0, AutoTileset.TileWidth, AutoTileset.TileHeight);
-				for( dstRect.y = dstY, srcRect.y = 0; dstRect.y < (dstY + 3*AutoTileset.TileHeight); dstRect.y += AutoTileset.TileHeight, srcRect.y += 5*AutoTileset.TileHeight )
-				{
-					for( dstRect.x = dstX, srcRect.x = 0; dstRect.x < dstX + AutoTileset.AutoTilesPerRow*AutoTileset.TileWidth; dstRect.x += AutoTileset.TileWidth, srcRect.x += 2*AutoTileset.TileWidth )
-					{
-						Color[] thumbnailPartColors;
-						thumbnailPartColors = tilesetTex.GetPixels( Mathf.RoundToInt(srcRect.x), Mathf.RoundToInt(srcRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
-						_atlasTexture.SetPixels( Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
-						
-						thumbnailPartColors = tilesetTex.GetPixels( Mathf.RoundToInt(srcRect.x) + 3*AutoTileset.TilePartWidth, Mathf.RoundToInt(srcRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
-						_atlasTexture.SetPixels( Mathf.RoundToInt(dstRect.x)+AutoTileset.TilePartWidth, Mathf.RoundToInt(dstRect.y), Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
-						
-						thumbnailPartColors = tilesetTex.GetPixels( Mathf.RoundToInt(srcRect.x), Mathf.RoundToInt(srcRect.y) + 3*AutoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
-						_atlasTexture.SetPixels( Mathf.RoundToInt(dstRect.x), Mathf.RoundToInt(dstRect.y)+AutoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
-						
-						thumbnailPartColors = tilesetTex.GetPixels( Mathf.RoundToInt(srcRect.x) + 3*AutoTileset.TilePartWidth, Mathf.RoundToInt(srcRect.y) + 3*AutoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height));
-						_atlasTexture.SetPixels( Mathf.RoundToInt(dstRect.x)+AutoTileset.TilePartWidth, Mathf.RoundToInt(dstRect.y)+AutoTileset.TilePartHeight, Mathf.RoundToInt(srcRect.width), Mathf.RoundToInt(srcRect.height), thumbnailPartColors);
-						
-					}
-				}
-			}
-		}
-		
-		private static void _CopyTilesetInAtlas( Texture2D _atlasTexture, Texture2D tilesetTex, int dstX, int dstY, int width, int height )
+        private static void _CopyTilesetInAtlas( Texture2D atlasTexture, Texture2D tilesetTex, Rect rect )
+        {
+            _CopyTilesetInAtlas(atlasTexture, tilesetTex, (int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+        }
+
+		private static void _CopyTilesetInAtlas( Texture2D atlasTexture, Texture2D tilesetTex, int dstX, int dstY, int width, int height )
 		{
 			Color[] atlasColors;
 			if( tilesetTex == null )
@@ -315,7 +401,7 @@ namespace CreativeSpore.RpgMapEditor
 				atlasColors = tilesetTex.GetPixels();
 			}
 			
-			_atlasTexture.SetPixels( dstX, dstY, width, height, atlasColors);
+			atlasTexture.SetPixels( dstX, dstY, width, height, atlasColors);
 		}
 	}
 }

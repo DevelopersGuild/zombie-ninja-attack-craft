@@ -11,30 +11,72 @@ using UnityEditor;
 namespace CreativeSpore.RpgMapEditor
 {
 
+    /// <summary>
+    /// Create and manage the auto tile map
+    /// </summary>
 	[RequireComponent(typeof(AutoTileMapGui))]
 	[RequireComponent(typeof(AutoTileMapEditorBehaviour))]
 	public class AutoTileMap : MonoBehaviour 
 	{
 		public static AutoTileMap Instance{ get; private set; }
 
+        /// <summary>
+        /// Define a tile of the map
+        /// </summary>
 		public class AutoTile
 		{
-			public int Type = -1;	// tile idx dependent of tile type ( the animated tileset has some tiles grouped as one and the idx is different )
-			public int AutoTileIdx; // real tile idx independent of tileset type ( this is used for graphical part with sprites )
-			public int TilesetIdx; // tileset idx owned of this autotile
+            /// <summary>
+            /// Sub-Tileset index of the tileset. A sub-tileset is the slot area of tileset when editing it.
+            /// </summary>
+            public int TilesetIdx;
+            /// <summary>
+            /// Tile index ( unique for each tile of all sub-tilesets )
+            /// </summary>
+			public int Idx = -1;
+            /// <summary>
+            /// This is the mapped idx, used internally to manage animates tiles ( 3 different tiles grouped as one )
+            /// </summary>
+			public int MappedIdx;
+            /// <summary>
+            /// The type of tile
+            /// </summary>
+			public eTileType Type;
+
+            /// <summary>
+            /// The x coordinate in tiles of this tile in the map
+            /// </summary>
 			public int TileX;
+            /// <summary>
+            /// The y coordinate in tiles of this tile in the map
+            /// </summary>
 			public int TileY;
+            /// <summary>
+            /// Layer index of this tile ( see eTileLayer )
+            /// </summary>
 			public int Layer;
+            /// <summary>
+            /// An auto-tile has 4 parts that change according to neighbors. A normal tile only one.
+            /// </summary>
 			public int[] TilePartsIdx;
+            /// <summary>
+            /// The type of each part of the tile
+            /// </summary>
 			public eTilePartType[] TilePartsType;
-			public int TilePartsLength; // added to specify the length of TileParts. Usually 4, but only 1 for OBJECT and NORMAL tiles
+
+            /// <summary>
+            /// Added to specify the length of TileParts. Usually 4, but only 1 for OBJECT and NORMAL tiles
+            /// </summary>
+			public int TilePartsLength;
 
             public bool IsWaterTile()
             {
-                return Type != -1 && TilesetIdx == 0; // TODO: temporary fix: if it's an animated tileset, it's considered as water
+                return Idx != -1 && Type == eTileType.ANIMATED; // TODO: temporary fix: if it's an animated tileset, it's considered as water
             }
 		};
 
+        /// <summary>
+        /// An auto-tile has 4 parts that change according to neighbors. These are the different types for each part.
+        /// </summary>
 		public enum eTilePartType
 		{
 			INT_CORNER,
@@ -44,48 +86,111 @@ namespace CreativeSpore.RpgMapEditor
 			V_SIDE // vertical sides
 		}
 
+        /// <summary>
+        /// Each type of tile layer in the map
+        /// </summary>
 		public enum eTileLayer
 		{
-			GROUND,			// mostly for tiles with no alpha
-			GROUND_OVERLAY, // mostly for tiles with alpha
-			OVERLAY,	// for tiles that should be drawn over everything else
-			_SIZE,
+            /// <summary>
+            /// mostly for tiles with no alpha
+            /// </summary>
+			GROUND,			
+            /// <summary>
+            /// mostly for tiles with alpha
+            /// </summary>
+			GROUND_OVERLAY,
+            /// <summary>
+            /// for tiles that should be drawn over everything else
+            /// </summary>
+			OVERLAY,
+			_SIZE, // TODO: remove this
 		}
 
-		public enum eTilesetType
+        /// <summary>
+        /// Each type of tile of the map
+        /// </summary>
+		public enum eTileType
 		{
+            /// <summary>
+            /// Animated auto-tiles with 3 frames of animation, usually named with _A1 suffix in the texture
+            /// </summary>
 			ANIMATED,
+            /// <summary>
+            /// Ground auto-Tiles, usually named with _A2 suffix in the texture
+            /// </summary>
 			GROUND,
+            /// <summary>
+            /// Building auto-Tiles, usually named with _A3 suffix in the texture
+            /// </summary>
 			BUILDINGS,
+            /// <summary>
+            /// Wall auto-Tiles, usually named with _A4 suffix in the texture
+            /// </summary>
 			WALLS,
+            /// <summary>
+            /// Normal tiles, usually named with _A5 suffix in the texture. Same as Objects tiles, but included as part of an auto-tileset
+            /// </summary>
 			NORMAL,
+            /// <summary>
+            /// Normal tiles, usually named with _B, _C, _D and _E suffix in the texture
+            /// </summary>
 			OBJECTS
 		};
 
+        /// <summary>
+        /// Type map collision according to tile on certain map position
+        /// </summary>
 		public enum eTileCollisionType
 		{
-			EMPTY = -1, // used to indicate the empty tile with no type
-            PASSABLE, //NOTE: there are PASSABLE and EMPTY for collisions. A PASSABLE tile over a BLOC, WALL, or FENCE allow walking over it.
+            /// <summary>
+            /// Used to indicate the empty tile with no type
+            /// </summary>
+			EMPTY = -1,
+            /// <summary>
+            /// A PASSABLE tile over a BLOC, WALL, or FENCE allow walking over it.
+            /// </summary>
+            PASSABLE,
+            /// <summary>
+            /// Not passable
+            /// </summary>
 			BLOCK,
+            /// <summary>
+            /// Partially not passable, depending of autotiling
+            /// </summary>
 			WALL,
+            /// <summary>
+            /// Partially not passable, depending of autotiling
+            /// </summary>
 			FENCE,
+            /// A passable tile
 			OVERLAY,
-			_SIZE
+            _SIZE // TODO: remove this
 		}
 
-		public enum eTilesetGroupType
-		{
-			GROUND,
-			OBJECTS_B,
-			OBJECTS_C,
-			OBJECTS_D,
-			OBJECTS_E
-		}
-
-		public AutoTileset Tileset;
+        [SerializeField]
+        AutoTileset m_autoTileset;
+        /// <summary>
+        /// Tileset used by this map to draw the tiles
+        /// </summary>
+		public AutoTileset Tileset
+        {
+            get { return m_autoTileset; }
+            set
+            {
+                bool isChanged = m_autoTileset != value;
+                m_autoTileset = value;
+                if (isChanged)
+                {
+                    LoadMap();
+                }
+            }
+        }
 
 		[SerializeField]
 		AutoTileMapData m_mapData;
+        /// <summary>
+        /// Tile data for this map
+        /// </summary>
 		public AutoTileMapData MapData
 		{ 
 			get{ return m_mapData; } 
@@ -102,6 +207,9 @@ namespace CreativeSpore.RpgMapEditor
 
 		[SerializeField]
 		AutoTileBrush m_brushGizmo;
+        /// <summary>
+        /// Brush used to paint tiles on this map
+        /// </summary>
 		public AutoTileBrush BrushGizmo
 		{
 			get
@@ -118,16 +226,39 @@ namespace CreativeSpore.RpgMapEditor
 			}	
 		}
 
+        /// <summary>
+        /// Reference to the Sprite Renderer used to draw the minimap in the editor
+        /// </summary>
 		public SpriteRenderer EditorMinimapRender;
 
+        /// <summary>
+        /// Minimap texture for this map
+        /// </summary>
 		public Texture2D MinimapTexture{ get; private set; }
 
+        /// <summary>
+        /// Width of this map in tiles
+        /// </summary>
 		public int MapTileWidth		{ get{ return MapData != null? MapData.Data.TileMapWidth : 0; } }
+        /// <summary>
+        /// Height of this map in tiles
+        /// </summary>
 		public int MapTileHeight 	{ get{ return MapData != null? MapData.Data.TileMapHeight : 0; } }
 
+        /// <summary>
+        /// Main camera used to view this map
+        /// </summary>
 		public Camera ViewCamera;
+
+        /// <summary>
+        /// Component used to edit the map on play
+        /// </summary>
 		public AutoTileMapGui AutoTileMapGui{ get; private set; }
 
+        /// <summary>
+        /// Position of each layer in the 3D world. Can be modified in the editor using the inspector and only Z value should be changed.
+        /// Use GroundLayerZ, GroundOverlayLayerZ & OverlayLayerZ to modify it properly
+        /// </summary>
 		public List<Vector3> TileLayerPosition = new List<Vector3>()
 		{ 
 			new Vector3( 0f, 0f, +1f ),	// GROUND LAYER
@@ -135,6 +266,9 @@ namespace CreativeSpore.RpgMapEditor
 			new Vector3( 0f, 0f, -1f ),// OVERLAY LAYER
 		};
 
+        /// <summary>
+        /// Z position of Ground layer in 3D world
+        /// </summary>
 		public float GroundLayerZ
 		{
 			get{ return TileLayerPosition[ (int)eTileLayer.GROUND ].z;}
@@ -146,6 +280,9 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
+        /// <summary>
+        /// Z position of Ground Overlay layer in 3D world
+        /// </summary>
 		public float GroundOverlayLayerZ
 		{
 			get{ return TileLayerPosition[ (int)eTileLayer.GROUND_OVERLAY ].z;}
@@ -157,6 +294,9 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
+        /// <summary>
+        /// Z position of Overlay layer in 3D world
+        /// </summary>
 		public float OverlayLayerZ
 		{
 			get{ return TileLayerPosition[ (int)eTileLayer.OVERLAY ].z;}
@@ -169,13 +309,25 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
+        /// <summary>
+        /// Speed of animated tiles in frames per second
+        /// </summary>
 		public float AnimatedTileSpeed = 6f;
 
+        /// <summary>
+        /// If true, map collisions will be enabled.
+        /// </summary>
 		public bool IsCollisionEnabled = true;
 
+        /// <summary>
+        /// If map has been initialized
+        /// </summary>
 		public bool IsInitialized{ get{ return m_AutoTileLayers != null; } }
 
 		private bool m_isVisible = true;
+        /// <summary>
+        /// Set map visibility
+        /// </summary>
 		public bool IsVisible
 		{
 			get{ return m_isVisible; }
@@ -185,25 +337,26 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
+        /// <summary>
+        /// If true, changes made to the map in game will be applied after stop playing and going back to the editor.
+        /// If you set this to true while playing and load a different scene with a different map with also this set to true, after going back to the editor,
+        /// the scene map will be modified with second map. So be careful.
+        /// </summary>
 		public bool SaveChangesAfterPlaying = true;
 
+        /// <summary>
+        /// The current frame of a 3 frames tile animation
+        /// </summary>
 		public int TileAnim3Frame{ get{ return (int)m_tileAnim3Frame; } }
+        /// <summary>
+        /// The current frame of a 4 frames tile animation
+        /// </summary>
         public int TileAnim4Frame { get { return (int)m_tileAnim4Frame; } }
-		public bool TileAnimFrameHasChanged{ get; private set; }
 
-		//NOTE: changing this array will break the asset
-		private eTilesetType[] m_tilemapTypes = new eTilesetType[]
-		{
-			eTilesetType.ANIMATED,
-			eTilesetType.GROUND,
-			eTilesetType.BUILDINGS,
-			eTilesetType.WALLS,
-			eTilesetType.NORMAL,
-			eTilesetType.OBJECTS,
-			eTilesetType.OBJECTS,
-			eTilesetType.OBJECTS,
-			eTilesetType.OBJECTS,
-		};
+        /// <summary>
+        /// If a frame in the animation has changed
+        /// </summary>
+		public bool TileAnimFrameHasChanged{ get; private set; }
 
 		private Texture2D m_minimapTilesTexture;
 
@@ -219,7 +372,7 @@ namespace CreativeSpore.RpgMapEditor
 		{
 			if( Instance == null )
 			{
-				DontDestroyOnLoad(gameObject);
+				//DontDestroyOnLoad(gameObject); //TODO: check how to deal this after make demo with transitions. Should be only one AutoTileMap instance but not persistent
 				Instance = this;
 
 				if( CanBeInitialized() )
@@ -265,24 +418,33 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
+        /// <summary>
+        /// Update tile chunks of the map
+        /// </summary>
 		public void UpdateChunks()
 		{
 			m_tileChunkPoolNode.UpdateChunks();
 		}
 
+        /// <summary>
+        /// Load Map according to MapData.
+        /// </summary>
 		public void LoadMap()
 		{
 			//Debug.Log("AutoTileMap:LoadMap");
 
-			if( Tileset == null )
+			if( Tileset == null || Tileset.AtlasTexture == null )
 			{
-				Debug.LogWarning( " AutoTileMap does not have a Tileset yet! " );
+				//Debug.LogWarning( " AutoTileMap does not have a Tileset yet! " );
 				return;
 			}
 
 			if( MapData != null )
 			{
-				if( Application.isEditor )
+				if( Application.isEditor &&
+                    // fix issue when loading a map in game but while isEditor is true by loading a different scene with an AutoTileMap, this was overwriting the this map with previous map data
+                    !Application.isPlaying && !Application.isWebPlayer
+                    )
 				{
 					string xml = PlayerPrefs.GetString("OnPlayXmlMapData", "");
 					PlayerPrefs.SetString("OnPlayXmlMapData", "");
@@ -297,21 +459,25 @@ namespace CreativeSpore.RpgMapEditor
 					}
 				}
 				MapData.Data.LoadToMap( this );
-			}
-			else
-			{
-				Initialize();
+			    m_tileChunkPoolNode.UpdateChunks();
 			}
 
-			m_tileChunkPoolNode.UpdateChunks();
 		}
 		
+        /// <summary>
+        /// Save current map to MapData
+        /// </summary>
+        /// <returns></returns>
 		public bool SaveMap()
 		{
 			//Debug.Log("AutoTileMap:SaveMap");
 			return MapData.Data.SaveData( this );
 		}
 
+        /// <summary>
+        /// Display a load dialog to load a map saved as xml
+        /// </summary>
+        /// <returns></returns>
 		public bool ShowLoadDialog()
 		{
 	#if UNITY_EDITOR
@@ -337,6 +503,9 @@ namespace CreativeSpore.RpgMapEditor
 			return false;
 		}
 
+        /// <summary>
+        /// Display a save dialog to save the current map in xml format
+        /// </summary>
 		public void ShowSaveDialog()
 		{
 	#if UNITY_EDITOR
@@ -353,11 +522,18 @@ namespace CreativeSpore.RpgMapEditor
 	#endif
 		}
 
+        /// <summary>
+        /// If map can be initialized
+        /// </summary>
+        /// <returns></returns>
 		public bool CanBeInitialized()
 		{
-			return Tileset != null && Tileset.TilesetsAtlasTexture != null && MapData != null;
+			return Tileset != null && Tileset.AtlasTexture != null && MapData != null;
 		}
 
+        /// <summary>
+        /// Initialize the map
+        /// </summary>
 		public void Initialize()
 		{
 			//Debug.Log("AutoTileMap:Initialize");
@@ -366,13 +542,12 @@ namespace CreativeSpore.RpgMapEditor
 			{
 				Debug.LogError(" AutoTileMap.Initialize called when MapData was null");
 			}
-			else if( Tileset == null || Tileset.TilesetsAtlasTexture == null )
+			else if( Tileset == null || Tileset.AtlasTexture == null )
 			{
 				Debug.LogError(" AutoTileMap.Initialize called when Tileset or Tileset.TilesetsAtlasTexture was null");
 			}
 			else
 			{
-				//TODO: find a way to serialize List<Sprite> to avoid call GenerateAutoTileData
 				Tileset.GenerateAutoTileData();
 
 				MinimapTexture = new Texture2D(MapTileWidth, MapTileHeight);
@@ -400,7 +575,7 @@ namespace CreativeSpore.RpgMapEditor
 					Rect rMinimap = new Rect(0f, 0f, MinimapTexture.width, MinimapTexture.height);
 					Vector2 pivot = new Vector2(0f, 1f);
 					EditorMinimapRender.sprite = Sprite.Create(MinimapTexture, rMinimap, pivot, AutoTileset.PixelToUnits);
-					EditorMinimapRender.transform.localScale = new Vector3( AutoTileset.TileWidth, AutoTileset.TileHeight );
+                    EditorMinimapRender.transform.localScale = new Vector3(Tileset.TileWidth, Tileset.TileHeight);
 				}
 				
 				m_AutoTileLayers = new List<AutoTile[,]>( (int)eTileLayer._SIZE );
@@ -431,6 +606,9 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
+        /// <summary>
+        /// Clean all tiles of the map
+        /// </summary>
 		public void ClearMap()
 		{
 			if( m_AutoTileLayers != null )
@@ -471,15 +649,26 @@ namespace CreativeSpore.RpgMapEditor
 			m_tileChunkPoolNode.UpdateChunks();
 		}
 
+        /// <summary>
+        /// Check if a tile in the given position has alpha
+        /// </summary>
+        /// <param name="autoTile_x">tile x position of the map</param>
+        /// <param name="autoTile_y">tile y position of the map</param>
+        /// <returns></returns>
 		public bool IsAutoTileHasAlpha( int autoTile_x, int autoTile_y )
 		{
 			if(IsValidAutoTilePos( autoTile_x, autoTile_y ))
 			{
-				return Tileset.IsAutoTileHasAlpha[ autoTile_y * AutoTileset.AutoTilesPerRow + autoTile_x ];
+                return Tileset.IsAutoTileHasAlpha[autoTile_y * Tileset.AutoTilesPerRow + autoTile_x];
 			}
 			return false;
 		}
 
+        /// <summary>
+        /// Check if a tile in the given position has alpha
+        /// </summary>
+        /// <param name="autoTileIdx">Index position of the tile in the map</param>
+        /// <returns></returns>
 		public bool IsAutoTileHasAlpha( int autoTileIdx )
 		{
 			if( (autoTileIdx >= 0) && (autoTileIdx < Tileset.IsAutoTileHasAlpha.Length) )
@@ -489,64 +678,86 @@ namespace CreativeSpore.RpgMapEditor
 			return false;
 		}
 
+        /// <summary>
+        /// Check if the tile position is inside the map
+        /// </summary>
+        /// <param name="autoTile_x">Tile x position of the map</param>
+        /// <param name="autoTile_y">Tile y position of the map</param>
+        /// <returns></returns>
 		public bool IsValidAutoTilePos( int autoTile_x, int autoTile_y )
 		{
 			return !(autoTile_x < 0 || autoTile_x >= m_AutoTileLayers[0].GetLength(0) || autoTile_y < 0 || autoTile_y >= m_AutoTileLayers[0].GetLength(1));
 		}
 
+        private AutoTile m_emptyAutoTile = new AutoTile() { Idx = -1 };
+        
+        /// <summary>
+        /// Return the AutoTile data for a tile in the provided tile position and layer
+        /// </summary>
+        /// <param name="autoTile_x">Tile x position of the map</param>
+        /// <param name="autoTile_y">Tile y position of the map</param>
+        /// <param name="iLayer">Tile layer, see eTileLayer </param>
+        /// <returns></returns>
 		public AutoTile GetAutoTile( int autoTile_x, int autoTile_y, int iLayer )
 		{
 			if(IsValidAutoTilePos( autoTile_x, autoTile_y ))
 			{
-				return (m_AutoTileLayers == null || m_AutoTileLayers[iLayer][autoTile_x, autoTile_y] == null)? new AutoTile(){ Type = -1 } : m_AutoTileLayers[iLayer][autoTile_x, autoTile_y];			
+                AutoTile autoTile = m_AutoTileLayers[iLayer][autoTile_x, autoTile_y];
+                return (m_AutoTileLayers == null || autoTile == null) ? m_emptyAutoTile : autoTile;			
 			}
-			return new AutoTile(){ Type = -1 };
+			return m_emptyAutoTile;
 		}
 
-		// calculate tileset idx of autorile base in the number of tiles of each tileset
-		private int _GetTilesetIdx( AutoTile _autoTile )
+		// calculate tileset idx of autotile base in the number of tiles of each tileset
+		private eTileType _GetAutoTileType( AutoTile autoTile )
 		{
-			if( _autoTile.Type >= 0 )
-			{
-				int iCurTilesetIdx = 0;
-				int tilemapCounter = 0;
-				foreach( eTilesetType tilemapType in m_tilemapTypes )
-				{
-					tilemapCounter += _GetAutoTileNb( tilemapType );
-					if( tilemapCounter > _autoTile.Type )
-					{
-						return iCurTilesetIdx;
-					}
-					++iCurTilesetIdx;
-				}
-			}
-			return -1;
+            SubTilesetConf tilesetConf = Tileset.SubTilesets[autoTile.TilesetIdx];
+			if( tilesetConf.HasAutotiles )
+            {
+                int relTileIdx = autoTile.Idx % AutoTileset.k_TilesPerSubTileset;
+                if( relTileIdx >= 0 && relTileIdx < 16 )
+                {
+                    return eTileType.ANIMATED;
+                }
+                else if( relTileIdx >= 16 && relTileIdx < 48 )
+                {
+                    return eTileType.GROUND;
+                }
+                else if (relTileIdx >= 48 && relTileIdx < 80 )
+                {
+                    return eTileType.BUILDINGS;
+                }
+                else if (relTileIdx >= 80 && relTileIdx < 128)
+                {
+                    return eTileType.WALLS;
+                }
+                else
+                {
+                    return eTileType.NORMAL;
+                }
+            }
+            else
+            {
+                return eTileType.OBJECTS;
+            }
 		}
 
-		private int _GetAutoTileNb( eTilesetType _tilemapType )
-		{
-			int iRet;
-			switch( _tilemapType )
-			{
-			case eTilesetType.ANIMATED: iRet = 16; break;
-			case eTilesetType.GROUND:  iRet = 32; break;
-			case eTilesetType.BUILDINGS:  iRet = 32; break;
-			case eTilesetType.WALLS:  iRet = 48; break;
-			case eTilesetType.NORMAL:  iRet = 128; break;
-			case eTilesetType.OBJECTS:  iRet = 256; break;
-			default: Debug.LogError("Undefined Type "+_tilemapType); iRet = 0; break;
-			}
-			return iRet;
-		}
-
-		public void SetAutoTile( int autoTile_x, int autoTile_y, int tile_type, int iLayer )
+        /// <summary>
+        /// Set a tile in the grid coordinates specified and layer ( 0: ground, 1: overground, 2: overlay )
+        /// </summary>
+        /// <param name="autoTile_x">Tile x position of the map</param>
+        /// <param name="autoTile_y">Tile y position of the map</param>
+        /// <param name="tileIdx">This is the index of the tile. You can see it in the editor while editing the map in the top left corner. Use -1 for an empty tile</param>
+        /// <param name="iLayer"> Layer where to set the tile ( 0: ground, 1: overground, 2: overlay )</param>
+        /// <param name="refreshTile">If tile and neighbors should be refreshed by this method or do it layer</param>
+        public void SetAutoTile(int autoTile_x, int autoTile_y, int tileIdx, int iLayer, bool refreshTile = true)
 		{
 			if( !IsValidAutoTilePos( autoTile_x, autoTile_y ) || iLayer >= m_AutoTileLayers.Count )
 			{
 				return;
 			}
 
-			tile_type = Mathf.Clamp( tile_type, -1, Tileset.ThumbnailSprites.Count-1 );
+			tileIdx = Mathf.Clamp( tileIdx, -1, Tileset.ThumbnailRects.Count-1 );
 
 			AutoTile autoTile = m_AutoTileLayers[iLayer][autoTile_x, autoTile_y];
 			if( autoTile == null)
@@ -556,23 +767,42 @@ namespace CreativeSpore.RpgMapEditor
 				autoTile.TilePartsType = new eTilePartType[4];
 				autoTile.TilePartsIdx = new int[4];
 			}
-			autoTile.Type = tile_type;
-
-			autoTile.AutoTileIdx = tile_type < 0? -1 : Tileset.AutotileIdxMap[tile_type];
+            int tilesetIdx = tileIdx / AutoTileset.k_TilesPerSubTileset;
+			autoTile.Idx = tileIdx;
+            autoTile.TilesetIdx = tilesetIdx;
+            autoTile.MappedIdx = tileIdx < 0 ? -1 : Tileset.AutotileIdxMap[tileIdx % AutoTileset.k_TilesPerSubTileset];
 			autoTile.TileX = autoTile_x;
 			autoTile.TileY = autoTile_y;
 			autoTile.Layer = iLayer;
-			autoTile.TilesetIdx = _GetTilesetIdx( autoTile );
+			autoTile.Type = _GetAutoTileType( autoTile );
 
 			// refresh tile and neighbours
-			for( int xf = -1; xf < 2; ++xf  )
-			{
-				for( int yf = -1; yf < 2; ++yf  )
-				{
-					RefreshTile( autoTile_x+xf, autoTile_y+yf, iLayer );
-				}
-			}
+            if (refreshTile)
+            {
+                for (int xf = -1; xf < 2; ++xf)
+                {
+                    for (int yf = -1; yf < 2; ++yf)
+                    {
+                        RefreshTile(autoTile_x + xf, autoTile_y + yf, iLayer);
+                    }
+                }
+            }
 		}
+
+        /// <summary>
+        /// Refresh all tiles of the map. 
+        /// Used for optimization, when calling SetAutoTile with refreshTile = false, for a big amount of tiles, this can be called later and refresh all at once.
+        /// </summary>
+        public void RefreshAllTiles()
+        {
+            for (int i = 0; i < m_AutoTileLayers.Count; ++i)
+            {
+                AutoTile[,] tileList = m_AutoTileLayers[i];
+                for (int x = 0; x < MapTileWidth; ++x)
+                    for (int y = 0; y < MapTileHeight; ++y)
+                        RefreshTile(tileList[x, y]);
+            }            
+        }
 
 		private int[,] aTileAff = new int[,]
 		{
@@ -610,30 +840,40 @@ namespace CreativeSpore.RpgMapEditor
 			{3, 3},
 		};
 
+        /// <summary>
+        /// Refresh a tile according to neighbors
+        /// </summary>
+        /// <param name="autoTile_x">Tile x position of the map</param>
+        /// <param name="autoTile_y">Tile y position of the map</param>
+        /// <param name="iLayer"> Layer where to set the tile ( 0: ground, 1: overground, 2: overlay )</param>
 		public void RefreshTile( int autoTile_x, int autoTile_y, int iLayer )
 		{
 			AutoTile autoTile = GetAutoTile( autoTile_x, autoTile_y, iLayer );
 			RefreshTile( autoTile );
 		}
 
+        /// <summary>
+        /// Refresh a tile according to neighbors
+        /// </summary>
+        /// <param name="autoTile">Tile to be refreshed</param>
 		public void RefreshTile( AutoTile autoTile )
 		{
+            if (autoTile == null) return;
+
 			m_tileChunkPoolNode.MarkUpdatedTile( autoTile.TileX, autoTile.TileY, autoTile.Layer);
 
-			if( autoTile.Type >= 0 )
+            SubTilesetConf tilesetConf = Tileset.SubTilesets[autoTile.TilesetIdx];
+			if( autoTile.Idx >= 0 )
 			{
-				if( autoTile.Type >= 128 ) // 128 start with NORMAL tileset, treated differently )
+                int relativeTileIdx = autoTile.Idx % AutoTileset.k_TilesPerSubTileset;
+                if (relativeTileIdx >= 128 || !tilesetConf.HasAutotiles) // 128 start with NORMAL tileset, treated differently )
 				{
-					int relativeTileIdx = autoTile.Type - 128; // relative idx to its tileset
-					//check if its an object tileset
-					if( autoTile.Type >= 256 )
-					{
-						relativeTileIdx -= 128;
-						relativeTileIdx %= 256;
-					}
-					//
-					int tx = relativeTileIdx  % AutoTileset.AutoTilesPerRow;
-					int ty = relativeTileIdx / AutoTileset.AutoTilesPerRow;
+                    if( tilesetConf.HasAutotiles )
+                    {
+                        relativeTileIdx -= 128; // relative idx to its normal tileset
+                    }
+                    int tx = relativeTileIdx % Tileset.AutoTilesPerRow;
+                    int ty = relativeTileIdx / Tileset.AutoTilesPerRow;
 
 					//fix tileset OBJECTS, the other part of the tileset in in the right side
 					if( ty >= 16 )
@@ -643,8 +883,8 @@ namespace CreativeSpore.RpgMapEditor
 					}
 					//---
 
-					int tileBaseIdx = Tileset.TilesetSpriteOffset[ autoTile.TilesetIdx ]; // set base tile idx of autoTile tileset
-					int tileIdx = ( autoTile.Type >= 256 )? ty * 2 * AutoTileset.AutoTilesPerRow + tx : ty * AutoTileset.AutoTilesPerRow + tx;
+                    int tileBaseIdx = tilesetConf.TilePartOffset[autoTile.Type == eTileType.OBJECTS? 0 : 4]; // set base tile idx of autoTile tileset ( 4 is the index of Normal tileset in autotilesets )
+                    int tileIdx = (autoTile.Type == eTileType.OBJECTS) ? ty * 2 * Tileset.AutoTilesPerRow + tx : ty * Tileset.AutoTilesPerRow + tx;
 					tileIdx +=  tileBaseIdx;
 
 					autoTile.TilePartsIdx[ 0 ] = tileIdx;
@@ -674,40 +914,40 @@ namespace CreativeSpore.RpgMapEditor
 							eTilePartType tilePartType;
 							if (tile_x % 2 == 0 && tile_y % 2 == 0) //A
 							{
-								tilePartType = _getTileByNeighbours( autoTile_x, autoTile_y, autoTile.Type, 
-								                               GetAutoTile( autoTile_x, autoTile_y-1, iLayer ).Type, //V 
-								                               GetAutoTile( autoTile_x-1, autoTile_y, iLayer ).Type, //H 
-								                               GetAutoTile( autoTile_x-1, autoTile_y-1, iLayer ).Type  //D
+								tilePartType = _getTileByNeighbours( autoTile_x, autoTile_y, autoTile.Idx, 
+								                               GetAutoTile( autoTile_x, autoTile_y-1, iLayer ).Idx, //V 
+								                               GetAutoTile( autoTile_x-1, autoTile_y, iLayer ).Idx, //H 
+								                               GetAutoTile( autoTile_x-1, autoTile_y-1, iLayer ).Idx  //D
 								                               );
 								tilePartX = aTileAff[ (int)tilePartType, 0 ];
 								tilePartY = aTileAff[ (int)tilePartType, 1 ];
 							} 
 							else if (tile_x % 2 != 0 && tile_y % 2 == 0) //B
 							{
-								tilePartType = _getTileByNeighbours( autoTile_x, autoTile_y, autoTile.Type, 
-								                               GetAutoTile( autoTile_x, autoTile_y-1, iLayer ).Type, //V 
-								                               GetAutoTile( autoTile_x+1, autoTile_y, iLayer ).Type, //H 
-								                               GetAutoTile( autoTile_x+1, autoTile_y-1, iLayer ).Type  //D
+								tilePartType = _getTileByNeighbours( autoTile_x, autoTile_y, autoTile.Idx, 
+								                               GetAutoTile( autoTile_x, autoTile_y-1, iLayer ).Idx, //V 
+								                               GetAutoTile( autoTile_x+1, autoTile_y, iLayer ).Idx, //H 
+								                               GetAutoTile( autoTile_x+1, autoTile_y-1, iLayer ).Idx  //D
 								                               );
 								tilePartX = aTileBff[ (int)tilePartType, 0 ];
 								tilePartY = aTileBff[ (int)tilePartType, 1 ];
 							}
 							else if (tile_x % 2 == 0 && tile_y % 2 != 0) //C
 							{
-								tilePartType = _getTileByNeighbours( autoTile_x, autoTile_y, autoTile.Type, 
-								                               GetAutoTile( autoTile_x, autoTile_y+1, iLayer ).Type, //V 
-								                               GetAutoTile( autoTile_x-1, autoTile_y, iLayer ).Type, //H 
-								                               GetAutoTile( autoTile_x-1, autoTile_y+1, iLayer ).Type  //D
+								tilePartType = _getTileByNeighbours( autoTile_x, autoTile_y, autoTile.Idx, 
+								                               GetAutoTile( autoTile_x, autoTile_y+1, iLayer ).Idx, //V 
+								                               GetAutoTile( autoTile_x-1, autoTile_y, iLayer ).Idx, //H 
+								                               GetAutoTile( autoTile_x-1, autoTile_y+1, iLayer ).Idx  //D
 								                               );
 								tilePartX = aTileCff[ (int)tilePartType, 0 ];
 								tilePartY = aTileCff[ (int)tilePartType, 1 ];
 							}
 							else //if (tile_x % 2 != 0 && tile_y % 2 != 0) //D
 							{
-								tilePartType = _getTileByNeighbours( autoTile_x, autoTile_y, autoTile.Type, 
-								                               GetAutoTile( autoTile_x, autoTile_y+1, iLayer ).Type, //V 
-								                               GetAutoTile( autoTile_x+1, autoTile_y, iLayer ).Type, //H 
-								                               GetAutoTile( autoTile_x+1, autoTile_y+1, iLayer ).Type  //D
+								tilePartType = _getTileByNeighbours( autoTile_x, autoTile_y, autoTile.Idx, 
+								                               GetAutoTile( autoTile_x, autoTile_y+1, iLayer ).Idx, //V 
+								                               GetAutoTile( autoTile_x+1, autoTile_y, iLayer ).Idx, //H 
+								                               GetAutoTile( autoTile_x+1, autoTile_y+1, iLayer ).Idx  //D
 								                               );
 								tilePartX = aTileDff[ (int)tilePartType, 0 ];
 								tilePartY = aTileDff[ (int)tilePartType, 1 ];
@@ -716,27 +956,27 @@ namespace CreativeSpore.RpgMapEditor
 							// set the kind of tile, for collision use
 							autoTile.TilePartsType[ tilePartIdx ] = tilePartType;
 
-							int tileBaseIdx = Tileset.TilesetSpriteOffset[ autoTile.TilesetIdx ]; // set base tile idx of autoTile tileset
+							int tileBaseIdx = tilesetConf.TilePartOffset[ (int)autoTile.Type ]; // set base tile idx of autoTile tileset
 							//NOTE: All tileset have 32 autotiles except the Wall tileset with 48 tiles ( so far it's working because wall tileset is the last one )
-							int relativeTileIdx = autoTile.AutoTileIdx - (autoTile.TilesetIdx * 32); // relative to owner tileset ( All tileset have 32 autotiles )
-							int tx = relativeTileIdx  % AutoTileset.AutoTilesPerRow;
-							int ty = relativeTileIdx / AutoTileset.AutoTilesPerRow;
+							relativeTileIdx = autoTile.MappedIdx - ((int)autoTile.Type * 32); // relative to owner tileset ( All tileset have 32 autotiles )
+                            int tx = relativeTileIdx % Tileset.AutoTilesPerRow;
+                            int ty = relativeTileIdx / Tileset.AutoTilesPerRow;
 							int tilePartSpriteIdx;
-							if( m_tilemapTypes[autoTile.TilesetIdx] == eTilesetType.BUILDINGS )
+							if( autoTile.Type == eTileType.BUILDINGS )
 							{
 								tilePartY = Mathf.Max( 0, tilePartY - 2);
-								tilePartSpriteIdx = tileBaseIdx + ty * (AutoTileset.AutoTilesPerRow * 4) * 4 + tx * 4 + tilePartY * (AutoTileset.AutoTilesPerRow * 4) + tilePartX;
+                                tilePartSpriteIdx = tileBaseIdx + ty * (Tileset.AutoTilesPerRow * 4) * 4 + tx * 4 + tilePartY * (Tileset.AutoTilesPerRow * 4) + tilePartX;
 							}
 							//NOTE: It's not working with stairs shapes
 							// XXXXXX
 							// IIIXXX
 							// IIIXXX
 							// IIIIII
-							else if( m_tilemapTypes[autoTile.TilesetIdx] == eTilesetType.WALLS )
+							else if( autoTile.Type == eTileType.WALLS )
 							{
 								if( ty % 2 == 0 )
 								{
-									tilePartSpriteIdx = tileBaseIdx + (ty/2) * (AutoTileset.AutoTilesPerRow * 4) * 10 + tx * 4 + tilePartY * (AutoTileset.AutoTilesPerRow * 4) + tilePartX;
+									tilePartSpriteIdx = tileBaseIdx + (ty/2) * (Tileset.AutoTilesPerRow * 4) * 10 + tx * 4 + tilePartY * (Tileset.AutoTilesPerRow * 4) + tilePartX;
 								}
 								else
 								{
@@ -749,12 +989,12 @@ namespace CreativeSpore.RpgMapEditor
 										else if( tilePartX == 2 && tilePartY == -1 ) {tilePartX = 2; tilePartY = 3;}
 										else if( tilePartX == 3 && tilePartY == -1 ) {tilePartX = 1; tilePartY = 3;}
 									}
-									tilePartSpriteIdx = tileBaseIdx + (AutoTileset.AutoTilesPerRow * 4) * ((ty/2) * 10 + 6) + tx * 4 + tilePartY * (AutoTileset.AutoTilesPerRow * 4) + tilePartX;
+									tilePartSpriteIdx = tileBaseIdx + (Tileset.AutoTilesPerRow * 4) * ((ty/2) * 10 + 6) + tx * 4 + tilePartY * (Tileset.AutoTilesPerRow * 4) + tilePartX;
 								}
 							}
 							else
 							{
-								tilePartSpriteIdx = tileBaseIdx + ty * (AutoTileset.AutoTilesPerRow * 4) * 6 + tx * 4 + tilePartY * (AutoTileset.AutoTilesPerRow * 4) + tilePartX;
+								tilePartSpriteIdx = tileBaseIdx + ty * (Tileset.AutoTilesPerRow * 4) * 6 + tx * 4 + tilePartY * (Tileset.AutoTilesPerRow * 4) + tilePartX;
 							}
 
 							autoTile.TilePartsIdx[ tilePartIdx ] = tilePartSpriteIdx;
@@ -767,6 +1007,11 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
+        /// <summary>
+        /// Get the map collision at world position
+        /// </summary>
+        /// <param name="vPos">World position</param>
+        /// <returns></returns>
 		public eTileCollisionType GetAutotileCollisionAtPosition( Vector3 vPos )
 		{
 			vPos -= transform.position;
@@ -777,9 +1022,9 @@ namespace CreativeSpore.RpgMapEditor
 			vPos *= AutoTileset.PixelToUnits;
 			if( vPos.x >= 0 && vPos.y >= 0 )
 			{
-				int tile_x = (int)vPos.x / AutoTileset.TileWidth;
-				int tile_y = (int)vPos.y / AutoTileset.TileWidth;
-				Vector2 vTileOffset = new Vector2( (int)vPos.x % AutoTileset.TileWidth, (int)vPos.y % AutoTileset.TileHeight );
+                int tile_x = (int)vPos.x / Tileset.TileWidth;
+                int tile_y = (int)vPos.y / Tileset.TileWidth;
+                Vector2 vTileOffset = new Vector2((int)vPos.x % Tileset.TileWidth, (int)vPos.y % Tileset.TileHeight);
 				for( int iLayer = (int)eTileLayer._SIZE - 1; iLayer >= 0; --iLayer )
 				{
 					eTileCollisionType tileCollType = GetAutotileCollision( tile_x, tile_y, iLayer, vTileOffset );
@@ -792,16 +1037,24 @@ namespace CreativeSpore.RpgMapEditor
 			return eTileCollisionType.PASSABLE;
 		}
 
+        /// <summary>
+        /// Get map collision over a tile and an offset position relative to the tile
+        /// </summary>
+        /// <param name="tile_x">X tile coordinate of the map</param>
+        /// <param name="tile_y">Y tile coordinate of the map</param>
+        /// <param name="layer">Layer of the map (see eLayerType)</param>
+        /// <param name="vTileOffset"></param>
+        /// <returns></returns>
 		public eTileCollisionType GetAutotileCollision( int tile_x, int tile_y, int layer, Vector2 vTileOffset )
 		{
 			if( IsCollisionEnabled )
 			{
 				AutoTile autoTile = GetAutoTile( tile_x, tile_y, layer );
-				if( autoTile != null && autoTile.Type >= 0 && autoTile.TilePartsIdx != null )
+				if( autoTile != null && autoTile.Idx >= 0 && autoTile.TilePartsIdx != null )
 				{
-					Vector2 vTilePartOffset = new Vector2( vTileOffset.x % AutoTileset.TilePartWidth, vTileOffset.y % AutoTileset.TilePartHeight );
-					int tilePartIdx = autoTile.TilePartsLength == 4? 2*((int)vTileOffset.y / AutoTileset.TilePartHeight) + ((int)vTileOffset.x / AutoTileset.TilePartWidth) : 0;
-					eTileCollisionType tileCollType = _GetTilePartCollision( Tileset.AutotileCollType[ autoTile.Type ], autoTile.TilePartsType[tilePartIdx], tilePartIdx, vTilePartOffset );
+                    Vector2 vTilePartOffset = new Vector2(vTileOffset.x % Tileset.TilePartWidth, vTileOffset.y % Tileset.TilePartHeight);
+                    int tilePartIdx = autoTile.TilePartsLength == 4 ? 2 * ((int)vTileOffset.y / Tileset.TilePartHeight) + ((int)vTileOffset.x / Tileset.TilePartWidth) : 0;
+					eTileCollisionType tileCollType = _GetTilePartCollision( Tileset.AutotileCollType[ autoTile.Idx ], autoTile.TilePartsType[tilePartIdx], tilePartIdx, vTilePartOffset );
 					return tileCollType;
 				}
 			}
@@ -812,8 +1065,8 @@ namespace CreativeSpore.RpgMapEditor
 		// This is for special tiles like Fence and Wall where not all of tile part should return collisions
 		eTileCollisionType _GetTilePartCollision( eTileCollisionType collType, eTilePartType tilePartType, int tilePartIdx, Vector2 vTilePartOffset )
 		{
-			int tilePartHalfW = AutoTileset.TilePartWidth/2;
-			int tilePartHalfH = AutoTileset.TilePartHeight/2;
+            int tilePartHalfW = Tileset.TilePartWidth / 2;
+            int tilePartHalfH = Tileset.TilePartHeight / 2;
 			if( collType == eTileCollisionType.FENCE )
 			{
 				if( tilePartType == eTilePartType.EXT_CORNER || tilePartType == eTilePartType.V_SIDE )
@@ -865,9 +1118,9 @@ namespace CreativeSpore.RpgMapEditor
 					Vector2 vRelToIdx0 = vTilePartOffset; // to check only the case (tilePartIdx == 0) vTilePartOffset coords are mirrowed to put position over tileA with idx 0
 					vRelToIdx0.x = (int)vRelToIdx0.x; // avoid precission errors when mirrowing, as 0.2 is 0, but -0.2 is 0 as well and should be -1
 					vRelToIdx0.y = (int)vRelToIdx0.y;
-					if( tilePartIdx == 1 ) vRelToIdx0.x = -vRelToIdx0.x + AutoTileset.TilePartWidth - 1;
-					else if( tilePartIdx == 2 ) vRelToIdx0.y = -vRelToIdx0.y + AutoTileset.TilePartHeight - 1;
-					else if( tilePartIdx == 3 ) vRelToIdx0 = -vRelToIdx0 + new Vector2( AutoTileset.TilePartWidth - 1, AutoTileset.TilePartHeight - 1 );
+                    if (tilePartIdx == 1) vRelToIdx0.x = -vRelToIdx0.x + Tileset.TilePartWidth - 1;
+                    else if (tilePartIdx == 2) vRelToIdx0.y = -vRelToIdx0.y + Tileset.TilePartHeight - 1;
+                    else if (tilePartIdx == 3) vRelToIdx0 = -vRelToIdx0 + new Vector2(Tileset.TilePartWidth - 1, Tileset.TilePartHeight - 1);
 
 					if( tilePartType == eTilePartType.INT_CORNER )
 					{
@@ -954,14 +1207,14 @@ namespace CreativeSpore.RpgMapEditor
 		{
 			Color[] aColors = Enumerable.Repeat<Color>( new Color(0f, 0f, 0f, 0f) , m_minimapTilesTexture.GetPixels().Length).ToArray();
 
-			Rect srcRect = new Rect( 0, 0, AutoTileset.TileWidth, AutoTileset.TileHeight );
+            Rect srcRect = new Rect(0, 0, Tileset.TileWidth, Tileset.TileHeight);
 			int idx = 0;
-			foreach( eTilesetGroupType groupType in Enum.GetValues(typeof(eTilesetGroupType )))
+			foreach( SubTilesetConf tilesetConf in Tileset.SubTilesets)
 			{
-				Texture2D thumbTex = UtilsAutoTileMap.GenerateTilesetTexture( Tileset.TilesetsAtlasTexture, groupType);
-				for( srcRect.y = thumbTex.height - AutoTileset.TileHeight; srcRect.y >= 0; srcRect.y -= AutoTileset.TileHeight )
+				Texture2D thumbTex = UtilsAutoTileMap.GenerateTilesetTexture( Tileset, tilesetConf);
+                for (srcRect.y = thumbTex.height - Tileset.TileHeight; srcRect.y >= 0; srcRect.y -= Tileset.TileHeight)
 				{
-					for( srcRect.x = 0; srcRect.x < thumbTex.width; srcRect.x += AutoTileset.TileWidth, ++idx )
+                    for (srcRect.x = 0; srcRect.x < thumbTex.width; srcRect.x += Tileset.TileWidth, ++idx)
 					{
 						// improved tile color by using the center square as some autotiles are surrounded by ground pixels like water tiles
 						Rect rRect = new Rect( srcRect.x + srcRect.width/4, srcRect.y + srcRect.height/4, srcRect.width/2, srcRect.height/2 );
@@ -974,13 +1227,23 @@ namespace CreativeSpore.RpgMapEditor
 			m_minimapTilesTexture.Apply();
 		}
 
+        /// <summary>
+        /// Refresh full minimp texture
+        /// </summary>
 		public void RefreshMinimapTexture( )
 		{
 			RefreshMinimapTexture( 0, 0, MapTileWidth, MapTileHeight );
 		}
 
+        /// <summary>
+        /// Refresh minimap texture partially
+        /// </summary>
+        /// <param name="tile_x">X tile coordinate of the map</param>
+        /// <param name="tile_y">Y tile coordinate of the map</param>
+        /// <param name="width">Width in tiles</param>
+        /// <param name="height">Height in tiles</param>
 		public void RefreshMinimapTexture( int tile_x, int tile_y, int width, int height )
-		{
+        {
 			tile_x = Mathf.Clamp( tile_x, 0, MinimapTexture.width - 1 );
 			tile_y = Mathf.Clamp( tile_y, 0, MinimapTexture.height - 1 );
 			width = Mathf.Min( width, MinimapTexture.width - tile_x );
@@ -998,7 +1261,7 @@ namespace CreativeSpore.RpgMapEditor
 						int tx = tile_x + xf;
 						int ty = tile_y + yf;
 
-						int type = aAutoTiles[ tx, ty] != null? aAutoTiles[tx, ty].Type : -1;
+						int type = aAutoTiles[ tx, ty] != null? aAutoTiles[tx, ty].Idx : -1;
 						if( type >= 0 )
 						{
 							int idx = (height-1-yf)*width + xf;

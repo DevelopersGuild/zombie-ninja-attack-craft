@@ -8,13 +8,16 @@ using System.Text;
 
 namespace CreativeSpore.RpgMapEditor
 {
-	[System.Serializable, XmlRoot("AutoTileMap")]
+    /// <summary>
+    /// Map data containing all tiles and the size of the map
+    /// </summary>
+	[System.Serializable, XmlRoot("AutoTileMap")]    
 	public class AutoTileMapSerializeData 
 	{
 		[System.Serializable]
 		public class MetadataChunk
 		{
-			public string version = "1.0.0"; //TODO: change this after each update!
+			public string version = "1.2.2"; //TODO: change this after each update!
 			public bool compressedTileData = true;
 		}
 
@@ -27,7 +30,6 @@ namespace CreativeSpore.RpgMapEditor
 		public MetadataChunk Metadata = new MetadataChunk(); 
 		public int TileMapWidth;
 		public int TileMapHeight;
-		public AutoTileMap.eTileCollisionType[] AutotileCollType;
 		public List<TileLayer> TileData = new List<TileLayer>((int)AutoTileMap.eTileLayer._SIZE);
 
 	 	public void CopyData (AutoTileMapSerializeData mapData)
@@ -35,10 +37,14 @@ namespace CreativeSpore.RpgMapEditor
 			Metadata = mapData.Metadata;
 			TileMapWidth = mapData.TileMapWidth;
 			TileMapHeight = mapData.TileMapHeight;
-			AutotileCollType = mapData.AutotileCollType;
 			TileData = mapData.TileData;
 		}
 
+        /// <summary>
+        /// Save the map configuration
+        /// </summary>
+        /// <param name="_autoTileMap"></param>
+        /// <returns></returns>
 		public bool SaveData( AutoTileMap _autoTileMap )
 		{
             // avoid clear map data when auto tile map is not initialized
@@ -48,7 +54,6 @@ namespace CreativeSpore.RpgMapEditor
 				return false;
 			}
 
-			AutotileCollType = _autoTileMap.Tileset.AutotileCollType;
 			TileMapWidth = _autoTileMap.MapTileWidth;
 			TileMapHeight = _autoTileMap.MapTileHeight;
 			TileData.Clear();
@@ -61,7 +66,7 @@ namespace CreativeSpore.RpgMapEditor
 				{
 					for( int tile_x = 0; tile_x < TileMapWidth; ++tile_x )
 					{
-						int iType = _autoTileMap.GetAutoTile( tile_x, tile_y, iLayer ).Type;
+						int iType = _autoTileMap.GetAutoTile( tile_x, tile_y, iLayer ).Idx;
 
 						if( iTileRepetition == 0 )
 						{
@@ -99,11 +104,19 @@ namespace CreativeSpore.RpgMapEditor
 			return true;
 		}
 
+        /// <summary>
+        /// Get this object serialized as an xml string
+        /// </summary>
+        /// <returns></returns>
 		public string GetXmlString()
 		{
 			return UtilsSerialize.Serialize<AutoTileMapSerializeData>(this);
 		}
 
+        /// <summary>
+        /// Save this object serialized in an xml file
+        /// </summary>
+        /// <param name="_filePath"></param>
 		public void SaveToFile(string _filePath)
 		{
 			var serializer = new XmlSerializer(typeof(AutoTileMapSerializeData));
@@ -112,6 +125,11 @@ namespace CreativeSpore.RpgMapEditor
 			stream.Close();
 		}
 
+        /// <summary>
+        /// Create map serialized data from xml file
+        /// </summary>
+        /// <param name="_filePath"></param>
+        /// <returns></returns>
 		public static AutoTileMapSerializeData LoadFromFile(string _filePath)
 		{
 			var serializer = new XmlSerializer(typeof(AutoTileMapSerializeData));
@@ -121,22 +139,23 @@ namespace CreativeSpore.RpgMapEditor
 			return obj;
 		}
 
+        /// <summary>
+        /// Create map serialized data from xml string
+        /// </summary>
+        /// <param name="_xml"></param>
+        /// <returns></returns>
 		public static AutoTileMapSerializeData LoadFromXmlString(string _xml)
 		{
 			return UtilsSerialize.Deserialize<AutoTileMapSerializeData>(_xml);
 		}
 
+        /// <summary>
+        /// Load map serialized data into a map
+        /// </summary>
+        /// <param name="_autoTileMap"></param>
 		public void LoadToMap( AutoTileMap _autoTileMap )
 		{
 			_autoTileMap.Initialize();
-
-			//Tile collisions
-			if( AutotileCollType != null && AutotileCollType.Length > 0 )
-			{
-				for( int i = 0; (i < AutotileCollType.Length)&&(i < _autoTileMap.Tileset.AutotileCollType.Length); ++i )
-				_autoTileMap.Tileset.AutotileCollType[i] = AutotileCollType[i];
-			}
-
 			_autoTileMap.ClearMap();
 			for( int iLayer = 0; iLayer < TileData.Count; ++iLayer )
 			{
@@ -157,13 +176,14 @@ namespace CreativeSpore.RpgMapEditor
 							int tile_y = iTileIdx / TileMapWidth;
 							if( iType >= 0 )
 							{
-								_autoTileMap.SetAutoTile( tile_x, tile_y, iType, iLayer);
+								_autoTileMap.SetAutoTile( tile_x, tile_y, iType, iLayer, false);
 							}
 						}
 						iTileRepetition = 1;
 					}
 				}
 			}
+            _autoTileMap.RefreshAllTiles();
 			_autoTileMap.RefreshMinimapTexture();
 		}
 	}

@@ -120,7 +120,7 @@ namespace CreativeSpore
                         int dir = VehicleType == eVehicleType.Boat ? (int)m_playerCtrl.AnimCtrl.CurrentDir : (int)CharAnimationController.eDir.DOWN;
                         Vector3 vDir = VehicleType == eVehicleType.Boat ? m_playerCtrl.AnimCtrl.CurrentDirVect : new Vector3(0, -0.5f);
                         float fMult = _landingMult[dir];
-                        Vector3 vLandingPos = transform.position + fMult * vDir * AutoTileset.TileWorldWidth;
+                        Vector3 vLandingPos = transform.position + fMult * vDir * AutoTileMap.Instance.Tileset.TileWorldWidth;
                         vLandingPos.z = m_playerCtrl.transform.position.z;
                         bool isColliding = m_playerCtrl.PhyCtrl.IsColliding(vLandingPos);
                         RpgMapHelper.DebugDrawRect(vLandingPos, m_playerCtrl.PhyCtrl.CollRect, isColliding ? Color.red : Color.blue, 0.5f);
@@ -157,10 +157,10 @@ namespace CreativeSpore
             {
                 Vector3 vCheckPos = m_animCtrl.TargetSpriteRenderer.transform.position;
                 //Debug.DrawRay( vCheckPos, Vector3.right, Color.red );
-                int bottomTile = RpgMapHelper.GetAutoTileByPosition(vCheckPos, 2).Type;
-                vCheckPos.y += AutoTileset.TileWorldHeight;
+                int bottomTile = RpgMapHelper.GetAutoTileByPosition(vCheckPos, 2).Idx;
+                vCheckPos.y += AutoTileMap.Instance.Tileset.TileWorldHeight;
                 //Debug.DrawRay(vCheckPos, Vector3.right, Color.green);
-                int topTile = RpgMapHelper.GetAutoTileByPosition(vCheckPos, 2).Type;
+                int topTile = RpgMapHelper.GetAutoTileByPosition(vCheckPos, 2).Idx;
                 if (
                     (bottomTile < 0 && topTile >= 0 && m_altitude > 0.30f) // bottom tile is not overlay and top tile is overlay
                     || (m_altitude > 0.02f && bottomTile < 0) // taking off set Z over overlay layer only after bottom tile is not overlay

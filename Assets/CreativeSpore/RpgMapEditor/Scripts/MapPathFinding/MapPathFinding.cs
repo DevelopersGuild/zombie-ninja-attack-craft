@@ -46,8 +46,8 @@ namespace CreativeSpore.RpgMapEditor
             {
                 AutoTileMap.AutoTile autoTile0 = AutoTileMap.Instance.GetAutoTile(TileX, TileY, 0);
                 AutoTileMap.AutoTile autoTile1 = AutoTileMap.Instance.GetAutoTile(TileX, TileY, 1);
-                AutoTileMap.eTileCollisionType collType0 = autoTile0.Type >= 0 ? AutoTileMap.Instance.Tileset.AutotileCollType[autoTile0.Type] : AutoTileMap.eTileCollisionType.EMPTY;
-                AutoTileMap.eTileCollisionType collType1 = autoTile1.Type >= 0 ? AutoTileMap.Instance.Tileset.AutotileCollType[autoTile1.Type] : AutoTileMap.eTileCollisionType.EMPTY;
+                AutoTileMap.eTileCollisionType collType0 = autoTile0.Idx >= 0 ? AutoTileMap.Instance.Tileset.AutotileCollType[autoTile0.Idx] : AutoTileMap.eTileCollisionType.EMPTY;
+                AutoTileMap.eTileCollisionType collType1 = autoTile1.Idx >= 0 ? AutoTileMap.Instance.Tileset.AutotileCollType[autoTile1.Idx] : AutoTileMap.eTileCollisionType.EMPTY;
 
                 // only layer 0 and 1 ( GROUND and OVERLAY_GROUND have collisions )
                 bool isPassable0 =  (collType0 == AutoTileMap.eTileCollisionType.PASSABLE || collType0 == AutoTileMap.eTileCollisionType.WALL || collType0 == AutoTileMap.eTileCollisionType.OVERLAY);
@@ -98,18 +98,18 @@ namespace CreativeSpore.RpgMapEditor
                 AutoTileMap.AutoTile autoTileNeigh = AutoTileMap.Instance.GetAutoTile(neighNode.TileX, neighNode.TileY, iLayer);
                 if (iLayer == 1)
                 {
-                    isPassableAutoTile1 = (autoTile.Type >= 0 && AutoTileMap.Instance.Tileset.AutotileCollType[autoTile.Type] == AutoTileMap.eTileCollisionType.PASSABLE);
-                    isPassableAutoTileNeigh1 = (autoTileNeigh.Type >= 0 && AutoTileMap.Instance.Tileset.AutotileCollType[autoTileNeigh.Type] == AutoTileMap.eTileCollisionType.PASSABLE);
+                    isPassableAutoTile1 = (autoTile.Idx >= 0 && AutoTileMap.Instance.Tileset.AutotileCollType[autoTile.Idx] == AutoTileMap.eTileCollisionType.PASSABLE);
+                    isPassableAutoTileNeigh1 = (autoTileNeigh.Idx >= 0 && AutoTileMap.Instance.Tileset.AutotileCollType[autoTileNeigh.Idx] == AutoTileMap.eTileCollisionType.PASSABLE);
                 }
 
-                if (autoTile.Type == autoTileNeigh.Type) // you can walk over two wall tiles if they have the same type
+                if (autoTile.Idx == autoTileNeigh.Idx) // you can walk over two wall tiles if they have the same type
                 {
                     continue;
                 }
                 else
                 {
-                    bool isWall = (autoTile.Type >= 0 && AutoTileMap.Instance.Tileset.AutotileCollType[autoTile.Type] == AutoTileMap.eTileCollisionType.WALL);
-                    bool isWallNeigh = (autoTileNeigh.Type >= 0 && AutoTileMap.Instance.Tileset.AutotileCollType[autoTileNeigh.Type] == AutoTileMap.eTileCollisionType.WALL);
+                    bool isWall = (autoTile.Idx >= 0 && AutoTileMap.Instance.Tileset.AutotileCollType[autoTile.Idx] == AutoTileMap.eTileCollisionType.WALL);
+                    bool isWallNeigh = (autoTileNeigh.Idx >= 0 && AutoTileMap.Instance.Tileset.AutotileCollType[autoTileNeigh.Idx] == AutoTileMap.eTileCollisionType.WALL);
                     if (iLayer == 0)
                     { // even if it's a wall, a NONE tile over it make it walkable
                         isWall &= !isPassableAutoTile1;
