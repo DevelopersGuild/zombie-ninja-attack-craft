@@ -1,65 +1,182 @@
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CreativeSpore.RpgMapEditor
 {
+    /// <summary>
+    /// Define a subtileset inside the AutoTileset. Each subtileset is named by a letter.
+    /// </summary>
+    [System.Serializable]
+    public class SubTilesetConf
+    {
+        /// <summary>
+        /// Rectangle in atlas texture of this subtileset
+        /// </summary>
+        public Rect AtlasRec;
+        /// <summary>
+        /// If this is an special tileset with animated tiles, wall, building, etc
+        /// </summary>
+        public bool HasAutotiles;
+        /// <summary>
+        /// A letter to name the subtileset
+        /// </summary>
+        public string Name; 
+        /// <summary>
+        /// A reference to the textures used to build the subtileset. Only autotileset have 5 textures, normal tilesets have 1.
+        /// </summary>
+        public Texture2D[] SourceTexture = new Texture2D[5];
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<int> TilePartOffset; // offset of AutoTileRects. In case of autotiles it will be an offset per each type of tile: animated, building, etc. For object tileset, it will be one offset
+    }
+
+    /// <summary>
+    /// Manage an slot in the Autotileset containing one autotileset or 4 normal tilesets.
+    /// </summary>
+    [System.Serializable]
+    public class AtlasSlot
+    {
+        public List<SubTilesetConf> SubTilesets = new List<SubTilesetConf>();
+    }
+
+    /// <summary>
+    /// Manage the autotileset containing all sub-tilesets named with a letter and used to draw map tiles.
+    /// </summary>
 	public class AutoTileset : ScriptableObject 
 	{
-		public const int TileWidth = 32;
-		public const int TileHeight = 32;
-		public const int TilePartWidth = 16;
-		public const int TilePartHeight = 16;
-		public const int AutoTilesPerRow = 8;
+        /// <summary>
+        /// This is limited by Unity, don't set over this value unless limitation is removed in future versions
+        /// </summary>
+        public const int k_MaxTextureSize = 4096;
+        /// <summary>
+        /// The number of tiles per subtileset
+        /// </summary>
+        public const int k_TilesPerSubTileset = 256;
 		public const float PixelToUnits = 100f;
-		
-		public const float TileWorldWidth = TileWidth / PixelToUnits;
-		public const float TileWorldHeight = TileHeight / PixelToUnits;
 
-		public Texture2D AnimatedTexture;
-		public Texture2D GroundTexture;
-		public Texture2D BuildingTexture;
-		public Texture2D WallTexture;
-		public Texture2D NormalTexture;
-		public Texture2D ObjectsTexture_B;
-		public Texture2D ObjectsTexture_C;
-		public Texture2D ObjectsTexture_D;
-		public Texture2D ObjectsTexture_E;
+        /// <summary>
+        /// Size of the tile in pixels
+        /// </summary>
+		public int TileWidth = 32;
+        /// <summary>
+        /// Size of the tile in pixels
+        /// </summary>
+		public int TileHeight = 32;
+        
+        //TODO: precalculate this when TileSize is modified
 
-		public AutoTileMap.eTileCollisionType[] AutotileCollType = new AutoTileMap.eTileCollisionType[1280]; //1280 the total number of autotiles	
+        /// <summary>
+        /// The size of an slot inside the atlas texture
+        /// </summary>
+        public int TilesetSlotSize { get{ return 32 * TileWidth; } }
 
+        /// <summary>
+        /// Half of the tile size in pixels
+        /// </summary>
+        public int TilePartWidth { get { return TileWidth >> 1; } }
+        /// <summary>
+        /// Half of the tile size in pixels
+        /// </summary>
+        public int TilePartHeight { get { return TileHeight >> 1; } }
+        /// <summary>
+        /// The size of a tile in world units
+        /// </summary>
+        public float TileWorldWidth { get { return TileWidth / PixelToUnits; } }
+        /// <summary>
+        /// The size of a tile in world units
+        /// </summary>
+        public float TileWorldHeight { get { return TileHeight / PixelToUnits; } }
+
+        /// <summary>
+        /// Tiles per row when drawing the subtilesets in the editor
+        /// </summary>
+		public int AutoTilesPerRow = 8;
+
+        /// <summary>
+        /// A list with all subtilesets. This list is updated when calling BuildSubTilesetsList
+        /// </summary>
+        public List<SubTilesetConf> SubTilesets = new List<SubTilesetConf>();
+
+        /// <summary>
+        /// A list with all slots. A slot contain 1 subtileset with autotiles or 4 subtileset with normal tiles
+        /// </summary>
+        public List<AtlasSlot> AtlasSlots;
+
+        /// <summary>
+        /// An array with the collision type for all tiles in the tileset
+        /// </summary>
+        public AutoTileMap.eTileCollisionType[] AutotileCollType;
+
+        /// <summary>
+        /// Check if a tile is animated
+        /// </summary>
+        /// <param name="autoTileIdx"></param>
+        /// <returns></returns>
 		public bool IsAutoTileAnimated( int autoTileIdx )
 		{
-			return (autoTileIdx >= 0 && autoTileIdx < 16 && (autoTileIdx%2) == 0  );
+            int subTilesetIdx = autoTileIdx / k_TilesPerSubTileset;
+            if (SubTilesets[subTilesetIdx].HasAutotiles)
+            {
+                int tileIdx = autoTileIdx % k_TilesPerSubTileset;
+                return (tileIdx >= 0 && tileIdx < 16 && (tileIdx % 2) == 0);
+            }
+            return false;
 		}
 
+        /// <summary>
+        /// Check is a tile is an animated waterfall
+        /// </summary>
+        /// <param name="autoTileIdx"></param>
+        /// <returns></returns>
         public bool IsAutoTileAnimatedWaterfall(int autoTileIdx)
         {
-            return (autoTileIdx >= 0 && autoTileIdx < 16 && (autoTileIdx % 2) != 0 && autoTileIdx != 1 && autoTileIdx != 5 );
+            int subTilesetIdx = autoTileIdx / k_TilesPerSubTileset;
+            if (SubTilesets[subTilesetIdx].HasAutotiles)
+            {
+                int tileIdx = autoTileIdx % k_TilesPerSubTileset;
+                return (tileIdx >= 0 && tileIdx < 16 && (tileIdx % 2) != 0 && tileIdx != 1 && tileIdx != 5);
+            }
+            return false;            
         }
 
+        /// <summary>
+        /// An array with alpha information of all tiles in the tileset
+        /// </summary>
 		public bool[] IsAutoTileHasAlpha;
-		public List<Sprite> ThumbnailSprites;
-		public List<Sprite> AutoTileSprites;
-		public int[] AutotileIdxMap; // map tileIdx with tilesetTileIdx
 
-		public int[] TilesetSpriteOffset; // for each tileset in TilemapTextures the index of the first tile part in m_TilemapSprites
+        /// <summary>
+        /// An array with rect source of the atlas with the thumbnail of each tile
+        /// </summary>
+		public List<Rect> ThumbnailRects;
+        /// <summary>
+        /// An array with rect source of the atlas for each tile
+        /// </summary>
+		public List<Rect> AutoTileRects;
+        /// <summary>
+        /// Map tileIdx with tilesetTileIdx. Used for animated tiles using some tiles as frames. Only one frame is taken into account.
+        /// </summary>
+		public int[] AutotileIdxMap;
 
+        /// <summary>
+        /// Material used to draw the tiles
+        /// </summary>
 		public Material AtlasMaterial{ get; private set; }
 
 		[SerializeField]
 		private Texture2D m_atlasTexture;
-		public Texture2D TilesetsAtlasTexture
+		public Texture2D AtlasTexture
 		{  
 			get{return m_atlasTexture;}
 			set
 			{
 				if( value != null && value != m_atlasTexture )
 				{
-					if( value.width == 2048 && value.height == 2048 )
+                    if (value.width % TilesetSlotSize == 0 && value.height % TilesetSlotSize == 0)
 					{
 						m_atlasTexture = value;
 						UtilsAutoTileMap.ImportTexture( m_atlasTexture );
@@ -73,7 +190,7 @@ namespace CreativeSpore.RpgMapEditor
 					else
 					{
 						m_atlasTexture = null;
-						Debug.LogError( " TilesetsAtlasTexture.set: atlas texture is not 2048x2048" );
+                        Debug.LogError(" TilesetsAtlasTexture.set: atlas texture has a wrong size " + value.width + "x" + value.height);
 					}
 				}
 				else
@@ -83,10 +200,105 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
-		public void GenerateAutoTileData( )
+        /// <summary>
+        /// Calculate the slot rect inside the atlas using index as reference
+        /// </summary>
+        /// <param name="idx"></param>
+        /// <returns></returns>
+        public Rect CalculateAtlasSlotRectByIdx( int idx )
+        {
+            int w = AtlasTexture.width / TilesetSlotSize;
+            //int h = AtlasTexture.height / k_TilesetSlotSize;
+            int x = (idx % w) * TilesetSlotSize;
+            int y = (idx / w) * TilesetSlotSize;
+            return new Rect(x, y, TilesetSlotSize, TilesetSlotSize);
+        }
+
+        /// <summary>
+        /// Build Altas Slot Data and update data according to atlas size
+        /// </summary>
+        public void BuildAtlasSlotData()
+        {
+            int w = AtlasTexture.width / TilesetSlotSize;
+            int h = AtlasTexture.height / TilesetSlotSize;
+            int size = (int)(w * h);
+            if (size > 0)
+            {
+                if (AtlasSlots == null || AtlasSlots.Count == 0)
+                {
+                    AtlasSlots = new List<AtlasSlot>(size);
+                    if( w == 2 && h == 2 && TileWidth == 32 && TileHeight == 32 ) //TODO: compatibility with older versions of asset 1.1.1 and below. To be removed after future versions
+                    {
+                        AtlasSlots.Add( new AtlasSlot() );
+                        AtlasSlots[0].SubTilesets.Add(new SubTilesetConf() { AtlasRec = new Rect(0, 0, TilesetSlotSize, TilesetSlotSize), HasAutotiles = true, Name = "A" });
+                        AtlasSlots.Add( new AtlasSlot() );
+                        int halfSize = TilesetSlotSize / 2;
+                        AtlasSlots[1].SubTilesets = new List<SubTilesetConf>(){  
+                            new SubTilesetConf(){ AtlasRec = new Rect(TilesetSlotSize, 0, halfSize, halfSize), HasAutotiles = false, Name = "B"  },
+                            new SubTilesetConf(){ AtlasRec = new Rect(TilesetSlotSize, halfSize, halfSize, halfSize), HasAutotiles = false, Name = "C"  },
+                            new SubTilesetConf(){ AtlasRec = new Rect(TilesetSlotSize+halfSize, 0, halfSize, halfSize), HasAutotiles = false, Name = "D"  },
+                            new SubTilesetConf(){ AtlasRec = new Rect(TilesetSlotSize+halfSize, halfSize, halfSize, halfSize), HasAutotiles = false, Name = "E"  },
+                        };
+                    }
+                }
+
+                if( AtlasSlots.Count > size )
+                {
+                    AtlasSlots.RemoveRange(size, AtlasSlots.Count - size);
+                }
+                else
+                {
+                    while( AtlasSlots.Count < size )
+                    {
+                        AtlasSlots.Add( new AtlasSlot() );
+                    }
+                }
+                
+            }
+            else
+            {
+                AtlasSlots = null;
+            }
+        }
+
+        /// <summary>
+        /// Create the list of subtilesets using all subtilesets found int the slots
+        /// </summary>
+        public void BuildSubTilesetsList()
+        {
+            SubTilesets = new List<SubTilesetConf>();
+            foreach( AtlasSlot slot in AtlasSlots )
+            {
+                foreach( SubTilesetConf conf in slot.SubTilesets )
+                {
+                    SubTilesets.Add( conf );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Create and return a list with all subtileset available names ( letters not used by other subtileset )
+        /// </summary>
+        /// <returns></returns>
+        public List<string> CreateAvailableNameList()
+        {
+            List<string> retList = new List<string>();
+            for (char c = 'A'; c <= 'Z'; ++c ) retList.Add( ""+c );
+            BuildSubTilesetsList();
+            foreach( SubTilesetConf conf in SubTilesets )
+            {
+                retList.Remove( conf.Name );
+            }
+            return retList;
+        }
+
+        /// <summary>
+        /// Generate all needed data for the tileset
+        /// </summary>
+        public void GenerateAutoTileData( )
 		{
 
-			// force to generate atlas material if it is not instanciated
+			// force to generate atlas material if it is not instantiated
 			if( AtlasMaterial == null )
 			{
 				//Debug.LogError( "GenerateAutoTileData error: missing AtlasMaterial" );
@@ -94,53 +306,65 @@ namespace CreativeSpore.RpgMapEditor
 				CreateAtlasMaterial();
 			}
 
+            BuildAtlasSlotData();
+            BuildSubTilesetsList();
+
 			_GenerateTilesetSprites();
 
+            int tileNb = SubTilesets.Count * k_TilesPerSubTileset;
+
+            if (AutotileCollType == null || tileNb != AutotileCollType.Length)
+            {
+                AutotileCollType = new AutoTileMap.eTileCollisionType[tileNb];
+            }
+
 			// get the mapped tileIdx ( for animated tile supporting. Animated tiles are considered as one, skipping the other 2 frames )
-			AutotileIdxMap = new int[1280];
+            // used only by sub tileset with autotiles
+            AutotileIdxMap = new int[k_TilesPerSubTileset];
 			int tileIdx = 0;
-			for( int i = 0; i < 1280; ++i )
+            for (int i = 0; i < k_TilesPerSubTileset; ++i)
 			{
 				AutotileIdxMap[i] = tileIdx;
-				tileIdx += IsAutoTileAnimated(i)? 3 : 1;
+				tileIdx += (i >= 0 && i < 16 && (i % 2) == 0)? 3 : 1;
 			}
 
-			IsAutoTileHasAlpha = new bool[1280];
-			ThumbnailSprites = new List<Sprite>(1280);
-			UtilsAutoTileMap.FillWIthTilesetThumbnailSprites(ThumbnailSprites, TilesetsAtlasTexture, AutoTileMap.eTilesetGroupType.GROUND);
-			UtilsAutoTileMap.FillWIthTilesetThumbnailSprites(ThumbnailSprites, TilesetsAtlasTexture, AutoTileMap.eTilesetGroupType.OBJECTS_B);
-			UtilsAutoTileMap.FillWIthTilesetThumbnailSprites(ThumbnailSprites, TilesetsAtlasTexture, AutoTileMap.eTilesetGroupType.OBJECTS_C);
-			UtilsAutoTileMap.FillWIthTilesetThumbnailSprites(ThumbnailSprites, TilesetsAtlasTexture, AutoTileMap.eTilesetGroupType.OBJECTS_D);
-			UtilsAutoTileMap.FillWIthTilesetThumbnailSprites(ThumbnailSprites, TilesetsAtlasTexture, AutoTileMap.eTilesetGroupType.OBJECTS_E);
+            IsAutoTileHasAlpha = new bool[tileNb];
+            ThumbnailRects = new List<Rect>(tileNb);
+            foreach( SubTilesetConf tilesetConf in SubTilesets )
+            {               
+                UtilsAutoTileMap.FillWithTilesetThumbnailSprites(ThumbnailRects, this, tilesetConf);
+            }
 
 			//+++ sometimes png texture loose isReadable value. Maybe a unity bug?
 	#if UNITY_EDITOR
-			string assetPath = AssetDatabase.GetAssetPath(TilesetsAtlasTexture);
+			string assetPath = AssetDatabase.GetAssetPath(AtlasTexture);
 			TextureImporter textureImporter = AssetImporter.GetAtPath(assetPath) as TextureImporter; 
 			if( textureImporter != null && textureImporter.isReadable == false )
 			{	// reimport texture
                 Debug.LogWarning("TilesetsAtlasTexture " + assetPath + " isReadable is false. Will be re-imported to access pixels.");
-				UtilsAutoTileMap.ImportTexture( TilesetsAtlasTexture );
+				UtilsAutoTileMap.ImportTexture( AtlasTexture );
 			}
 	#endif
 			//---
-			Color32[] aAtlasColors = TilesetsAtlasTexture.GetPixels32(); //NOTE: Color32 is faster than Color in this alpha check
-			for( int i = 0; i < ThumbnailSprites.Count; ++i )
+			Color32[] aAtlasColors = AtlasTexture.GetPixels32(); //NOTE: Color32 is faster than Color in this alpha check
+
+			for( int i = 0; i < ThumbnailRects.Count; ++i )
 			{
-				if( i >= 48 && i < 128 )
+                int subTilesetIdx = i / k_TilesPerSubTileset;
+                if (SubTilesets[subTilesetIdx].HasAutotiles && (i % k_TilesPerSubTileset) >= 48 && (i % k_TilesPerSubTileset) < 128)
 				{
 					// wall and building tiles has no alpha by default
 					IsAutoTileHasAlpha[i] = false;
 				}
 				else
 				{
-					Sprite sprTile = ThumbnailSprites[i];
-                    int pBaseIdx = (int)(sprTile.rect.y * sprTile.texture.width + sprTile.rect.x);
-					for( float py = 0; py < AutoTileset.TileHeight && !IsAutoTileHasAlpha[ i ]; py++ )
+					Rect sprTileRect = ThumbnailRects[i];
+                    int pBaseIdx = (int)(sprTileRect.y * AtlasTexture.width + sprTileRect.x);
+                    for (float py = 0; py < TileHeight && !IsAutoTileHasAlpha[i]; py++)
 					{
-						for( float px = 0; px < AutoTileset.TileWidth && !IsAutoTileHasAlpha[ i ]; px++ )
+                        for (float px = 0; px < TileWidth && !IsAutoTileHasAlpha[i]; px++)
 						{
-							int pIdx = pBaseIdx + (int)(py * sprTile.texture.width + px);
+                            int pIdx = pBaseIdx + (int)(py * AtlasTexture.width + px);
 							if( aAtlasColors[pIdx].a < 255 )
 							{
 								IsAutoTileHasAlpha[ i ] = true;
@@ -155,6 +379,9 @@ namespace CreativeSpore.RpgMapEditor
 
 		}
 
+        /// <summary>
+        /// Create a default material for the atlas
+        /// </summary>
 		private void CreateAtlasMaterial()
 		{
 			string matPath = "";
@@ -162,7 +389,7 @@ namespace CreativeSpore.RpgMapEditor
 			matPath = System.IO.Path.GetDirectoryName( AssetDatabase.GetAssetPath( m_atlasTexture ) );
 			if( !string.IsNullOrEmpty( matPath ) )
 			{
-				matPath += "/"+TilesetsAtlasTexture.name+" atlas material.mat";
+				matPath += "/"+AtlasTexture.name+" atlas material.mat";
 				Material matAtlas = (Material)AssetDatabase.LoadAssetAtPath( matPath, typeof(Material));
 				if( matAtlas == null )
 				{
@@ -179,7 +406,7 @@ namespace CreativeSpore.RpgMapEditor
 
             if ( AtlasMaterial != null )
 			{
-				AtlasMaterial.mainTexture = TilesetsAtlasTexture;
+				AtlasMaterial.mainTexture = AtlasTexture;
 			}
 			else
 			{
@@ -188,17 +415,17 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
-		private void _support_generateTileparts( Texture2D tilesetTex, string defaultName, int srcX, int srcY, int width, int height, int tileWidth, int tileHeight )
+
+		private void __GenerateTileparts( int srcX, int srcY, int width, int height, int tileWidth, int tileHeight )
 		{
-			Vector2 pivot = new Vector2(0f,1f);
 			int iTilesetSprIdx = 0;
 			Rect rec = new Rect( 0, 0, tileWidth, tileHeight );
             //+++fast fix> due a Unity Pro bug, Sprite.Create is very slow for values equal or above 32
             //TODO: check when this is fixed to remove this code
-            if (tileWidth == 32) rec.width = 31.9f;
-            if (tileHeight == 32) rec.height = 31.9f;
+            //if (tileWidth == 32) rec.width = 31.9f;
+            //if (tileHeight == 32) rec.height = 31.9f;
             //---
-            string tilesetName = tilesetTex != null ? tilesetTex.name : defaultName;
+
 			for( int y = height - tileHeight; y >= 0; y -= tileHeight )
 			{
 				for( int x = 0; x < width; x+=tileWidth, ++iTilesetSprIdx )
@@ -206,39 +433,49 @@ namespace CreativeSpore.RpgMapEditor
 					rec.x = srcX + x;
 					rec.y = srcY + y;
 					
-					Sprite tileSpr = Sprite.Create(TilesetsAtlasTexture, rec, pivot, PixelToUnits);
-
-					tileSpr.name = tilesetName+"_"+iTilesetSprIdx;
-					AutoTileSprites.Add( tileSpr );
+					AutoTileRects.Add( rec );
 				}
 			}
 		}
 		
+        /// <summary>
+        /// Populate the list AutoTileRects with the rectangle source of each tile in the atlas
+        /// </summary>
 		private void _GenerateTilesetSprites()
 		{
-			TilesetSpriteOffset = new int[9];
-			AutoTileSprites = new List<Sprite>(4160);
-			AutoTileSprites.Clear();
-			
-			TilesetSpriteOffset[0] = AutoTileSprites.Count;
-			_support_generateTileparts(AnimatedTexture, "Animated_A1", 0, 0, 512, 384, TilePartWidth, TilePartHeight);		//Animated
-			TilesetSpriteOffset[1] = AutoTileSprites.Count;
-			_support_generateTileparts(GroundTexture, "Ground_A2", 0, 384, 512, 384, TilePartWidth, TilePartHeight);	//Ground
-			TilesetSpriteOffset[2] = AutoTileSprites.Count;
-			_support_generateTileparts(BuildingTexture, "Building_A3", 0, 768, 512, 256, TilePartWidth, TilePartHeight);	//Building
-			TilesetSpriteOffset[3] = AutoTileSprites.Count;
-			_support_generateTileparts(WallTexture, "Wall_A4", 512, 0, 512, 480, TilePartWidth, TilePartHeight);	//Walls
-			TilesetSpriteOffset[4] = AutoTileSprites.Count;
-			_support_generateTileparts(NormalTexture, "Normal_A5", 512, 512, 256, 512, TileWidth, TileHeight);			//Normal
-			TilesetSpriteOffset[5] = AutoTileSprites.Count;
-			
-			_support_generateTileparts(ObjectsTexture_B, "Objects_B", 1024, 0, 512, 512, TileWidth, TileHeight);		// Objects B
-			TilesetSpriteOffset[6] = AutoTileSprites.Count;
-			_support_generateTileparts(ObjectsTexture_C, "Objects_C", 1024, 512, 512, 512, TileWidth, TileHeight);		// Objects C
-			TilesetSpriteOffset[7] = AutoTileSprites.Count;
-			_support_generateTileparts(ObjectsTexture_D, "Objects_D", 1536, 0, 512, 512, TileWidth, TileHeight);		// Objects D
-			TilesetSpriteOffset[8] = AutoTileSprites.Count;
-			_support_generateTileparts(ObjectsTexture_E, "Objects_E", 1536, 512, 512, 512, TileWidth, TileHeight);		// Objects E
+			AutoTileRects = new List<Rect>(4160);
+			AutoTileRects.Clear();
+
+            //+++ old values for 32x32 tiles, now depend on tile size
+            int _768 = 24 * TileWidth;
+            int _512 = 16 * TileWidth;
+            int _480 = 15 * TileWidth;
+            int _384 = 12 * TileWidth;
+            int _256 = 8 * TileWidth;
+            //---
+
+            foreach(SubTilesetConf tilesetConf in SubTilesets)
+            {
+                tilesetConf.TilePartOffset = new List<int>();
+                if (tilesetConf.HasAutotiles)
+                {
+                    tilesetConf.TilePartOffset.Add(AutoTileRects.Count);
+                    __GenerateTileparts((int)tilesetConf.AtlasRec.x, (int)tilesetConf.AtlasRec.y, _512, _384, TilePartWidth, TilePartHeight);		//Animated
+                    tilesetConf.TilePartOffset.Add(AutoTileRects.Count);
+                    __GenerateTileparts((int)tilesetConf.AtlasRec.x, (int)tilesetConf.AtlasRec.y + _384, _512, _384, TilePartWidth, TilePartHeight);	//Ground
+                    tilesetConf.TilePartOffset.Add(AutoTileRects.Count);
+                    __GenerateTileparts((int)tilesetConf.AtlasRec.x, (int)tilesetConf.AtlasRec.y + _768, _512, _256, TilePartWidth, TilePartHeight);	//Building
+                    tilesetConf.TilePartOffset.Add(AutoTileRects.Count);
+                    __GenerateTileparts((int)tilesetConf.AtlasRec.x + _512, (int)tilesetConf.AtlasRec.y, _512, _480, TilePartWidth, TilePartHeight);	//Walls
+                    tilesetConf.TilePartOffset.Add(AutoTileRects.Count);
+                    __GenerateTileparts((int)tilesetConf.AtlasRec.x + _512, (int)tilesetConf.AtlasRec.y + _512, _256, _512, TileWidth, TileHeight);		//Normal
+                }
+                else
+                {
+                    tilesetConf.TilePartOffset.Add(AutoTileRects.Count);
+                    __GenerateTileparts((int)tilesetConf.AtlasRec.x, (int)tilesetConf.AtlasRec.y, _512, _512, TileWidth, TileHeight);		// Objects                     
+                }
+            }		
 		}
 		
 	}

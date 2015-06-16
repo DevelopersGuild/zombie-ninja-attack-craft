@@ -58,7 +58,7 @@ public class Health : MonoBehaviour
 
           if (GetComponent<Player>())
           {
-               FindObjectOfType<CreativeSpore.FollowObjectBehaviour>().CameraShake();
+               //FindObjectOfType<CreativeSpore.FollowObjectBehaviour>().CameraShake();
           }
 
 
