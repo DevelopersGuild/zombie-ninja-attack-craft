@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
+
 
 public class CameraFollow : MonoBehaviour {
 
@@ -14,4 +16,9 @@ public class CameraFollow : MonoBehaviour {
 	void Update () {
         transform.position = new Vector3(playerPosition.position.x, playerPosition.position.y, -10);
 	}
+
+     public void CameraShake()
+     {
+
+     }
 }
