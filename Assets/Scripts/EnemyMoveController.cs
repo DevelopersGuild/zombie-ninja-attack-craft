@@ -13,6 +13,7 @@ public class EnemyMoveController : MonoBehaviour
      // Direction of object
      internal Vector2 direction;
      public Vector2 facing;
+     private Vector2 previousFacing;
      public enum facingDirection { up, right, down, left }
      // Actual movement
      public Vector2 movementVector = new Vector2(0, 0);
@@ -81,13 +82,19 @@ public class EnemyMoveController : MonoBehaviour
                {
                     if (movementVector.x != 0 || movementVector.y != 0)
                     {
-                         // Store the direction the player is facing in case they stop moving
-
-                         facing = GetComponent<Rigidbody2D>().velocity.normalized;
+                         if (Mathf.Abs(movementVector.x) > Mathf.Abs(movementVector.y))
+                         {
+                              facing = movementVector.x < 0 ? new Vector2(-1, 0) : new Vector2(1,0);
+                         }
+                         else
+                         {
+                              facing = movementVector.y < 0 ? new Vector2(0, -1) : new Vector2(0, 1);
+                         }
                          isMoving = true;
                     }
                     else
                     {
+                         facing = previousFacing;
                          isMoving = false;
                     }
                }
@@ -102,6 +109,7 @@ public class EnemyMoveController : MonoBehaviour
                          timeSpentKnockedBack = 0;
                     }
                }
+               previousFacing = facing;
 
                //if (animator != null)
                //{

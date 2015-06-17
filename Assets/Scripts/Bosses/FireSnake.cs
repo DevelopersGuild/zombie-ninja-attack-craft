@@ -1,176 +1,232 @@
 ﻿using System;
 using UnityEngine;
 
-     public class FireSnake : SnakeBoss
+public class FireSnake : SnakeBoss
+{
+     private Vector2 diffVec;
+     private int attackChoice;
+     private bool combo;
+
+     public void Start()
      {
-          private Vector2 diffVec;
 
+          //animator = GetComponent<Animator>();
+          player = FindObjectOfType<Player>();
+          moveController = GetComponent<EnemyMoveController>();
+          health = GetComponent<Health>();
 
-          public void Start()
+          combo = false;
+          isInvincible = true;
+          bite_CD = 10;
+          spawn_CD = 8;
+          acid_CD = 9;
+          fireBall_CD = 9;
+          fireTrail_CD = 9;
+          iceBall_CD = 9;
+          iceTrail_CD = 9;
+          laser_CD = 12;
+          cooldown_CD = 0.8f;
+          biteTime = 0;
+          mirrorSpawn = -0.5f;
+          count = 1;
+          attackChoice = 0;
+          isBiting = false;
+
+          isAgro = false;
+
+          diffVec = new Vector2(1, 1);
+
+     }
+
+     public void Update()
+     {
+          if (player != null)
           {
-
-               //animator = GetComponent<Animator>();
-               player = FindObjectOfType<Player>();
-               moveController = GetComponent<EnemyMoveController>();
-               health = GetComponent<Health>();
-               health.knockbackMult = 0;
-
-               isInvincible = true;
-               bite_CD = 6;
-               spawn_CD = 6;
-               acid_CD = 6;
-               fireBall_CD = 8;
-               fireTrail_CD = 9;
-               iceBall_CD = 8;
-               iceTrail_CD = 9;
-               laser_CD = 10;
-               cooldown_CD = 0.8f;
-               biteTime = 0;
-               mirrorSpawn = -0.5f;
-               count = 1;
-
-               isAgro = false;
-
-               diffVec = new Vector2(1, 1);
-
-          }
-
-          public void Update()
-          {
-               if (player != null)
+               health.cancelKnockback();
+               if (isBiting)
                {
-                    if (isBiting)
+                    moveController.Move(0, 0);
+                    // biteTime -= Time.deltaTime;
+
+                    findPos();
+                    if (biteTime <= 12)
                     {
-                         moveController.Move(0, 0);
-                        // biteTime -= Time.deltaTime;
-                        
-                         findPos();
-                         if (biteTime <= 12)
-                         {
-                              transform.position += biteDir;
-                              
-                         }
-                         else if (biteTime <= 24 + count)
-                         {
-                              transform.position -= biteDir;
-                         }
-                         else
-                         {
-                              if (count > 0)
-                              {
-                                   count--;
-                              }
-                              moveController.Move(0, 0);
-                              isBiting = false;
-                              biteTime = 0;
-                         }
-                         biteTime++;
+                         transform.position += biteDir;
+
                     }
-                    else if (isLasering)
+                    else if (biteTime <= 24 + count)
                     {
-                         moveController.Move(0, 0);
-                         
+                         transform.position -= biteDir;
                     }
                     else
                     {
-                         //find position after animation? will it use the position from before the animation starts? be ready to change
-                         findPos();
-                         updatePos();
-
-                         rnd = new System.Random();
-
-                         distance = player.transform.position - transform.position;
-                         if (distance.magnitude <= AgroRange)
+                         if (count > 0)
                          {
-                              isAgro = true;
+                              count--;
                          }
-                         if (distance.magnitude > AgroRange)
-                         {
-                              isAgro = false;
-                         }
+                         moveController.Move(0, 0);
+                         isBiting = false;
+                         biteTime = 0;
+                    }
+                    biteTime++;
+               }
+               else if (isLasering)
+               {
+                    moveController.Move(0, 0);
 
-                         if (isAgro)
+               }
+               else
+               {
+                    //find position after animation? will it use the position from before the animation starts? be ready to change
+                    findPos();
+                    updatePos();
+
+                    rnd = new System.Random();
+
+                    distance = player.transform.position - transform.position;
+                    if (distance.magnitude <= AgroRange)
+                    {
+                         isAgro = true;
+                    }
+                    if (distance.magnitude > AgroRange)
+                    {
+                         isAgro = false;
+                    }
+
+                    if (isAgro)
+                    {
+                         //targetPos *= 0.8f;
+                         if (cooldown_CD > 1.5)
                          {
-                              //targetPos *= 0.8f;
-                              if (cooldown_CD > 0.8)
+                              cooldown_CD = 0;
+                              moveController.Move(0, 0);
+                              IceSnake iSnake = FindObjectOfType<IceSnake>();
+                             // if (iSnake != null && iSnake.iceBall_CD > 8 && fireBall_CD > 8)
+                              if(combo)
                               {
-                                   cooldown_CD = 0;
-                                   moveController.Move(0, 0);
+                                   Debug.Log("WHAT?");
+                                   combo = false;
+                                   attackChoice = 6;
+                              }
 
-                                   if (bite_CD > 6)
+                              else
+                              {
+
+                                   //Play animation after setting attackChoice, animation calls Attack();
+                                   if (bite_CD > 10)
                                    {
-                                        biteAttack();
+                                        attackChoice = 1;
                                    }
-                                   else if (spawn_CD > 6)
+                                   else if (spawn_CD > 8)
                                    {
-                                        spawnAttack();
+                                        attackChoice = 2;
                                    }
-                                   else if (laser_CD > 10)
+                                   else if (laser_CD > 12)
                                    {
-                                        laserAttack();
+                                        attackChoice = 3;
                                    }
-                                   else if (acid_CD > 6)
+                                   else if (acid_CD > 9)
                                    {
-                                        acidAttack();
+                                        attackChoice = 4;
                                    }
                                    else if (fireTrail_CD > 9)
                                    {
-                                         trailAttack();
+                                        attackChoice = 5;
                                    }
-                                   else if (fireBall_CD > 8)
+                                   else if (iSnake == null && fireBall_CD > 8)
                                    {
-                                         ballAttack();
+                                        attackChoice = 6;
+                                        Debug.Log("PK FIRE");
                                    }
 
                                    else
                                    {
-                                        cooldown_CD = 0.6f;
+                                        cooldown_CD = 0.3f;
                                    }
-
-                                   //Fire Snake - Bite -> Spawn Snakes -> -> Laser -> Acid Ball -> fire trail -> fireball
-
-                                   //Loop with array for less code   
-                                   //attack
                               }
 
+
+                              Attack();
+                              //Fire Snake - Bite -> Spawn Snakes -> -> Laser -> Acid Ball -> fire trail -> fireball
+
+                              //Loop with array for less code   
+                              //attack
                          }
-                         bite_CD += Time.deltaTime;
-                         laser_CD += Time.deltaTime;
-                         spawn_CD += Time.deltaTime;
-                         acid_CD += Time.deltaTime;
-                         fireBall_CD += Time.deltaTime;
-                         fireTrail_CD += Time.deltaTime;
-                         iceBall_CD += Time.deltaTime;
-                         iceTrail_CD += Time.deltaTime;
-                         cooldown_CD += Time.deltaTime;
 
                     }
+                    bite_CD += Time.deltaTime;
+                    laser_CD += Time.deltaTime;
+                    spawn_CD += Time.deltaTime;
+                    acid_CD += Time.deltaTime;
+                    fireBall_CD += Time.deltaTime;
+                    fireTrail_CD += Time.deltaTime;
+                    iceBall_CD += Time.deltaTime;
+                    iceTrail_CD += Time.deltaTime;
+                    cooldown_CD += Time.deltaTime;
+
                }
           }
-
-          public void laserAttack()
-          {
-               //After prep
-               //animation
-               laser = Instantiate(laserObj, transform.position, transform.rotation) as FireChain;
-               laser.setLaserOne(90, 180);
-               //create laser
-               //after 0.5s, rotate around point from ~190 degrees to ~255 degrees
-               //Ice snake mirrors that, from ~350 to ~285
-               //laser ends
-               laser_CD = 0;
-               isLasering = true;
-               b1.stopMove(false);
-               b2.stopMove(false);
-               b3.stopMove(false);
-               b4.stopMove(false);
-          }
-
-
-
-
-
-
-
-
      }
+
+     public void Attack()
+     {
+
+          if (attackChoice == 1)
+          {
+               biteAttack();
+          }
+          else if (attackChoice == 2)
+          {
+               spawnAttack();
+          }
+          else if (attackChoice == 3)
+          {
+               laserAttack();
+          }
+          else if (attackChoice == 4)
+          {
+               acidAttack();
+          }
+          else if (attackChoice == 5)
+          {
+               trailAttack();
+          }
+          else if (attackChoice == 6)
+          {
+               ballAttack();
+          }
+          attackChoice = 0;
+     }
+
+     public void laserAttack()
+     {
+          //After prep
+          //animation
+          laser = Instantiate(laserObj, transform.position, transform.rotation) as FireChain;
+          laser.setLaserOne(90, 170);
+          //create laser
+          //after 0.5s, rotate around point from ~190 degrees to ~255 degrees
+          //Ice snake mirrors that, from ~350 to ~285
+          //laser ends
+          laser_CD = 0;
+          isLasering = true;
+          b1.stopMove(false);
+          b2.stopMove(false);
+          b3.stopMove(false);
+          b4.stopMove(false);
+     }
+
+     public void setCombo()
+     {
+          combo = true;
+          cooldown_CD = 1.6f;
+     }
+
+
+
+
+
+
+
+
+}

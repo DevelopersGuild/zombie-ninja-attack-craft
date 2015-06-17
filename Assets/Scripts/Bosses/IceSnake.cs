@@ -1,39 +1,83 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AssemblyCSharp
+public class IceSnake : SnakeBoss
 {
+     private Vector2 diffVec;
+     private int attackChoice;
 
-     public class IceSnake : SnakeBoss
+     public void Start()
      {
 
+          //animator = GetComponent<Animator>();
+          player = FindObjectOfType<Player>();
+          moveController = GetComponent<EnemyMoveController>();
+          health = GetComponent<Health>();
+          
 
-          private float currentX, currentY, playerX, playerY, angle;
+          isInvincible = true;
+          bite_CD = 10;
+          spawn_CD = 8;
+          acid_CD = 9;
+          fireBall_CD = 9;
+          fireTrail_CD = 9;
+          iceBall_CD = 9;
+          iceTrail_CD = 9;
+          laser_CD = 12;
+          cooldown_CD = 0.8f;
+          biteTime = 0;
+          mirrorSpawn = 0.5f;
+          count = 1;
+          attackChoice = 0;
 
+          isAgro = false;
 
-          public void Start()
+          diffVec = new Vector2(1, 1);
+
+     }
+
+     public void Update()
+     {
+          if (player != null)
           {
-               //animator = GetComponent<Animator>();
+               health.cancelKnockback();
+               if (isBiting)
+               {
+                    moveController.Move(0, 0);
+                    // biteTime -= Time.deltaTime;
 
-               bite_CD = 5;
-               spawn_CD = 4;
-               acid_CD = 6;
-               fireBall_CD = 6;
-               fireTrail_CD = 8;
-               iceBall_CD = 6;
-               iceTrail_CD = 8;
-               laser_CD = 10;
-               cooldown_CD = 0.8f;
+                    findPos();
+                    if (biteTime <= 12)
+                    {
+                         transform.position += biteDir;
 
+                    }
+                    else if (biteTime <= 24 + count)
+                    {
+                         transform.position -= biteDir;
+                    }
+                    else
+                    {
+                         if (count > 0)
+                         {
+                              count--;
+                         }
+                         moveController.Move(0, 0);
+                         isBiting = false;
+                         biteTime = 0;
+                    }
+                    biteTime++;
+               }
+               else if (isLasering)
+               {
+                    moveController.Move(0, 0);
 
-          }
-
-          public void Update()
-          {
-               if (player != null)
+               }
+               else
                {
                     //find position after animation? will it use the position from before the animation starts? be ready to change
                     findPos();
+                    updatePos();
 
                     rnd = new System.Random();
 
@@ -50,42 +94,50 @@ namespace AssemblyCSharp
                     if (isAgro)
                     {
                          //targetPos *= 0.8f;
-                         if (cooldown_CD > 0.8)
+                         if (cooldown_CD > 1.5)
                          {
                               cooldown_CD = 0;
                               moveController.Move(0, 0);
-
-                              if (acid_CD > 6)
+                              FireSnake fSnake = FindObjectOfType<FireSnake>();
+                              if (fSnake != null && fSnake.fireBall_CD > 8 && iceBall_CD > 8)
                               {
-                                   acidAttack();
-                                   biteAttack();
+                                   Debug.Log("HEY");
+                                   attackChoice = 6;
+                                   fSnake.setCombo();
                               }
-                              else if (spawn_CD > 4)
-                              {
-                                   spawnAttack();
-                              }
-                              else if (laser_CD > 10)
-                              {
-                                   laserAttack();
-                              }
-                              else if (bite_CD > 5)
-                              {
-                                   biteAttack();
-                              }
-                              else if (iceTrail_CD > 8)
-                              {
-                                   trailAttack();
-                              }
-                              else if (iceBall_CD > 6)
-                              {
-                                   ballAttack();
-                              }
-
                               else
                               {
-                                   cooldown_CD = 0.6f;
+                                   //Play animation after setting attackChoice, animation calls Attack();
+                                   if (acid_CD > 9)
+                                   {
+                                        attackChoice = 1;
+                                   }
+                                   else if (spawn_CD > 8)
+                                   {
+                                        attackChoice = 2;
+                                   }
+                                   else if (laser_CD > 12)
+                                   {
+                                        attackChoice = 3;
+                                   }
+                                   else if (bite_CD > 10)
+                                   {
+                                        attackChoice = 4;
+                                   }
+                                   else if (fireTrail_CD > 9)
+                                   {
+                                        attackChoice = 5;
+                                   }
+                                   else if (iceBall_CD > 8 && fSnake == null)
+                                   {
+                                        attackChoice = 6;
+                                   }
+                                   else
+                                   {
+                                        cooldown_CD = 0.3f;
+                                   }
                               }
-
+                              Attack();
                               //Ice Snake - Acid Ball -> Spawn Snakes -> Laser -> Bite -> ice trail -> iceball
 
                               //Loop with array for less code   
@@ -103,14 +155,62 @@ namespace AssemblyCSharp
                     iceTrail_CD += Time.deltaTime;
                     cooldown_CD += Time.deltaTime;
 
-                    findPos();
                }
           }
-
-
-
-
-
-
      }
+
+     public void Attack()
+     {
+          if (attackChoice == 1)
+          {
+               acidAttack();
+          }
+          else if (attackChoice == 2)
+          {
+               spawnAttack();
+          }
+          else if (attackChoice == 3)
+          {
+               laserAttack();
+          }
+          else if (attackChoice == 4)
+          {
+               biteAttack();
+          }
+          else if (attackChoice == 5)
+          {
+               trailAttack();
+          }
+          else if (attackChoice == 6)
+          {
+               ballAttack();
+          }
+          attackChoice = 0;
+     }
+
+     public void laserAttack()
+     {
+          //After prep
+          //animation
+          laser = Instantiate(laserObj, transform.position, transform.rotation) as FireChain;
+          laser.setLaserTwo(270, 170);
+          //create laser
+          //after 0.5s, rotate around point from ~190 degrees to ~255 degrees
+          //Ice snake mirrors that, from ~350 to ~285
+          //laser ends
+          laser_CD = 0;
+          isLasering = true;
+          b1.stopMove(false);
+          b2.stopMove(false);
+          b3.stopMove(false);
+          b4.stopMove(false);
+     }
+
+
+
+
+
+
+
+
 }

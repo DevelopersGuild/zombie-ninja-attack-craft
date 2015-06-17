@@ -5,7 +5,9 @@ namespace AssemblyCSharp
 {
      public class BasicEnemy : Enemy
      {
-          public BasicAttack attackCollider, LRAttack, UDAttack;
+          public BasicAttack LRAttack, UDAttack;
+          private BasicAttack attackCollider;
+          private AnimationController animationController;
           private Health health;
 
           private bool isAgro, canAttack;
@@ -22,6 +24,7 @@ namespace AssemblyCSharp
                //animator = GetComponent<Animator>();
 
                moveController = GetComponent<EnemyMoveController>();
+               animationController = GetComponent<AnimationController>();
                health = GetComponent<Health>();
                player = FindObjectOfType<Player>();
 
@@ -41,11 +44,14 @@ namespace AssemblyCSharp
                left = new Vector2(-0.4f, 0);
                right = new Vector2(0.4f, 0);
                down = new Vector2(0, -0.4f);
+               canAttack = true;
 
           }
 
           public void Update()
           {
+               // Debug.Log("LR: " + LRAttack.GetComponent<SpriteRenderer>().bounds.size.x);
+               // Debug.Log("UD: " + UDAttack.GetComponent<SpriteRenderer>().bounds.size.x);
                checkInvincibility();
                if (checkStun())
                {
@@ -53,67 +59,75 @@ namespace AssemblyCSharp
                     moveController.Move(0, 0);
                }
                rnd = new System.Random();
-               if (player != null)
+               //basic aggression range formula
+               distance = player.transform.position - transform.position;
+               distanceFromPoint = distance + up;
+               if (distanceFromPoint.magnitude > (distance + left).magnitude)
                {
-                    //basic aggression range formula
-                    distance = player.transform.position - transform.position;
-                    distanceFromPoint = distance + up;
-                    if (distanceFromPoint.magnitude > (distance + left).magnitude)
-                    {
-                         distanceFromPoint = distance + left;
-                    }
-                    if (distanceFromPoint.magnitude > (distance + right).magnitude)
-                    {
-                         distanceFromPoint = distance + right;
-                    }
-                    if (distanceFromPoint.magnitude > (distance + down).magnitude)
-                    {
-                         distanceFromPoint = distance + down;
-                    }
-                    float xSp = distanceFromPoint.normalized.x;
-                    float ySp = distanceFromPoint.normalized.y;
-                    if (distance.magnitude <= AgroRange)
-                    {
-                         isAgro = true;
-                         //animator.SetBool("isCharging", true);
-                    }
-                    if (distance.magnitude > AgroRange)
-                    {
-                         isAgro = false;
-                    }
+                    distanceFromPoint = distance + left;
+               }
+               if (distanceFromPoint.magnitude > (distance + right).magnitude)
+               {
+                    distanceFromPoint = distance + right;
+               }
+               if (distanceFromPoint.magnitude > (distance + down).magnitude)
+               {
+                    distanceFromPoint = distance + down;
+               }
+               float xSp = distanceFromPoint.normalized.x;
+               float ySp = distanceFromPoint.normalized.y;
+               direction = new Vector2(xSp, ySp);
+               if (distance.magnitude <= AgroRange)
+               {
+                    isAgro = true;
+                    //animator.SetBool("isCharging", true);
+               }
+               if (distance.magnitude > AgroRange)
+               {
+                    isAgro = false;
+               }
 
-                    if (isAgro)
+               if (isAgro)
+               {
+                    if (canAttack)
                     {
-                         if (canAttack)
+                         if (distanceFromPoint.magnitude < 0.15f)
                          {
-                              if (distanceFromPoint.magnitude < 0.15f) {
                               moveController.Move(0, 0);
+                              animationController.isAttacking = true;
                               //animator.setBool("Attack", true)
+
                               //when spear goes forward in animation, call Attack();
-                              
-                              }
-                              else
-                              {
-                                   direction = new Vector2(xSp, ySp);
-                                   moveController.Move(direction / 6f);
-                              }
+
+                         }
+                         else
+                         {
+
+                              moveController.Move(direction / 6f);
                          }
                          
                     }
                     else
                     {
-                         if (idleTime > 0.4)
-                         {
-                              someVec = idle(t, rnd);
-                              t = someVec.z;
-                              idleTime = 0;
-                         }
-                         moveController.Move(someVec.x, someVec.y);
+
+                         moveController.Move(direction / 6f);
                     }
 
-                    idleTime += Time.deltaTime;
-                    t -= Time.deltaTime;
                }
+               else
+               {
+                    if (idleTime > 0.4)
+                    {
+                         someVec = idle(t, rnd);
+                         t = someVec.z;
+                         idleTime = 0;
+                    }
+                    moveController.Move(someVec.x, someVec.y);
+               }
+
+               idleTime += Time.deltaTime;
+               t -= Time.deltaTime;
+
           }
 
 
@@ -140,9 +154,7 @@ namespace AssemblyCSharp
           public void DoneAttacking()
           {
                canAttack = false;
-               //animator.setBool(attack,false)
-               //animator.setBool(rest, true)
-
+               animationController.isAttacking = false;
           }
 
           //Called by Rest animation after animation finishes (Rest animation is idle but in it's own animation, so it can call methods seperately)

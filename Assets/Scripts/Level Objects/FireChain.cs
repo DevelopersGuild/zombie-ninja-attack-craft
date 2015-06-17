@@ -32,6 +32,7 @@ public class FireChain : MonoBehaviour
           {
                if (rotation < fin)
                {
+                    FindObjectOfType<IceSnake>().laserEnd();
                     Destroy(gameObject);
                }
           }

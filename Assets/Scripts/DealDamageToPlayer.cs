@@ -26,7 +26,7 @@ public class DealDamageToPlayer : MonoBehaviour
                }
 
                //Destroy gameobject if its a projectile
-               if (GetComponent<Projectile>())
+               if (GetComponent<Projectile>() || GetComponent<Homer>())
                {
                     Destroy(gameObject);
                }
@@ -56,12 +56,20 @@ public class DealDamageToPlayer : MonoBehaviour
                }
 
                //Destroy gameobject if its a projectile
-               if (GetComponent<Projectile>())
+               if (GetComponent<Projectile>() || GetComponent<Homer>())
                {
                     Destroy(gameObject);
                     
                }
           }
+
+       //   else if (CompareTag("snakeBall"))
+     //     {
+        //       if (other.CompareTag("snakeBall"))
+         //      {
+          //          gameObject.GetComponent<ExplosionCheck>().explode();
+         //      }
+        //  }
 
      }
 }

@@ -15,14 +15,19 @@ public class Health : MonoBehaviour
      public ParticleSystem particle;
      public ParticleSystem deathParticle;
 
-     public float knockbackMult;
+     public bool canKnock;
 
      // Use this for initialization
      void Start()
      {
           isDead = false;
           currentHealth = startingHealth;
-          knockbackMult = 1;
+          canKnock = true;
+     }
+
+     public void cancelKnockback()
+     {
+          canKnock = false;
      }
 
      public void replenish(int amt)
@@ -74,15 +79,18 @@ public class Health : MonoBehaviour
           EnemyMoveController enemyMoveController = other.gameObject.GetComponent<EnemyMoveController>();
           PlayerMoveController playerMoveController = other.gameObject.GetComponent<PlayerMoveController>();
 
-          if (enemyMoveController != null)
+          if (canKnock)
           {
-               Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-               enemyMoveController.Knockback(pushDirection.normalized * knockbackMult);
-          }
-          else
-          {
-               Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
-               playerMoveController.Knockback(pushDirection.normalized * knockbackMult);
+               if (enemyMoveController != null)
+               {
+                    Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+                    enemyMoveController.Knockback(pushDirection.normalized);
+               }
+               else
+               {
+                    Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+                    playerMoveController.Knockback(pushDirection.normalized);
+               }
           }
 
      }
