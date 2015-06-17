@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
      public float attackedTimer;
      public float TimeBowCharging;
      public float BaseTime;
-     private float stun_Timer;
+     private float stun_Timer, slow, slow_Timer;
 
 
      void Awake()
@@ -107,6 +107,17 @@ public class Player : MonoBehaviour
           }
 
           //The player acts according to input
+          if (slow_Timer > 0)
+          {
+               
+               stun_Timer -= Time.deltaTime;
+          }
+          else if (slow != 0)
+          {
+               playerMoveController.speed = 3.1f;
+               slow = 0;
+          }
+
           if (stun_Timer > 0)
           {
                playerMoveController.Move(0, 0);
@@ -285,6 +296,16 @@ public class Player : MonoBehaviour
      public void setStun(float st)
      {
           stun_Timer = st;
+     }
+
+     public void setSlow(float newSpeed, float slowTime)
+     {
+          if (slow == 0)
+          {
+               slow_Timer = slowTime;
+               slow = newSpeed;
+               playerMoveController.speed *= slow;
+          }
      }
 
      //Player Progression

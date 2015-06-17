@@ -3,11 +3,11 @@ using System.Collections;
 
 public class BasicAttack : MonoBehaviour
 {
-     private double t;
+     public double t;
     // Use this for initialization
     void Start()
     {
-         t = 0.7;
+         //t = 0.7;
     }
 
     // Update is called once per frame

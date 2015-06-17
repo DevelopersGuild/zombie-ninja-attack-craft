@@ -197,6 +197,8 @@ public class SnakeBoss : Boss
      {
           ball = Instantiate(ballObj, transform.position, transform.rotation) as Projectile;
           ball.Shoot(0, direction * 0.7f);
+          fireBall_CD = 0;
+          iceBall_CD = 0;
      }
 
      public void spawnAttack()

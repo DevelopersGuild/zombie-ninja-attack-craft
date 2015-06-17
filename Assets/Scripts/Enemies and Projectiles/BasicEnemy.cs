@@ -5,7 +5,8 @@ namespace AssemblyCSharp
 {
      public class BasicEnemy : Enemy
      {
-          public BasicAttack attackCollider, LRAttack, UDAttack;
+          public BasicAttack LRAttack, UDAttack;
+          private BasicAttack attackCollider;
           private Health health;
 
           private bool isAgro, canAttack;
@@ -41,11 +42,14 @@ namespace AssemblyCSharp
                left = new Vector2(-0.4f, 0);
                right = new Vector2(0.4f, 0);
                down = new Vector2(0, -0.4f);
+               canAttack = true;
 
           }
 
           public void Update()
           {
+              // Debug.Log("LR: " + LRAttack.GetComponent<SpriteRenderer>().bounds.size.x);
+              // Debug.Log("UD: " + UDAttack.GetComponent<SpriteRenderer>().bounds.size.x);
                checkInvincibility();
                if (checkStun())
                {
@@ -86,6 +90,7 @@ namespace AssemblyCSharp
                     {
                          if (canAttack)
                          {
+                              Debug.Log("distance is " + distanceFromPoint);
                               if (distanceFromPoint.magnitude < 0.15f) {
                               moveController.Move(0, 0);
                               //animator.setBool("Attack", true)

@@ -84,27 +84,27 @@ public class Enemy : MonoBehaviour
                if (rand == 1)
                {
                     //speed = new Vector2 (2, 0);
-                    returnVec = new Vector3(1/3f, 0, 1.3f);
+                    returnVec = new Vector3(1/5f, 0, 1.3f);
 
                     someDub = 1.3;
                }
                else if (rand == 2)
                {
                     //speed = new Vector2 (-2, 0);
-                    returnVec = new Vector3(-1/3f, 0, 1.3f);
+                    returnVec = new Vector3(-1/5f, 0, 1.3f);
                     someDub = 1.3;
                }
                else if (rand == 3)
                {
                     //speed = new Vector2 (0, 2);
 
-                    returnVec = new Vector3(0, 1/3f, 1.3f);
+                    returnVec = new Vector3(0, 1/5f, 1.3f);
                     someDub = 1.3;
                }
                else
                {
                     //speed = new Vector2 (0, -2);
-                    returnVec = new Vector3(0, -1/3f, 1.3f);
+                    returnVec = new Vector3(0, -1/5f, 1.3f);
                     someDub = 1.3;
                }
           }

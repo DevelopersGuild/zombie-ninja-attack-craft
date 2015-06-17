@@ -9,7 +9,8 @@ public class Projectile : MonoBehaviour
      public int damageAmount;
 
      public float stun;
-     private bool homing, shot;
+     [HideInInspector]
+     public bool homing, shot;
 
      public float TimeToLive;
 

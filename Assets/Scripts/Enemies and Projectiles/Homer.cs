@@ -8,7 +8,6 @@ public class Homer : MonoBehaviour
 
      public float projectileSpeed;
      public float angle;
-     public float range;
      public Player player;
 
      public float TimeToLive;
@@ -28,7 +27,8 @@ public class Homer : MonoBehaviour
 
      public void Update()
      {
-          Shoot(direction, projectileSpeed);
+          direction = player.transform.position - transform.position;
+          Shoot(direction.normalized, projectileSpeed);
           if (AutoTileMap.Instance.GetAutotileCollisionAtPosition(transform.position) == AutoTileMap.eTileCollisionType.BLOCK)
           {
                Destroy(transform.gameObject);
@@ -39,6 +39,8 @@ public class Homer : MonoBehaviour
      {
           currentVelocity = direction * projSpd;
           GetComponent<Rigidbody2D>().velocity = currentVelocity;
+          float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+          var q = Quaternion.AngleAxis(angle, Vector3.forward);
      }
 
 

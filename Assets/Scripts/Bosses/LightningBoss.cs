@@ -372,8 +372,8 @@ public class LightningBoss : Boss
 
 
           Vector3 posC = new Vector3(transform.position.x + rotArr[numArr].x * 0.4f, transform.position.y + rotArr[numArr].y * 0.4f);
-          Vector3 posU = new Vector3(transform.position.x + rotArr[numArr].y * -0.3f, transform.position.y + rotArr[numArr].x * -0.3f);
-          Vector3 posD = new Vector3(transform.position.x + rotArr[numArr].y * 0.3f, transform.position.y + rotArr[numArr].x * 0.3f);
+          Vector3 posU = new Vector3(transform.position.x + rotArr[numArr].y * -0.3f, transform.position.y + rotArr[numArr].x * 0.3f);
+          Vector3 posD = new Vector3(transform.position.x + rotArr[numArr].y * 0.3f, transform.position.y + rotArr[numArr].x * -0.3f);
           sparkC = Instantiate(sparkObj, posC, transform.rotation) as ZigZagProj;
           sparkU = Instantiate(sparkObj, posU, transform.rotation) as ZigZagProj;
           sparkD = Instantiate(sparkObj, posD, transform.rotation) as ZigZagProj;
