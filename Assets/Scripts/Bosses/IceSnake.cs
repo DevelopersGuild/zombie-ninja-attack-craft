@@ -13,7 +13,7 @@ public class IceSnake : SnakeBoss
           player = FindObjectOfType<Player>();
           moveController = GetComponent<EnemyMoveController>();
           health = GetComponent<Health>();
-          health.cancelKnockback();
+          
 
           isInvincible = true;
           bite_CD = 10;
@@ -40,6 +40,7 @@ public class IceSnake : SnakeBoss
      {
           if (player != null)
           {
+               health.cancelKnockback();
                if (isBiting)
                {
                     moveController.Move(0, 0);

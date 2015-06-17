@@ -50,8 +50,8 @@ namespace AssemblyCSharp
 
           public void Update()
           {
-              // Debug.Log("LR: " + LRAttack.GetComponent<SpriteRenderer>().bounds.size.x);
-              // Debug.Log("UD: " + UDAttack.GetComponent<SpriteRenderer>().bounds.size.x);
+               // Debug.Log("LR: " + LRAttack.GetComponent<SpriteRenderer>().bounds.size.x);
+               // Debug.Log("UD: " + UDAttack.GetComponent<SpriteRenderer>().bounds.size.x);
                checkInvincibility();
                if (checkStun())
                {
@@ -59,71 +59,75 @@ namespace AssemblyCSharp
                     moveController.Move(0, 0);
                }
                rnd = new System.Random();
-               if (player != null)
+               //basic aggression range formula
+               distance = player.transform.position - transform.position;
+               distanceFromPoint = distance + up;
+               if (distanceFromPoint.magnitude > (distance + left).magnitude)
                {
-                    //basic aggression range formula
-                    distance = player.transform.position - transform.position;
-                    distanceFromPoint = distance + up;
-                    if (distanceFromPoint.magnitude > (distance + left).magnitude)
-                    {
-                         distanceFromPoint = distance + left;
-                    }
-                    if (distanceFromPoint.magnitude > (distance + right).magnitude)
-                    {
-                         distanceFromPoint = distance + right;
-                    }
-                    if (distanceFromPoint.magnitude > (distance + down).magnitude)
-                    {
-                         distanceFromPoint = distance + down;
-                    }
-                    float xSp = distanceFromPoint.normalized.x;
-                    float ySp = distanceFromPoint.normalized.y;
-                    if (distance.magnitude <= AgroRange)
-                    {
-                         isAgro = true;
-                         //animator.SetBool("isCharging", true);
-                    }
-                    if (distance.magnitude > AgroRange)
-                    {
-                         isAgro = false;
-                    }
+                    distanceFromPoint = distance + left;
+               }
+               if (distanceFromPoint.magnitude > (distance + right).magnitude)
+               {
+                    distanceFromPoint = distance + right;
+               }
+               if (distanceFromPoint.magnitude > (distance + down).magnitude)
+               {
+                    distanceFromPoint = distance + down;
+               }
+               float xSp = distanceFromPoint.normalized.x;
+               float ySp = distanceFromPoint.normalized.y;
+               direction = new Vector2(xSp, ySp);
+               if (distance.magnitude <= AgroRange)
+               {
+                    isAgro = true;
+                    //animator.SetBool("isCharging", true);
+               }
+               if (distance.magnitude > AgroRange)
+               {
+                    isAgro = false;
+               }
 
-                    if (isAgro)
+               if (isAgro)
+               {
+                    if (canAttack)
                     {
-                         if (canAttack)
+                         if (distanceFromPoint.magnitude < 0.15f)
                          {
-                              Debug.Log("distance is " + distanceFromPoint);
-                              if (distanceFromPoint.magnitude < 0.15f) {
                               moveController.Move(0, 0);
                               animationController.isAttacking = true;
-
                               //animator.setBool("Attack", true)
-                              
+
                               //when spear goes forward in animation, call Attack();
-                              
-                              }
-                              else
-                              {
-                                   direction = new Vector2(xSp, ySp);
-                                   moveController.Move(direction / 6f);
-                              }
+
+                         }
+                         else
+                         {
+
+                              moveController.Move(direction / 6f);
                          }
                          
                     }
                     else
                     {
-                         if (idleTime > 0.4)
-                         {
-                              someVec = idle(t, rnd);
-                              t = someVec.z;
-                              idleTime = 0;
-                         }
-                         moveController.Move(someVec.x, someVec.y);
+
+                         moveController.Move(direction / 6f);
                     }
 
-                    idleTime += Time.deltaTime;
-                    t -= Time.deltaTime;
                }
+               else
+               {
+                    if (idleTime > 0.4)
+                    {
+                         someVec = idle(t, rnd);
+                         t = someVec.z;
+                         idleTime = 0;
+                    }
+                    moveController.Move(someVec.x, someVec.y);
+               }
+
+               idleTime += Time.deltaTime;
+               t -= Time.deltaTime;
+
           }
 
 

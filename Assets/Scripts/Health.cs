@@ -22,6 +22,7 @@ public class Health : MonoBehaviour
      {
           isDead = false;
           currentHealth = startingHealth;
+          canKnock = true;
      }
 
      public void cancelKnockback()
