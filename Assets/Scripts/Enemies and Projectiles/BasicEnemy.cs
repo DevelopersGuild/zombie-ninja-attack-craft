@@ -7,6 +7,7 @@ namespace AssemblyCSharp
      {
           public BasicAttack LRAttack, UDAttack;
           private BasicAttack attackCollider;
+          private AnimationController animationController;
           private Health health;
 
           private bool isAgro, canAttack;
@@ -23,6 +24,7 @@ namespace AssemblyCSharp
                //animator = GetComponent<Animator>();
 
                moveController = GetComponent<EnemyMoveController>();
+               animationController = GetComponent<AnimationController>();
                health = GetComponent<Health>();
                player = FindObjectOfType<Player>();
 
@@ -93,7 +95,10 @@ namespace AssemblyCSharp
                               Debug.Log("distance is " + distanceFromPoint);
                               if (distanceFromPoint.magnitude < 0.15f) {
                               moveController.Move(0, 0);
+                              animationController.isAttacking = true;
+
                               //animator.setBool("Attack", true)
+                              
                               //when spear goes forward in animation, call Attack();
                               
                               }
@@ -145,9 +150,7 @@ namespace AssemblyCSharp
           public void DoneAttacking()
           {
                canAttack = false;
-               //animator.setBool(attack,false)
-               //animator.setBool(rest, true)
-
+               animationController.isAttacking = false;
           }
 
           //Called by Rest animation after animation finishes (Rest animation is idle but in it's own animation, so it can call methods seperately)

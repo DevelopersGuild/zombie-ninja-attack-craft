@@ -122,9 +122,7 @@ public class Cyclops : Enemy
                               {
                                    if (distance.magnitude < 0.5 && teleportCD >= 10)
                                    {
-
                                         animationController.isTeleporting = true;
-
                                    }
                               }
                               if (distance.magnitude < 1)

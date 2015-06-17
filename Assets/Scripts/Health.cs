@@ -24,7 +24,7 @@ public class Health : MonoBehaviour
           currentHealth = startingHealth;
      }
 
-     public void cancelKnock()
+     public void cancelKnockback()
      {
           canKnock = false;
      }
