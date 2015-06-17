@@ -4,14 +4,20 @@ using UnityEditor;
 
 namespace CreativeSpore.RpgMapEditor
 {
-
+    /// <summary>
+    /// Draw and manage the tileset using the Unity GUI
+    /// </summary>
 	public class TilesetComponent
 	{
+        const int k_visualTileWidth = 32; // doesn't matter the tileset tile size, this size will be used to paint it in the inspector
+        const int k_visualTileHeight = 32;
+
 		public bool IsEditCollision;
 		public int SelectedTileIdx { get{ return m_selectedTileIdx; } }
 		
 		Vector2 m_scrollPos;
-		AutoTileMap.eTilesetGroupType m_tilesetGroupType;
+		int m_subTilesetIdx;
+        string[] m_subTilesetNames;
 		Texture2D m_tilesetTexture;
 		AutoTileMap m_autoTileMap;
 
@@ -62,16 +68,16 @@ namespace CreativeSpore.RpgMapEditor
 
 					if( m_isMouseRight || m_isMouseLeft )
 					{
-						int tile_x = (int)(vPos.x / AutoTileset.TileWorldWidth);
-						int tile_y = (int)(-vPos.y / AutoTileset.TileWorldHeight);
+						int tile_x = (int)(vPos.x / m_autoTileMap.Tileset.TileWorldWidth);
+                        int tile_y = (int)(-vPos.y / m_autoTileMap.Tileset.TileWorldHeight);
 
 						// for optimization, is true when mouse is over a diffent tile during the first update
 						bool isMouseTileChanged = (tile_x != m_prevMouseTileX) || (tile_y != m_prevMouseTileY);
 						
 						//if ( m_autoTileMap.IsValidAutoTilePos(tile_x, tile_y)) // commented to allow drawing outside map, useful when brush has a lot of copied tiles
 						{
-							int gndTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.GROUND ).Type;
-							int gndOverlayTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.GROUND_OVERLAY ).Type;
+							int gndTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.GROUND ).Idx;
+							int gndOverlayTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.GROUND_OVERLAY ).Idx;
 							
 							// mouse right for tile selection
 							if( m_isMouseRightDown || m_isMouseRight && isMouseTileChanged )
@@ -152,9 +158,9 @@ namespace CreativeSpore.RpgMapEditor
 							{
 								for( int tile_y = startTileY; tile_y <= endTileY; ++tile_y  )
 								{
-									int gndTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.GROUND ).Type;
-									int gndOverlayTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.GROUND_OVERLAY ).Type;
-									int overlayTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.OVERLAY ).Type;
+									int gndTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.GROUND ).Idx;
+									int gndOverlayTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.GROUND_OVERLAY ).Idx;
+									int overlayTileType = m_autoTileMap.GetAutoTile( tile_x, tile_y, (int)AutoTileMap.eTileLayer.OVERLAY ).Idx;
 									
 									// Tile position is relative to last released position ( m_dragTile )
 									if( Event.current.shift )
@@ -183,35 +189,52 @@ namespace CreativeSpore.RpgMapEditor
 				// Draw selection rect
 				if( m_isMouseRight )
 				{
-					float rX = m_autoTileMap.transform.position.x + Mathf.Min( m_startDragTileX, m_dragTileX ) * AutoTileset.TileWorldWidth;
-					float rY = m_autoTileMap.transform.position.y + Mathf.Min( m_startDragTileY, m_dragTileY ) * AutoTileset.TileWorldHeight;
-					float rWidth = (Mathf.Abs( m_dragTileX - m_startDragTileX ) + 1) * AutoTileset.TileWorldWidth;
-					float rHeight = (Mathf.Abs( m_dragTileY - m_startDragTileY ) + 1) * AutoTileset.TileWorldHeight;
+                    float rX = m_autoTileMap.transform.position.x + Mathf.Min(m_startDragTileX, m_dragTileX) * m_autoTileMap.Tileset.TileWorldWidth;
+                    float rY = m_autoTileMap.transform.position.y + Mathf.Min(m_startDragTileY, m_dragTileY) * m_autoTileMap.Tileset.TileWorldHeight;
+                    float rWidth = (Mathf.Abs(m_dragTileX - m_startDragTileX) + 1) * m_autoTileMap.Tileset.TileWorldWidth;
+                    float rHeight = (Mathf.Abs(m_dragTileY - m_startDragTileY) + 1) * m_autoTileMap.Tileset.TileWorldHeight;
 					Rect rSelection = new Rect( rX, -rY, rWidth, -rHeight );
 					UtilsGuiDrawing.DrawRectWithOutline( rSelection, new Color(0f, 1f, 0f, 0.2f), new Color(0f, 1f, 0f, 1f));
 				}
 			}
 		}
-		
+
+        private void _refreshSubTilesetNames()
+        {
+            m_subTilesetNames = new string[m_autoTileMap.Tileset.SubTilesets.Count];
+            for (int i = 0; i < m_autoTileMap.Tileset.SubTilesets.Count; ++i)
+            {
+                m_subTilesetNames[i] = m_autoTileMap.Tileset.SubTilesets[i].Name;
+            }
+        }
+
 		public void OnInspectorGUI( Rect rScrollView )
 		{
 			float fEnumPopupHeight = 50f;
-			m_tilesetGroupType = (AutoTileMap.eTilesetGroupType)EditorGUI.EnumPopup( new Rect( rScrollView.x, rScrollView.y, rScrollView.width, fEnumPopupHeight), "Tileset: ", m_tilesetGroupType );
+
+            // refresh data if needed
+            if (m_subTilesetNames == null || m_subTilesetNames.Length != m_autoTileMap.Tileset.SubTilesets.Count)
+            {
+                _refreshSubTilesetNames();
+                m_subTilesetIdx = Mathf.Clamp(m_subTilesetIdx, 0, m_autoTileMap.Tileset.SubTilesets.Count);
+            }
+			m_subTilesetIdx = EditorGUI.Popup( new Rect( rScrollView.x, rScrollView.y, rScrollView.width, fEnumPopupHeight), "Tileset: ", m_subTilesetIdx, m_subTilesetNames );
 			rScrollView.y += fEnumPopupHeight;
 			rScrollView.height -= fEnumPopupHeight;
 			
 			if( GUI.changed || m_tilesetTexture == null )
 			{
-				m_tilesetTexture = UtilsAutoTileMap.GenerateTilesetTexture( m_autoTileMap.Tileset.TilesetsAtlasTexture, m_tilesetGroupType );
+				m_tilesetTexture = UtilsAutoTileMap.GenerateTilesetTexture( m_autoTileMap.Tileset, m_autoTileMap.Tileset.SubTilesets[ m_subTilesetIdx ] );
 			}
 			
+            float fScale = (float)k_visualTileWidth / m_autoTileMap.Tileset.TileWidth; // scale texture to have the same size as when tile size was 32x32
 			float fScrollBarWidth = 16f;
-			rScrollView.width = m_tilesetTexture.width+fScrollBarWidth;
-			
-			Rect rTileset = new Rect( 0f, 0f, (float)m_tilesetTexture.width, (float)m_tilesetTexture.height);
+			rScrollView.width = m_tilesetTexture.width * fScale + fScrollBarWidth;
+
+            Rect rTileset = new Rect(0f, 0f, (float)m_tilesetTexture.width * fScale, (float)m_tilesetTexture.height * fScale);
 			if( m_tilesetTexture != null )
 			{
-				Rect rTile = new Rect(0, 0, AutoTileset.TileWidth, AutoTileset.TileHeight);
+                Rect rTile = new Rect(0, 0, k_visualTileWidth, k_visualTileHeight);
 				// BeginScrollView
 				m_scrollPos = GUI.BeginScrollView( rScrollView, m_scrollPos, rTileset);
 				{
@@ -221,10 +244,10 @@ namespace CreativeSpore.RpgMapEditor
 					{
 						for( int autoTileLocalIdx = 0; autoTileLocalIdx < 256; ++autoTileLocalIdx ) //autoTileLocalIdx: index of current tileset group
 						{
-							rTile.x = rTileset.x + (autoTileLocalIdx % AutoTileset.AutoTilesPerRow) * AutoTileset.TileWidth;
-							rTile.y = rTileset.y + (autoTileLocalIdx / AutoTileset.AutoTilesPerRow) * AutoTileset.TileHeight;
+                            rTile.x = rTileset.x + (autoTileLocalIdx % m_autoTileMap.Tileset.AutoTilesPerRow) * k_visualTileWidth;
+                            rTile.y = rTileset.y + (autoTileLocalIdx / m_autoTileMap.Tileset.AutoTilesPerRow) * k_visualTileHeight;
 							
-							int autoTileIdx = autoTileLocalIdx + (int)m_tilesetGroupType * 256; // global autotile idx
+							int autoTileIdx = autoTileLocalIdx + (int)m_subTilesetIdx * 256; // global autotile idx
 							if (Event.current.type == EventType.MouseUp)
 							{
 								if( rTile.Contains( Event.current.mousePosition ) )
@@ -266,27 +289,27 @@ namespace CreativeSpore.RpgMapEditor
 							}
 							
 							//debug Alpha tiles
-							/*
-								if( m_autoTileMap.Tileset.IsAutoTileHasAlpha[autoTileIdx] )
-								{
-									GUIStyle style = new GUIStyle();
-									style.fontSize = 30;
-									style.fontStyle = FontStyle.Bold;
-									style.alignment = TextAnchor.MiddleCenter;
-									style.normal.textColor = Color.blue;
-									GUI.Box( rTile, "A", style );
-								}
-								*/
+							/*/
+							if( m_autoTileMap.Tileset.IsAutoTileHasAlpha[autoTileIdx] )
+							{
+								GUIStyle style = new GUIStyle();
+								style.fontSize = 30;
+								style.fontStyle = FontStyle.Bold;
+								style.alignment = TextAnchor.MiddleCenter;
+								style.normal.textColor = Color.blue;
+								GUI.Box( rTile, "A", style );
+							}
+							//*/
 						}
 					}
 					else
 					{
 						UpdateTilesetOnInspector( rTileset );
 
-						Rect rSelected = new Rect( 0, 0, AutoTileset.TileWidth, AutoTileset.TileHeight );
+                        Rect rSelected = new Rect(0, 0, k_visualTileWidth, k_visualTileHeight);
 						int tileWithSelectMark = m_selectedTileIdx;
-						tileWithSelectMark -= (int)m_tilesetGroupType * 256;
-						rSelected.position = rTileset.position + new Vector2( (tileWithSelectMark % AutoTileset.AutoTilesPerRow)*AutoTileset.TileWidth, (tileWithSelectMark / AutoTileset.AutoTilesPerRow)*AutoTileset.TileHeight );
+						tileWithSelectMark -= (int)m_subTilesetIdx * 256;
+                        rSelected.position = rTileset.position + new Vector2((tileWithSelectMark % m_autoTileMap.Tileset.AutoTilesPerRow) * k_visualTileWidth, (tileWithSelectMark / m_autoTileMap.Tileset.AutoTilesPerRow) * k_visualTileHeight);
 						UtilsGuiDrawing.DrawRectWithOutline( rSelected, new Color( 0f, 0f, 0f, 0.1f ), new Color( 1f, 1f, 1f, 1f ) );
 					}
 				}
@@ -350,9 +373,9 @@ namespace CreativeSpore.RpgMapEditor
 			{
 				UpdateMouseInputs();
 				Vector2 mouseLocalPos = Event.current.mousePosition - new Vector2( rTileset.x, rTileset.y);
-				int tx = (int)(mouseLocalPos.x / AutoTileset.TileWidth);
-				int ty = (int)(mouseLocalPos.y / AutoTileset.TileHeight);
-				int autotileIdx = ty*AutoTileset.AutoTilesPerRow + tx + ((int)m_tilesetGroupType * 256);
+                int tx = (int)(mouseLocalPos.x / k_visualTileWidth);
+                int ty = (int)(mouseLocalPos.y / k_visualTileHeight);
+                int autotileIdx = ty * m_autoTileMap.Tileset.AutoTilesPerRow + tx + ((int)m_subTilesetIdx * 256);
 
 				if( m_isMouseLeftDown )
 				{
@@ -381,17 +404,17 @@ namespace CreativeSpore.RpgMapEditor
 				// Draw selection rect
 				if( m_tilesetSelStart >= 0 && m_tilesetSelEnd >= 0 )
 				{
-					int tilesetIdxStart = m_tilesetSelStart - ((int)m_tilesetGroupType * 256); // make it relative to selected tileset
-					int tilesetIdxEnd = m_tilesetSelEnd - ((int)m_tilesetGroupType * 256); // make it relative to selected tileset
+					int tilesetIdxStart = m_tilesetSelStart - ((int)m_subTilesetIdx * 256); // make it relative to selected tileset
+					int tilesetIdxEnd = m_tilesetSelEnd - ((int)m_subTilesetIdx * 256); // make it relative to selected tileset
 					Rect selRect = new Rect( );
-					int TileStartX = tilesetIdxStart % AutoTileset.AutoTilesPerRow;
-					int TileStartY = tilesetIdxStart / AutoTileset.AutoTilesPerRow;
-					int TileEndX = tilesetIdxEnd % AutoTileset.AutoTilesPerRow;
-					int TileEndY = tilesetIdxEnd / AutoTileset.AutoTilesPerRow;
-					selRect.width = (Mathf.Abs( TileEndX - TileStartX ) + 1) * AutoTileset.TileWidth;
-					selRect.height = (Mathf.Abs( TileEndY - TileStartY ) + 1) * AutoTileset.TileHeight;
-					float scrX = Mathf.Min( TileStartX, TileEndX ) * AutoTileset.TileWidth;
-					float scrY = Mathf.Min( TileStartY, TileEndY ) * AutoTileset.TileHeight;
+                    int TileStartX = tilesetIdxStart % m_autoTileMap.Tileset.AutoTilesPerRow;
+                    int TileStartY = tilesetIdxStart / m_autoTileMap.Tileset.AutoTilesPerRow;
+                    int TileEndX = tilesetIdxEnd % m_autoTileMap.Tileset.AutoTilesPerRow;
+                    int TileEndY = tilesetIdxEnd / m_autoTileMap.Tileset.AutoTilesPerRow;
+                    selRect.width = (Mathf.Abs(TileEndX - TileStartX) + 1) * k_visualTileWidth;
+                    selRect.height = (Mathf.Abs(TileEndY - TileStartY) + 1) * k_visualTileHeight;
+                    float scrX = Mathf.Min(TileStartX, TileEndX) * k_visualTileWidth;
+                    float scrY = Mathf.Min(TileStartY, TileEndY) * k_visualTileHeight;
 					selRect.position = new Vector2( scrX, scrY );
 					selRect.position += rTileset.position;
 					//selRect.y = Screen.height - selRect.y;

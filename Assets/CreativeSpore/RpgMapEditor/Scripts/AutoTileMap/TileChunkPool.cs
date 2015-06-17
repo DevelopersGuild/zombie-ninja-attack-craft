@@ -4,10 +4,21 @@ using System.Collections.Generic;
 
 namespace CreativeSpore.RpgMapEditor
 {
+
+    /// <summary>
+    /// Manages the creation of all map tile chunks
+    /// </summary>
 	public class TileChunkPool : MonoBehaviour 
 	{
-		public const int k_TileChunkWidth = 32;
-		public const int k_TileChunkHeight = 32;
+        /// <summary>
+        /// The witdth size of the generated tilechunks in tiles ( due max vertex limitation, this should be less than 62 )
+        /// </summary>
+		public const int k_TileChunkWidth = 62;
+
+        /// <summary>
+        /// The height size of the generated tilechunks in tiles ( due max vertex limitation, this should be less than 62 )
+        /// </summary>
+		public const int k_TileChunkHeight = 62;
 
 		[System.Serializable]
 		public class TileChunkLayer
@@ -41,6 +52,12 @@ namespace CreativeSpore.RpgMapEditor
 			m_tileChunkToBeUpdated.Clear();
 		}
 
+        /// <summary>
+        /// Mark a tile to be updated during update
+        /// </summary>
+        /// <param name="tileX"></param>
+        /// <param name="tileY"></param>
+        /// <param name="layer"></param>
 		public void MarkUpdatedTile( int tileX, int tileY, int layer )
 		{
 			TileChunk tileChunk = _GetTileChunk( tileX, tileY, layer );
@@ -50,11 +67,14 @@ namespace CreativeSpore.RpgMapEditor
 			}
 		}
 
+        /// <summary>
+        /// Update marked chunks
+        /// </summary>
 		public void UpdateChunks()
 		{
 			while( m_tileChunkToBeUpdated.Count > 0 )
 			{
-				m_tileChunkToBeUpdated[0].ApplyData();
+				m_tileChunkToBeUpdated[0].RefreshTileData();
 				m_tileChunkToBeUpdated.RemoveAt(0);
 			}
 		}

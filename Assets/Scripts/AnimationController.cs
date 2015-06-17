@@ -1,27 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AnimationController : MonoBehaviour {
+public class AnimationController : MonoBehaviour
+{
 
      private Animator animator;
      private EnemyMoveController moveController;
-     public bool isAttacking;
+     public bool canFaceMultiple;
+     public bool canTeleport;
+     public bool canAttack;
      public bool isTeleporting;
+     public bool isAttacking;
      public bool gotAttacked;
-     public bool facesMultiple;
 
-	// Use this for initialization
-	void Start () {
+
+     // Use this for initialization
+     void Start()
+     {
           moveController = GetComponent<EnemyMoveController>();
           animator = GetComponent<Animator>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+     }
+
+     // Update is called once per frame
+     void Update()
+     {
 
           if (animator != null)
           {
-               if (facesMultiple)
+               if (canFaceMultiple)
                {
                     animator.SetFloat("movement_x", moveController.movementVector.x);
                     animator.SetFloat("movement_y", moveController.movementVector.y);
@@ -38,9 +44,17 @@ public class AnimationController : MonoBehaviour {
                     }
                }
 
+               if (canAttack)
+               {
+                    animator.SetBool("isAttacking", isAttacking);
+               }
+
+               if (canTeleport)
+               {
+                    animator.SetBool("isTeleporting", isTeleporting);
+               }
+
                animator.SetBool("isMoving", moveController.isMoving);
-               animator.SetBool("isAttacking", isAttacking);
-               animator.SetBool("isTeleporting", isTeleporting);
           }
-	}
+     }
 }

@@ -78,6 +78,7 @@ namespace AssemblyCSharp
                     playerPos = player.transform;
                     float xSp = player.transform.position.x - transform.position.x;
                     float ySp = player.transform.position.y - transform.position.y;
+                    playerPos = player.transform;
                     distance = playerPos.position - transform.position;
 
                     //Check if player is in range of angel (aggression range)

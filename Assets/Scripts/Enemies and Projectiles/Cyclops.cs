@@ -120,13 +120,14 @@ public class Cyclops : Enemy
                               moveController.Move(0, 0);
                               if (canTeleport)
                               {
-                                   if (distance.magnitude < 0.5 && teleportCD >= 10) {
-                                   
+                                   if (distance.magnitude < 0.5 && teleportCD >= 10)
+                                   {
+
                                         animationController.isTeleporting = true;
 
                                    }
                               }
-                              else if (distance.magnitude < 1.5)
+                              if (distance.magnitude < 1)
                               {
                                    moveController.Move(-direction / 4);
                               }
@@ -134,14 +135,13 @@ public class Cyclops : Enemy
                               else if (laserCD >= 3)
                               {
                                    moveController.Move(0, 0);
+                                   animationController.isAttacking = true;
 
-                                        animationController.isAttacking = true;
-                                       
-                                   
+
 
                               }
 
-                             
+
                          }
                          else
                          {
@@ -179,7 +179,6 @@ public class Cyclops : Enemy
      public void Shoot()
      {
           Vector3 offset;
-
           laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
           laser.GetComponent<Rigidbody2D>().velocity = (direction * projectileSpeed);
           laserCD = 0;

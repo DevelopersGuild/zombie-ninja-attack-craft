@@ -116,7 +116,7 @@ public class WorkingCharger : Enemy
                          checkPlayer(check);
                          check = false;
                          runTime += Time.deltaTime;
-                         moveController.Move(moveDir * 9);
+                         moveController.Move(moveDir * 2);
                          //Play Animation
                          //DoneCharging();
                          //speed = new Vector2(5 * xSpeed, 5 * ySpeed);

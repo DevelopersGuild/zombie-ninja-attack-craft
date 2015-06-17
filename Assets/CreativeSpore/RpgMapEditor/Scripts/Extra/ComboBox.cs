@@ -66,6 +66,22 @@ public class ComboBox
     private string boxStyle;
     private GUIStyle listStyle;
 
+    public ComboBox(Rect rect, int selectedIdx, string[] options, GUIStyle listStyle)
+    {
+        GUIContent[] listContent = new GUIContent[options.Length];
+        for (int i = 0; i < options.Length; ++i)
+        {
+            listContent[i] = new GUIContent(options[i]);
+        }
+
+        this.rect = rect;
+        this.buttonContent = listContent[selectedIdx];
+        this.listContent = listContent;
+        this.buttonStyle = "button";
+        this.boxStyle = "box";
+        this.listStyle = listStyle;
+    }
+
     public ComboBox(Rect rect, GUIContent buttonContent, GUIContent[] listContent, GUIStyle listStyle)
     {
         this.rect = rect;

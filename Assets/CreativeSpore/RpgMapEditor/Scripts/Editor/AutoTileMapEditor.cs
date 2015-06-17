@@ -26,7 +26,7 @@ namespace CreativeSpore.RpgMapEditor
 			}
 			if( MyAutoTileMap.BrushGizmo != null )
 			{
-				MyAutoTileMap.BrushGizmo.gameObject.SetActive(true);
+				MyAutoTileMap.BrushGizmo.gameObject.SetActive(false);
 			}
 		}
 
@@ -57,7 +57,7 @@ namespace CreativeSpore.RpgMapEditor
 			Handles.Label( HandleUtility.GUIPointToWorldRay(Vector3.zero).origin, " Brush Pos: "+MyAutoTileMap.BrushGizmo.BrushTilePos);
 			Handles.Label( HandleUtility.GUIPointToWorldRay(new Vector3(0f, 16f)).origin, " Select Tile Idx: "+m_tilesetComponent.SelectedTileIdx);
 
-			Rect rAutoTileMap = new Rect( MyAutoTileMap.transform.position.x, MyAutoTileMap.transform.position.y, MyAutoTileMap.MapTileWidth * AutoTileset.TileWorldWidth, -MyAutoTileMap.MapTileHeight * AutoTileset.TileWorldHeight );
+            Rect rAutoTileMap = new Rect(MyAutoTileMap.transform.position.x, MyAutoTileMap.transform.position.y, MyAutoTileMap.MapTileWidth * MyAutoTileMap.Tileset.TileWorldWidth, -MyAutoTileMap.MapTileHeight * MyAutoTileMap.Tileset.TileWorldHeight);
 			UtilsGuiDrawing.DrawRectWithOutline( rAutoTileMap, new Color(0f, 0f, 0f, 0f), new Color(1f, 1f, 1f, 1f));
 			if( m_showCollisions )
 			{
@@ -71,23 +71,23 @@ namespace CreativeSpore.RpgMapEditor
 				EventType currentEventType = Event.current.GetTypeForControl(controlID);
 				bool skip = false;
 				int saveControl = GUIUtility.hotControl;
-				
-				if (currentEventType==EventType.Layout)      {skip=true;}
-				else if (currentEventType==EventType.ScrollWheel) {skip=true;}
 
-				if ( !skip) 
-				{
-					EditorGUIUtility.AddCursorRect( new Rect(0f,0f,(float)Screen.width,(float)Screen.height), MouseCursor.Arrow);
-					GUIUtility.hotControl=controlID;
+                if (currentEventType == EventType.Layout) { skip = true; }
+                else if (currentEventType == EventType.ScrollWheel) { skip = true; }
 
-					m_tilesetComponent.OnSceneGUI();
+                if (!skip)
+                {
+                    EditorGUIUtility.AddCursorRect(new Rect(0f, 0f, (float)Screen.width, (float)Screen.height), MouseCursor.Arrow);
+                    GUIUtility.hotControl = controlID;
 
-					if( currentEventType==EventType.MouseDrag && Event.current.button < 2 ) // 2 is for central mouse button
-					{
-						// avoid dragging the map
-						Event.current.Use();
-					}
-				}
+                    m_tilesetComponent.OnSceneGUI();
+
+                    if (currentEventType == EventType.MouseDrag && Event.current.button < 2) // 2 is for central mouse button
+                    {
+                        // avoid dragging the map
+                        Event.current.Use();
+                    }
+                }
 
 				GUIUtility.hotControl = saveControl;
 
@@ -112,9 +112,9 @@ namespace CreativeSpore.RpgMapEditor
 			serializedObject.Update();
 
 			EditorGUILayout.BeginHorizontal();
-			if( MyAutoTileMap.Tileset != null && MyAutoTileMap.Tileset.TilesetsAtlasTexture == null )
+			if( MyAutoTileMap.Tileset != null && MyAutoTileMap.Tileset.AtlasTexture == null )
 			{
-				MyAutoTileMap.Tileset.TilesetsAtlasTexture = EditorGUILayout.ObjectField ("Tileset Atlas", MyAutoTileMap.Tileset.TilesetsAtlasTexture, typeof(Texture2D), false) as Texture2D;
+				MyAutoTileMap.Tileset.AtlasTexture = EditorGUILayout.ObjectField ("Tileset Atlas", MyAutoTileMap.Tileset.AtlasTexture, typeof(Texture2D), false) as Texture2D;
 				if (GUILayout.Button("Edit Tileset..."))
 				{
 					AutoTilesetEditorWindow.ShowDialog( MyAutoTileMap.Tileset );
@@ -206,7 +206,10 @@ namespace CreativeSpore.RpgMapEditor
             else
             {
                 Renderer minimapRenderer = MyAutoTileMap.EditorMinimapRender.GetComponent<Renderer>();
-                minimapRenderer.enabled = EditorGUILayout.Toggle("Show Minimap", minimapRenderer.enabled);
+                bool prevEnabled = minimapRenderer.enabled;
+                minimapRenderer.enabled = EditorGUILayout.Toggle("Show Minimap", minimapRenderer.enabled);                
+                if (!prevEnabled && minimapRenderer.enabled) MyAutoTileMap.RefreshMinimapTexture();
+                MyAutoTileMap.BrushGizmo.IsRefreshMinimapEnabled = minimapRenderer.enabled;
             }
             m_showCollisions = EditorGUILayout.Toggle("Show Collisions", m_showCollisions);
             MyAutoTileMap.SaveChangesAfterPlaying = EditorGUILayout.Toggle("Save Changes After Playing", MyAutoTileMap.SaveChangesAfterPlaying);
@@ -219,6 +222,11 @@ namespace CreativeSpore.RpgMapEditor
             if (Application.isPlaying)
             {
                 return;
+            }
+
+            if (GUILayout.Button("Reload Map"))
+            {
+                MyAutoTileMap.LoadMap();
             }
 
             if (GUILayout.Button("Import Map..."))
@@ -264,37 +272,53 @@ namespace CreativeSpore.RpgMapEditor
                             //Debug.Log( "noise: "+noise+"; i: "+i+"; j: "+j );
                             if (noise < 0.3) //water
                             {
-                                MyAutoTileMap.SetAutoTile(i, j, 0, (int)AutoTileMap.eTileLayer.GROUND);
+                                MyAutoTileMap.SetAutoTile(i, j, 0, (int)AutoTileMap.eTileLayer.GROUND, false);
                             }
                             else if (noise < 0.4) // water plants
                             {
-                                MyAutoTileMap.SetAutoTile(i, j, 0, (int)AutoTileMap.eTileLayer.GROUND);
+                                MyAutoTileMap.SetAutoTile(i, j, 0, (int)AutoTileMap.eTileLayer.GROUND, false);
                                 if (fRand < noise / 3)
-                                    MyAutoTileMap.SetAutoTile(i, j, 5, (int)AutoTileMap.eTileLayer.GROUND_OVERLAY);
+                                    MyAutoTileMap.SetAutoTile(i, j, 5, (int)AutoTileMap.eTileLayer.GROUND_OVERLAY, false);
                             }
                             else if (noise < 0.5 && fRand < (1 - noise / 2)) // dark grass
                             {
-                                MyAutoTileMap.SetAutoTile(i, j, 32, (int)AutoTileMap.eTileLayer.GROUND);
+                                MyAutoTileMap.SetAutoTile(i, j, 32, (int)AutoTileMap.eTileLayer.GROUND, false);
                             }
                             else if (noise < 0.6 && fRand < (1 - 1.2 * noise)) // flowers
                             {
                                 //MyAutoTileMap.AddAutoTile( i, j, 24, (int)AutoTileMap.eTileLayer.GROUND);
-                                MyAutoTileMap.SetAutoTile(i, j, 144, (int)AutoTileMap.eTileLayer.GROUND);
-                                MyAutoTileMap.SetAutoTile(i, j, 288 + Random.Range(0, 5), (int)AutoTileMap.eTileLayer.GROUND_OVERLAY);
+                                MyAutoTileMap.SetAutoTile(i, j, 144, (int)AutoTileMap.eTileLayer.GROUND, false);
+                                MyAutoTileMap.SetAutoTile(i, j, 288 + Random.Range(0, 5), (int)AutoTileMap.eTileLayer.GROUND_OVERLAY, false);
                             }
                             else if (noise < 0.7) // grass
                             {
-                                MyAutoTileMap.SetAutoTile(i, j, 144, (int)AutoTileMap.eTileLayer.GROUND);
+                                MyAutoTileMap.SetAutoTile(i, j, 144, (int)AutoTileMap.eTileLayer.GROUND, false);
                             }
                             else // mountains
                             {
-                                MyAutoTileMap.SetAutoTile(i, j, 33, (int)AutoTileMap.eTileLayer.GROUND);
+                                MyAutoTileMap.SetAutoTile(i, j, 33, (int)AutoTileMap.eTileLayer.GROUND, false);
                             }
                         }
                     }
+                    //float now, now2;
+                    //now = Time.realtimeSinceStartup;
+
+                    //now2 = Time.realtimeSinceStartup;
+                    MyAutoTileMap.RefreshAllTiles();
+                    //Debug.Log("RefreshAllTiles execution time(ms): " + (Time.realtimeSinceStartup - now2) * 1000);
+
+                    //now2 = Time.realtimeSinceStartup;
                     MyAutoTileMap.SaveMap();
+                    //Debug.Log("SaveMap execution time(ms): " + (Time.realtimeSinceStartup - now2) * 1000);
+
                     MyAutoTileMap.RefreshMinimapTexture();
+
+                    //now2 = Time.realtimeSinceStartup;
                     MyAutoTileMap.UpdateChunks();
+                    //Debug.Log("UpdateChunks execution time(ms): " + (Time.realtimeSinceStartup - now2) * 1000);
+
+                    //Debug.Log("Total execution time(ms): " + (Time.realtimeSinceStartup - now) * 1000);
+
                 }
             }
         }
@@ -306,6 +330,10 @@ namespace CreativeSpore.RpgMapEditor
                 if (GUILayout.Button("Commit"))
                 {
                     IsEditModeOn = false;
+                    if (MyAutoTileMap.BrushGizmo != null)
+                    {
+                        MyAutoTileMap.BrushGizmo.gameObject.SetActive(false);
+                    }                    
                     MyAutoTileMap.SaveMap();
                     EditorUtility.SetDirty(MyAutoTileMap);
                     EditorUtility.SetDirty(MyAutoTileMap.Tileset);
@@ -333,6 +361,10 @@ namespace CreativeSpore.RpgMapEditor
                 if (GUILayout.Button("Edit"))
                 {
                     IsEditModeOn = true;
+                    if (MyAutoTileMap.BrushGizmo != null)
+                    {
+                        MyAutoTileMap.BrushGizmo.gameObject.SetActive(true);
+                    }
                     Repaint();
                 }
                 EditorGUILayout.HelpBox("Press Edit to start painting and remember to commit your changes to be sure they are saved into asset map data.", MessageType.Info);
@@ -342,8 +374,8 @@ namespace CreativeSpore.RpgMapEditor
 
 		void DrawCollisions()
 		{
-			float fCollW = AutoTileset.TileWorldWidth/4;
-			float fCollH = AutoTileset.TileWorldHeight/4;
+            float fCollW = MyAutoTileMap.Tileset.TileWorldWidth / 4;
+            float fCollH = MyAutoTileMap.Tileset.TileWorldHeight / 4;
 			Rect rColl = new Rect(0, 0, fCollW, -fCollH);
 			Color cColl = new Color( 1f, 0f, 0f, 0.1f );
 			Vector3 vTopLeft = HandleUtility.GUIPointToWorldRay(Vector3.zero).origin;
@@ -354,9 +386,9 @@ namespace CreativeSpore.RpgMapEditor
 			vTopLeft.y -= (vTopLeft.y % fCollH) + fCollH/2;
 			vBottomRight.x -= (vBottomRight.x % fCollW) - fCollW/2;
 			vBottomRight.y -= (vBottomRight.y % fCollH) - fCollH/2;
-			for( float y = vTopLeft.y; y <= vBottomRight.y; y+=AutoTileset.TileWorldHeight/4 )
+            for (float y = vTopLeft.y; y <= vBottomRight.y; y += MyAutoTileMap.Tileset.TileWorldHeight / 4)
 			{
-				for( float x = vTopLeft.x; x <= vBottomRight.x; x+=AutoTileset.TileWorldWidth/4 )
+                for (float x = vTopLeft.x; x <= vBottomRight.x; x += MyAutoTileMap.Tileset.TileWorldWidth / 4)
 				{
 					AutoTileMap.eTileCollisionType collType = MyAutoTileMap.GetAutotileCollisionAtPosition( new Vector3( x, -y ) );
 					if( collType != AutoTileMap.eTileCollisionType.PASSABLE )

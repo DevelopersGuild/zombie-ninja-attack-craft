@@ -7,12 +7,14 @@ namespace CreativeSpore
     [RequireComponent(typeof(MovingBehaviour))]
     [RequireComponent(typeof(PhysicCharBehaviour))]
     [RequireComponent(typeof(MapPathFindingBehaviour))]
+    [RequireComponent(typeof(CharAnimationController))]
 	public class FollowerAI : MonoBehaviour {
 
 		GameObject m_player;
 		MovingBehaviour m_moving;
 		PhysicCharBehaviour m_phyChar;
         MapPathFindingBehaviour m_pathFindingBehaviour;
+        CharAnimationController m_animCtrl;
 
 		public float AngRandRadious = 0.16f;
 		public float AngRandOff = 15f;
@@ -26,12 +28,31 @@ namespace CreativeSpore
 			m_moving = GetComponent<MovingBehaviour>();
 			m_phyChar = GetComponent<PhysicCharBehaviour>();
             m_pathFindingBehaviour = GetComponent<MapPathFindingBehaviour>();
-            m_pathFindingBehaviour.Target = m_player;
+            m_animCtrl = GetComponent<CharAnimationController>();
 		}
-		
+
+        void UpdateAnimDir()
+        {
+            if (Mathf.Abs(m_moving.Veloc.x) > Mathf.Abs(m_moving.Veloc.y))
+            {
+                if (m_moving.Veloc.x > 0)
+                    m_animCtrl.CurrentDir = CharAnimationController.eDir.RIGHT;
+                else if (m_moving.Veloc.x < 0)
+                    m_animCtrl.CurrentDir = CharAnimationController.eDir.LEFT;
+            }
+            else
+            {
+                if (m_moving.Veloc.y > 0)
+                    m_animCtrl.CurrentDir = CharAnimationController.eDir.UP;
+                else if (m_moving.Veloc.y < 0)
+                    m_animCtrl.CurrentDir = CharAnimationController.eDir.DOWN;
+            }
+        }
+
 		// Update is called once per frame
 		void Update() 
 		{
+            m_pathFindingBehaviour.TargetPos = m_player.transform.position;
             Vector3 vTarget = m_player.transform.position; vTarget.z = transform.position.z;
 
             m_pathFindingBehaviour.enabled = (vTarget - transform.position).sqrMagnitude > 0.32*0.32;
@@ -69,6 +90,8 @@ namespace CreativeSpore
                 m_moving.ApplyForce(vTurnVel - m_moving.Veloc);
             }
             //---
+
+            UpdateAnimDir();
 		}
 	}
 }

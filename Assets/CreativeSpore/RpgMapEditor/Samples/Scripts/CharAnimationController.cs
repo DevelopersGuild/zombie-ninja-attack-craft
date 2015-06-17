@@ -32,6 +32,7 @@ namespace CreativeSpore
         public bool IsPingPongAnim = true; // set true for ping pong animation
 		public bool IsAnimated = true;
 		public float AnimSpeed = 9f; // frames per second
+        public int AnimFrames = 3; // how many frames have any animation ( default 3 for VX Character, use 4 for XP Characters )
 
         [SerializeField]
         public int CurrentFrame
@@ -41,7 +42,7 @@ namespace CreativeSpore
                 int curFrame = m_internalFrame;
                 if (IsPingPongAnim && m_isPingPongReverse)
                 {
-                    curFrame = 2 - curFrame; // 2 is the number of animation frames - 1
+                    curFrame = AnimFrames - 1 - curFrame;
                 }
                 return curFrame;
             }
@@ -78,12 +79,12 @@ namespace CreativeSpore
                 {
                     int frameIdx = CurrentFrame;
                     float frameTime = 1 / AnimSpeed;
-                    if (IsPingPongAnim && (frameIdx == 0 || frameIdx == 2))
+                    if (IsPingPongAnim && (frameIdx == 0 || frameIdx == (AnimFrames-1)))
                     {
                         frameTime /= 2; // avoid stay twice of the time in the first and last frame of the animation
                     }
                     m_curFrameTime -= frameTime;
-                    ++m_internalFrame; m_internalFrame %= 3; // 3 is the number of animation frames
+                    ++m_internalFrame; m_internalFrame %= AnimFrames;
                     if (m_internalFrame == 0)
                     {
                         m_isPingPongReverse = !m_isPingPongReverse;
@@ -95,7 +96,7 @@ namespace CreativeSpore
                 m_internalFrame = 0;
             }
 
-            TargetSpriteRenderer.sprite = SpriteFrames[(int)((int)CurrentDir * 3 + CurrentFrame)];
+            TargetSpriteRenderer.sprite = SpriteFrames[(int)((int)CurrentDir * AnimFrames + CurrentFrame)];
         }
 
 		[ContextMenu ("CreateSpriteFrames")]
@@ -104,7 +105,7 @@ namespace CreativeSpore
 			if( SpriteCharSet != null )
 			{
 				SpriteFrames.Clear();
-				int frameWidth = (int)SpriteCharSet.rect.width/3;
+                int frameWidth = (int)SpriteCharSet.rect.width / AnimFrames;
                 int frameHeight = (int)SpriteCharSet.rect.height / 4;
 				int frameNb = 0;
 				Rect rFrame = new Rect(0f, 0f, (float)frameWidth, (float)frameHeight);

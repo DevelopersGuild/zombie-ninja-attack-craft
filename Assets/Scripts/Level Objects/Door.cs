@@ -3,9 +3,7 @@ using System.Collections;
 
 public class Door : MonoBehaviour
 {
-
-     public Sprite opened;
-     public Sprite closed;
+     public bool isKey;
 
      SpriteRenderer sr;
      public BoxCollider2D collider;
@@ -20,26 +18,12 @@ public class Door : MonoBehaviour
      public void OpenDoor()
      {
           collider.enabled = false;
-          if (opened != null)
-          {
-               sr.sprite = opened;
-          }
-          else
-          {
-               sr.enabled = false;
-          }
+          sr.enabled = false;
      }
 
      public void CloseDoor()
      {
           collider.enabled = true;
-          if (closed != null)
-          {
-               sr.sprite = closed;
-          }
-          else
-          {
-               sr.enabled = true;
-          }
+          sr.enabled = true;
      }
 }

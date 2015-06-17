@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using CreativeSpore.RpgMapEditor;
 
 namespace CreativeSpore
 {
@@ -19,7 +20,9 @@ namespace CreativeSpore
 		void Update () 
 		{
 			Vector3 vPos = m_spriteRender.transform.position;
-			vPos.z = ( Mathf.Floor(transform.position.y*100) * 0.0001f); //100 = pixel size
+            float f0 = Mathf.Abs( AutoTileMap.Instance.OverlayLayerZ - AutoTileMap.Instance.GroundOverlayLayerZ);
+            float f1 = Mathf.Abs(AutoTileMap.Instance.transform.position.y - transform.position.y) / (AutoTileMap.Instance.MapTileHeight * AutoTileMap.Instance.Tileset.TileWorldHeight);
+            vPos.z = AutoTileMap.Instance.GroundOverlayLayerZ - f0 * f1;
 			m_spriteRender.transform.position = vPos;
 		}
 	}
