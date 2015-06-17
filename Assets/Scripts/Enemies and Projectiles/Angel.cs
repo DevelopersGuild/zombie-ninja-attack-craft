@@ -13,6 +13,8 @@ namespace AssemblyCSharp
           public FakeAngel angelFakeObject;
           public RealAngel angelRealObject;
 
+          private SpriteRenderer sprRend;
+          private BoxCollider2D boxColl;
 
           public GameObject circleCollObj;
           private GameObject circleColl;
@@ -39,6 +41,8 @@ namespace AssemblyCSharp
                moveController = GetComponent<EnemyMoveController>();
                health = GetComponent<Health>();
                player = FindObjectOfType<Player>();
+               sprRend = GetComponent<SpriteRenderer>();
+               boxColl = GetComponent<BoxCollider2D>();
 
                distance = new Vector2(0, 0);
                isAgro = false;
@@ -71,6 +75,7 @@ namespace AssemblyCSharp
                else if (player != null)
                {
                     findPos();
+                    playerPos = player.transform;
                     float xSp = player.transform.position.x - transform.position.x;
                     float ySp = player.transform.position.y - transform.position.y;
                     distance = playerPos.position - transform.position;
@@ -107,7 +112,9 @@ namespace AssemblyCSharp
                                         if (invis_CD <= 0)
                                         {
                                              isFaking = false;
-                                             transform.position -= new Vector3(0, 0, 1);
+                                             //transform.position += new Vector3(0, 0, 10);
+                                             sprRend.enabled = true;
+                                             boxColl.enabled = true;
                                              fake_CD = 10;
                                              stageThree = false;
                                         }
@@ -128,7 +135,10 @@ namespace AssemblyCSharp
                                    moveController.Move(0, 0);
 
                                    stageThree = true;
-                                   transform.position += new Vector3(0, 0, 1);
+                                   //transform.position -= new Vector3(0, 0, 10);
+                                   sprRend.enabled = false;
+                                   boxColl.enabled = false;
+
 
                                    rand = rnd.Next(1, 7);
                                    InvokeRepeating("spawn", 0.0f, 0.1f);
@@ -156,8 +166,10 @@ namespace AssemblyCSharp
                          {
                               if (idleTime > 0.4)
                               {
+                                  
                                    someVec = idle(t, rnd);
                                    t = someVec.z;
+                                   Debug.Log(someVec);
                                    idleTime = 0;
                               }
                               moveController.Move(someVec.x, someVec.y);
@@ -166,6 +178,7 @@ namespace AssemblyCSharp
                          {
                               attack_CD += Time.deltaTime;
                          }
+                         t -= Time.deltaTime;
                          idleTime += Time.deltaTime;
                          invis_CD -= Time.deltaTime;
                          fake_CD -= Time.deltaTime;
