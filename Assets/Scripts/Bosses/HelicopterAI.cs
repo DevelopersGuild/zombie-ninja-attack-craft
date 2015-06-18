@@ -70,6 +70,7 @@ public class HelicopterAI : Enemy
           }
           else if (player != null)
           {
+               health.cancelKnockback();
                findPos();
                float xSp = player.transform.position.x - transform.position.x;
                float ySp = player.transform.position.y - transform.position.y;

@@ -12,9 +12,9 @@ public class Player : MonoBehaviour
      public bool gotAttacked;
 
      //Player progression
-     public bool BowUnlocked;
+     public bool IsBowUnlocked;
      public bool UpgradedBow;
-     public bool OtherWeaponsUnlocked;
+     public bool IsOtherWeaponsUnlocked;
      LoadAndSaveManager.GameStateData.PlayerData DataAboutPlayer;
      public enum SecondaryWeapons { Projectile, Mine };
      public SecondaryWeapons ChosenWeapon;
@@ -61,10 +61,10 @@ public class Player : MonoBehaviour
      public void LevelLoaded()
      {
           DataAboutPlayer = GameManager.StateManager.GameState.Player;
-          BowUnlocked = DataAboutPlayer.IsBowUnlocked;
+          IsBowUnlocked = DataAboutPlayer.IsBowUnlocked;
           UpgradedBow = DataAboutPlayer.IsBowHoldDownUnlocked;
           playerMoveController.SetDashLockState(DataAboutPlayer.IsDashUnlocked);
-          OtherWeaponsUnlocked = DataAboutPlayer.IsLandMineUnlocked;
+          IsOtherWeaponsUnlocked = DataAboutPlayer.IsLandMineUnlocked;
           playerMoveController.setDashSpeed(DataAboutPlayer.DashSpeed);
 
 
@@ -72,10 +72,10 @@ public class Player : MonoBehaviour
 
      public void PrepareToSave()
      {
-          DataAboutPlayer.IsBowUnlocked = BowUnlocked;
+          DataAboutPlayer.IsBowUnlocked = IsBowUnlocked;
           DataAboutPlayer.IsBowHoldDownUnlocked = UpgradedBow;
           DataAboutPlayer.IsDashUnlocked = playerMoveController.GetDashLockState();
-          DataAboutPlayer.IsLandMineUnlocked = OtherWeaponsUnlocked;
+          DataAboutPlayer.IsLandMineUnlocked = IsOtherWeaponsUnlocked;
           DataAboutPlayer.DashSpeed = playerMoveController.getDashSpeed();
           GameManager.StateManager.GameState.Player = DataAboutPlayer;
      }
@@ -130,7 +130,7 @@ public class Player : MonoBehaviour
                     playerMoveController.Dash();
                }
 
-               if (Input.GetButtonDown("Switch") && OtherWeaponsUnlocked == true)
+               if (Input.GetButtonDown("Switch") && IsOtherWeaponsUnlocked == true)
                {
                     if (ChosenWeapon == SecondaryWeapons.Projectile)
                     {
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
 
                }
 
-               if (Input.GetButtonUp("Fire2") && attackController.CanAttack() && BowUnlocked == true)
+               if (Input.GetButtonUp("Fire2") && attackController.CanAttack() && IsBowUnlocked == true)
                {
                     if (ChosenWeapon == SecondaryWeapons.Projectile)
                     {
@@ -311,7 +311,12 @@ public class Player : MonoBehaviour
      //Player Progression
      public void UnlockBow()
      {
-          BowUnlocked = true;
+          IsBowUnlocked = true;
+     }
+
+     public bool GetIsBowUnlocked()
+     {
+          return IsBowUnlocked;
      }
      public void UnlockPowerShot()
      {
@@ -324,7 +329,12 @@ public class Player : MonoBehaviour
      }
      public void UnlockGrenade()
      {
-          OtherWeaponsUnlocked = true;
+          IsOtherWeaponsUnlocked = true;
+     }
+
+     public bool GetIsOtherWeaponsUnlocked()
+     {
+          return IsOtherWeaponsUnlocked;
      }
      public void UpgradeDashSpeed()
      {

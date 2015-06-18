@@ -14,7 +14,6 @@ public class FireSnake : SnakeBoss
           player = FindObjectOfType<Player>();
           moveController = GetComponent<EnemyMoveController>();
           health = GetComponent<Health>();
-          health.cancelKnockback();
 
           combo = false;
           isInvincible = true;
@@ -43,6 +42,7 @@ public class FireSnake : SnakeBoss
      {
           if (player != null)
           {
+               health.cancelKnockback();
                if (isBiting)
                {
                     moveController.Move(0, 0);
