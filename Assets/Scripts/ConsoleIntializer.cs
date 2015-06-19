@@ -26,11 +26,13 @@ public class ConsoleIntializer : MonoBehaviour
      {
           if (player.isInvincible == false)
           {
+               player.PlayerToGodMode = true;
                player.isInvincible = true;
                return "GodMode on";
           }
           else
           {
+               player.PlayerToGodMode = false;
                player.isInvincible = false;
                return "GodMode off";
           }
@@ -38,11 +40,18 @@ public class ConsoleIntializer : MonoBehaviour
 
      public string GiveMeWeapons(params string[] args)
      {
+          
+          player.UnlockBow();
+          player.UnlockPowerShot();
+          player.UnlockGrenade();
+          player.UnlockDash();
           return "Weapons Unlocked";
      }
 
      public string GiveMeAmmo(params string[] args)
      {
+          player.GetComponent<AttackController>().SetPlayerProjectileAmmo(100);
+          player.GetComponent<AttackController>().SetPlayerGrenadeAmmo(100);
           return "Ammo given to player";
      }
 

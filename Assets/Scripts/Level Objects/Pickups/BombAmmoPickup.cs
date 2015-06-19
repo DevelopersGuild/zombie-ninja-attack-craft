@@ -7,7 +7,7 @@ public class BombAmmoPickup : Pickup
      public override void AddItemToInventory(Collider2D player, int value)
      {
           attackController = player.gameObject.GetComponent<AttackController>();
-          attackController.Bombs += value;
+          attackController.Grenades += value;
      }
 	
 }

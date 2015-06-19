@@ -21,7 +21,7 @@ public class TrailProj : Projectile
           if (t > 0.075)
           {
                t = 0;
-               float angle = Mathf.Atan2(currentVelocity.y, currentVelocity.x) * Mathf.Rad2Deg;
+               float angle = Mathf.Atan2(currentVelocity.y, currentVelocity.x) * Mathf.Rad2Deg - 90;
                var q = Quaternion.AngleAxis(angle, Vector3.forward);
                trail = Instantiate(trailObj, transform.position, q) as GameObject;
                Destroy(trail, trailTime);
@@ -33,9 +33,11 @@ public class TrailProj : Projectile
 
 
      //I must've have been dozing off when I made this method, keeping it here to remind me of my shame
-     public void setDir(float ang, Vector2 dir)
+     public void setDir(float ang, Vector2 dir, Quaternion q)
      {
           Shoot(ang, dir);
+          transform.rotation = q;
+          rot = q;
      }
 
 

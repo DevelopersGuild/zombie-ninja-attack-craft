@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 /* PlayerScript - Handle Input from a player */
 
@@ -33,6 +32,7 @@ public class Player : MonoBehaviour
 
      //Timers
      public bool isInvincible;
+     public bool PlayerToGodMode;
      public float timeSpentInvincible;
      public float attackedTimer;
      public float TimeBowCharging;
@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
 
      void Awake()
      {
+          PlayerToGodMode = false;
           stun_Timer = 0;
           isInvincible = false;
           timeSpentInvincible = 1;
@@ -80,6 +81,7 @@ public class Player : MonoBehaviour
           GameManager.StateManager.GameState.Player = DataAboutPlayer;
      }
 
+
      // Update is called once per frame
      void Update()
      {
@@ -88,23 +90,27 @@ public class Player : MonoBehaviour
           float inputX = 0;
           float inputY = 0;
 
-          //Check for the invincibility timer. If the player is invincible, add to the timer. When the timers over, reset the flags
-          if (isInvincible)
+          if(PlayerToGodMode == false)
           {
-               timeSpentInvincible += Time.deltaTime;
+               if (isInvincible)
+               {
+                    timeSpentInvincible += Time.deltaTime;
 
-               if (timeSpentInvincible <= 3f)
-               {
-                    float remainder = timeSpentInvincible % .3f;
-                    GetComponent<Renderer>().enabled = remainder > .15f;
-               }
-               else
-               {
-                    isInvincible = false;
-                    timeSpentInvincible = 0;
-                    GetComponent<Renderer>().enabled = true;
+                    if (timeSpentInvincible <= 3f)
+                    {
+                         float remainder = timeSpentInvincible % .3f;
+                         GetComponent<Renderer>().enabled = remainder > .15f;
+                    }
+                    else
+                    {
+                         isInvincible = false;
+                         timeSpentInvincible = 0;
+                         GetComponent<Renderer>().enabled = true;
+                    }
                }
           }
+          //Check for the invincibility timer. If the player is invincible, add to the timer. When the timers over, reset the flags
+
 
           //The player acts according to input
           if (slow_Timer > 0)
