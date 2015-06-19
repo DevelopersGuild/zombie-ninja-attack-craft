@@ -155,8 +155,9 @@ namespace AssemblyCSharp
           //Called by attacking animation at end of animation
           public void DoneAttacking()
           {
-               canAttack = false;
+               canAttack = true;
                animationController.isAttacking = false;
+               Destroy(attackCollider);
           }
 
           //Called by Rest animation after animation finishes (Rest animation is idle but in it's own animation, so it can call methods seperately)
