@@ -47,14 +47,18 @@ public class SnakeBoss : Boss
      public ProjectileTerrain acidballObj;
      private ProjectileTerrain acidball;
 
+     [HideInInspector]
+     public Animator animator;
+
      public SnakeBall ball1, ball2, ball3, ball4;
      [HideInInspector]
      public SnakeBall b1, b2, b3, b4;
 
      public Vector2 targetPos;
      public Vector3 biteDir;
-
-     public float snakeFactor, mDeg, biteTime;
+      
+     [HideInInspector]
+     public float snakeFactor, mDeg, biteTime, attackDelay;
 
      [HideInInspector]
      public EnemyMoveController moveController;
@@ -118,15 +122,17 @@ public class SnakeBoss : Boss
      public void Awake()
      {
 
-          Vector3 tempVec = new Vector3(0,0.1f,0);
-          b1 = Instantiate(ball1, transform.position + tempVec, transform.rotation) as SnakeBall;
-          b2 = Instantiate(ball2, transform.position + tempVec * 2, transform.rotation) as SnakeBall;
-          b3 = Instantiate(ball3, transform.position + tempVec * 3, transform.rotation) as SnakeBall;
-          b4 = Instantiate(ball4, transform.position + tempVec * 4, transform.rotation) as SnakeBall;
-          b1.setPong(1f);
-          b2.setPong(1.3f);
-          b3.setPong(1.5f);
-          b4.setPong(1.35f);
+          Vector3 scale = new Vector3(0.5f,0.5f,0);
+          b1 = Instantiate(ball1, transform.position + new Vector3(0, 0.4f, 0), transform.rotation) as SnakeBall;
+          b2 = Instantiate(ball2, transform.position + new Vector3(0, 0.5f, 0), transform.rotation) as SnakeBall;
+          b3 = Instantiate(ball3, transform.position + new Vector3(0, 0.6f, 0), transform.rotation) as SnakeBall;
+          b4 = Instantiate(ball4, transform.position + new Vector3(0, 0.7f, 0), transform.rotation) as SnakeBall;
+
+          //1, 1.3, 1.5, 1.35
+          b1.setPong(0.5f);
+          b2.setPong(0.8f);
+          b3.setPong(1.05f);
+          b4.setPong(0.85f);
 
           initialPos = transform.position;
 
@@ -262,6 +268,18 @@ public class SnakeBoss : Boss
           b3.dead();
           b4.dead();
           //create bridge
+     }
+
+     public void open()
+     {
+          animator.SetBool("isOpen", true);
+          isInvincible = false;
+     }
+
+     public void close()
+     {
+          attackDelay = 2.2f;
+          animator.SetBool("isOpen", false);
      }
 
      public void OnCollisionEnter2D(Collision2D other)

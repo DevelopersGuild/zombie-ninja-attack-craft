@@ -58,7 +58,7 @@ public class DealDamageToEnemy : MonoBehaviour
             {
                  if (CompareTag("AnonArrow"))
                  {
-                      enemyHealth.CalculateKnockback(other, transform.position);
+                     // enemyHealth.CalculateKnockback(other, transform.position);
                       enemyHealth.TakeDamage(damageAmount);
                       enemy.isInvincible = true;
                  }
@@ -66,7 +66,7 @@ public class DealDamageToEnemy : MonoBehaviour
             else if (!enemy.isInvincible)
             {
                 //Deal damage, knockback, set the invinicility flag
-                enemyHealth.CalculateKnockback(other, transform.position);
+               // enemyHealth.CalculateKnockback(other, transform.position);
                 enemyHealth.TakeDamage(damageAmount);
                 enemy.isInvincible = true;
             }
@@ -81,6 +81,7 @@ public class DealDamageToEnemy : MonoBehaviour
     //For triggers
     public void OnCollisionEnter2D(Collision2D other)
     {
+         Debug.Log("YARR, I hit a " + other.gameObject.ToString());
         //Debug.Log("TRIGGER!");
         CheckForProjectile();
         //Check for enemy collision
@@ -122,7 +123,7 @@ public class DealDamageToEnemy : MonoBehaviour
             {
                  if (CompareTag("AnonArrow"))
                  {
-                      enemyHealth.CalculateKnockback(other, transform.position);
+                      //enemyHealth.CalculateKnockback(other, transform.position);
                       enemyHealth.TakeDamage(damageAmount);
                       enemy.isInvincible = true;
                  }
@@ -130,7 +131,7 @@ public class DealDamageToEnemy : MonoBehaviour
             else if (!enemy.isInvincible)
             {
                 //Deal damage, knockback, set the invinicility flag
-                enemyHealth.CalculateKnockback(other, transform.position);
+               // enemyHealth.CalculateKnockback(other, transform.position);
                 enemyHealth.TakeDamage(damageAmount);
                 enemy.isInvincible = true;
             }
@@ -178,14 +179,14 @@ public class DealDamageToEnemy : MonoBehaviour
             {
                  if (CompareTag("AnonArrow"))
                  {
-                      enemyHealth.CalculateKnockback(other, transform.position);
+                      //enemyHealth.CalculateKnockback(other, transform.position);
                       enemyHealth.TakeDamage(damageAmount);
                       enemy.isInvincible = true;
                  }
             }
             else if (!enemy.isInvincible) {
                 //Deal damage, knockback, set the invinicility flag
-                enemyHealth.CalculateKnockback(other, transform.position);
+                //enemyHealth.CalculateKnockback(other, transform.position);
                 enemyHealth.TakeDamage(damageAmount);
                 enemy.isInvincible = true;
             }

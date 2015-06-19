@@ -10,7 +10,7 @@ public class FireSnake : SnakeBoss
      public void Start()
      {
 
-          //animator = GetComponent<Animator>();
+          animator = GetComponent<Animator>();
           player = FindObjectOfType<Player>();
           moveController = GetComponent<EnemyMoveController>();
           health = GetComponent<Health>();
@@ -31,6 +31,7 @@ public class FireSnake : SnakeBoss
           count = 1;
           attackChoice = 0;
           isBiting = false;
+          attackDelay = 0;
 
           isAgro = false;
 
@@ -40,9 +41,10 @@ public class FireSnake : SnakeBoss
 
      public void Update()
      {
+          health.cancelKnockback();
           if (player != null)
           {
-               health.cancelKnockback();
+               
                if (isBiting)
                {
                     moveController.Move(0, 0);
@@ -106,37 +108,42 @@ public class FireSnake : SnakeBoss
                               {
                                    combo = false;
                                    attackChoice = 6;
+                                   open();
                               }
-
-                              else
-                              {
+                              if (attackDelay <= 0) { 
 
                                    //Play animation after setting attackChoice, animation calls Attack();
                                    if (bite_CD > 10)
                                    {
                                         attackChoice = 1;
+                                        open();
                                    }
                                    else if (spawn_CD > 8)
                                    {
                                         attackChoice = 2;
+                                        open();
                                    }
                                    else if (laser_CD > 12)
                                    {
                                         attackChoice = 3;
+                                        open();
                                    }
                                    else if (acid_CD > 9)
                                    {
                                         attackChoice = 4;
+                                        open();
                                    }
                                    else if (fireTrail_CD > 9)
                                    {
                                         attackChoice = 5;
+                                        open();
                                    }
                                    else if (iSnake == null && fireBall_CD > 8)
                                    {
                                         attackChoice = 6;
+                                        open();
                                    }
-
+                              
                                    else
                                    {
                                         cooldown_CD = 0.3f;
@@ -144,7 +151,7 @@ public class FireSnake : SnakeBoss
                               }
 
 
-                              Attack();
+                              //Attack();
                               //Fire Snake - Bite -> Spawn Snakes -> -> Laser -> Acid Ball -> fire trail -> fireball
 
                               //Loop with array for less code   
@@ -164,11 +171,13 @@ public class FireSnake : SnakeBoss
 
                }
           }
+          attackDelay -= Time.deltaTime;
+
      }
 
      public void Attack()
      {
-
+          isInvincible = true;
           if (attackChoice == 1)
           {
                biteAttack();

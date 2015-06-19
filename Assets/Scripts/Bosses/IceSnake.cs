@@ -9,7 +9,7 @@ public class IceSnake : SnakeBoss
      public void Start()
      {
 
-          //animator = GetComponent<Animator>();
+          animator = GetComponent<Animator>();
           player = FindObjectOfType<Player>();
           moveController = GetComponent<EnemyMoveController>();
           health = GetComponent<Health>();
@@ -29,6 +29,7 @@ public class IceSnake : SnakeBoss
           mirrorSpawn = 0.5f;
           count = 1;
           attackChoice = 0;
+          attackDelay = 0;
 
           isAgro = false;
 
@@ -38,9 +39,10 @@ public class IceSnake : SnakeBoss
 
      public void Update()
      {
+          health.cancelKnockback();
           if (player != null)
           {
-               health.cancelKnockback();
+               
                if (isBiting)
                {
                     moveController.Move(0, 0);
@@ -103,40 +105,50 @@ public class IceSnake : SnakeBoss
                               {
                                    attackChoice = 6;
                                    fSnake.setCombo();
+                                   open();
                               }
                               else
                               {
-                                   //Play animation after setting attackChoice, animation calls Attack();
-                                   if (acid_CD > 9)
+                                   if (attackDelay <= 0)
                                    {
-                                        attackChoice = 1;
-                                   }
-                                   else if (spawn_CD > 8)
-                                   {
-                                        attackChoice = 2;
-                                   }
-                                   else if (laser_CD > 12)
-                                   {
-                                        attackChoice = 3;
-                                   }
-                                   else if (bite_CD > 10)
-                                   {
-                                        attackChoice = 4;
-                                   }
-                                   else if (fireTrail_CD > 9)
-                                   {
-                                        attackChoice = 5;
-                                   }
-                                   else if (iceBall_CD > 8 && fSnake == null)
-                                   {
-                                        attackChoice = 6;
+                                        //Play animation after setting attackChoice, animation calls Attack();
+                                        if (acid_CD > 9)
+                                        {
+                                             attackChoice = 1;
+                                             open();
+                                        }
+                                        else if (spawn_CD > 8)
+                                        {
+                                             attackChoice = 2;
+                                             open();
+                                        }
+                                        else if (laser_CD > 12)
+                                        {
+                                             attackChoice = 3;
+                                             open();
+                                        }
+                                        else if (bite_CD > 10)
+                                        {
+                                             attackChoice = 4;
+                                             open();
+                                        }
+                                        else if (fireTrail_CD > 9)
+                                        {
+                                             attackChoice = 5;
+                                             open();
+                                        }
+                                        else if (iceBall_CD > 8 && fSnake == null)
+                                        {
+                                             attackChoice = 6;
+                                             open();
+                                        }
                                    }
                                    else
                                    {
                                         cooldown_CD = 0.3f;
                                    }
                               }
-                              Attack();
+                                   
                               //Ice Snake - Acid Ball -> Spawn Snakes -> Laser -> Bite -> ice trail -> iceball
 
                               //Loop with array for less code   
@@ -156,10 +168,12 @@ public class IceSnake : SnakeBoss
 
                }
           }
+          attackDelay -= Time.deltaTime;
      }
 
      public void Attack()
      {
+          isInvincible = true;
           if (attackChoice == 1)
           {
                acidAttack();
