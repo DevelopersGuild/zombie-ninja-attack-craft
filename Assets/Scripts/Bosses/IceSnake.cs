@@ -101,7 +101,6 @@ public class IceSnake : SnakeBoss
                               FireSnake fSnake = FindObjectOfType<FireSnake>();
                               if (fSnake != null && fSnake.fireBall_CD > 8 && iceBall_CD > 8)
                               {
-                                   Debug.Log("HEY");
                                    attackChoice = 6;
                                    fSnake.setCombo();
                               }

@@ -46,7 +46,6 @@ namespace AssemblyCSharp
           {
                if (spawnTime > 0)
                {
-                    Debug.Log("I'm spawning!");
                     isInvincible = true;
                     moveController.Move(spawnDir);
                     spawnTime -= Time.deltaTime;

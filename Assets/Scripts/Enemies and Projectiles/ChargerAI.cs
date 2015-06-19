@@ -167,7 +167,6 @@ public class ChargerAI : Enemy
           {
                //speed = new Vector2(xSp, ySp);
                //speed = 2 * speed;
-               Debug.Log("RUNNING STRAIGHT toward : " + sp);
                moveController.Move(sp);
           }
 

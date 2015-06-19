@@ -143,14 +143,12 @@ public class SuicideBomber : Enemy
      public void onDeath()
      {
           //play pre-explosion animation
-          Debug.Log("WOW!");
           //death animation
      }
 
      public void Explode()
      {
           Instantiate(bomb, transform.position, Quaternion.identity);
-          Debug.Log("BOOM!!");
           Destroy(gameObject);
      }
 

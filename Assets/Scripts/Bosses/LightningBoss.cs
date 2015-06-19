@@ -387,7 +387,6 @@ public class LightningBoss : Boss
 
 
 
-          Debug.Log("What is going on" + posU + ". It should be " + transform.position);
 
      }
 

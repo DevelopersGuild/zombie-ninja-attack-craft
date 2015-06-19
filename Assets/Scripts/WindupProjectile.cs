@@ -45,7 +45,6 @@ public class WindupProjectile : Projectile
           }
           speedBoost += Time.deltaTime;
           temp += Time.deltaTime;
-          Debug.Log(temp);
      }
 
      public void setStun(float st)

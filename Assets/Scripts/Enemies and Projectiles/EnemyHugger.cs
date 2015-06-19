@@ -125,7 +125,6 @@ public class EnemyHugger : Enemy
      public void onDeath()
      {
           //play pre-explosion animation
-          Debug.Log("WOW!");
          // Destroy(gameObject);
           //death animation
      }

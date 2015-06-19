@@ -102,7 +102,6 @@ namespace AssemblyCSharp
                          if (distance.magnitude < 1)
                          {
                               moveController.Move(-xSp / 10f, -ySp / 10f);
-                              Debug.Log("I'm running away at a speed of " + xSp + " and " + ySp);
                          }
                          else if (distance.magnitude < 1.15)
                          {
@@ -111,7 +110,6 @@ namespace AssemblyCSharp
                          else
                          {
                               moveController.Move(xSp / 15f, ySp / 15f);
-                              Debug.Log("I'm moving at a speed of " + xSp + " and " + ySp);
                          }
                     }
                     else

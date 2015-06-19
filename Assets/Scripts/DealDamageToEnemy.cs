@@ -33,7 +33,6 @@ public class DealDamageToEnemy : MonoBehaviour
                 if (!enemy.isInvincible)
                 {
                     //Deal damage, knockback, set the invinicility flag
-                     Debug.Log("WOW");
                     enemyHealth.CalculateKnockback(other, transform.position);
                     enemyHealth.TakeDamage(damageAmount);
                     enemy.isInvincible = true;

@@ -104,7 +104,6 @@ public class FireSnake : SnakeBoss
                              // if (iSnake != null && iSnake.iceBall_CD > 8 && fireBall_CD > 8)
                               if(combo)
                               {
-                                   Debug.Log("WHAT?");
                                    combo = false;
                                    attackChoice = 6;
                               }
@@ -136,7 +135,6 @@ public class FireSnake : SnakeBoss
                                    else if (iSnake == null && fireBall_CD > 8)
                                    {
                                         attackChoice = 6;
-                                        Debug.Log("PK FIRE");
                                    }
 
                                    else

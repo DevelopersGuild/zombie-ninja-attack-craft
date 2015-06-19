@@ -127,7 +127,6 @@ public class Health : MonoBehaviour
           }
           else if (gameObject.GetComponent<Enemy>())
           {
-               Debug.Log("HEY");
                Enemy enem = gameObject.GetComponent<Enemy>();
                enem.onDeath();
           }
