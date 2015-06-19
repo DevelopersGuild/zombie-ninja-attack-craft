@@ -76,7 +76,6 @@ public class EnemyAI : MonoBehaviour
                t -= Time.deltaTime;
           }
           GetComponent<Rigidbody2D>().velocity = x;
-          Debug.Log(Time.deltaTime);
           //this.transform.position = x;
      }
 

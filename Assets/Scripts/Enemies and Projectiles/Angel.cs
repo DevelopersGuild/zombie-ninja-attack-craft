@@ -170,7 +170,6 @@ namespace AssemblyCSharp
                                   
                                    someVec = idle(t, rnd);
                                    t = someVec.z;
-                                   Debug.Log(someVec);
                                    idleTime = 0;
                               }
                               moveController.Move(someVec.x, someVec.y);

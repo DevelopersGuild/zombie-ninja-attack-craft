@@ -91,11 +91,9 @@ public class WorkingCharger : Enemy
                     {
                          Walking();
                          moveController.Move(direction / 8);
-                         Debug.Log("stop taking this out");
                     }
                     else
                     {
-                         Debug.Log("I mean it");
                          moveController.Move(0, 0);
                          isCharging = true;
                     }

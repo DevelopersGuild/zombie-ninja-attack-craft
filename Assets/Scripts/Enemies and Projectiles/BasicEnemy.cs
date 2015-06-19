@@ -58,46 +58,55 @@ namespace AssemblyCSharp
                     stunTimer -= Time.deltaTime;
                     moveController.Move(0, 0);
                }
-               rnd = new System.Random();
-               //basic aggression range formula
-               distance = player.transform.position - transform.position;
-               distanceFromPoint = distance + up;
-               if (distanceFromPoint.magnitude > (distance + left).magnitude)
+               else
                {
-                    distanceFromPoint = distance + left;
-               }
-               if (distanceFromPoint.magnitude > (distance + right).magnitude)
-               {
-                    distanceFromPoint = distance + right;
-               }
-               if (distanceFromPoint.magnitude > (distance + down).magnitude)
-               {
-                    distanceFromPoint = distance + down;
-               }
-               float xSp = distanceFromPoint.normalized.x;
-               float ySp = distanceFromPoint.normalized.y;
-               direction = new Vector2(xSp, ySp);
-               if (distance.magnitude <= AgroRange)
-               {
-                    isAgro = true;
-                    //animator.SetBool("isCharging", true);
-               }
-               if (distance.magnitude > AgroRange)
-               {
-                    isAgro = false;
-               }
-
-               if (isAgro)
-               {
-                    if (canAttack)
+                    rnd = new System.Random();
+                    //basic aggression range formula
+                    distance = player.transform.position - transform.position;
+                    distanceFromPoint = distance + up;
+                    if (distanceFromPoint.magnitude > (distance + left).magnitude)
                     {
-                         if (distanceFromPoint.magnitude < 0.15f)
-                         {
-                              moveController.Move(0, 0);
-                              animationController.isAttacking = true;
-                              //animator.setBool("Attack", true)
+                         distanceFromPoint = distance + left;
+                    }
+                    if (distanceFromPoint.magnitude > (distance + right).magnitude)
+                    {
+                         distanceFromPoint = distance + right;
+                    }
+                    if (distanceFromPoint.magnitude > (distance + down).magnitude)
+                    {
+                         distanceFromPoint = distance + down;
+                    }
+                    float xSp = distanceFromPoint.normalized.x;
+                    float ySp = distanceFromPoint.normalized.y;
+                    direction = new Vector2(xSp, ySp);
+                    if (distance.magnitude <= AgroRange)
+                    {
+                         isAgro = true;
+                         //animator.SetBool("isCharging", true);
+                    }
+                    if (distance.magnitude > AgroRange)
+                    {
+                         isAgro = false;
+                    }
 
-                              //when spear goes forward in animation, call Attack();
+                    if (isAgro)
+                    {
+                         if (canAttack)
+                         {
+                              if (distanceFromPoint.magnitude < 0.15f)
+                              {
+                                   moveController.Move(0, 0);
+                                   animationController.isAttacking = true;
+                                   //animator.setBool("Attack", true)
+
+                                   //when spear goes forward in animation, call Attack();
+
+                              }
+                              else
+                              {
+
+                                   moveController.Move(direction / 6f);
+                              }
 
                          }
                          else
@@ -105,29 +114,22 @@ namespace AssemblyCSharp
 
                               moveController.Move(direction / 6f);
                          }
-                         
+
                     }
                     else
                     {
-
-                         moveController.Move(direction / 6f);
+                         if (idleTime > 0.4)
+                         {
+                              someVec = idle(t, rnd);
+                              t = someVec.z;
+                              idleTime = 0;
+                         }
+                         moveController.Move(someVec.x, someVec.y);
                     }
 
+                    idleTime += Time.deltaTime;
+                    t -= Time.deltaTime;
                }
-               else
-               {
-                    if (idleTime > 0.4)
-                    {
-                         someVec = idle(t, rnd);
-                         t = someVec.z;
-                         idleTime = 0;
-                    }
-                    moveController.Move(someVec.x, someVec.y);
-               }
-
-               idleTime += Time.deltaTime;
-               t -= Time.deltaTime;
-
           }
 
 

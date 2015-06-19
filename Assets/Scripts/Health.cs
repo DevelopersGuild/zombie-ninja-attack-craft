@@ -125,7 +125,7 @@ public class Health : MonoBehaviour
                GameManager.Notifications.PostNotification(this, "OnPlayerDeath");
                this.setHealth(startingHealth);
           }
-          else if (gameObject.GetComponent<Enemy>() != null)
+          else if (gameObject.GetComponent<Enemy>())
           {
                Enemy enem = gameObject.GetComponent<Enemy>();
                enem.onDeath();

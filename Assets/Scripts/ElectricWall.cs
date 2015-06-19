@@ -46,7 +46,6 @@ namespace AssemblyCSharp
                     hp.CalculateKnockback(box, transform.position);
                     if (other.CompareTag("Player"))
                     {
-                         Debug.Log("STOPPPPP");
                          Player plr = obj.GetComponent<Player>();
                          plr.isInvincible = true;
                     }

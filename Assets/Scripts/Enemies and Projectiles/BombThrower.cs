@@ -39,7 +39,6 @@ public class BombThrower : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.tag == "Player") {
-            Debug.Log("NOTAFFTSO");
             isAggroed = false;
             currentTime = 0;
         }

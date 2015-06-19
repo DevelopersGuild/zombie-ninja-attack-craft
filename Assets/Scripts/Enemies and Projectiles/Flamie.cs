@@ -148,11 +148,10 @@ namespace AssemblyCSharp
                return health.currentHealth;
           }
 
-          public void onDeath()
+          public override void onDeath()
           {
                //play pre-explosion animation
                Explosion lnd = Instantiate(explBlockObject, transform.position, transform.rotation) as Explosion;
-               Debug.Log("WOW! I JUST EXPLODED!");
                //death animation
           }
 
