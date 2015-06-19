@@ -55,7 +55,16 @@ public class DealDamageToEnemy : MonoBehaviour
             Health enemyHealth = enemObject.GetComponent<Health>();
 
             //Deal damage and knockback the enemy
-            if (!enemy.isInvincible)
+            if (other.gameObject.GetComponent<ShieldBoss>())
+            {
+                 if (CompareTag("AnonArrow"))
+                 {
+                      enemyHealth.CalculateKnockback(other, transform.position);
+                      enemyHealth.TakeDamage(damageAmount);
+                      enemy.isInvincible = true;
+                 }
+            }
+            else if (!enemy.isInvincible)
             {
                 //Deal damage, knockback, set the invinicility flag
                 enemyHealth.CalculateKnockback(other, transform.position);
@@ -110,7 +119,16 @@ public class DealDamageToEnemy : MonoBehaviour
             Health enemyHealth = enemObject.GetComponent<Health>();
 
             //Deal damage and knockback the enemy
-            if (!enemy.isInvincible)
+            if (other.gameObject.GetComponent<ShieldBoss>())
+            {
+                 if (CompareTag("AnonArrow"))
+                 {
+                      enemyHealth.CalculateKnockback(other, transform.position);
+                      enemyHealth.TakeDamage(damageAmount);
+                      enemy.isInvincible = true;
+                 }
+            }
+            else if (!enemy.isInvincible)
             {
                 //Deal damage, knockback, set the invinicility flag
                 enemyHealth.CalculateKnockback(other, transform.position);
@@ -157,7 +175,16 @@ public class DealDamageToEnemy : MonoBehaviour
             Health enemyHealth = enemObject.GetComponent<Health>();
 
             //Deal damage and knockback the enemy
-            if (!enemy.isInvincible) {
+            if (other.gameObject.GetComponent<ShieldBoss>())
+            {
+                 if (CompareTag("AnonArrow"))
+                 {
+                      enemyHealth.CalculateKnockback(other, transform.position);
+                      enemyHealth.TakeDamage(damageAmount);
+                      enemy.isInvincible = true;
+                 }
+            }
+            else if (!enemy.isInvincible) {
                 //Deal damage, knockback, set the invinicility flag
                 enemyHealth.CalculateKnockback(other, transform.position);
                 enemyHealth.TakeDamage(damageAmount);

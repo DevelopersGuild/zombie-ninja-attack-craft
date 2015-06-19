@@ -134,7 +134,7 @@ public class Enemy : MonoBehaviour
      }
 
 
-     public void onDeath()
+     public virtual void onDeath()
      {
           //death stuff for sub classes
      }
