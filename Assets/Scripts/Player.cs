@@ -80,6 +80,7 @@ public class Player : MonoBehaviour
           GameManager.StateManager.GameState.Player = DataAboutPlayer;
      }
 
+
      // Update is called once per frame
      void Update()
      {
