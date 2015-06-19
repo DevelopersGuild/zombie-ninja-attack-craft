@@ -179,6 +179,7 @@ public class SnakeBoss : Boss
      {
           //After prep
           //animation
+
           laser = Instantiate(laserObj, transform.position, transform.rotation) as FireChain;
           laser.setLaserOne(190, 255);
           //create laser
@@ -190,7 +191,10 @@ public class SnakeBoss : Boss
      public void trailAttack()
      {
           //After prep
-          trail = Instantiate(trailObj, transform.position, transform.rotation) as TrailProj;
+           Vector2 tempDir = new Vector2(playerX - currentX, playerY - currentY);
+          float angle = Mathf.Atan2(tempDir.y, tempDir.x) * Mathf.Rad2Deg - 90;
+          var q = Quaternion.AngleAxis(angle, Vector3.forward);
+          trail = Instantiate(trailObj, transform.position, q) as TrailProj;
           trail.setDir(angle, direction);
           //if fire, shoot fire in an arc/cone shape on ground
           //if ice, shoot ice in a rectangle on ground
@@ -216,8 +220,11 @@ public class SnakeBoss : Boss
 
      public void acidAttack()
      {
-          acidball = Instantiate(acidballObj, transform.position, transform.rotation) as ProjectileTerrain;
+          
           Vector2 tempDir = new Vector2(playerX - currentX, playerY - currentY);
+          float angle = Mathf.Atan2(tempDir.y, tempDir.x) * Mathf.Rad2Deg - 90;
+          var q = Quaternion.AngleAxis(angle, Vector3.forward);
+          acidball = Instantiate(acidballObj, transform.position, q) as ProjectileTerrain;
           acidball.Shoot(0, tempDir * 0.125f);
           acid_CD = 0;
      }

@@ -39,13 +39,13 @@ public class SnakeBall : MonoBehaviour
                }
                else
                {
-                    if (t <= 12)
+                    if (t <= 24)
                     {
-                         transform.position += direction;
+                         transform.position += direction/2f;
                     }
-                    else if (t <= 24)
+                    else if (t <= 48)
                     {
-                         transform.position -= direction;
+                         transform.position -= direction/2f;
                     }
                     else
                     {
