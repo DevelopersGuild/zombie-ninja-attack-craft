@@ -210,7 +210,7 @@ public class SnakeBoss : Boss
      public void spawnAttack()
      {
           spawn_CD = 0;
-          Vector2 newPos = transform.position + new Vector3(mirrorSpawn, -1.3f);
+          Vector2 newPos = transform.position + new Vector3(mirrorSpawn, -2.4f);
           snake = Instantiate(snakeObj, newPos, transform.rotation) as Enemy;
 
      }
