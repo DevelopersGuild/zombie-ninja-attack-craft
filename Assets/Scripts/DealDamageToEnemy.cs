@@ -82,7 +82,6 @@ public class DealDamageToEnemy : MonoBehaviour
      //For triggers
      public void OnCollisionEnter2D(Collision2D other)
      {
-          Debug.Log("YARR, I hit a " + other.gameObject.ToString());
           //Debug.Log("TRIGGER!");
           CheckForProjectile();
           //Check for enemy collision

@@ -222,10 +222,11 @@ public class SnakeBoss : Boss
      {
           
           Vector2 tempDir = new Vector2(playerX - currentX, playerY - currentY);
-          float angle = Mathf.Atan2(tempDir.y, tempDir.x) * Mathf.Rad2Deg - 90;
+          float angle = Mathf.Atan2(tempDir.y, tempDir.x) * Mathf.Rad2Deg;
           var q = Quaternion.AngleAxis(angle, Vector3.forward);
           acidball = Instantiate(acidballObj, transform.position, q) as ProjectileTerrain;
           acidball.Shoot(0, tempDir * 0.125f);
+          acidball.transform.rotation = q;
           acid_CD = 0;
      }
 

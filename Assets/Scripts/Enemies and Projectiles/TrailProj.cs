@@ -37,6 +37,7 @@ public class TrailProj : Projectile
      {
           Shoot(ang, dir);
           transform.rotation = q;
+          rot = q;
      }
 
 
