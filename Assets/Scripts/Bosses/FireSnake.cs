@@ -114,27 +114,27 @@ public class FireSnake : SnakeBoss
                               if (attackDelay <= 0) { 
 
                                    //Play animation after setting attackChoice, animation calls Attack();
-                                   if (bite_CD > 10)
+                                   if (bite_CD > 15)
                                    {
                                         attackChoice = 1;
                                         open();
                                    }
-                                   else if (spawn_CD > 8)
+                                   else if (spawn_CD > 18)
                                    {
                                         attackChoice = 2;
                                         open();
                                    }
-                                   else if (laser_CD > 12)
+                                   else if (laser_CD > 20)
                                    {
                                         attackChoice = 3;
                                         open();
                                    }
-                                   else if (acid_CD > 9)
+                                   else if (acid_CD > 14)
                                    {
                                         attackChoice = 4;
                                         open();
                                    }
-                                   else if (fireTrail_CD > 9)
+                                   else if (fireTrail_CD > 13)
                                    {
                                         attackChoice = 5;
                                         open();
