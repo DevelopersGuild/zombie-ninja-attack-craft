@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 6da89ee91b670cf4eaf4112d45824312
-timeCreated: 1434685033
+guid: 128dbd033fca8a74b869a4cdfdd164de
+timeCreated: 1434686607
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: snake_head_sheet__0
-    21300002: snake_head_sheet__1
-    21300004: snake_head_sheet__2
-    21300006: snake_head_sheet__3
+    21300000: snake_boss_sheet_0
+    21300002: snake_boss_sheet_1
+    21300004: snake_boss_sheet_2
+    21300006: snake_boss_sheet_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -53,7 +53,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: snake_head_sheet__0
+    - name: snake_boss_sheet_0
       rect:
         serializedVersion: 2
         x: 30
@@ -63,7 +63,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: snake_head_sheet__1
+    - name: snake_boss_sheet_1
       rect:
         serializedVersion: 2
         x: 218
@@ -73,7 +73,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: snake_head_sheet__2
+    - name: snake_boss_sheet_2
       rect:
         serializedVersion: 2
         x: 426
@@ -83,7 +83,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: snake_head_sheet__3
+    - name: snake_boss_sheet_3
       rect:
         serializedVersion: 2
         x: 425
