@@ -122,7 +122,7 @@ public class HelicopterAI : Enemy
                          }
                          else if (shot_CD > 6)
                          {
-                              float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+                              float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg - 90;
                               var q = Quaternion.AngleAxis(angle, Vector3.forward);
                               missile = Instantiate(missileObj, transform.position, q) as WindupProjectile;
                               missile.Shoot(0,direction.normalized);

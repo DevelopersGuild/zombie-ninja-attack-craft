@@ -21,7 +21,7 @@ public class TrailProj : Projectile
           if (t > 0.075)
           {
                t = 0;
-               float angle = Mathf.Atan2(currentVelocity.y, currentVelocity.x) * Mathf.Rad2Deg;
+               float angle = Mathf.Atan2(currentVelocity.y, currentVelocity.x) * Mathf.Rad2Deg - 90;
                var q = Quaternion.AngleAxis(angle, Vector3.forward);
                trail = Instantiate(trailObj, transform.position, q) as GameObject;
                Destroy(trail, trailTime);

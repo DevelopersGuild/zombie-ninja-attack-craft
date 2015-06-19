@@ -212,7 +212,6 @@ public class SnakeBoss : Boss
           spawn_CD = 0;
           Vector2 newPos = transform.position + new Vector3(mirrorSpawn, -2.4f);
           snake = Instantiate(snakeObj, newPos, transform.rotation) as Enemy;
-
      }
 
      public void acidAttack()
