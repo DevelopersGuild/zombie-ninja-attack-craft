@@ -195,7 +195,7 @@ public class SnakeBoss : Boss
           float angle = Mathf.Atan2(tempDir.y, tempDir.x) * Mathf.Rad2Deg - 90;
           var q = Quaternion.AngleAxis(angle, Vector3.forward);
           trail = Instantiate(trailObj, transform.position, q) as TrailProj;
-          trail.setDir(angle, direction);
+          trail.setDir(angle, direction, q);
           //if fire, shoot fire in an arc/cone shape on ground
           //if ice, shoot ice in a rectangle on ground
           //trails^

@@ -33,9 +33,10 @@ public class TrailProj : Projectile
 
 
      //I must've have been dozing off when I made this method, keeping it here to remind me of my shame
-     public void setDir(float ang, Vector2 dir)
+     public void setDir(float ang, Vector2 dir, Quaternion q)
      {
           Shoot(ang, dir);
+          transform.rotation = q;
      }
 
 
