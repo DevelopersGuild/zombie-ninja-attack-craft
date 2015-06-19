@@ -51,14 +51,14 @@ public class FireSnake : SnakeBoss
                     // biteTime -= Time.deltaTime;
 
                     findPos();
-                    if (biteTime <= 12)
+                    if (biteTime <= 24)
                     {
-                         transform.position += biteDir;
+                         transform.position += biteDir/2;
 
                     }
-                    else if (biteTime <= 24 + count)
+                    else if (biteTime <= 48 + count)
                     {
-                         transform.position -= biteDir;
+                         transform.position -= biteDir/2;
                     }
                     else
                     {
