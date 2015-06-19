@@ -130,6 +130,11 @@ public class Health : MonoBehaviour
                Enemy enem = gameObject.GetComponent<Enemy>();
                enem.onDeath();
           }
+          else if (gameObject.GetComponent<Boss>())
+          {
+               Boss enem = gameObject.GetComponent<Boss>();
+               enem.onDeath();
+          }
           isDead = true;
 
           DropLoot dropLoot;
