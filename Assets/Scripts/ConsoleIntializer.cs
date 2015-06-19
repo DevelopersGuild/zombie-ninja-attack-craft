@@ -26,11 +26,13 @@ public class ConsoleIntializer : MonoBehaviour
      {
           if (player.isInvincible == false)
           {
+               player.PlayerToGodMode = true;
                player.isInvincible = true;
                return "GodMode on";
           }
           else
           {
+               player.PlayerToGodMode = false;
                player.isInvincible = false;
                return "GodMode off";
           }
