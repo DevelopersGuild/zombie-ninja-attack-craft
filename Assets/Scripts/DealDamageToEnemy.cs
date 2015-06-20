@@ -69,6 +69,8 @@ public class DealDamageToEnemy : MonoBehaviour
                     // enemyHealth.CalculateKnockback(other, transform.position);
                     enemyHealth.TakeDamage(damageAmount);
                     enemy.isInvincible = true;
+                    enemy.setBlink(0.5f);
+
                }
 
                enemiesHit++;
@@ -134,6 +136,7 @@ public class DealDamageToEnemy : MonoBehaviour
                     // enemyHealth.CalculateKnockback(other, transform.position);
                     enemyHealth.TakeDamage(damageAmount);
                     enemy.isInvincible = true;
+                    enemy.setBlink(0.5f);
                }
 
                enemiesHit++;
@@ -201,6 +204,8 @@ public class DealDamageToEnemy : MonoBehaviour
                     //enemyHealth.CalculateKnockback(other, transform.position);
                     enemyHealth.TakeDamage(damageAmount);
                     enemy.isInvincible = true;
+                    enemy.setBlink(0.5f);
+
                }
 
                enemiesHit++;

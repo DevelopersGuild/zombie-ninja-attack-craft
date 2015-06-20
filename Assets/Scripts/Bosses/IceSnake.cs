@@ -42,6 +42,11 @@ public class IceSnake : SnakeBoss
           health.cancelKnockback();
           if (player != null)
           {
+               if (blinkTime > 0)
+               {
+                    blink = !blink;
+                    GetComponent<Renderer>().enabled = blink;
+               }
                
                if (isBiting)
                {

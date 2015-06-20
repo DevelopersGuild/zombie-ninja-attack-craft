@@ -268,7 +268,7 @@ public class SnakeBoss : Boss
           b4.stopMove(true);
      }
 
-     public void onDeath()
+     public override void onDeath()
      {
           b1.dead();
           b2.dead();
