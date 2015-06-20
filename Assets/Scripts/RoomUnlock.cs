@@ -82,7 +82,7 @@ public class RoomUnlock : MonoBehaviour
      // Open the doors and spawn the reward items
      void closeRoom()
      {
-         isActive = false;
+          isActive = false;
           foreach (Door door in doors)
           {
                door.OpenDoor();
@@ -90,6 +90,12 @@ public class RoomUnlock : MonoBehaviour
           foreach (GameObject reward in rewards)
           {
                reward.SetActive(true);
+          }
+
+          // Unfreeze camera position
+          if (GetComponent<CameraFreeze>())
+          {
+               GetComponent<CameraFreeze>().UnfreezeToPlayer();
           }
           //Destroy(gameObject);
      }
