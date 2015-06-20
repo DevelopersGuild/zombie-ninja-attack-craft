@@ -49,6 +49,10 @@ public class FireSnake : SnakeBoss
                     blink = !blink;
                     GetComponent<Renderer>().enabled = blink;
                }
+               if (blinkTime <= 0)
+               {
+                    GetComponent<Renderer>().enabled = true;
+               }
 
                if (isBiting)
                {
@@ -174,9 +178,9 @@ public class FireSnake : SnakeBoss
                     iceBall_CD += Time.deltaTime;
                     iceTrail_CD += Time.deltaTime;
                     cooldown_CD += Time.deltaTime;
-
                }
           }
+          blinkTime -= Time.deltaTime;
           attackDelay -= Time.deltaTime;
 
      }
