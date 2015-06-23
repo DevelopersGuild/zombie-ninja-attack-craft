@@ -9,7 +9,6 @@ public class EntranceTrigger : MonoBehaviour
 
      void OnTriggerEnter2D(Collider2D other)
      {
-          Debug.Log("TIGGER");
           if (other.tag == "Player")
           {
                spikePath.gameObject.SetActive(true);
