@@ -26,6 +26,7 @@ public class CameraFollow : MonoBehaviour {
 
      public void CameraShake()
      {
+          Debug.Log("SHALE!");
           transform.DOShakePosition(0.40f, 0.15f, 45, 45);
      }
 }

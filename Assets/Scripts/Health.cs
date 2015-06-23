@@ -61,7 +61,7 @@ public class Health : MonoBehaviour
                Instantiate(deathParticle, transform.position, transform.rotation);
           }
 
-               FindObjectOfType<CameraFollow>().CameraShake();
+          FindObjectOfType<CameraFollow>().CameraShake();
           
 
           if (currentHealth <= 0)

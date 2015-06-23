@@ -13,9 +13,6 @@ public class GUIManager : MonoBehaviour
      public Canvas LoadLevelCanvas = null;
      public Canvas EndOfLevelCanvas = null;
 
-     public GUIStyle myStyle;
-     public Font pixelFont;
-
      void Start()
      {
           GameManager.Notifications.AddListener(this, "OnPlayerDeath");
@@ -49,7 +46,6 @@ public class GUIManager : MonoBehaviour
           }
 
           GUIStyle myStyle = new GUIStyle();
-          myStyle.font = pixelFont;
      }
 
      public void OnPlayerDeath()
