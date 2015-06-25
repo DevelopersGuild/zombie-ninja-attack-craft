@@ -37,11 +37,7 @@ public class CameraFollow : MonoBehaviour {
 
      public void CameraShake()
      {
-          float a = 0.40f;
-          float b = 0.15f;
-          int c = 45;
           isShaking = true;
-
      }
      public void DoneShaking()
      {
