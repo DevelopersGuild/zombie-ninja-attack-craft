@@ -14,6 +14,7 @@ public class Health : MonoBehaviour
      private AudioSource enemyAudio;
      public ParticleSystem particle;
      public ParticleSystem deathParticle;
+     private CameraFollow camera;
 
      public bool canKnock;
 
@@ -23,6 +24,7 @@ public class Health : MonoBehaviour
           isDead = false;
           currentHealth = startingHealth;
           canKnock = true;
+          camera = FindObjectOfType<CameraFollow>();
      }
 
      public void cancelKnockback()
@@ -60,8 +62,7 @@ public class Health : MonoBehaviour
           {
                Instantiate(deathParticle, transform.position, transform.rotation);
           }
-
-          FindObjectOfType<CameraFollow>().CameraShake();
+          camera.CameraShake();
           
 
           if (currentHealth <= 0)

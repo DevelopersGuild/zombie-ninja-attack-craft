@@ -62,8 +62,12 @@ namespace AssemblyCSharp
                {
                     rnd = new System.Random();
                     //basic aggression range formula
-                    distance = player.transform.position - transform.position;
-                    distanceFromPoint = distance + up;
+                    if (player != null)
+                    {
+                         distance = player.transform.position - transform.position;
+                         distanceFromPoint = distance + up;
+                    }
+
                     if (distanceFromPoint.magnitude > (distance + left).magnitude)
                     {
                          distanceFromPoint = distance + left;

@@ -6,26 +6,50 @@ using DG.Tweening;
 public class CameraFollow : MonoBehaviour {
 
      public Player player;
+     private Transform transform;
+     private bool isShaking;
      public Transform playerPosition;
 
 	// Use this for initialization
+     void Awake()
+     {
+          isShaking = false;
+          DOTween.KillAll();
+     }
 	void Start () {
+          DOTween.Init(true, false);
           player = FindObjectOfType<Player>();
+          transform = GetComponent<Transform>();
           playerPosition = player.transform;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = new Vector3(playerPosition.position.x, playerPosition.position.y, -10);
-
-        if (player.gotAttacked == true)
-        {
-             CameraShake();
-        }
+          if (isShaking)
+          {
+               Tween cameraShake = transform.DOShakePosition(.05f, new Vector3(.15f,.15f,0), 5).OnComplete(DoneShaking);
+          }
+          else
+          {
+               transform.position = new Vector3(playerPosition.position.x, playerPosition.position.y, -10);
+          }
      }
 
      public void CameraShake()
      {
-          transform.DOShakePosition(0.40f, 0.15f, 45, 45);
+          float a = 0.40f;
+          float b = 0.15f;
+          int c = 45;
+          isShaking = true;
+
+     }
+     public void DoneShaking()
+     {
+          isShaking = false;
+          transform.DOMove(new Vector3(playerPosition.position.x, playerPosition.position.y, -10), 0.1f);
+     }
+     public void Test()
+     {
+          transform.position = new Vector3(playerPosition.position.x, playerPosition.position.y, -10);
      }
 }
