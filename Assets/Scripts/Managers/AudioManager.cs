@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
      }
 
      private static AudioManager audioController = null;
-     private const int NumberOfAudioSources = 10;
+     private const int NumberOfAudioSources = 13;
      public AudioSource LevelMusic;
      public AudioSource[] AudioSources = new AudioSource[NumberOfAudioSources];
 
@@ -31,6 +31,14 @@ public class AudioManager : MonoBehaviour
           GameManager.Notifications.AddListener(this, "PlayerProjectileAttack");
           GameManager.Notifications.AddListener(this, "OnExplosion");
           GameManager.Notifications.AddListener(this, "OnHit");
+          GameManager.Notifications.AddListener(this, "OnPlayerDeath");
+          GameManager.Notifications.AddListener(this, "OnPlayerDash");
+          GameManager.Notifications.AddListener(this, "OnHealthOrBatteryPickup");
+          GameManager.Notifications.AddListener(this, "OnKeyPickup");
+          GameManager.Notifications.AddListener(this, "OnLightingAttack");
+          GameManager.Notifications.AddListener(this, "OnCyclopsShoot");
+          GameManager.Notifications.AddListener(this, "OnCyclopsTeleport");
+          GameManager.Notifications.AddListener(this, "OnEnemySpark");
      }
 
      public void CoinPickedUp()
@@ -56,5 +64,37 @@ public class AudioManager : MonoBehaviour
      public void OnHit()
      {
           AudioSources[4].Play();
+     }
+     public void OnPlayerDeath()
+     {
+          AudioSources[5].Play();
+     }
+     public void OnPlayerDash()
+     {
+          AudioSources[6].Play();
+     }
+     public void OnHealthOrBatteryPickup()
+     {
+          AudioSources[7].Play();
+     }
+     public void OnKeyPickup()
+     {
+          AudioSources[8].Play();
+     }
+     public void OnLightingAttack()
+     {
+          AudioSources[9].Play();
+     }
+     public void OnCyclopsShoot()
+     {
+          AudioSources[10].Play();
+     }
+     public void OnCyclopsTeleport()
+     {
+          AudioSources[11].Play();
+     }
+     public void OnEnemySpark()
+     {
+          AudioSources[12].Play();
      }
 }

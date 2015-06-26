@@ -87,6 +87,7 @@ namespace AssemblyCSharp
 
           public void Spark()
           {
+               GameManager.Notifications.PostNotification(this, "OnEnemySpark");
                moveController.Move(0, 0);
                t = 2;
                sparkTimer = sparkTime;

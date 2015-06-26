@@ -7,12 +7,17 @@ public class ConsoleIntializer : MonoBehaviour
      // Use this for initialization
      void Start()
      {
-          player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-          var repo = ConsoleCommandsRepository.Instance;
-          repo.RegisterCommand("help", Help);
-          repo.RegisterCommand("godmode", GodMode);
-          repo.RegisterCommand("givemeweapons", GiveMeWeapons);
-          repo.RegisterCommand("givemeammo", GiveMeAmmo);
+          
+          if(GameObject.FindGameObjectWithTag("Player") != null)
+          {
+               player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+               var repo = ConsoleCommandsRepository.Instance;
+               repo.RegisterCommand("help", Help);
+               repo.RegisterCommand("godmode", GodMode);
+               repo.RegisterCommand("givemeweapons", GiveMeWeapons);
+               repo.RegisterCommand("givemeammo", GiveMeAmmo);
+          }
+
      }
 
      public string Help(params string[] args)

@@ -42,4 +42,9 @@ public class AmmoPickup : Pickup
           attackController = player.gameObject.GetComponent<AttackController>();
           attackController.Ammo += value;
      }
+
+     public override void sendPickupMessage()
+     {
+          GameManager.Notifications.PostNotification(this, "OnHealthOrBatteryPickup");
+     }
 }

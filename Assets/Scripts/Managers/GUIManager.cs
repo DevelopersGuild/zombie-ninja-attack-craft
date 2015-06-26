@@ -48,6 +48,26 @@ public class GUIManager : MonoBehaviour
           GUIStyle myStyle = new GUIStyle();
      }
 
+     void Update()
+     {
+          if(Input.GetButtonDown("Cancel"))
+          {
+               if(restartCanvas != null)
+               {
+                    if(restartCanvas.enabled == false)
+                    {
+                         restartCanvas.enabled = true;
+                         Cursor.visible = true;
+                    }
+                    else
+                    {
+                         restartCanvas.enabled = false;
+                         Cursor.visible = false;
+                    }
+               }
+          }
+     }
+
      public void OnPlayerDeath()
      {
           if (restartCanvas != null)

@@ -177,6 +177,7 @@ public class Cyclops : Enemy
      public void Shoot()
      {
           Vector3 offset;
+          GameManager.Notifications.PostNotification(this, "OnCyclopsShoot");
           laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
           laser.GetComponent<Rigidbody2D>().velocity = (direction * projectileSpeed);
           laserCD = 0;
@@ -189,6 +190,7 @@ public class Cyclops : Enemy
 
      public void Teleporting()
      {
+          GameManager.Notifications.PostNotification(this, "OnCyclopsTeleport");
           sprRend.enabled = false;
           collider.enabled = false;
           teleporting = true;

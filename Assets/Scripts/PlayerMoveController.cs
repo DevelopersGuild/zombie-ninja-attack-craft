@@ -263,6 +263,7 @@ public class PlayerMoveController : MonoBehaviour
           if (canDash == true && IsDashUnlocked == true)
           {
                // Change these rigidbody parameters so the dashing feels better
+               GameManager.Notifications.PostNotification(this, "OnPlayerDash");
                ToDashPhysics();
                GetComponent<Rigidbody2D>().velocity = facing * (dashSpeed + DashSpeedUpgrade);
 
