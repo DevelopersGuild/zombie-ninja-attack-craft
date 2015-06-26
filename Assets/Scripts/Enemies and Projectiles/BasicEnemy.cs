@@ -170,4 +170,9 @@ using UnityEngine;
                //sets to walking as it is the default animation.
           }
 
+          public override void onDeath()
+          {
+               Destroy(attackCollider);
+          }
+
      }
