@@ -9,6 +9,7 @@ namespace AssemblyCSharp
           private AnimationController animationController;
 
           public GameObject SparkParticle, SparkParticleInstance;
+          public int SoundDistance;
           public float sparkTime;
           private float sparkTimer;
 
@@ -17,6 +18,7 @@ namespace AssemblyCSharp
           private Vector2 distance;
           private Vector3 someVec;
           private double stop, idleTime;
+          private bool canPlayerHearSpark;
 
           //private Animator animator;
 
@@ -28,6 +30,7 @@ namespace AssemblyCSharp
                animationController = GetComponent<AnimationController>();
                transform.gameObject.tag = "Attackable";
                health = GetComponent<Health>();
+               canPlayerHearSpark = false;
 
                rnd = new System.Random(Guid.NewGuid().GetHashCode());
                t = 3 + rnd.Next(0, 3000) / 1000f;
@@ -87,7 +90,8 @@ namespace AssemblyCSharp
 
           public void Spark()
           {
-               GameManager.Notifications.PostNotification(this, "OnEnemySpark");
+
+               CheckIfPlayerCanHearSpark();
                moveController.Move(0, 0);
                t = 2;
                sparkTimer = sparkTime;
@@ -97,6 +101,15 @@ namespace AssemblyCSharp
           public void FinishedSpark()
           {
                animationController.isAttacking = false;
+          }
+
+          public void CheckIfPlayerCanHearSpark()
+          {
+               float distance = Vector3.Distance(transform.position, player.transform.position);
+               if(distance < SoundDistance)
+               {
+                    GameManager.Notifications.PostNotification(this, "OnEnemySpark");
+               }
           }
      }
 }
