@@ -135,14 +135,30 @@ public class GUIManager : MonoBehaviour
      public void ShowSettingScreen()
      {
           SettingsCanvas.enabled = true;
-          restartCanvas.enabled = false;
+          if(restartCanvas != null)
+          {
+               restartCanvas.enabled = false;
+          }
+
+          if(MainTitleMenu != null)
+          {
+               MainTitleMenu.enabled = false;
+          }
           isInSettings = true;
      }
 
      public void HideSettingScreen()
      {
           SettingsCanvas.enabled = false;
-          restartCanvas.enabled = true;
+          if (restartCanvas != null)
+          {
+               restartCanvas.enabled = true;
+          }
+
+          if (MainTitleMenu != null)
+          {
+               MainTitleMenu.enabled = true;
+          }
           isInSettings = false;
      }
 
