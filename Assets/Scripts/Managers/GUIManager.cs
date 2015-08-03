@@ -58,11 +58,13 @@ public class GUIManager : MonoBehaviour
                     {
                          restartCanvas.enabled = true;
                          Cursor.visible = true;
+                         GameManager.Instance.PauseGame();
                     }
                     else
                     {
                          restartCanvas.enabled = false;
                          Cursor.visible = false;
+                         GameManager.Instance.UnpauseGame();
                     }
                }
           }
@@ -84,6 +86,7 @@ public class GUIManager : MonoBehaviour
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
                StoreCanvas.enabled = true;
                Cursor.visible = true;
+               GameManager.Instance.PauseGame();
           }
      }
 
@@ -94,6 +97,7 @@ public class GUIManager : MonoBehaviour
                GameManager.Notifications.PostNotification(this, "PlayerExitMenu");
                StoreCanvas.enabled = false;
                Cursor.visible = false;
+               GameManager.Instance.UnpauseGame();
           }
      }
 
@@ -104,6 +108,7 @@ public class GUIManager : MonoBehaviour
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
                EndOfLevelCanvas.enabled = true;
                Cursor.visible = true;
+               GameManager.Instance.PauseGame();
           }
      }
 
