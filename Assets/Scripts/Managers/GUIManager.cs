@@ -12,6 +12,9 @@ public class GUIManager : MonoBehaviour
      public Canvas StoreCanvas = null;
      public Canvas LoadLevelCanvas = null;
      public Canvas EndOfLevelCanvas = null;
+     public Canvas SettingsCanvas = null;
+
+     private bool isInSettings = false; 
 
      void Start()
      {
@@ -44,13 +47,18 @@ public class GUIManager : MonoBehaviour
           {
                EndOfLevelCanvas.enabled = false;
           }
+          
+          if (SettingsCanvas != null)
+          {
+               SettingsCanvas.enabled = false;
+          }
 
           GUIStyle myStyle = new GUIStyle();
      }
 
      void Update()
      {
-          if(Input.GetButtonDown("Cancel"))
+          if(Input.GetButtonDown("Cancel") && isInSettings == false)
           {
                if(restartCanvas != null)
                {
@@ -122,6 +130,20 @@ public class GUIManager : MonoBehaviour
      {
           MainTitleMenu.enabled = true;
           LoadLevelCanvas.enabled = false;
+     }
+
+     public void ShowSettingScreen()
+     {
+          SettingsCanvas.enabled = true;
+          restartCanvas.enabled = false;
+          isInSettings = true;
+     }
+
+     public void HideSettingScreen()
+     {
+          SettingsCanvas.enabled = false;
+          restartCanvas.enabled = true;
+          isInSettings = false;
      }
 
      private void OnGUI()
