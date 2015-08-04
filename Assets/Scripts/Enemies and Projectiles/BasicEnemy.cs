@@ -152,6 +152,7 @@ using UnityEngine;
                {
                     attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, Math.Sign(distance.y) / 2f, 0), UDAttack.transform.rotation) as BasicAttack;
                }
+
           }
 
           //Called by attacking animation at end of animation
@@ -174,5 +175,4 @@ using UnityEngine;
           {
                Destroy(attackCollider);
           }
-
      }

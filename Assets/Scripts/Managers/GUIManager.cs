@@ -12,6 +12,9 @@ public class GUIManager : MonoBehaviour
      public Canvas StoreCanvas = null;
      public Canvas LoadLevelCanvas = null;
      public Canvas EndOfLevelCanvas = null;
+     public Canvas SettingsCanvas = null;
+
+     private bool isInSettings = false; 
 
      void Start()
      {
@@ -44,13 +47,18 @@ public class GUIManager : MonoBehaviour
           {
                EndOfLevelCanvas.enabled = false;
           }
+          
+          if (SettingsCanvas != null)
+          {
+               SettingsCanvas.enabled = false;
+          }
 
           GUIStyle myStyle = new GUIStyle();
      }
 
      void Update()
      {
-          if(Input.GetButtonDown("Cancel"))
+          if(Input.GetButtonDown("Cancel") && isInSettings == false)
           {
                if(restartCanvas != null)
                {
@@ -58,11 +66,13 @@ public class GUIManager : MonoBehaviour
                     {
                          restartCanvas.enabled = true;
                          Cursor.visible = true;
+                         GameManager.Instance.PauseGame();
                     }
                     else
                     {
                          restartCanvas.enabled = false;
                          Cursor.visible = false;
+                         GameManager.Instance.UnpauseGame();
                     }
                }
           }
@@ -84,6 +94,7 @@ public class GUIManager : MonoBehaviour
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
                StoreCanvas.enabled = true;
                Cursor.visible = true;
+               GameManager.Instance.PauseGame();
           }
      }
 
@@ -94,6 +105,7 @@ public class GUIManager : MonoBehaviour
                GameManager.Notifications.PostNotification(this, "PlayerExitMenu");
                StoreCanvas.enabled = false;
                Cursor.visible = false;
+               GameManager.Instance.UnpauseGame();
           }
      }
 
@@ -104,6 +116,7 @@ public class GUIManager : MonoBehaviour
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
                EndOfLevelCanvas.enabled = true;
                Cursor.visible = true;
+               GameManager.Instance.PauseGame();
           }
      }
 
@@ -117,6 +130,36 @@ public class GUIManager : MonoBehaviour
      {
           MainTitleMenu.enabled = true;
           LoadLevelCanvas.enabled = false;
+     }
+
+     public void ShowSettingScreen()
+     {
+          SettingsCanvas.enabled = true;
+          if(restartCanvas != null)
+          {
+               restartCanvas.enabled = false;
+          }
+
+          if(MainTitleMenu != null)
+          {
+               MainTitleMenu.enabled = false;
+          }
+          isInSettings = true;
+     }
+
+     public void HideSettingScreen()
+     {
+          SettingsCanvas.enabled = false;
+          if (restartCanvas != null)
+          {
+               restartCanvas.enabled = true;
+          }
+
+          if (MainTitleMenu != null)
+          {
+               MainTitleMenu.enabled = true;
+          }
+          isInSettings = false;
      }
 
      private void OnGUI()
