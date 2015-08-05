@@ -141,10 +141,12 @@ public class Player : MonoBehaviour
                     if (ChosenWeapon == SecondaryWeapons.Projectile)
                     {
                          ChosenWeapon = SecondaryWeapons.Mine;
+                         GameManager.Notifications.PostNotification(this, "BombSelected");
                     }
                     else if (ChosenWeapon == SecondaryWeapons.Mine)
                     {
                          ChosenWeapon = SecondaryWeapons.Projectile;
+                         GameManager.Notifications.PostNotification(this, "Projectileselected");
                     }
                }
 
