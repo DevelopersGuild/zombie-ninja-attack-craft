@@ -19,6 +19,8 @@ public class GUIScript : MonoBehaviour
          player = FindObjectOfType<Player>();
           playerHealth = player.GetComponent<Health>();
           playerAttackController = player.GetComponent<AttackController>();
+          GameManager.Notifications.AddListener(this, "BombSelected");
+          GameManager.Notifications.AddListener(this, "Projectileselected");
      }
 
      // Update is called once per frame
@@ -27,5 +29,15 @@ public class GUIScript : MonoBehaviour
           healthLabel.text = playerHealth.currentHealth.ToString();
           scoreLabel.text = GameManager.getCoins().ToString();
           ammoLabel.text = playerAttackController.Ammo.ToString();
+     }
+
+     public void BombSelected()
+     {
+
+     }
+
+     public void Projectileselected()
+     {
+
      }
 }

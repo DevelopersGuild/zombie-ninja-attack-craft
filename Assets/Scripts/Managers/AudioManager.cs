@@ -19,8 +19,10 @@ public class AudioManager : MonoBehaviour
 
      private static AudioManager audioController = null;
      private const int NumberOfAudioSources = 13;
+     private static float lastVolumeLevel;
      public AudioSource LevelMusic;
      public AudioSource[] AudioSources = new AudioSource[NumberOfAudioSources];
+
 
      // Use this for initialization
      void Start()
@@ -39,6 +41,28 @@ public class AudioManager : MonoBehaviour
           GameManager.Notifications.AddListener(this, "OnCyclopsShoot");
           GameManager.Notifications.AddListener(this, "OnCyclopsTeleport");
           GameManager.Notifications.AddListener(this, "OnEnemySpark");
+     }
+
+     public void MuteSound(bool muteSound)
+     {
+          if(muteSound == true)
+          {
+               lastVolumeLevel = AudioListener.volume;
+               ChangeGameVolume(0);
+          }
+          else
+          {
+               ChangeGameVolume(lastVolumeLevel);
+          }
+     }
+
+     public void ChangeGameVolume(float volumeLevel)
+     {
+          if(volumeLevel < 0 || volumeLevel > 1.0)
+          {
+               volumeLevel = AudioListener.volume;
+          }
+          AudioListener.volume = volumeLevel;
      }
 
      public void CoinPickedUp()

@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
           timeToCompleteLevel = 0;
           LoadGameData();
           GameManager.Notifications.PostNotification(this, "LevelLoaded");
+          UnpauseGame();
      }
 
      public void LoadGameData()
@@ -207,6 +208,16 @@ public class GameManager : MonoBehaviour
      public void QuitGame()
      {
           Application.Quit();
+     }
+
+     public void PauseGame()
+     {
+          Time.timeScale = 0;
+     }
+
+     public void UnpauseGame()
+     {
+          Time.timeScale = 1.0f;
      }
 
      //Player Progression
