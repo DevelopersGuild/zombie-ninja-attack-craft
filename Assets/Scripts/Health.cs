@@ -62,8 +62,12 @@ public class Health : MonoBehaviour
           {
                Instantiate(deathParticle, transform.position, transform.rotation);
           }
-          camera.CameraShake();
-          
+
+          // Shake the camera if its not a barrel
+          if(!gameObject.CompareTag("Barrel"))
+          {
+               camera.CameraShake();
+          }   
 
           if (currentHealth <= 0)
           {

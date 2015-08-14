@@ -20,8 +20,9 @@ public class DealDamageToEnemy : MonoBehaviour
           CheckForProjectile();
           //Check for enemy collision
 
-          if (other.gameObject.CompareTag("Attackable"))
+          if (other.gameObject.CompareTag("Attackable") || other.gameObject.CompareTag("Barrel"))
           {
+               Debug.Log("DIE!");
                //Find components necessary to take damage and knockback
                GameObject enemObject = other.gameObject;
                Health enemyHealth = other.gameObject.GetComponent<Health>();
@@ -70,7 +71,6 @@ public class DealDamageToEnemy : MonoBehaviour
                     enemyHealth.TakeDamage(damageAmount);
                     enemy.isInvincible = true;
                     enemy.setBlink(0.5f);
-
                }
 
                enemiesHit++;
@@ -141,20 +141,15 @@ public class DealDamageToEnemy : MonoBehaviour
 
                enemiesHit++;
           }
-
-
           //Destroy itself if its a projectile
           ProjectileDestroy(isProjectile);
-
-
-
      }
 
      //For triggers
      public void OnTriggerEnter2D(Collider2D other)
      {
           //Check for enemy collision
-          if (other.gameObject.CompareTag("Attackable"))
+          if (other.gameObject.CompareTag("Attackable") || other.gameObject.CompareTag("Barrel"))
           {
 
                //Find components necessary to take damage and knockback
