@@ -151,11 +151,7 @@ public class Health : MonoBehaviour
                     dropLoot.DropItem();
                }
           }
-
-
           Destroy(gameObject);
-
-
      }
 
      void OnApplicationQuit()

@@ -152,6 +152,7 @@ using UnityEngine;
                {
                     attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, Math.Sign(distance.y) / 2f, 0), UDAttack.transform.rotation) as BasicAttack;
                }
+               attackCollider.transform.parent = gameObject.transform;
 
           }
 
