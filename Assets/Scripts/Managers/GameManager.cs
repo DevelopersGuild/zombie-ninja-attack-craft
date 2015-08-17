@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
      private static GameManager instance = null;
      private static NotificationManager notifications = null;
      private static LoadAndSaveManager stateManager = null;
-     private static int currentLevel;
+     public static int CurrentLevel;
 
      public static int Coins;
      public static int Score;
@@ -76,8 +76,8 @@ public class GameManager : MonoBehaviour
      // Use this for initialization
      void Start()
      {
-          currentLevel = Application.loadedLevel;
-          OnLevelWasLoaded(currentLevel);
+          CurrentLevel = Application.loadedLevel;
+          OnLevelWasLoaded(CurrentLevel);
           if (UnlockAllUnlocks == true)
           {
                UnlockEverything();
@@ -175,11 +175,11 @@ public class GameManager : MonoBehaviour
      public static void LevelComplete()
      {
           bool isActive = StateManager.isActiveAndEnabled;
-          if (stateManager.GameState.GameLevels.Count >= currentLevel)
+          if (stateManager.GameState.GameLevels.Count >= CurrentLevel)
           {
-               if (stateManager.GameState.GameLevels[currentLevel - 1].Score < Score)
+               if (stateManager.GameState.GameLevels[CurrentLevel - 1].Score < Score)
                {
-                    stateManager.GameState.GameLevels[currentLevel - 1].Score = Score;
+                    stateManager.GameState.GameLevels[CurrentLevel - 1].Score = Score;
                }
           }
           else
