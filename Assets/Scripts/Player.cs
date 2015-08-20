@@ -8,8 +8,8 @@ class ArrowKeys
      private static string[] buttonNames = { "Up", "Right", "Down", "Left" };
      private static Vector2[] directionVector = { Vector2.up,
                                                   Vector2.right,
-                                                  Vector2.down,
-                                                  Vector2.left }; 
+                                                  -1 * Vector2.up,
+                                                  -1 * Vector2.right }; 
      private static float tapSpeed = .25f;
      private List<int> keysPressed = new List<int>();
      private float[] lastTapTimes = new float[4];

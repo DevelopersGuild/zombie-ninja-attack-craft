@@ -251,7 +251,7 @@ public class PlayerMoveController : MonoBehaviour
           {
                return Quaternion.Euler(0, -90, 90);
           }
-          else if (facing == Vector2.down)
+          else if (facing == -1 * Vector2.up)
           {
                return Quaternion.Euler(-90, 0, 0);
           }

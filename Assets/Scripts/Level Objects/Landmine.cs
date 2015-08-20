@@ -5,7 +5,7 @@ public class Landmine : Pickup
 {
 
      public Explosion explosion;
-     public SpriteRenderer sprite;
+     private SpriteRenderer sprite;
 
 
      private bool isActive;
