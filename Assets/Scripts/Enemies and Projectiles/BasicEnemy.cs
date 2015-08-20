@@ -60,7 +60,6 @@ using UnityEngine;
                else
                {
                     rnd = new System.Random();
-                    //basic aggression range formula
                     if (player != null)
                     {
                          distance = player.transform.position - transform.position;
@@ -103,6 +102,7 @@ using UnityEngine;
                               else if (distanceFromPoint.magnitude > 0.25f)
                               {
                                    moveController.Move(direction / 6f);
+                                   //distance.normalized?
                               }
                              
                          }

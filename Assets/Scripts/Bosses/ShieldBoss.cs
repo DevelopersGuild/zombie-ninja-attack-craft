@@ -138,7 +138,7 @@ public class ShieldBoss : Boss
                     GetComponent<Renderer>().enabled = blink;
                     moveController.canMove = false;
                }
-               else if (timeSpentInvincible <= 1.5 + .2f * (18 - currentHp()))
+               else if (timeSpentInvincible <= 2 + .2f * (18 - currentHp()))
                {
                     sprRend.color = new Color(200, 30, 50, 0.1f);
                     moveController.canMove = true;
@@ -152,7 +152,8 @@ public class ShieldBoss : Boss
                     GetComponent<Renderer>().enabled = true;
                }
           }
-          return isInvincible;
+          return moveController.canMove;
+          //previously isInvincible
      }
 
 }
