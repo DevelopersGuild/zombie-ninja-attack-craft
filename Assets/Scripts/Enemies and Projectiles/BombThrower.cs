@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class BombThrower : MonoBehaviour {
-
-    public Transform playerPosition;
-    public Health player;
     public BombScript bomb;
+    private Player player;
+    private Health playerHealth;
+    private Transform playerPosition;
 
     public BombScript bombObject;
 
@@ -17,8 +17,14 @@ public class BombThrower : MonoBehaviour {
     
 
 	// Update is called once per frame
+     public void Start()
+    {
+         player = FindObjectOfType<Player>();
+         playerHealth = player.GetComponent<Health>();
+         playerPosition = player.transform;
+    }
 	void Update () {
-        if (isAggroed && player.isDead == false) {
+        if (isAggroed && playerHealth.isDead == false) {
             //Throw a bomb with a cooldown towards the direction of the player if the player is within aggro range
             currentTime += Time.deltaTime;
             if (currentTime >= throwCooldown) {

@@ -106,7 +106,7 @@ namespace AssemblyCSharp
           public void CheckIfPlayerCanHearSpark()
           {
                float distance = Vector3.Distance(transform.position, player.transform.position);
-               if(distance < SoundDistance)
+               if(distance < SoundDistance && player)
                {
                     GameManager.Notifications.PostNotification(this, "OnEnemySpark");
                }
