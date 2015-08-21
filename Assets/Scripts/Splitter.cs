@@ -68,15 +68,22 @@ namespace AssemblyCSharp
                     {
                          rnd = new System.Random();
                          //basic aggression range formula
-                         distance = player.transform.position - transform.position;
-                         float xSp = distance.normalized.x;
-                         float ySp = distance.normalized.y;
-                         direction = new Vector2(xSp, ySp);
-                         if (distance.magnitude <= AgroRange)
+                         if (player)
                          {
-                              isAgro = true;
+                              distance = player.transform.position - transform.position;
+                              float xSp = distance.normalized.x;
+                              float ySp = distance.normalized.y;
+                              direction = new Vector2(xSp, ySp);
+                              if (distance.magnitude <= AgroRange)
+                              {
+                                   isAgro = true;
+                              }
+                              if (distance.magnitude > AgroRange)
+                              {
+                                   isAgro = false;
+                              }
                          }
-                         if (distance.magnitude > AgroRange)
+                         else
                          {
                               isAgro = false;
                          }
