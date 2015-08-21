@@ -161,7 +161,7 @@ public class AttackController : MonoBehaviour
      public bool CanAttack()
      {
           //Check if the player is allowed to attack
-          if (moveController.isDashing)
+          if (isAttacking || moveController.isDashing)
           {
                return false;
           }
