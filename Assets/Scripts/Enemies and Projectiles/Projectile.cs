@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
      public float projectileSpeed;
      public float angle;
+     public float currentAngle;
      public int damageAmount;
 
      public float stun;
@@ -58,7 +59,7 @@ public class Projectile : MonoBehaviour
 
 
 
-     public void Shoot(float angle, Vector2 velocity, int damage = 1)
+     public void Shoot(float angle, Vector2 velocity, int damage = 1, bool isPowerShot = false)
      {
           damageAmount = damage;
           originalPosition = transform.position;

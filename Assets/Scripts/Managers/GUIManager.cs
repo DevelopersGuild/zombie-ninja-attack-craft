@@ -7,14 +7,14 @@ using System.Collections;
 
 public class GUIManager : MonoBehaviour
 {
-     public Canvas MainTitleMenu = null;
-     public Canvas restartCanvas = null;
-     public Canvas StoreCanvas = null;
-     public Canvas LoadLevelCanvas = null;
-     public Canvas EndOfLevelCanvas = null;
+     private Canvas mainTitleMenu = null;
+     private Canvas loadLevelCanvas = null;
+     private Canvas restartCanvas = null;
+     private Canvas storeCanvas = null;
+     private Canvas endOfLevelCanvas = null;
+     private Canvas settingsCanvas = null;
 
-     public GUIStyle myStyle;
-     public Font pixelFont;
+     private bool isInSettings = false; 
 
      void Start()
      {
@@ -23,14 +23,46 @@ public class GUIManager : MonoBehaviour
           GameManager.Notifications.AddListener(this, "OnPlayerExitShop");
           GameManager.Notifications.AddListener(this, "EndOfLevelReached");
 
+          GameObject temp = GameObject.Find("TitleScreenCanvas");
+          if(temp != null)
+          {
+               mainTitleMenu = temp.GetComponent<Canvas>();
+          }
+          temp = GameObject.Find("LoadLevelCanvas");
+          if (temp != null)
+          {
+               loadLevelCanvas = temp.GetComponent<Canvas>();
+          }
+          temp = GameObject.Find("RestartCanvas");
+          if (temp != null)
+          {
+               restartCanvas = temp.GetComponent<Canvas>();
+          }
+          temp = GameObject.Find("ShopCanvas");
+          if (temp != null)
+          {
+               storeCanvas = temp.GetComponent<Canvas>();
+          }
+          temp = GameObject.Find("EndOfLevelCanvas");
+          if (temp != null)
+          {
+               endOfLevelCanvas = temp.GetComponent<Canvas>();
+          }
+          temp = GameObject.Find("SettingsCanvas");
+          if (temp != null)
+          {
+               settingsCanvas = temp.GetComponent<Canvas>();
+          }
+
+
           if (Application.loadedLevelName != "titleScreen")
           {
                Cursor.visible = false;
           }
 
-          if (StoreCanvas != null)
+          if (storeCanvas != null)
           {
-               StoreCanvas.enabled = false;
+               storeCanvas.enabled = false;
           }
 
           if (restartCanvas != null)
@@ -38,18 +70,44 @@ public class GUIManager : MonoBehaviour
                restartCanvas.enabled = false;
           }
 
-          if (LoadLevelCanvas != null)
+          if (loadLevelCanvas != null)
           {
-               LoadLevelCanvas.enabled = false;
+               loadLevelCanvas.enabled = false;
           }
 
-          if (EndOfLevelCanvas != null)
+          if (endOfLevelCanvas != null)
           {
-               EndOfLevelCanvas.enabled = false;
+               endOfLevelCanvas.enabled = false;
+          }
+          
+          if (settingsCanvas != null)
+          {
+               settingsCanvas.enabled = false;
           }
 
           GUIStyle myStyle = new GUIStyle();
-          myStyle.font = pixelFont;
+     }
+
+     void Update()
+     {
+          if(Input.GetButtonDown("Cancel") && isInSettings == false)
+          {
+               if(restartCanvas != null)
+               {
+                    if(restartCanvas.enabled == false)
+                    {
+                         restartCanvas.enabled = true;
+                         Cursor.visible = true;
+                         GameManager.Instance.PauseGame();
+                    }
+                    else
+                    {
+                         restartCanvas.enabled = false;
+                         Cursor.visible = false;
+                         GameManager.Instance.UnpauseGame();
+                    }
+               }
+          }
      }
 
      public void OnPlayerDeath()
@@ -63,44 +121,77 @@ public class GUIManager : MonoBehaviour
 
      public void OnPlayerEnterShop()
      {
-          if (StoreCanvas != null)
+          if (storeCanvas != null)
           {
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
-               StoreCanvas.enabled = true;
+               storeCanvas.enabled = true;
                Cursor.visible = true;
+               GameManager.Instance.PauseGame();
           }
      }
 
      public void OnPlayerExitShop()
      {
-          if (StoreCanvas != null)
+          if (storeCanvas != null)
           {
                GameManager.Notifications.PostNotification(this, "PlayerExitMenu");
-               StoreCanvas.enabled = false;
+               storeCanvas.enabled = false;
                Cursor.visible = false;
+               GameManager.Instance.UnpauseGame();
           }
      }
 
      public void EndOfLevelReached()
      {
-          if (EndOfLevelCanvas != null)
+          if (endOfLevelCanvas != null)
           {
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
-               EndOfLevelCanvas.enabled = true;
+               endOfLevelCanvas.enabled = true;
                Cursor.visible = true;
+               GameManager.Instance.PauseGame();
           }
      }
 
      public void ShowLoadLevel()
      {
-          MainTitleMenu.enabled = false;
-          LoadLevelCanvas.enabled = true;
+          mainTitleMenu.enabled = false;
+          loadLevelCanvas.enabled = true;
      }
 
      public void ShowTitleScreen()
      {
-          MainTitleMenu.enabled = true;
-          LoadLevelCanvas.enabled = false;
+          mainTitleMenu.enabled = true;
+          loadLevelCanvas.enabled = false;
+     }
+
+     public void ShowSettingScreen()
+     {
+          settingsCanvas.enabled = true;
+          if(restartCanvas != null)
+          {
+               restartCanvas.enabled = false;
+          }
+
+          if(mainTitleMenu != null)
+          {
+               mainTitleMenu.enabled = false;
+          }
+          isInSettings = true;
+     }
+
+     public void HideSettingScreen()
+     {
+          settingsCanvas.enabled = false;
+          if (restartCanvas != null)
+          {
+               restartCanvas.enabled = true;
+          }
+
+          if (mainTitleMenu != null)
+          {
+               mainTitleMenu.enabled = true;
+          }
+          isInSettings = false;
      }
 
      private void OnGUI()

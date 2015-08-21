@@ -4,7 +4,7 @@ using UnityEngine;
 public class Boss : MonoBehaviour
 {
      public bool isInvincible, blink;
-     public float timeSpentInvincible;
+     public float timeSpentInvincible, blinkTime;
 
      public void start()
      {
@@ -35,6 +35,16 @@ public class Boss : MonoBehaviour
                     GetComponent<Renderer>().enabled = true;
                }
           }
+     }
+
+     public void setBlink(float bl)
+     {
+          blinkTime = bl;
+     }
+
+     public virtual void onDeath()
+     {
+
      }
 
 }

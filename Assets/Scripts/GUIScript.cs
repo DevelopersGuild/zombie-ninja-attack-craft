@@ -9,6 +9,10 @@ public class GUIScript : MonoBehaviour
      public UILabel scoreLabel;
      public UILabel ammoLabel;
 
+     public UISprite bow;
+     public UISprite bomb;
+     private bool usingArrow;
+
 
      Health playerHealth;
      AttackController playerAttackController;
@@ -16,9 +20,12 @@ public class GUIScript : MonoBehaviour
      // Use this for initialization
      void Start()
      {
-         player = FindObjectOfType<Player>();
+          usingArrow = true;
+          player = FindObjectOfType<Player>();
           playerHealth = player.GetComponent<Health>();
           playerAttackController = player.GetComponent<AttackController>();
+          GameManager.Notifications.AddListener(this, "BombSelected");
+          GameManager.Notifications.AddListener(this, "Projectileselected");
      }
 
      // Update is called once per frame
@@ -26,6 +33,29 @@ public class GUIScript : MonoBehaviour
      {
           healthLabel.text = playerHealth.currentHealth.ToString();
           scoreLabel.text = GameManager.getCoins().ToString();
-          ammoLabel.text = playerAttackController.Ammo.ToString();
+
+          if(usingArrow)
+          {
+               ammoLabel.text = playerAttackController.Ammo.ToString();
+               bow.enabled = true;
+               bomb.enabled = false;
+          }
+          else
+          {
+               ammoLabel.text = playerAttackController.Grenades.ToString();
+               bow.enabled = false;
+               bomb.enabled = true;
+          }
+          
+     }
+
+     public void BombSelected()
+     {
+          usingArrow = false;
+     }
+
+     public void Projectileselected()
+     {
+          usingArrow = true;
      }
 }

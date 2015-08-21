@@ -6,7 +6,10 @@ namespace AssemblyCSharp
      public class Porcupine : Enemy
      {
 
+          private AnimationController animationController;
+
           public GameObject SparkParticle, SparkParticleInstance;
+          public int SoundDistance;
           public float sparkTime;
           private float sparkTimer;
 
@@ -15,6 +18,7 @@ namespace AssemblyCSharp
           private Vector2 distance;
           private Vector3 someVec;
           private double stop, idleTime;
+          private bool canPlayerHearSpark;
 
           //private Animator animator;
 
@@ -23,8 +27,10 @@ namespace AssemblyCSharp
                //animator = GetComponent<Animator>();
                player = FindObjectOfType<Player>();
                moveController = GetComponent<EnemyMoveController>();
+               animationController = GetComponent<AnimationController>();
                transform.gameObject.tag = "Attackable";
                health = GetComponent<Health>();
+               canPlayerHearSpark = false;
 
                rnd = new System.Random(Guid.NewGuid().GetHashCode());
                t = 3 + rnd.Next(0, 3000) / 1000f;
@@ -49,11 +55,7 @@ namespace AssemblyCSharp
                {
                     if (sparkTimer <= 0)
                     {
-                         moveController.Move(0, 0);
-                         t = 2;
-                         sparkTimer = sparkTime;
-                         stop = 0;
-                         Instantiate(SparkParticle, transform.position, Quaternion.identity);
+                         animationController.isAttacking = true;
                     }
 
 
@@ -86,9 +88,28 @@ namespace AssemblyCSharp
                return health.currentHealth;
           }
 
-          public void onDeath()
+          public void Spark()
           {
-               //death animation
+
+               CheckIfPlayerCanHearSpark();
+               moveController.Move(0, 0);
+               t = 2;
+               sparkTimer = sparkTime;
+               stop = 0;
+               Instantiate(SparkParticle, transform.position, Quaternion.identity);
+          }
+          public void FinishedSpark()
+          {
+               animationController.isAttacking = false;
+          }
+
+          public void CheckIfPlayerCanHearSpark()
+          {
+               float distance = Vector3.Distance(transform.position, player.transform.position);
+               if(distance < SoundDistance && player)
+               {
+                    GameManager.Notifications.PostNotification(this, "OnEnemySpark");
+               }
           }
      }
 }

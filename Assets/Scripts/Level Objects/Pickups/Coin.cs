@@ -17,19 +17,19 @@ public class Coin : Pickup
 
           // Set the sprite according to value
           SpriteRenderer sr = GetComponent<SpriteRenderer>();
-          if (ValueOfPickup <= 25)
+          if (ValueOfPickup <= 40)
           {
                sr.sprite = crystal;
           }
-          else if (ValueOfPickup > 25 && ValueOfPickup <= 100)
+          else if (ValueOfPickup > 40 && ValueOfPickup <= 150)
           {
                sr.sprite = gold;
           }
-          else if (ValueOfPickup > 100 && ValueOfPickup <= 175)
+          else if (ValueOfPickup > 150 && ValueOfPickup <= 250)
           {
                sr.sprite = emerald;
           }
-          else if (ValueOfPickup > 175 && ValueOfPickup <= 250)
+          else if (ValueOfPickup > 250 && ValueOfPickup <= 400)
           {
                sr.sprite = ruby;
           }

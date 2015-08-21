@@ -15,7 +15,7 @@ public class AttackController : MonoBehaviour
      public Projectile PlayerArrow;
      public BombScript PlayerBomb;
      public int Ammo;
-     public int Bombs;
+     public int Grenades;
 
      // Use this for initialization
      void Start()
@@ -26,7 +26,17 @@ public class AttackController : MonoBehaviour
           attackCollider = FindObjectOfType<ColliderInteractions>().GetComponent<BoxCollider2D>();
           attackCollider.enabled = false;
           Ammo = 5;
-          Bombs = 3;
+          Grenades = 3;
+     }
+
+     public void SetPlayerProjectileAmmo(int amount)
+     {
+          Ammo += amount;
+     }
+
+     public void SetPlayerGrenadeAmmo(int amount)
+     {
+          Grenades += amount;
      }
 
      // Update is called once per frame
@@ -125,9 +135,9 @@ public class AttackController : MonoBehaviour
 
      public void ThrowBomb(int damage = 1)
      {
-          if(Bombs > 0)
+          if(Grenades > 0)
           {
-               Bombs--;
+               Grenades--;
                isAttacking = true;
                moveController.isDashing = false;
                moveController.canDash = false;
@@ -151,7 +161,7 @@ public class AttackController : MonoBehaviour
      public bool CanAttack()
      {
           //Check if the player is allowed to attack
-          if (moveController.isDashing)
+          if (isAttacking || moveController.isDashing)
           {
                return false;
           }

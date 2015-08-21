@@ -151,7 +151,7 @@ namespace AssemblyCSharp
           public override void onDeath()
           {
                //play pre-explosion animation
-               Explosion lnd = Instantiate(explBlockObject, transform.position, transform.rotation) as Explosion;
+               // Explosion lnd = Instantiate(explBlockObject, transform.position, transform.rotation) as Explosion;
                //death animation
           }
 

@@ -34,6 +34,7 @@ namespace AssemblyCSharp
                if (AxeDude.currentHp() <= 0)
                {
                     gameObject.SetActive(false);
+                    return;
                }
                //might be redundant to create vars then only use once, might change that
                DudeX = AxeDude.transform.position.x;

@@ -7,12 +7,17 @@ public class ConsoleIntializer : MonoBehaviour
      // Use this for initialization
      void Start()
      {
-          player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-          var repo = ConsoleCommandsRepository.Instance;
-          repo.RegisterCommand("help", Help);
-          repo.RegisterCommand("godmode", GodMode);
-          repo.RegisterCommand("givemeweapons", GiveMeWeapons);
-          repo.RegisterCommand("givemeammo", GiveMeAmmo);
+          
+          if(GameObject.FindGameObjectWithTag("Player") != null)
+          {
+               player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+               var repo = ConsoleCommandsRepository.Instance;
+               repo.RegisterCommand("help", Help);
+               repo.RegisterCommand("godmode", GodMode);
+               repo.RegisterCommand("givemeweapons", GiveMeWeapons);
+               repo.RegisterCommand("givemeammo", GiveMeAmmo);
+          }
+
      }
 
      public string Help(params string[] args)
@@ -26,11 +31,13 @@ public class ConsoleIntializer : MonoBehaviour
      {
           if (player.isInvincible == false)
           {
+               player.PlayerToGodMode = true;
                player.isInvincible = true;
                return "GodMode on";
           }
           else
           {
+               player.PlayerToGodMode = false;
                player.isInvincible = false;
                return "GodMode off";
           }
@@ -38,11 +45,18 @@ public class ConsoleIntializer : MonoBehaviour
 
      public string GiveMeWeapons(params string[] args)
      {
+          
+          player.UnlockBow();
+          player.UnlockPowerShot();
+          player.UnlockGrenade();
+          player.UnlockDash();
           return "Weapons Unlocked";
      }
 
      public string GiveMeAmmo(params string[] args)
      {
+          player.GetComponent<AttackController>().SetPlayerProjectileAmmo(100);
+          player.GetComponent<AttackController>().SetPlayerGrenadeAmmo(100);
           return "Ammo given to player";
      }
 

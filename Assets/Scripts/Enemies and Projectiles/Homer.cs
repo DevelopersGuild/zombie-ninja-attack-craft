@@ -39,7 +39,7 @@ public class Homer : MonoBehaviour
      {
           currentVelocity = direction * projSpd;
           GetComponent<Rigidbody2D>().velocity = currentVelocity;
-          float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+          float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg - 90;
           var q = Quaternion.AngleAxis(angle, Vector3.forward);
      }
 

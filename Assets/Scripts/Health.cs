@@ -14,6 +14,7 @@ public class Health : MonoBehaviour
      private AudioSource enemyAudio;
      public ParticleSystem particle;
      public ParticleSystem deathParticle;
+     private CameraFollow camera;
 
      public bool canKnock;
 
@@ -23,6 +24,7 @@ public class Health : MonoBehaviour
           isDead = false;
           currentHealth = startingHealth;
           canKnock = true;
+          camera = FindObjectOfType<CameraFollow>();
      }
 
      public void cancelKnockback()
@@ -61,8 +63,11 @@ public class Health : MonoBehaviour
                Instantiate(deathParticle, transform.position, transform.rotation);
           }
 
-               FindObjectOfType<CameraFollow>().CameraShake();
-          
+          // Shake the camera if its not a barrel
+          if(!gameObject.CompareTag("Barrel"))
+          {
+               camera.CameraShake();
+          }   
 
           if (currentHealth <= 0)
           {
@@ -130,6 +135,11 @@ public class Health : MonoBehaviour
                Enemy enem = gameObject.GetComponent<Enemy>();
                enem.onDeath();
           }
+          else if (gameObject.GetComponent<Boss>())
+          {
+               Boss enem = gameObject.GetComponent<Boss>();
+               enem.onDeath();
+          }
           isDead = true;
 
           DropLoot dropLoot;
@@ -141,11 +151,7 @@ public class Health : MonoBehaviour
                     dropLoot.DropItem();
                }
           }
-
-
           Destroy(gameObject);
-
-
      }
 
      void OnApplicationQuit()

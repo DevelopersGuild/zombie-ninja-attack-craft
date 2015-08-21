@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AssemblyCSharp
-{
+
      public class BasicEnemy : Enemy
      {
           public BasicAttack LRAttack, UDAttack;
@@ -10,9 +9,9 @@ namespace AssemblyCSharp
           private AnimationController animationController;
           private Health health;
 
-          private bool isAgro, canAttack;
-
-          private Vector2 distance, speed, facing, distanceFromPoint, point, up, down, left, right;
+          [HideInInspector]
+          public bool isAgro, canAttack;
+          public Vector2 distance, speed, facing, distanceFromPoint, point, up, down, left, right;
           private double idleTime, attackDelay;
           private Vector3 someVec;
 
@@ -62,8 +61,12 @@ namespace AssemblyCSharp
                {
                     rnd = new System.Random();
                     //basic aggression range formula
-                    distance = player.transform.position - transform.position;
-                    distanceFromPoint = distance + up;
+                    if (player != null)
+                    {
+                         distance = player.transform.position - transform.position;
+                         distanceFromPoint = distance + up;
+                    }
+
                     if (distanceFromPoint.magnitude > (distance + left).magnitude)
                     {
                          distanceFromPoint = distance + left;
@@ -93,21 +96,15 @@ namespace AssemblyCSharp
                     {
                          if (canAttack)
                          {
-                              if (distanceFromPoint.magnitude < 0.15f)
-                              {
+                              if(distanceFromPoint.magnitude < 0.15f) {
                                    moveController.Move(0, 0);
                                    animationController.isAttacking = true;
-                                   //animator.setBool("Attack", true)
-
-                                   //when spear goes forward in animation, call Attack();
-
                               }
-                              else
+                              else if (distanceFromPoint.magnitude > 0.25f)
                               {
-
                                    moveController.Move(direction / 6f);
                               }
-
+                             
                          }
                          else
                          {
@@ -129,6 +126,7 @@ namespace AssemblyCSharp
 
                     idleTime += Time.deltaTime;
                     t -= Time.deltaTime;
+                    
                }
           }
 
@@ -147,9 +145,15 @@ namespace AssemblyCSharp
           public void Attack()
           {
                if (Math.Abs(distance.x) >= Math.Abs(distance.y))
+               {
                     attackCollider = Instantiate(LRAttack, transform.position + new Vector3(Math.Sign(distance.x) / 2f, 0, 0), Quaternion.identity) as BasicAttack;
+               }
                else
+               {
                     attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, Math.Sign(distance.y) / 2f, 0), UDAttack.transform.rotation) as BasicAttack;
+               }
+               attackCollider.transform.parent = gameObject.transform;
+
           }
 
           //Called by attacking animation at end of animation
@@ -168,5 +172,8 @@ namespace AssemblyCSharp
                //sets to walking as it is the default animation.
           }
 
+          public override void onDeath()
+          {
+               Destroy(attackCollider);
+          }
      }
-}

@@ -115,12 +115,16 @@ public class Enemy : MonoBehaviour
      {
           currentX = transform.position.x;
           currentY = transform.position.y;
-          playerX = player.transform.position.x;
-          playerY = player.transform.position.y;
 
-          angle = Vector2.Angle(player.transform.position, transform.position);
-          direction = new Vector2(playerX - currentX, playerY - currentY);
-          direction = direction.normalized;
+          if (player != null)
+          {
+               playerX = player.transform.position.x;
+               playerY = player.transform.position.y;
+
+               angle = Vector2.Angle(player.transform.position, transform.position);
+               direction = new Vector2(playerX - currentX, playerY - currentY);
+               direction = direction.normalized;
+          }
      }
 
      public bool checkStun()

@@ -11,11 +11,13 @@ public class SnakeBall : MonoBehaviour
      public float pingpong, mDeg, y, x;
      public double t;
      public bool bite;
+     public float magnitude;
      private bool momo;
 
      public void Start()
      {
           momo = true;
+          magnitude = 100;
           moveController = GetComponent<EnemyMoveController>();
           t = 1.5;
           bite = false;
@@ -35,17 +37,18 @@ public class SnakeBall : MonoBehaviour
                     float radians = mDeg * Mathf.Deg2Rad + 90;
 
                     Vector3 offset = new Vector3(Mathf.Sin(radians) / (72f / pingpong), 0, 0);
-                    transform.position = transform.position + offset;
+                    offset *= magnitude;
+                    transform.position = transform.position + offset * Time.deltaTime;
                }
                else
                {
-                    if (t <= 12)
+                    if (t <= 24)
                     {
-                         transform.position += direction;
+                         transform.position += direction/2f;
                     }
-                    else if (t <= 24)
+                    else if (t <= 48)
                     {
-                         transform.position -= direction;
+                         transform.position -= direction/2f;
                     }
                     else
                     {

@@ -17,7 +17,7 @@ public class LevelEndController : MonoBehaviour
 
      public void Start()
      {
-          NextLevelButton.enabled = false;
+          NextLevelButton.enabled = true;
           GameManager.Notifications.AddListener(this, "ScoreReadyToDisplay");
      }
 

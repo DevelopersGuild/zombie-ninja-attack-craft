@@ -348,6 +348,7 @@ public class LightningBoss : Boss
           bolt.setStun(bolt_Stun);
           //Debug.Log(direction);
           findPos();
+          GameManager.Notifications.PostNotification(this, "OnLightingAttack");
           bolt.Shoot(0, direction / 1.5f);
           bolt_CD = 0;
      }

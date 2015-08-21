@@ -44,7 +44,16 @@ public class FireSnake : SnakeBoss
           health.cancelKnockback();
           if (player != null)
           {
-               
+               if (blinkTime > 0)
+               {
+                    blink = !blink;
+                    GetComponent<Renderer>().enabled = blink;
+               }
+               if (blinkTime <= 0)
+               {
+                    GetComponent<Renderer>().enabled = true;
+               }
+
                if (isBiting)
                {
                     moveController.Move(0, 0);
@@ -114,27 +123,27 @@ public class FireSnake : SnakeBoss
                               if (attackDelay <= 0) { 
 
                                    //Play animation after setting attackChoice, animation calls Attack();
-                                   if (bite_CD > 10)
+                                   if (bite_CD > 15)
                                    {
                                         attackChoice = 1;
                                         open();
                                    }
-                                   else if (spawn_CD > 8)
+                                   else if (spawn_CD > 18)
                                    {
                                         attackChoice = 2;
                                         open();
                                    }
-                                   else if (laser_CD > 12)
+                                   else if (laser_CD > 20)
                                    {
                                         attackChoice = 3;
                                         open();
                                    }
-                                   else if (acid_CD > 9)
+                                   else if (acid_CD > 14)
                                    {
                                         attackChoice = 4;
                                         open();
                                    }
-                                   else if (fireTrail_CD > 9)
+                                   else if (fireTrail_CD > 13)
                                    {
                                         attackChoice = 5;
                                         open();
@@ -169,9 +178,9 @@ public class FireSnake : SnakeBoss
                     iceBall_CD += Time.deltaTime;
                     iceTrail_CD += Time.deltaTime;
                     cooldown_CD += Time.deltaTime;
-
                }
           }
+          blinkTime -= Time.deltaTime;
           attackDelay -= Time.deltaTime;
 
      }

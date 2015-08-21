@@ -7,7 +7,7 @@ public class BarrelSpawn : MonoBehaviour {
     public float timeToExplode;
     private float currentTime;
 
-    public DropLoot dropLoot;
+    private DropLoot dropLoot;
 
 	// Use this for initialization
 	void Start () {

@@ -52,7 +52,7 @@ public class FireChains : MonoBehaviour
      void Update()
      {
           // Rotate the gameobject
-          currentRotation += speed;
+          currentRotation += speed * Time.deltaTime;
           transform.eulerAngles = new Vector3(0, 0, currentRotation);
 
           if (currentRotation > 360)

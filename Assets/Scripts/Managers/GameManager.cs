@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
      private static GameManager instance = null;
      private static NotificationManager notifications = null;
      private static LoadAndSaveManager stateManager = null;
-     private static int currentLevel;
+     public static int CurrentLevel;
 
      public static int Coins;
      public static int Score;
@@ -76,8 +76,8 @@ public class GameManager : MonoBehaviour
      // Use this for initialization
      void Start()
      {
-          currentLevel = Application.loadedLevel;
-          OnLevelWasLoaded(currentLevel);
+          CurrentLevel = Application.loadedLevel;
+          OnLevelWasLoaded(CurrentLevel);
           if (UnlockAllUnlocks == true)
           {
                UnlockEverything();
@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
           timeToCompleteLevel = 0;
           LoadGameData();
           GameManager.Notifications.PostNotification(this, "LevelLoaded");
+          UnpauseGame();
      }
 
      public void LoadGameData()
@@ -165,9 +166,6 @@ public class GameManager : MonoBehaviour
      {
           timeToCompleteLevel = Time.time;
           Score = (int)Math.Round(Coins - timeToCompleteLevel);
-          //Test purposes Delete once level switching is done
-          Score = 1000000;
-          //Test purposes Delete once level switching is done
           if (Score >= PassingScore)
           {
                IsCurrentLevelComplete = true;
@@ -177,11 +175,11 @@ public class GameManager : MonoBehaviour
      public static void LevelComplete()
      {
           bool isActive = StateManager.isActiveAndEnabled;
-          if (stateManager.GameState.GameLevels.Count >= currentLevel)
+          if (stateManager.GameState.GameLevels.Count >= CurrentLevel)
           {
-               if (stateManager.GameState.GameLevels[currentLevel - 1].Score < Score)
+               if (stateManager.GameState.GameLevels[CurrentLevel - 1].Score < Score)
                {
-                    stateManager.GameState.GameLevels[currentLevel - 1].Score = Score;
+                    stateManager.GameState.GameLevels[CurrentLevel - 1].Score = Score;
                }
           }
           else
@@ -210,6 +208,16 @@ public class GameManager : MonoBehaviour
      public void QuitGame()
      {
           Application.Quit();
+     }
+
+     public void PauseGame()
+     {
+          Time.timeScale = 0;
+     }
+
+     public void UnpauseGame()
+     {
+          Time.timeScale = 1.0f;
      }
 
      //Player Progression

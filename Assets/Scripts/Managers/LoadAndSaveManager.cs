@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using System.Text;
 
 public class LoadAndSaveManager : MonoBehaviour
 {
@@ -33,18 +34,24 @@ public class LoadAndSaveManager : MonoBehaviour
 
      public void Save(string FileName = "GameData.xml")
      {
+          var encoding = Encoding.GetEncoding("UTF-8");
           XmlSerializer Serializer = new XmlSerializer(typeof(GameStateData));
-          FileStream FStream = new FileStream(FileName, FileMode.Create);
+          StreamWriter FStream = new StreamWriter(FileName, false, encoding);
           Serializer.Serialize(FStream, GameState);
           FStream.Close();
      }
 
      public void Load(string FileName = "GameData.xml")
      {
+          var encoding = Encoding.GetEncoding("UTF-8");
+          if(File.Exists(Application.persistentDataPath + "/SaveGame.xml") == false)
+          {
+               Save(Application.persistentDataPath + "/SaveGame.xml");
+          }
           XmlSerializer Serializer = new XmlSerializer(typeof(GameStateData));
           try
           {
-               FileStream FStream = new FileStream(FileName, FileMode.Open);
+               StreamReader FStream = new StreamReader(FileName);
                GameState = Serializer.Deserialize(FStream) as GameStateData;
                FStream.Close();
           }
