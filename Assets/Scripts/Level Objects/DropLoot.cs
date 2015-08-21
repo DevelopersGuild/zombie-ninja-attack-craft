@@ -32,7 +32,6 @@ public class DropLoot : MonoBehaviour
           // If an item does drop, pick one randomly with the given drop chances
           if (randomDropChance <= dropChance)
           {
-               itemDropRate = Random.Range(0, 10);
 
                for (int i = 0; i < items.Count; i++)
                {
@@ -41,7 +40,9 @@ public class DropLoot : MonoBehaviour
                          itemDrop.Add(items[i]);
                     }
                }
+
                //If it will drop an item, set the item it will drop to a random item that it can drop
+               itemDropRate = Random.Range(0, itemDrop.Count);
                item = itemDrop[itemDropRate];
 
                //If it was a coin, give it a value
