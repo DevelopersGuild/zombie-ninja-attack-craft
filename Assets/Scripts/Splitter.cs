@@ -39,7 +39,10 @@ namespace AssemblyCSharp
                rnd = new System.Random(Guid.NewGuid().GetHashCode());
                t = 3 + rnd.Next(0, 3000) / 1000f;
 
-
+               //Shrink with every generation
+               float xFacing = transform.localScale.x < 0.0f ? -1.0f : 1.0f;
+               float scale = 1.0f - 0.1f * generation;
+               transform.localScale = new Vector3(scale * xFacing, scale, 1.0f);
           }
 
           public void Update()

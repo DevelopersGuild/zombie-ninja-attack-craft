@@ -64,13 +64,13 @@ public class EnemyMoveController : MonoBehaviour
 
 
                //Check whether sprite is facing left or right. Flip the sprite based on its direction
-               if (facing.x > 0)
+               if (facing.x > 0 != transform.localScale.x > 0)
                {
-                    transform.localScale = new Vector3(1, 1, 1);
-               }
-               else
-               {
-                    transform.localScale = new Vector3(-1, 1, 1);
+                    transform.localScale = new Vector3(
+                         transform.localScale.x * -1.0f,
+                         transform.localScale.y,
+                         transform.localScale.z
+                    );
                }
 
 
