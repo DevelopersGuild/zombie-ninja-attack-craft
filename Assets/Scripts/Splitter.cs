@@ -7,44 +7,44 @@ namespace AssemblyCSharp
      {
           private AnimationController animationController;
           private Health health;
-
+          
           public Splitter splitObj;
           private Splitter split1, split2;
-
+          
           private bool isAgro;
           //private bool canJump;
-
+          
           private Vector2 distance, spawnDir;
           private double idleTime, spawnTime;
           private Vector3 someVec;
-
+          
           //private Animator animator;
-
+          
           [HideInInspector]
           public int generation;
-
+          
           public void Start()
           {
                //animator = GetComponent<Animator>();
-
+               
                moveController = GetComponent<EnemyMoveController>();
                animationController = GetComponent<AnimationController>();
                health = GetComponent<Health>();
                player = FindObjectOfType<Player>();
-
+               
                //rigidbody2D.mass = 10;
                distance = new Vector2(0, 0);
                isAgro = false;
-
+               
                rnd = new System.Random(Guid.NewGuid().GetHashCode());
                t = 3 + rnd.Next(0, 3000) / 1000f;
-
+               
                //Shrink with every generation
                float xFacing = transform.localScale.x < 0.0f ? -1.0f : 1.0f;
                float scale = 1.0f - 0.1f * generation;
                transform.localScale = new Vector3(scale * xFacing, scale, 1.0f);
           }
-
+          
           public void Update()
           {
                if (spawnTime > 0)
@@ -90,13 +90,13 @@ namespace AssemblyCSharp
                          {
                               isAgro = false;
                          }
-
+                         
                          if (isAgro)
                          {
                               findPos();
                               //Ideally would have an animation then leaps to move
                               moveController.Move(direction / 8f);
-
+                              
                          }
                          else
                          {
@@ -108,44 +108,50 @@ namespace AssemblyCSharp
                               }
                               moveController.Move(someVec.x, someVec.y);
                          }
-
+                         
                          idleTime += Time.deltaTime;
                          t -= Time.deltaTime;
                     }
                }
           }
-
-
+          
+          
           public bool getAgro()
           {
                return isAgro;
           }
-
+          
           public int currentHp()
           {
                return health.currentHealth;
           }
-
+          
           public override void onDeath()
           {
                if (generation < 2)
                {
+                    PlayerMoveController playerMoveController = player.GetComponent<PlayerMoveController>();
+                    Vector2 playerFacing = playerMoveController.facing;
+                    Vector2 perpendicular = new Vector2(-playerFacing.y, playerFacing.x);
+                    float distance = 0.2f;
+                    Vector2 spawnOffset = perpendicular * distance;
+
                     generation += 1;
                     split1 = Instantiate(splitObj, transform.position, transform.rotation) as Splitter;
                     split2 = Instantiate(splitObj, transform.position, transform.rotation) as Splitter;
                     split1.isInvincible = true;
                     split2.isInvincible = true;
-                    split1.HelloWorld(0.5, new Vector2(0.2f,0), generation);
-                    split2.HelloWorld(0.5, new Vector2(-0.2f, 0), generation);
+                    split1.HelloWorld(0.5, spawnOffset * 1, generation);
+                    split2.HelloWorld(0.5, spawnOffset * -1, generation);
                }
           }
-
+          
           public void HelloWorld(double time, Vector2 dir, int gen)
           {
                spawnDir = dir;
                spawnTime = time;
                generation = gen;
           }
-
+          
      }
 }
