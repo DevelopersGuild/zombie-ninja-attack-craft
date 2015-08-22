@@ -20,6 +20,8 @@ public class RoomUnlock : MonoBehaviour
           isActive = false;
           hasBeenActivated = false;
 
+          filter();
+
           foreach (Door door in doors)
           {
                door.OpenDoor();
@@ -31,6 +33,28 @@ public class RoomUnlock : MonoBehaviour
           foreach (GameObject reward in rewards)
           {
                reward.SetActive(false);
+          }
+     }
+
+     private void filter()
+     {
+          List<GameObject> existing = new List<GameObject>();
+          
+          foreach (GameObject enemy in enemies)
+          {
+               if (enemy)
+               {
+                    existing.Add(enemy);
+               }
+          }
+          if (enemies.Count != existing.Count)
+          {
+               string name = this.gameObject.name;
+               int difference = enemies.Count - existing.Count;
+               Debug.Log("Room \"" + name + "\" is missing " + difference.ToString() +
+                         " enemies in its Enemies list.");
+
+               enemies = existing;
           }
      }
 
