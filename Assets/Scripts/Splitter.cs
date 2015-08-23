@@ -50,7 +50,6 @@ namespace AssemblyCSharp
                if (spawnTime > 0)
                {
                     isInvincible = true;
-                    moveController.Move(spawnDir);
                     spawnTime -= Time.deltaTime;
                     if (spawnTime <= 0)
                     {
@@ -130,25 +129,27 @@ namespace AssemblyCSharp
           {
                if (generation < 2)
                {
-                    PlayerMoveController playerMoveController = player.GetComponent<PlayerMoveController>();
-                    Vector2 playerFacing = playerMoveController.facing;
-                    Vector2 perpendicular = new Vector2(-playerFacing.y, playerFacing.x);
+                    float dx = player.transform.position.x - transform.position.x;
+                    float dy = player.transform.position.y - transform.position.y;
+                    Vector2 perpendicular = Math.Abs(dx) > Math.Abs(dy) ?
+                         Vector2.up :
+                         Vector2.left;
                     float distance = 0.2f;
-                    Vector2 spawnOffset = perpendicular * distance;
+                    Vector2 spawnOffset2 = perpendicular * distance;
+                    Vector3 spawnOffset = new Vector3(spawnOffset2.x, spawnOffset2.y);
 
                     generation += 1;
-                    split1 = Instantiate(splitObj, transform.position, transform.rotation) as Splitter;
-                    split2 = Instantiate(splitObj, transform.position, transform.rotation) as Splitter;
+                    split1 = Instantiate(splitObj, transform.position + spawnOffset * 1, transform.rotation) as Splitter;
+                    split2 = Instantiate(splitObj, transform.position + spawnOffset * -1, transform.rotation) as Splitter;
                     split1.isInvincible = true;
                     split2.isInvincible = true;
-                    split1.HelloWorld(0.5, spawnOffset * 1, generation);
-                    split2.HelloWorld(0.5, spawnOffset * -1, generation);
+                    split1.HelloWorld(0.5, generation);
+                    split2.HelloWorld(0.5, generation);
                }
           }
           
-          public void HelloWorld(double time, Vector2 dir, int gen)
+          public void HelloWorld(double time, int gen)
           {
-               spawnDir = dir;
                spawnTime = time;
                generation = gen;
           }
