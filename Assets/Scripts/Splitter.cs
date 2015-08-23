@@ -5,7 +5,7 @@ namespace AssemblyCSharp
 {
      public class Splitter : Enemy
      {
-          private AnimationController animationController;
+          //private AnimationController animationController;
           private Health health;
           
           public Splitter splitObj;
@@ -13,7 +13,7 @@ namespace AssemblyCSharp
           private bool isAgro;
           //private bool canJump;
           
-          private Vector2 distance, spawnDir;
+          private Vector2 spawnDir;
           private double idleTime, spawnTime;
           private Vector3 someVec;
           
@@ -27,12 +27,11 @@ namespace AssemblyCSharp
                //animator = GetComponent<Animator>();
                
                moveController = GetComponent<EnemyMoveController>();
-               animationController = GetComponent<AnimationController>();
+               //animationController = GetComponent<AnimationController>();
                health = GetComponent<Health>();
                player = FindObjectOfType<Player>();
                
                //rigidbody2D.mass = 10;
-               distance = new Vector2(0, 0);
                isAgro = false;
                
                rnd = new System.Random(Guid.NewGuid().GetHashCode());
@@ -71,7 +70,7 @@ namespace AssemblyCSharp
                          //basic aggression range formula
                          if (player)
                          {
-                              distance = player.transform.position - transform.position;
+                              Vector2 distance = player.transform.position - transform.position;
                               float xSp = distance.normalized.x;
                               float ySp = distance.normalized.y;
                               direction = new Vector2(xSp, ySp);
