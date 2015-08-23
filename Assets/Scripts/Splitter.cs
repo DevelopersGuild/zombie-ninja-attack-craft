@@ -66,7 +66,6 @@ namespace AssemblyCSharp
                     }
                     else
                     {
-                         rnd = new System.Random();
                          //basic aggression range formula
                          if (player)
                          {
