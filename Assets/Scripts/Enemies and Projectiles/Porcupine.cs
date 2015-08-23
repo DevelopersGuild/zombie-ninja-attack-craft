@@ -21,10 +21,12 @@ namespace AssemblyCSharp
           private bool canPlayerHearSpark;
 
           //private Animator animator;
+          private CameraFollow camera;
 
           public void Start()
           {
                //animator = GetComponent<Animator>();
+               camera = FindObjectOfType<CameraFollow>();
                player = FindObjectOfType<Player>();
                moveController = GetComponent<EnemyMoveController>();
                animationController = GetComponent<AnimationController>();
@@ -105,8 +107,13 @@ namespace AssemblyCSharp
 
           public void CheckIfPlayerCanHearSpark()
           {
-               float distance = Vector3.Distance(transform.position, player.transform.position);
-               if(distance < SoundDistance && player)
+               Vector3 cameraPosition2D = new Vector3(
+                    camera.transform.position.x,
+                    camera.transform.position.y,
+                    0
+               );
+               float distance = Vector3.Distance(transform.position, cameraPosition2D);
+               if(distance < SoundDistance)
                {
                     GameManager.Notifications.PostNotification(this, "OnEnemySpark");
                }
