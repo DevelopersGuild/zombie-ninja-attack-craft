@@ -110,8 +110,7 @@ namespace AssemblyCSharp
           {
                Vector3 cameraPosition2D = new Vector3(
                     camera.transform.position.x,
-                    camera.transform.position.y,
-                    0
+                    camera.transform.position.y
                );
                float distance = Vector3.Distance(transform.position, cameraPosition2D);
                if(distance < SoundDistance)
