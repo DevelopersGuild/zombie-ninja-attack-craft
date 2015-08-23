@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using CreativeSpore;
 
 public class PlayerMoveController : MonoBehaviour
 {
@@ -36,6 +37,12 @@ public class PlayerMoveController : MonoBehaviour
      //Player Progression
      public bool IsDashUnlocked;
      public float DashSpeedUpgrade = 0;
+     //Pathfinding
+     private static float jiggleMax = 0.05f;
+     private static Vector3 UL = new Vector3(-jiggleMax,  jiggleMax);
+     private static Vector3 UR = new Vector3( jiggleMax,  jiggleMax);
+     private static Vector3 DR = new Vector3( jiggleMax, -jiggleMax);
+     private static Vector3 DL = new Vector3(-jiggleMax, -jiggleMax);
 
 
      void Awake()
@@ -155,11 +162,62 @@ public class PlayerMoveController : MonoBehaviour
 
           if (canMove)
           {
-               GetComponent<Rigidbody2D>().velocity = movementVector;
+               GetComponent<Rigidbody2D>().velocity = JiggleMovement();
           }
 
           //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
           //Debug.Log("speed:" + speed + "direction:" + direction + "movementVector" + movementVector);
+     }
+
+     /* Move around obstacles in the tile map if they are small */
+     private Vector2 JiggleMovement()
+     {
+          PhysicCharBehaviour physics = GetComponent<PhysicCharBehaviour>();
+
+          switch (physics.CollFlags)
+          {
+          case PhysicCharBehaviour.eCollFlags.LEFT:
+               if (!physics.IsColliding(transform.position + UL))
+               {
+                    return Vector2.up * speed;
+               }
+               else if (!physics.IsColliding(transform.position + DL))
+               {
+                    return Vector2.up * speed * -1;
+               }
+               break;
+          case PhysicCharBehaviour.eCollFlags.RIGHT:
+               if (!physics.IsColliding(transform.position + UR))
+               {
+                    return Vector2.up * speed;
+               }
+               else if (!physics.IsColliding(transform.position + DR))
+               {
+                    return Vector2.up * speed * -1;
+               }
+               break;
+          case PhysicCharBehaviour.eCollFlags.UP:
+               if (!physics.IsColliding(transform.position + UL))
+               {
+                    return Vector2.left * speed;
+               }
+               else if (!physics.IsColliding(transform.position + UR))
+               {
+                    return Vector2.left * speed * -1;
+               }
+               break;
+          case PhysicCharBehaviour.eCollFlags.DOWN:
+               if (!physics.IsColliding(transform.position + DL))
+               {
+                    return Vector2.left * speed;
+               }
+               else if (!physics.IsColliding(transform.position + DR))
+               {
+                    return Vector2.left * speed * -1;
+               }
+               break;
+          }
+          return movementVector;
      }
 
      /* Moves the object in a direction by a small amount (used for player input) */
