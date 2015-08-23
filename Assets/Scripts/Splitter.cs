@@ -124,31 +124,29 @@ namespace AssemblyCSharp
           
           public override void onDeath()
           {
-               if (generation < 2)
+               if (generation >= 2)
                {
-                    float dx = player.transform.position.x - transform.position.x;
-                    float dy = player.transform.position.y - transform.position.y;
-                    Vector2 perpendicular = Math.Abs(dx) > Math.Abs(dy) ?
-                         Vector2.up :
-                         Vector2.left;
-                    float distance = 0.2f;
-                    Vector2 spawnOffset2 = perpendicular * distance;
-                    Vector3 spawnOffset = new Vector3(spawnOffset2.x, spawnOffset2.y);
-
-                    generation += 1;
-                    Splitter split1 = Instantiate(splitObj, transform.position + spawnOffset * 1, transform.rotation) as Splitter;
-                    Splitter split2 = Instantiate(splitObj, transform.position + spawnOffset * -1, transform.rotation) as Splitter;
-                    split1.isInvincible = true;
-                    split2.isInvincible = true;
-                    split1.HelloWorld(0.5, generation);
-                    split2.HelloWorld(0.5, generation);
+                    return;
                }
+
+               float dx = player.transform.position.x - transform.position.x;
+               float dy = player.transform.position.y - transform.position.y;
+               Vector2 perpendicular = Math.Abs(dx) > Math.Abs(dy) ?
+                    Vector2.up :
+                    Vector2.left;
+               float distance = 0.2f;
+
+               Spawn(perpendicular * distance);
+               Spawn(perpendicular * distance * -1);
           }
           
-          public void HelloWorld(double time, int gen)
+          public void Spawn(Vector2 spawnOffset2)
           {
-               spawnTime = time;
-               generation = gen;
+               Vector3 spawnOffset = new Vector3(spawnOffset2.x, spawnOffset2.y);
+               Splitter spawn = Instantiate(splitObj, transform.position + spawnOffset, transform.rotation) as Splitter;
+               spawn.isInvincible = true;
+               spawn.spawnTime = 0.5f;
+               spawn.generation = generation + 1;
           }
           
      }
