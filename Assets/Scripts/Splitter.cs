@@ -9,8 +9,7 @@ namespace AssemblyCSharp
           private Health health;
           
           public Splitter splitObj;
-          private Splitter split1, split2;
-          
+
           private bool isAgro;
           //private bool canJump;
           
@@ -139,8 +138,8 @@ namespace AssemblyCSharp
                     Vector3 spawnOffset = new Vector3(spawnOffset2.x, spawnOffset2.y);
 
                     generation += 1;
-                    split1 = Instantiate(splitObj, transform.position + spawnOffset * 1, transform.rotation) as Splitter;
-                    split2 = Instantiate(splitObj, transform.position + spawnOffset * -1, transform.rotation) as Splitter;
+                    Splitter split1 = Instantiate(splitObj, transform.position + spawnOffset * 1, transform.rotation) as Splitter;
+                    Splitter split2 = Instantiate(splitObj, transform.position + spawnOffset * -1, transform.rotation) as Splitter;
                     split1.isInvincible = true;
                     split2.isInvincible = true;
                     split1.HelloWorld(0.5, generation);
