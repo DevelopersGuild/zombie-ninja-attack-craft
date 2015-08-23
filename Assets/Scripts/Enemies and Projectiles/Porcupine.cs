@@ -98,7 +98,8 @@ namespace AssemblyCSharp
                t = 2;
                sparkTimer = sparkTime;
                stop = 0;
-               Instantiate(SparkParticle, transform.position, Quaternion.identity);
+               GameObject spark = Instantiate(SparkParticle, transform.position, Quaternion.identity) as GameObject;
+               spark.transform.parent = transform;
           }
           public void FinishedSpark()
           {
