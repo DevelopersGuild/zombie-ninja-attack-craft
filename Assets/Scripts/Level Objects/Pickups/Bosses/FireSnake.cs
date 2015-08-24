@@ -36,6 +36,7 @@ public class FireSnake : SnakeBoss
           isAgro = false;
 
           diffVec = new Vector2(1, 1);
+          GameManager.Notifications.PostNotification(this, "OnAlienCry");
 
      }
 
@@ -231,6 +232,7 @@ public class FireSnake : SnakeBoss
           b2.stopMove(false);
           b3.stopMove(false);
           b4.stopMove(false);
+          GameManager.Notifications.PostNotification(this, "OnFireLaser");
      }
 
      public void setCombo()

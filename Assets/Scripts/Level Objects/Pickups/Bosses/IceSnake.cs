@@ -34,6 +34,7 @@ public class IceSnake : SnakeBoss
           isAgro = false;
 
           diffVec = new Vector2(1, 1);
+          GameManager.Notifications.PostNotification(this, "OnAlienCry");
 
      }
 
@@ -46,12 +47,12 @@ public class IceSnake : SnakeBoss
                {
                     blink = !blink;
                     GetComponent<Renderer>().enabled = blink;
-                    if (blinkTime <= 0)
-                    {
-                         GetComponent<Renderer>().enabled = true;
-                    }
                }
-               
+               if (blinkTime <= 0)
+               {
+                    GetComponent<Renderer>().enabled = true;
+               }
+
                if (isBiting)
                {
                     moveController.Move(0, 0);
@@ -226,6 +227,7 @@ public class IceSnake : SnakeBoss
           b2.stopMove(false);
           b3.stopMove(false);
           b4.stopMove(false);
+          GameManager.Notifications.PostNotification(this, "OnFireLaser");
      }
 
 

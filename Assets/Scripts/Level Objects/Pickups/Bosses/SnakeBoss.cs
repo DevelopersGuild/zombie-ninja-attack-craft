@@ -116,6 +116,7 @@ public class SnakeBoss : Boss
           distance = new Vector2(0, 0);
           speed = new Vector2(0, 0);
           isAgro = false;
+          
 
      }
 
@@ -135,6 +136,7 @@ public class SnakeBoss : Boss
           b4.setPong(0.85f);
 
           initialPos = transform.position;
+          
 
      }
 
@@ -171,6 +173,7 @@ public class SnakeBoss : Boss
           b4.setBite(true, biteDir/5);
           isBiting = true;
           bite_CD = 0;
+          GameManager.Notifications.PostNotification(this, "OnSnakePounce");
 
 
      }
@@ -186,6 +189,7 @@ public class SnakeBoss : Boss
           //after 0.5s, rotate around point from ~190 degrees to ~255 degrees
           //Ice snake mirrors that, from ~350 to ~285
           //laser ends
+          
      }
 
      public void trailAttack()
@@ -201,6 +205,7 @@ public class SnakeBoss : Boss
           //trails^
           fireTrail_CD = 0;
           iceTrail_CD = 0;
+          GameManager.Notifications.PostNotification(this, "OnfireProjectile");
      }
 
      public void ballAttack()
@@ -214,6 +219,7 @@ public class SnakeBoss : Boss
           ball.transform.rotation = q;
           fireBall_CD = 0;
           iceBall_CD = 0;
+          GameManager.Notifications.PostNotification(this, "OnfireProjectile");
      }
 
      public void spawnAttack()
@@ -233,6 +239,7 @@ public class SnakeBoss : Boss
           acidball.Shoot(0, tempDir * 0.125f);
           acidball.transform.rotation = q;
           acid_CD = 0;
+          GameManager.Notifications.PostNotification(this, "OnfireProjectile");
      }
 
 

@@ -149,17 +149,20 @@ public class EnemyMoveController : MonoBehaviour
      private Vector2 JiggleMovement()
      {
           PhysicCharBehaviour physics = GetComponent<PhysicCharBehaviour>();
-          
-          switch (physics.CollFlags)
+
+          if (physics)
           {
-          case PhysicCharBehaviour.eCollFlags.LEFT:
-               return movementVector.y > 0 ? chooseJiggle(Vector2.up, UL, DL) : chooseJiggle(Vector2.up * -1, DL, UL);
-          case PhysicCharBehaviour.eCollFlags.RIGHT:
-               return movementVector.y > 0 ? chooseJiggle(Vector2.up, UR, DR) : chooseJiggle(Vector2.up * -1, DR, UR);
-          case PhysicCharBehaviour.eCollFlags.UP:
-               return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, UL, UR) : chooseJiggle(-1 * Vector2.right * -1, UR, UL);
-          case PhysicCharBehaviour.eCollFlags.DOWN:
-               return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, DL, DR) : chooseJiggle(-1 * Vector2.right * -1, DR, DL);
+               switch (physics.CollFlags)
+               {
+               case PhysicCharBehaviour.eCollFlags.LEFT:
+                    return movementVector.y > 0 ? chooseJiggle(Vector2.up, UL, DL) : chooseJiggle(Vector2.up * -1, DL, UL);
+               case PhysicCharBehaviour.eCollFlags.RIGHT:
+                    return movementVector.y > 0 ? chooseJiggle(Vector2.up, UR, DR) : chooseJiggle(Vector2.up * -1, DR, UR);
+               case PhysicCharBehaviour.eCollFlags.UP:
+                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, UL, UR) : chooseJiggle(Vector2.right, UR, UL);
+               case PhysicCharBehaviour.eCollFlags.DOWN:
+                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, DL, DR) : chooseJiggle(Vector2.right, DR, DL);
+               }
           }
           return movementVector;
      }
