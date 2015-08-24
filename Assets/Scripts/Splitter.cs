@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using CreativeSpore;
 
 namespace AssemblyCSharp
 {
@@ -22,6 +23,9 @@ namespace AssemblyCSharp
           [HideInInspector]
           public int generation;
           
+          //Collisions
+          private static float[] jiggleRadii = {0.1f, 0.3f, 0.5f};
+
           public void Start()
           {
                //animator = GetComponent<Animator>();
@@ -147,7 +151,45 @@ namespace AssemblyCSharp
                spawn.isInvincible = true;
                spawn.spawnTime = 0.5f;
                spawn.generation = generation + 1;
+               spawn.Jiggle();
           }
           
+          /* Do not spawn inside a wall. Instead, spawn nearby. */
+          private void Jiggle()
+          {
+               PhysicCharBehaviour physics = GetComponent<PhysicCharBehaviour>();
+               if (!physics)
+               {
+                    return;
+               }
+
+               if (physics.IsColliding(transform.position))
+               {
+                    //Searching outward looking for the nearest open area
+                    foreach (float radius in jiggleRadii)
+                    {
+                         if (TryJiggle(physics, Vector2.up * radius) ||
+                             TryJiggle(physics, Vector2.right * radius) ||
+                             TryJiggle(physics, Vector2.up * -1 * radius) ||
+                             TryJiggle(physics, Vector2.right * -1 * radius))
+                         {
+                              //Moved outside the wall, everything is OK
+                              return;
+                         }
+                    }
+                    
+                    Destroy(this);
+               }
+          }
+
+          private bool TryJiggle(PhysicCharBehaviour physics, Vector3 direction)
+          {
+               if (!physics.IsColliding(transform.position + direction))
+               {
+                    transform.position += direction;
+                    return true;
+               }
+               return false;
+          }
      }
 }
