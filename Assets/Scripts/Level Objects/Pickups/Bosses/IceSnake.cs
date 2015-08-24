@@ -46,12 +46,12 @@ public class IceSnake : SnakeBoss
                {
                     blink = !blink;
                     GetComponent<Renderer>().enabled = blink;
-                    if (blinkTime <= 0)
-                    {
-                         GetComponent<Renderer>().enabled = true;
-                    }
                }
-               
+               if (blinkTime <= 0)
+               {
+                    GetComponent<Renderer>().enabled = true;
+               }
+
                if (isBiting)
                {
                     moveController.Move(0, 0);
