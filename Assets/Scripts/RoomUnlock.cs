@@ -82,6 +82,7 @@ public class RoomUnlock : MonoBehaviour
      // Open the doors and spawn the reward items
      void closeRoom()
      {
+          GameManager.Notifications.PostNotification(this, "OnRoomCleared");
           isActive = false;
           foreach (Door door in doors)
           {

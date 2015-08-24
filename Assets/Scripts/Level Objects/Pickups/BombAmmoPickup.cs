@@ -9,5 +9,10 @@ public class BombAmmoPickup : Pickup
           attackController = player.gameObject.GetComponent<AttackController>();
           attackController.Grenades += value;
      }
+
+     public override void sendPickupMessage()
+     {
+          GameManager.Notifications.PostNotification(this, "OnBombOrBatteryPickup");
+     }
 	
 }
