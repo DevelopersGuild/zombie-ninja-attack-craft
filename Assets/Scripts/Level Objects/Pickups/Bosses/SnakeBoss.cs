@@ -205,8 +205,13 @@ public class SnakeBoss : Boss
 
      public void ballAttack()
      {
-          ball = Instantiate(ballObj, transform.position, transform.rotation) as Projectile;
+          Vector2 tempDir = new Vector2(playerX - currentX, playerY - currentY);
+          float angle = Mathf.Atan2(tempDir.y, tempDir.x) * Mathf.Rad2Deg;
+          var q = Quaternion.AngleAxis(angle, Vector3.forward);
+          Debug.Log(q);
+          ball = Instantiate(ballObj, transform.position, q) as Projectile;
           ball.Shoot(0, direction * 0.7f);
+          ball.transform.rotation = q;
           fireBall_CD = 0;
           iceBall_CD = 0;
      }
