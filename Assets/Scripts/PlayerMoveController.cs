@@ -199,21 +199,21 @@ public class PlayerMoveController : MonoBehaviour
           case PhysicCharBehaviour.eCollFlags.UP:
                if (!physics.IsColliding(transform.position + UL))
                {
-                    return Vector2.left * speed;
+                    return -1 * Vector2.right * speed;
                }
                else if (!physics.IsColliding(transform.position + UR))
                {
-                    return Vector2.left * speed * -1;
+                    return -1 * Vector2.right * speed * -1;
                }
                break;
           case PhysicCharBehaviour.eCollFlags.DOWN:
                if (!physics.IsColliding(transform.position + DL))
                {
-                    return Vector2.left * speed;
+                    return -1 * Vector2.right * speed;
                }
                else if (!physics.IsColliding(transform.position + DR))
                {
-                    return Vector2.left * speed * -1;
+                    return -1 * Vector2.right * speed * -1;
                }
                break;
           }

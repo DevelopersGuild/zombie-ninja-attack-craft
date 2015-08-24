@@ -133,7 +133,7 @@ namespace AssemblyCSharp
                float dy = player.transform.position.y - transform.position.y;
                Vector2 perpendicular = Math.Abs(dx) > Math.Abs(dy) ?
                     Vector2.up :
-                    Vector2.left;
+                    -1 * Vector2.right;
                float distance = 0.2f;
 
                Spawn(perpendicular * distance);
