@@ -7,7 +7,7 @@ public class WindupProjectile : Projectile
 
 
      [HideInInspector]
-     public Vector2 maxVelocity, currentVelocity;
+     public Vector2 maxVelocity;
      private float speedBoost, temp;
 
      public void Start()

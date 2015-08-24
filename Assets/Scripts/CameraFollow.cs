@@ -57,6 +57,9 @@ public class CameraFollow : MonoBehaviour
      public void DoneShaking()
      {
           isShaking = false;
-          transform.DOMove(new Vector3(playerPosition.position.x, playerPosition.position.y, -10), 0.1f);
+          if (playerPosition)
+          {
+               transform.DOMove(new Vector3(playerPosition.position.x, playerPosition.position.y, -10), 0.1f);
+          }
      }
 }

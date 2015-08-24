@@ -175,6 +175,12 @@ public class GameManager : MonoBehaviour
      public static void LevelComplete()
      {
           bool isActive = StateManager.isActiveAndEnabled;
+          if (CurrentLevel == 0)
+          {
+               //Happens while choosing playing a level scene directly from within the Unity Editor.
+               Debug.Log("Not saving score on level because I don't know which level number this is");
+               return;
+          }
           if (stateManager.GameState.GameLevels.Count >= CurrentLevel)
           {
                if (stateManager.GameState.GameLevels[CurrentLevel - 1].Score < Score)

@@ -5,49 +5,49 @@ namespace AssemblyCSharp
 {
      public class Splitter : Enemy
      {
-          private AnimationController animationController;
+          //private AnimationController animationController;
           private Health health;
-
+          
           public Splitter splitObj;
-          private Splitter split1, split2;
 
           private bool isAgro;
           //private bool canJump;
-
-          private Vector2 distance, spawnDir;
+          
+          private Vector2 spawnDir;
           private double idleTime, spawnTime;
           private Vector3 someVec;
-
+          
           //private Animator animator;
-
+          
           [HideInInspector]
           public int generation;
-
+          
           public void Start()
           {
                //animator = GetComponent<Animator>();
-
+               
                moveController = GetComponent<EnemyMoveController>();
-               animationController = GetComponent<AnimationController>();
+               //animationController = GetComponent<AnimationController>();
                health = GetComponent<Health>();
                player = FindObjectOfType<Player>();
-
+               
                //rigidbody2D.mass = 10;
-               distance = new Vector2(0, 0);
                isAgro = false;
-
+               
                rnd = new System.Random(Guid.NewGuid().GetHashCode());
                t = 3 + rnd.Next(0, 3000) / 1000f;
-
-
+               
+               //Shrink with every generation
+               float xFacing = transform.localScale.x < 0.0f ? -1.0f : 1.0f;
+               float scale = 1.0f - 0.1f * generation;
+               transform.localScale = new Vector3(scale * xFacing, scale, 1.0f);
           }
-
+          
           public void Update()
           {
                if (spawnTime > 0)
                {
                     isInvincible = true;
-                    moveController.Move(spawnDir);
                     spawnTime -= Time.deltaTime;
                     if (spawnTime <= 0)
                     {
@@ -66,27 +66,33 @@ namespace AssemblyCSharp
                     }
                     else
                     {
-                         rnd = new System.Random();
                          //basic aggression range formula
-                         distance = player.transform.position - transform.position;
-                         float xSp = distance.normalized.x;
-                         float ySp = distance.normalized.y;
-                         direction = new Vector2(xSp, ySp);
-                         if (distance.magnitude <= AgroRange)
+                         if (player)
                          {
-                              isAgro = true;
+                              Vector2 distance = player.transform.position - transform.position;
+                              float xSp = distance.normalized.x;
+                              float ySp = distance.normalized.y;
+                              direction = new Vector2(xSp, ySp);
+                              if (distance.magnitude <= AgroRange)
+                              {
+                                   isAgro = true;
+                              }
+                              if (distance.magnitude > AgroRange)
+                              {
+                                   isAgro = false;
+                              }
                          }
-                         if (distance.magnitude > AgroRange)
+                         else
                          {
                               isAgro = false;
                          }
-
+                         
                          if (isAgro)
                          {
                               findPos();
                               //Ideally would have an animation then leaps to move
                               moveController.Move(direction / 8f);
-
+                              
                          }
                          else
                          {
@@ -98,44 +104,50 @@ namespace AssemblyCSharp
                               }
                               moveController.Move(someVec.x, someVec.y);
                          }
-
+                         
                          idleTime += Time.deltaTime;
                          t -= Time.deltaTime;
                     }
                }
           }
-
-
+          
+          
           public bool getAgro()
           {
                return isAgro;
           }
-
+          
           public int currentHp()
           {
                return health.currentHealth;
           }
-
+          
           public override void onDeath()
           {
-               if (generation < 2)
+               if (generation >= 2)
                {
-                    generation += 1;
-                    split1 = Instantiate(splitObj, transform.position, transform.rotation) as Splitter;
-                    split2 = Instantiate(splitObj, transform.position, transform.rotation) as Splitter;
-                    split1.isInvincible = true;
-                    split2.isInvincible = true;
-                    split1.HelloWorld(0.5, new Vector2(0.2f,0), generation);
-                    split2.HelloWorld(0.5, new Vector2(-0.2f, 0), generation);
+                    return;
                }
-          }
 
-          public void HelloWorld(double time, Vector2 dir, int gen)
+               float dx = player.transform.position.x - transform.position.x;
+               float dy = player.transform.position.y - transform.position.y;
+               Vector2 perpendicular = Math.Abs(dx) > Math.Abs(dy) ?
+                    Vector2.up :
+                    Vector2.left;
+               float distance = 0.2f;
+
+               Spawn(perpendicular * distance);
+               Spawn(perpendicular * distance * -1);
+          }
+          
+          public void Spawn(Vector2 spawnOffset2)
           {
-               spawnDir = dir;
-               spawnTime = time;
-               generation = gen;
+               Vector3 spawnOffset = new Vector3(spawnOffset2.x, spawnOffset2.y);
+               Splitter spawn = Instantiate(splitObj, transform.position + spawnOffset, transform.rotation) as Splitter;
+               spawn.isInvincible = true;
+               spawn.spawnTime = 0.5f;
+               spawn.generation = generation + 1;
           }
-
+          
      }
 }
