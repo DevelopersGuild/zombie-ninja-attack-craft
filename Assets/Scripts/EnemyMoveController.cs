@@ -159,9 +159,9 @@ public class EnemyMoveController : MonoBehaviour
                case PhysicCharBehaviour.eCollFlags.RIGHT:
                     return movementVector.y > 0 ? chooseJiggle(Vector2.up, UR, DR) : chooseJiggle(Vector2.up * -1, DR, UR);
                case PhysicCharBehaviour.eCollFlags.UP:
-                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, UL, UR) : chooseJiggle(-1 * Vector2.right * -1, UR, UL);
+                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, UL, UR) : chooseJiggle(Vector2.right, UR, UL);
                case PhysicCharBehaviour.eCollFlags.DOWN:
-                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, DL, DR) : chooseJiggle(-1 * Vector2.right * -1, DR, DL);
+                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, DL, DR) : chooseJiggle(Vector2.right, DR, DL);
                }
           }
           return movementVector;
