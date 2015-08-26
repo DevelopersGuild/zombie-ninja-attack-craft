@@ -76,6 +76,7 @@ public class DealDamageToEnemy : MonoBehaviour
                enemiesHit++;
           }
 
+
           //Destroy itself if its a projectile
           ProjectileDestroy(isProjectile);
 
@@ -141,6 +142,11 @@ public class DealDamageToEnemy : MonoBehaviour
 
                enemiesHit++;
           }
+          else if (other.gameObject.CompareTag("Barrel"))
+          {
+               Health enemyHealth = other.gameObject.GetComponent<Health>();
+               enemyHealth.TakeDamage(damageAmount);
+          }
           //Destroy itself if its a projectile
           ProjectileDestroy(isProjectile);
      }
@@ -149,7 +155,7 @@ public class DealDamageToEnemy : MonoBehaviour
      public void OnTriggerEnter2D(Collider2D other)
      {
           //Check for enemy collision
-          if (other.gameObject.CompareTag("Attackable") || other.gameObject.CompareTag("Barrel"))
+          if (other.gameObject.CompareTag("Attackable"))
           {
 
                //Find components necessary to take damage and knockback
@@ -204,6 +210,11 @@ public class DealDamageToEnemy : MonoBehaviour
                }
 
                enemiesHit++;
+          }
+          else if(other.gameObject.CompareTag("Barrel"))
+          {
+               Health enemyHealth = other.gameObject.GetComponent<Health>();
+               enemyHealth.TakeDamage(damageAmount);
           }
      }
 
