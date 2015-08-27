@@ -96,7 +96,7 @@ using UnityEngine;
                     {
                          if (canAttack)
                          {
-                              if(distanceFromPoint.magnitude < 0.15f) {
+                              if(distanceFromPoint.magnitude < 0.05f) {
                                    moveController.Move(0, 0);
                                    animationController.isAttacking = true;
                               }
@@ -146,11 +146,11 @@ using UnityEngine;
           {
                if (Math.Abs(distance.x) >= Math.Abs(distance.y))
                {
-                    attackCollider = Instantiate(LRAttack, transform.position + new Vector3(Math.Sign(distance.x) / 2f, 0, 0), Quaternion.identity) as BasicAttack;
+                    attackCollider = Instantiate(LRAttack, transform.position + new Vector3(Math.Sign(distance.x) / 4f, 0, 0), Quaternion.identity) as BasicAttack;
                }
                else
                {
-                    attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, Math.Sign(distance.y) / 2f, 0), UDAttack.transform.rotation) as BasicAttack;
+                    attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, Math.Sign(distance.y) / 4f, 0), UDAttack.transform.rotation) as BasicAttack;
                }
                attackCollider.transform.parent = gameObject.transform;
 
