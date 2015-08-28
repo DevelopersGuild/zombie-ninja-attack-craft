@@ -1,0 +1,253 @@
+fileFormatVersion: 2
+guid: a72085f6b53652247b73de62d65697c9
+timeCreated: 1440789545
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Levelbuttons_0
+    21300002: Levelbuttons_1
+    21300004: Levelbuttons_2
+    21300006: Levelbuttons_3
+    21300008: Levelbuttons_4
+    21300010: Levelbuttons_5
+    21300012: Levelbuttons_6
+    21300014: Levelbuttons_7
+    21300016: Levelbuttons_8
+    21300018: Levelbuttons_9
+    21300020: Levelbuttons_10
+    21300022: Levelbuttons_11
+    21300024: Levelbuttons_12
+    21300026: Levelbuttons_13
+    21300028: Levelbuttons_14
+    21300030: Levelbuttons_15
+    21300032: Levelbuttons_16
+    21300034: Levelbuttons_17
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Levelbuttons_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 109
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_1
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 109
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_2
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 109
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_3
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 109
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_4
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 109
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_5
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 109
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_6
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 109
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_7
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 109
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_8
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 109
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_10
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 1
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_11
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 1
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_12
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 1
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_13
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 1
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_14
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 1
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_15
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 1
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_16
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 1
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Levelbuttons_17
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 1
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
