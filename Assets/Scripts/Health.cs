@@ -138,7 +138,8 @@ public class Health : MonoBehaviour
           else if (gameObject.GetComponent<Boss>())
           {
                Boss enem = gameObject.GetComponent<Boss>();
-               enem.onDeath();
+               enem.Shake();
+               //enem.onDeath();
           }
           isDead = true;
 
@@ -151,7 +152,10 @@ public class Health : MonoBehaviour
                     dropLoot.DropItem();
                }
           }
-          Destroy(gameObject);
+          if (!gameObject.GetComponent<Boss>())
+          {
+               Destroy(gameObject);
+          }
      }
 
      void OnApplicationQuit()

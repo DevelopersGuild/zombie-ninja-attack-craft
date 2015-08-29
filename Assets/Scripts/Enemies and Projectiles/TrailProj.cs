@@ -25,7 +25,7 @@ public class TrailProj : Projectile
                var q = Quaternion.AngleAxis(angle, Vector3.forward);
                trail = Instantiate(trailObj, transform.position, q) as GameObject;
                Destroy(trail, trailTime);
-               trailTime -= 0.1f;
+               //trailTime -= 0.1f;
           }
 
 

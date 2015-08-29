@@ -29,6 +29,10 @@ using UnityEngine;
  */
 public class SnakeBoss : Boss
 {
+     //death explosion
+     public GameObject ExplObj;
+     public GameObject Expl;
+
      public Player player;
      public float AgroRange;
 
@@ -117,6 +121,9 @@ public class SnakeBoss : Boss
           speed = new Vector2(0, 0);
           isAgro = false;
 
+          shakeTime = 2f;
+          shakeDist = new Vector3(0.4f, 0, 0);
+
      }
 
      public void Awake()
@@ -171,6 +178,7 @@ public class SnakeBoss : Boss
           b4.setBite(true, biteDir/5);
           isBiting = true;
           bite_CD = 0;
+          close();
 
 
      }
@@ -186,6 +194,7 @@ public class SnakeBoss : Boss
           //after 0.5s, rotate around point from ~190 degrees to ~255 degrees
           //Ice snake mirrors that, from ~350 to ~285
           //laser ends
+          close();
      }
 
      public void trailAttack()
@@ -201,6 +210,7 @@ public class SnakeBoss : Boss
           //trails^
           fireTrail_CD = 0;
           iceTrail_CD = 0;
+          close();
      }
 
      public void ballAttack()
@@ -209,6 +219,7 @@ public class SnakeBoss : Boss
           ball.Shoot(0, direction * 0.7f);
           fireBall_CD = 0;
           iceBall_CD = 0;
+          close();
      }
 
      public void spawnAttack()
@@ -216,6 +227,7 @@ public class SnakeBoss : Boss
           spawn_CD = 0;
           Vector2 newPos = transform.position + new Vector3(mirrorSpawn, -2.4f);
           snake = Instantiate(snakeObj, newPos, transform.rotation) as Enemy;
+          close();
      }
 
      public void acidAttack()
@@ -228,6 +240,7 @@ public class SnakeBoss : Boss
           acidball.Shoot(0, tempDir * 0.125f);
           acidball.transform.rotation = q;
           acid_CD = 0;
+          close();
      }
 
 
@@ -245,22 +258,29 @@ public class SnakeBoss : Boss
 
      public void updatePos()
      {
-          
-//          transform.position = new Vector3(initialPos.x + (float)Math.Sin(snakeFactor % Math.PI),initialPos.y,0);
+
+          //          transform.position = new Vector3(initialPos.x + (float)Math.Sin(snakeFactor % Math.PI),initialPos.y,0);
           //snakeFactor = Mathf.PingPong(Time.time / 2.2f, 0.7f);
           //transform.position = new Vector3(initialPos.x + snakeFactor, initialPos.y, 0);
-
+          float time = Time.deltaTime;
+          b1.setT(time);
+          b2.setT(time);
+          b3.setT(time);
+          b4.setT(time);
           float degreesPerSecond = 180.0f;
-          mDeg = Mathf.Repeat(mDeg + (Time.deltaTime * degreesPerSecond), 360.0f);
+          mDeg = Mathf.Repeat(mDeg + (time * degreesPerSecond), 360.0f);
           float radians = mDeg * Mathf.Deg2Rad + 90;
 
-          Vector3 offset = new Vector3(Mathf.Sin(radians)/110f, 0, 0);
-          transform.position = transform.position + offset;
+          //Vector3 offset = new Vector3(Mathf.Sin(radians)/220f, 0, 0);
+          Vector3 offset = new Vector3(Mathf.Sin(radians) / (72f / 0.33f), 0, 0);
+          offset *= 100f;
+          transform.position = transform.position + offset * time;
           //snakeFactor += 0f;
      }
 
      public void laserEnd()
      {
+          close();
           isLasering = false;
           b1.stopMove(true);
           b2.stopMove(true);
@@ -270,10 +290,15 @@ public class SnakeBoss : Boss
 
      public override void onDeath()
      {
-          b1.dead();
-          b2.dead();
-          b3.dead();
-          b4.dead();
+         
+          b1.dead(0.4f);
+          b2.dead(0.7f);
+          b3.dead(1f);
+          b4.dead(1.3f);
+          deathAnim();
+          Destroy(gameObject);
+
+
           //create bridge
      }
 
@@ -296,9 +321,18 @@ public class SnakeBoss : Boss
                if (other.gameObject.GetComponent<DealDamageToEnemy>() && other.gameObject.GetComponent<Projectile>()) 
                {
                     isInvincible = true;
+                    
                }
           }
      }
+
+     public override void deathAnim()
+     {
+          Expl = Instantiate(ExplObj, transform.position, transform.rotation) as GameObject;
+     }
+
+
+
 
 
 
