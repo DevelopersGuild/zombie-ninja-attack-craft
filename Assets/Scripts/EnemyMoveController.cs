@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using CreativeSpore;
 
 public class EnemyMoveController : MonoBehaviour
 {
@@ -30,6 +31,13 @@ public class EnemyMoveController : MonoBehaviour
      private float knockBackTime;
      private float timeSpentKnockedBack;
      private Vector2 knockbackDirection;
+     //Pathfinding
+     private static float jiggleMax = 0.2f;
+     private static Vector3 UL = new Vector3(-jiggleMax,  jiggleMax);
+     private static Vector3 UR = new Vector3( jiggleMax,  jiggleMax);
+     private static Vector3 DR = new Vector3( jiggleMax, -jiggleMax);
+     private static Vector3 DL = new Vector3(-jiggleMax, -jiggleMax);
+     private static float jiggleSpeed = 0.25f;
 
 
      void Awake()
@@ -64,13 +72,13 @@ public class EnemyMoveController : MonoBehaviour
 
 
                //Check whether sprite is facing left or right. Flip the sprite based on its direction
-               if (facing.x > 0)
+               if (facing.x > 0 != transform.localScale.x > 0)
                {
-                    transform.localScale = new Vector3(1, 1, 1);
-               }
-               else
-               {
-                    transform.localScale = new Vector3(-1, 1, 1);
+                    transform.localScale = new Vector3(
+                         transform.localScale.x * -1.0f,
+                         transform.localScale.y,
+                         transform.localScale.z
+                    );
                }
 
 
@@ -129,13 +137,51 @@ public class EnemyMoveController : MonoBehaviour
      {
           if (canMove)
           {
-               GetComponent<Rigidbody2D>().velocity = movementVector;
+               GetComponent<Rigidbody2D>().velocity = JiggleMovement();
           }
 
           //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
           //Debug.Log("speed:" + speed + "direction:" + direction + "movementVector" + movementVector);
      }
 
+     
+     /* Move around obstacles in the tile map if they are small */
+     private Vector2 JiggleMovement()
+     {
+          PhysicCharBehaviour physics = GetComponent<PhysicCharBehaviour>();
+
+          if (physics)
+          {
+               switch (physics.CollFlags)
+               {
+               case PhysicCharBehaviour.eCollFlags.LEFT:
+                    return movementVector.y > 0 ? chooseJiggle(Vector2.up, UL, DL) : chooseJiggle(Vector2.up * -1, DL, UL);
+               case PhysicCharBehaviour.eCollFlags.RIGHT:
+                    return movementVector.y > 0 ? chooseJiggle(Vector2.up, UR, DR) : chooseJiggle(Vector2.up * -1, DR, UR);
+               case PhysicCharBehaviour.eCollFlags.UP:
+                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, UL, UR) : chooseJiggle(Vector2.right, UR, UL);
+               case PhysicCharBehaviour.eCollFlags.DOWN:
+                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, DL, DR) : chooseJiggle(Vector2.right, DR, DL);
+               }
+          }
+          return movementVector;
+     }
+
+     private Vector2 chooseJiggle(Vector2 directionA, Vector2 a, Vector2 b)
+     {
+          PhysicCharBehaviour physics = GetComponent<PhysicCharBehaviour>();
+
+          if (!physics.IsColliding(transform.position + new Vector3(a.x, a.y)))
+          {
+               return directionA * speed * jiggleSpeed;
+          }
+          else if (!physics.IsColliding(transform.position + new Vector3(b.x, b.y)))
+          {
+               return directionA * -1 * speed * jiggleSpeed;
+          }
+          return movementVector;
+     }
+     
      /* Moves the object in a direction by a small amount (used for player input) */
      internal void Move(float input_X, float input_Y)
      {

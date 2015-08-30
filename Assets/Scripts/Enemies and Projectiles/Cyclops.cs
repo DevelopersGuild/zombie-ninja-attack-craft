@@ -82,7 +82,6 @@ public class Cyclops : Enemy
                     {
                          if (temp > 0)
                          {
-                              collider.enabled = false;
                               sprRend.enabled = false;
                               moveController.Move(teleportRun * 2);
                               temp -= Time.deltaTime;

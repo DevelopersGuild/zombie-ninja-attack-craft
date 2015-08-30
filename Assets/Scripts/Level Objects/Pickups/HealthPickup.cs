@@ -12,6 +12,6 @@ public class HealthPickup : Pickup
 
      public override void sendPickupMessage()
      {
-          GameManager.Notifications.PostNotification(this, "OnHealthOrBatteryPickup");
+          GameManager.Notifications.PostNotification(this, "OnHealthPickup");
      }
 }
