@@ -28,8 +28,6 @@ public class EnemyAttack : Enemy {
           health = GetComponent<Health>();
           player = FindObjectOfType<Player>();
 
-          yAttackRange = 0.3f;
-          xAttackRange = 0.3f;
           playerInRange = false;
 
           //rigidbody2D.mass = 10;
@@ -113,9 +111,6 @@ public class EnemyAttack : Enemy {
      // Gets called when a player is in range of one of the attack colliders
      public void inRange(BoxCollider2D collision)
      {
-          playerInRange = true;
-
-
           if (collision == upCol)
           {
                attackDirection = new Vector2(0, 1);
