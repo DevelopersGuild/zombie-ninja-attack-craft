@@ -152,15 +152,17 @@ public class WorkingCharger : Enemy
      public void Charge()
      {
           animator.SetBool("isTired", false);
+          animator.SetBool("isCharging", true);
           //animator.SetBool("ChargerIdle", false);
-          animator.Play("ChargerCharge");
+          //animator.Play("ChargerCharge");
           isInvincible = true;
      }
 
      public void Tired()
      {
           animator.SetBool("isCharging", false);
-          animator.Play("ChargerTired");
+          animator.SetBool("isTired", true);
+          //animator.Play("ChargerTired");
      }
 
      public void DoneCharging()
