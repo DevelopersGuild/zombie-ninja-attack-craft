@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 45fbe9ee81b966844b489479c722c315
-timeCreated: 1440971692
+timeCreated: 1441012034
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -16,6 +16,8 @@ TextureImporter:
     21300018: controls_4
     21300020: controls_5
     21300022: controls_6
+    21300024: controls_12
+    21300026: controls_13
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -41,7 +43,7 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -178,6 +180,26 @@ TextureImporter:
         y: 2
         width: 74
         height: 17
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: controls_12
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 60
+        width: 151
+        height: 12
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: controls_13
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 21
+        width: 44
+        height: 18
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
