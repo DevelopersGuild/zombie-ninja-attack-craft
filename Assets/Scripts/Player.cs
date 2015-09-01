@@ -100,6 +100,8 @@ public class Player : MonoBehaviour
      private AttackController attackController;
      public Health health;
      public bool gotAttacked;
+     public GameObject chargingParticle;
+     private GameObject particles;
 
      //Player progression
      public bool IsBowUnlocked;
@@ -254,6 +256,7 @@ public class Player : MonoBehaviour
                     {
                          BaseTime = Time.time;
                     }
+                    particles = Instantiate(chargingParticle);
                }
                if (ChosenWeapon == SecondaryWeapons.Mine)
                {
@@ -266,6 +269,7 @@ public class Player : MonoBehaviour
           {
                if (ChosenWeapon == SecondaryWeapons.Projectile)
                {
+                    Destroy(particles);
                     TimeBowCharging = Time.time;
                     double timeDifference = TimeBowCharging - BaseTime;
                     if (timeDifference < 1.0f)
