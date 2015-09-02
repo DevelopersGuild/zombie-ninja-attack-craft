@@ -13,7 +13,10 @@ public class LoadAndSaveManager : MonoBehaviour
           public class GameLevelData
           {
                public bool LevelUnlocked;
-               public int Score;
+               public int PlayerScoreCombat;
+               public int PlayerScoreTime;
+               public int GoldScoreCombat;
+               public int GoldScoreTime;
           }
 
           public class PlayerData

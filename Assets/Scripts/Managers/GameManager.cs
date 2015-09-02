@@ -172,6 +172,30 @@ public class GameManager : MonoBehaviour
           }
      }
 
+     //Level unlock methods
+
+
+     public int GetGoldCombatScore(int level)
+     {
+          return stateManager.GameState.GameLevels[level - 1].GoldScoreCombat;
+     }
+
+     public int GetGoldTimeScore(int level)
+     {
+          return stateManager.GameState.GameLevels[level - 1].GoldScoreTime;
+     }
+
+     public int GetPlayerCombatScore(int level)
+     {
+          return stateManager.GameState.GameLevels[level - 1].PlayerScoreCombat;
+     }
+
+     public int GetPlayerTimeScore(int level)
+     {
+          return stateManager.GameState.GameLevels[level - 1].PlayerScoreTime;
+     }
+
+
      public static void LevelComplete()
      {
           bool isActive = StateManager.isActiveAndEnabled;
@@ -183,16 +207,16 @@ public class GameManager : MonoBehaviour
           }
           if (stateManager.GameState.GameLevels.Count >= CurrentLevel)
           {
-               if (stateManager.GameState.GameLevels[CurrentLevel - 1].Score < Score)
+               if (stateManager.GameState.GameLevels[CurrentLevel - 1].PlayerScoreCombat < Score)
                {
-                    stateManager.GameState.GameLevels[CurrentLevel - 1].Score = Score;
+                    stateManager.GameState.GameLevels[CurrentLevel - 1].PlayerScoreCombat = Score;
                }
           }
           else
           {
                LoadAndSaveManager.GameStateData.GameLevelData newLevel = new LoadAndSaveManager.GameStateData.GameLevelData();
                newLevel.LevelUnlocked = true;
-               newLevel.Score = Score;
+               newLevel.PlayerScoreCombat = Score;
                stateManager.GameState.GameLevels.Add(newLevel);
           }
      }
@@ -233,7 +257,7 @@ public class GameManager : MonoBehaviour
           foreach (LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
           {
                level.LevelUnlocked = false;
-               level.Score = 0;
+               level.PlayerScoreCombat = 0;
           }
           stateManager.GameState.Player.IsBowHoldDownUnlocked = false;
           stateManager.GameState.Player.IsBowUnlocked = false;
@@ -250,7 +274,7 @@ public class GameManager : MonoBehaviour
           foreach (LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
           {
                level.LevelUnlocked = true;
-               level.Score = 0;
+               level.PlayerScoreCombat = 0;
           }
           stateManager.GameState.Player.IsBowHoldDownUnlocked = true;
           stateManager.GameState.Player.IsBowUnlocked = true;
