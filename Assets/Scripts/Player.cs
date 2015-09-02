@@ -15,6 +15,8 @@ class ArrowKeys
      private float[] lastTapTimes = new float[4];
      private bool[] dashing = new bool[4];
 
+
+
      public void Update()
      {
           for (int i = 0; i < 4; i++)
@@ -128,8 +130,12 @@ public class Player : MonoBehaviour
      public float attackedTimer;
      public float TimeBowCharging;
      public float BaseTime;
+     private float timeCharging;
+     private bool isCharging;
      private float stun_Timer, slow, slow_Timer;
 
+     public Projectile laser;
+     public Projectile chargedLaser;
 
      void Awake()
      {
@@ -137,6 +143,7 @@ public class Player : MonoBehaviour
           stun_Timer = 0;
           isInvincible = false;
           timeSpentInvincible = 1;
+          timeCharging = 0;
           playerMoveController = GetComponent<PlayerMoveController>();
           attackController = GetComponent<AttackController>();
           GameManager.Notifications.AddListener(this, "LevelLoaded");
@@ -248,21 +255,29 @@ public class Player : MonoBehaviour
                attackController.Attack();
           }
 
-          if (Input.GetButtonDown("Fire2"))
+          if (Input.GetButton("Fire2"))
           {
                if (ChosenWeapon == SecondaryWeapons.Projectile)
                {
-                    if (BaseTime == 0)
+                    if (attackController.Ammo > 0)
                     {
-                         BaseTime = Time.time;
+                         timeCharging += Time.deltaTime;
+                         if (timeCharging > .5f && isCharging == false)
+                         {
+                              particles = Instantiate(chargingParticle);
+                              isCharging = true;
+                         }
                     }
-                    particles = Instantiate(chargingParticle);
                }
+
+          }
+
+          if(Input.GetButtonDown("Fire2"))
+          {
                if (ChosenWeapon == SecondaryWeapons.Mine)
                {
                     attackController.ThrowBomb();
                }
-
           }
 
           if (Input.GetButtonUp("Fire2") && attackController.CanAttack() && IsBowUnlocked == true)
@@ -270,17 +285,17 @@ public class Player : MonoBehaviour
                if (ChosenWeapon == SecondaryWeapons.Projectile)
                {
                     Destroy(particles);
-                    TimeBowCharging = Time.time;
-                    double timeDifference = TimeBowCharging - BaseTime;
-                    if (timeDifference < 1.0f)
+                    isCharging = false;
+
+                    if (timeCharging < 1.0f)
                     {
-                         attackController.ShootProjectile();
+                         attackController.ShootProjectile(laser);
                     }
                     else
                     {
-                         attackController.ShootProjectile(3);
+                         attackController.ShootProjectile(chargedLaser);
                     }
-                    BaseTime = 0;
+                    timeCharging = 0;
                }
           }
 

@@ -5,8 +5,7 @@ using System.Collections;
 public class DealDamageToEnemy : MonoBehaviour
 {
 
-     public int damageAmount = 1;
-     public int NumberOfEnemiesCanHit = 2;
+     public int damageAmount;
      private Projectile projectile;
      private bool isProjectile = false;
      private bool isPowerShot = false;
@@ -145,6 +144,7 @@ public class DealDamageToEnemy : MonoBehaviour
           else if (other.gameObject.CompareTag("Barrel"))
           {
                Health enemyHealth = other.gameObject.GetComponent<Health>();
+               Debug.Log(damageAmount);
                enemyHealth.TakeDamage(damageAmount);
           }
           //Destroy itself if its a projectile
@@ -154,10 +154,10 @@ public class DealDamageToEnemy : MonoBehaviour
      //For triggers
      public void OnTriggerEnter2D(Collider2D other)
      {
+          CheckForProjectile();
           //Check for enemy collision
           if (other.gameObject.CompareTag("Attackable"))
           {
-
                //Find components necessary to take damage and knockback
                GameObject enemObject = other.gameObject;
                Health enemyHealth = other.gameObject.GetComponent<Health>();
@@ -216,6 +216,13 @@ public class DealDamageToEnemy : MonoBehaviour
                Health enemyHealth = other.gameObject.GetComponent<Health>();
                enemyHealth.TakeDamage(damageAmount);
           }
+
+          //Destroy itself if its a projectile
+          if(isProjectile)
+          {
+               ProjectileDestroy(isProjectile);
+          }
+
      }
 
      public void CheckForProjectile()
@@ -223,23 +230,16 @@ public class DealDamageToEnemy : MonoBehaviour
           if (projectile = GetComponent<Projectile>())
           {
                damageAmount = projectile.damageAmount;
-               if (damageAmount > 1)
-               {
-                    isPowerShot = true;
-               }
                isProjectile = true;
           }
      }
 
      public void ProjectileDestroy(bool isObjectProjectile)
      {
-          if (isPowerShot == true)
+          if (projectile.pierceAmount > 1)
           {
-               if (isObjectProjectile == true && enemiesHit == NumberOfEnemiesCanHit)
-               {
-                    Destroy(gameObject);
-               }
-               projectile.Shoot(projectile.currentAngle, projectile.GetComponent<Rigidbody2D>().velocity / projectile.projectileSpeed, 1);
+               projectile.pierceAmount--;
+               projectile.Shoot(projectile.currentAngle, projectile.GetComponent<Rigidbody2D>().velocity / projectile.projectileSpeed, projectile.damageAmount);
           }
           else
           {
