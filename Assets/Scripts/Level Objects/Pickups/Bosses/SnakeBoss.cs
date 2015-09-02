@@ -143,7 +143,6 @@ public class SnakeBoss : Boss
           b4.setPong(0.85f);
 
           initialPos = transform.position;
-          
 
      }
 
@@ -223,7 +222,6 @@ public class SnakeBoss : Boss
           Vector2 tempDir = new Vector2(playerX - currentX, playerY - currentY);
           float angle = Mathf.Atan2(tempDir.y, tempDir.x) * Mathf.Rad2Deg;
           var q = Quaternion.AngleAxis(angle, Vector3.forward);
-          Debug.Log(q);
           ball = Instantiate(ballObj, transform.position, q) as Projectile;
           ball.Shoot(0, direction * 0.7f);
           ball.transform.rotation = q;
@@ -302,15 +300,12 @@ public class SnakeBoss : Boss
 
      public override void onDeath()
      {
-         
+          Debug.Log("Hey it's me, ur borth");
           b1.dead(0.4f);
           b2.dead(0.7f);
           b3.dead(1f);
           b4.dead(1.3f);
-          deathAnim();
-          Destroy(gameObject);
-
-
+          deathAnim();          
           //create bridge
      }
 
@@ -340,7 +335,9 @@ public class SnakeBoss : Boss
 
      public override void deathAnim()
      {
+          Debug.Log("boom");
           Expl = Instantiate(ExplObj, transform.position, transform.rotation) as GameObject;
+          Destroy(gameObject, 0);
      }
 
 

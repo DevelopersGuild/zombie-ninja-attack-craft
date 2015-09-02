@@ -13,7 +13,7 @@ public class IceSnake : SnakeBoss
           player = FindObjectOfType<Player>();
           moveController = GetComponent<EnemyMoveController>();
           health = GetComponent<Health>();
-          
+
 
           isInvincible = true;
           bite_CD = 10;
@@ -48,33 +48,16 @@ public class IceSnake : SnakeBoss
           {
                if (!checkShake())
                {
-                    if(blinkTime == 0.5f)
+                    if (blinkTime == 0.5f)
                     {
                          animator.SetBool("isOpen", false);
                     }
                     if (blinkTime > 0)
-                    blink = !blink;
-                    GetComponent<Renderer>().enabled = blink;
-               }
-               if (blinkTime <= 0)
-               {
-                    GetComponent<Renderer>().enabled = true;
-               }
-
-               if (isBiting)
-               {
-                    moveController.Move(0, 0);
-                    // biteTime -= Time.deltaTime;
-
-                    findPos();
-                    if (biteTime <= 24)
                     {
-                         close();
                          blink = !blink;
                          GetComponent<Renderer>().enabled = blink;
                     }
-
-                    else if (GetComponent<Renderer>().enabled == false)
+                    if (blinkTime <= 0)
                     {
                          GetComponent<Renderer>().enabled = true;
                     }
@@ -85,6 +68,7 @@ public class IceSnake : SnakeBoss
                          // biteTime -= Time.deltaTime;
 
                          findPos();
+
                          if (biteTime <= 96)
                          {
                               transform.position += biteDir / 8f;
@@ -268,8 +252,6 @@ public class IceSnake : SnakeBoss
           b4.stopMove(false);*/
           GameManager.Notifications.PostNotification(this, "OnFireLaser");
      }
-
-
 
 
 

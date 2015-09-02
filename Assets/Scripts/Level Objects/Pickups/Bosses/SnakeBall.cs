@@ -81,7 +81,7 @@ public class SnakeBall : MonoBehaviour
      public void death()
      {
           GameObject expl = Instantiate(explosion, transform.position, transform.rotation) as GameObject;
-          Destroy(gameObject);
+          Destroy(gameObject, 0);
      }
 
      public void setBite(bool bol, Vector3 vec)

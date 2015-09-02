@@ -70,7 +70,6 @@ public class FireSnake : SnakeBoss
                     {
                          moveController.Move(0, 0);
                          // biteTime -= Time.deltaTime;
-
                          findPos();
 
                          if (biteTime <= 96)
