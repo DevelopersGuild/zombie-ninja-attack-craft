@@ -21,19 +21,6 @@ public class LoadLevelCanvasController : MonoBehaviour
      public Text PlayerCombatScoreText;
 
 
-     // Use this for initialization
-     void Start()
-     {
-
-     }
-
-     // Update is called once per frame
-     void Update()
-     {
-
-     }
-
-
      public void ButtonSelected(Button selectedButton)
      {
           int numberOfButtonSelected = 0; 
@@ -51,10 +38,10 @@ public class LoadLevelCanvasController : MonoBehaviour
 
      public void DisplayScores(int levelnum)
      {
-          GoldTimeScoreText.text = "Gold Score : " + levelnum;
-          PlayerTimeScoreText.text = "High Score : " + levelnum;
-          GoldcombatScoreText.text = "Gold Score : " + levelnum;
-          PlayerCombatScoreText.text = "High Score : " + levelnum;
+          GoldTimeScoreText.text = "Gold Score : " + GameManager.Instance.GetComponent<LevelScores>().LevelScore[levelnum-1];
+          PlayerTimeScoreText.text = "High Score : " + GameManager.Instance.GetPlayerTimeScore(levelnum);
+          GoldcombatScoreText.text = "Gold Score : " + GameManager.Instance.GetComponent<LevelScores>().LevelScore[levelnum];
+          PlayerCombatScoreText.text = "High Score : " + GameManager.Instance.GetPlayerCombatScore(levelnum);
      }
 
 }

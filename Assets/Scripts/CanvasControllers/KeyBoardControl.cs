@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class KeyBoardControl : MonoBehaviour
 {
      private List<Button> buttons;
-     private bool isInMenu = true;
+     private bool isInMenu = false;
      private int index = 0;
      private int lastIndex = 0;
      private Button selectedButton = null;
@@ -15,11 +15,13 @@ public class KeyBoardControl : MonoBehaviour
      void Start()
      {
           buttons = new List<Button>(gameObject.GetComponentsInChildren<Button>());
+          GetCurrentButton();
      }
 
      // Update is called once per frame
      void Update()
      {
+          lastIndex = index;
           if(isInMenu == true)
           {
                if(Input.GetButtonDown("Down"))
@@ -38,7 +40,11 @@ public class KeyBoardControl : MonoBehaviour
                          index = buttons.Count-1;
                     }
                }
-               GetCurrentButton();
+               if(index != lastIndex)
+               {
+                    GetCurrentButton();
+               }
+               
           }
      }
 
@@ -46,5 +52,10 @@ public class KeyBoardControl : MonoBehaviour
      {
           selectedButton = buttons[index];
           selectedButton.Select();
+     }
+
+     public void SetIsInMenu(bool value)
+     {
+          isInMenu = value;
      }
 }

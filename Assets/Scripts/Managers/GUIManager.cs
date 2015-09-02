@@ -27,6 +27,7 @@ public class GUIManager : MonoBehaviour
           if(temp != null)
           {
                mainTitleMenu = temp.GetComponent<Canvas>();
+               mainTitleMenu.GetComponent<KeyBoardControl>().SetIsInMenu(true);
           }
           temp = GameObject.Find("LoadLevelCanvas");
           if (temp != null)
@@ -97,11 +98,13 @@ public class GUIManager : MonoBehaviour
                     if(restartCanvas.enabled == false)
                     {
                          restartCanvas.enabled = true;
+                         SetCanvasKeyBoardController(restartCanvas, true);
                          Cursor.visible = true;
                          GameManager.Instance.PauseGame();
                     }
                     else
                     {
+                         SetCanvasKeyBoardController(restartCanvas, false);
                          restartCanvas.enabled = false;
                          Cursor.visible = false;
                          GameManager.Instance.UnpauseGame();
@@ -115,6 +118,7 @@ public class GUIManager : MonoBehaviour
           if (restartCanvas != null)
           {
                restartCanvas.enabled = true;
+               SetCanvasKeyBoardController(restartCanvas, true);
                Cursor.visible = true;
           }
      }
@@ -125,6 +129,7 @@ public class GUIManager : MonoBehaviour
           {
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
                storeCanvas.enabled = true;
+               SetCanvasKeyBoardController(storeCanvas, true);
                Cursor.visible = true;
                GameManager.Instance.PauseGame();
           }
@@ -135,6 +140,7 @@ public class GUIManager : MonoBehaviour
           if (storeCanvas != null)
           {
                GameManager.Notifications.PostNotification(this, "PlayerExitMenu");
+               SetCanvasKeyBoardController(storeCanvas, false);
                storeCanvas.enabled = false;
                Cursor.visible = false;
                GameManager.Instance.UnpauseGame();
@@ -145,6 +151,7 @@ public class GUIManager : MonoBehaviour
      {
           if (endOfLevelCanvas != null)
           {
+               SetCanvasKeyBoardController(endOfLevelCanvas, true);
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
                endOfLevelCanvas.enabled = true;
                Cursor.visible = true;
@@ -154,14 +161,18 @@ public class GUIManager : MonoBehaviour
 
      public void ShowLoadLevel()
      {
+          SetCanvasKeyBoardController(mainTitleMenu, false);
           mainTitleMenu.enabled = false;
           loadLevelCanvas.enabled = true;
+          SetCanvasKeyBoardController(loadLevelCanvas, true);
      }
 
      public void ShowTitleScreen()
      {
+          SetCanvasKeyBoardController(loadLevelCanvas, false);
           mainTitleMenu.enabled = true;
           loadLevelCanvas.enabled = false;
+          SetCanvasKeyBoardController(mainTitleMenu, true);
      }
 
      public void ShowSettingScreen()
@@ -192,6 +203,11 @@ public class GUIManager : MonoBehaviour
                mainTitleMenu.enabled = true;
           }
           isInSettings = false;
+     }
+
+     private void SetCanvasKeyBoardController(Canvas canvas, bool value)
+     {
+          canvas.GetComponent<KeyBoardControl>().SetIsInMenu(value);
      }
 
      private void OnGUI()
