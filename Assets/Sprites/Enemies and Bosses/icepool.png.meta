@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 338b5214210a4474ab3c0d1dc1dc26da
-timeCreated: 1440447993
+guid: 728ba6208f114f8408fbf5ce701d17ef
+timeCreated: 1441171366
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: acidpool_0
-    21300002: acidpool_1
-    21300004: acidpool_2
-    21300006: acidpool_3
-    21300008: acidpool_4
-    21300010: acidpool_5
-    21300012: acidpool_6
+    21300000: icepool_0
+    21300002: icepool_1
+    21300004: icepool_2
+    21300006: icepool_3
+    21300008: icepool_4
+    21300010: icepool_5
+    21300012: icepool_6
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -56,73 +56,73 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: acidpool_0
+    - name: icepool_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 1
+        y: 2
         width: 48
-        height: 48
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: acidpool_1
+    - name: icepool_1
       rect:
         serializedVersion: 2
         x: 48
-        y: 1
+        y: 2
         width: 48
-        height: 48
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: acidpool_2
+    - name: icepool_2
       rect:
         serializedVersion: 2
         x: 96
-        y: 1
+        y: 2
         width: 48
-        height: 48
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: acidpool_3
+    - name: icepool_3
       rect:
         serializedVersion: 2
         x: 144
-        y: 1
+        y: 2
         width: 48
-        height: 48
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: acidpool_4
+    - name: icepool_4
       rect:
         serializedVersion: 2
         x: 192
-        y: 1
+        y: 2
         width: 48
-        height: 48
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: acidpool_5
+    - name: icepool_5
       rect:
         serializedVersion: 2
         x: 240
-        y: 1
+        y: 2
         width: 48
-        height: 48
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: acidpool_6
+    - name: icepool_6
       rect:
         serializedVersion: 2
         x: 288
-        y: 1
+        y: 2
         width: 48
-        height: 48
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
