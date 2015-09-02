@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
      public float angle;
      public float currentAngle;
      public int damageAmount;
+     public int pierceAmount;
 
      public float stun;
      [HideInInspector]
@@ -49,7 +50,6 @@ public class Projectile : MonoBehaviour
      public void setStun(float st)
      {
           stun = st;
-
      }
 
      public void home(bool x)
@@ -59,11 +59,12 @@ public class Projectile : MonoBehaviour
 
 
 
-     public void Shoot(float angle, Vector2 velocity, int damage = 1, bool isPowerShot = false)
+     public void Shoot(float angle, Vector2 velocity, int damage = 1)
      {
           damageAmount = damage;
           originalPosition = transform.position;
-          transform.eulerAngles = new Vector3(0, 0, angle);
+          currentAngle = angle;
+          transform.eulerAngles = new Vector3(0, 0, currentAngle);
           currentVelocity = velocity;
           GetComponent<Rigidbody2D>().velocity = currentVelocity * projectileSpeed;
           shot = true;

@@ -95,7 +95,7 @@ namespace AssemblyCSharp
 
                CheckIfPlayerCanHearSpark();
                moveController.Move(0, 0);
-               t = 2;
+               t = .5;
                sparkTimer = sparkTime;
                stop = 0;
                GameObject spark = Instantiate(SparkParticle, transform.position, Quaternion.identity) as GameObject;

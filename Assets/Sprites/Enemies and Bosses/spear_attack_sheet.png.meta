@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: cd1c10d3bbcf55d4cbc6137be7c19c96
-timeCreated: 1433576415
+timeCreated: 1440968232
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -77,11 +77,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 210
+        y: 209
         width: 55
         height: 55
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_1
       rect:
@@ -91,27 +91,27 @@ TextureImporter:
         width: 55
         height: 55
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_2
       rect:
         serializedVersion: 2
         x: 110
-        y: 210
+        y: 209
         width: 55
-        height: 55
+        height: 66
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_3
       rect:
         serializedVersion: 2
         x: 165
-        y: 210
+        y: 209
         width: 55
-        height: 55
+        height: 66
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_4
       rect:
@@ -119,9 +119,9 @@ TextureImporter:
         x: 220
         y: 210
         width: 55
-        height: 55
+        height: 54
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_5
       rect:
@@ -131,7 +131,7 @@ TextureImporter:
         width: 55
         height: 55
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_6
       rect:
@@ -139,9 +139,9 @@ TextureImporter:
         x: 330
         y: 210
         width: 55
-        height: 55
+        height: 65
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_7
       rect:
@@ -149,16 +149,16 @@ TextureImporter:
         x: 385
         y: 210
         width: 55
-        height: 55
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 181
-        width: 55
+        x: 16
+        y: 174
+        width: 37
         height: 29
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -166,9 +166,9 @@ TextureImporter:
     - name: spear_attack_sheet_9
       rect:
         serializedVersion: 2
-        x: 55
-        y: 181
-        width: 55
+        x: 67
+        y: 174
+        width: 36
         height: 29
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -176,9 +176,9 @@ TextureImporter:
     - name: spear_attack_sheet_10
       rect:
         serializedVersion: 2
-        x: 110
-        y: 181
-        width: 55
+        x: 115
+        y: 174
+        width: 52
         height: 29
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -186,9 +186,9 @@ TextureImporter:
     - name: spear_attack_sheet_11
       rect:
         serializedVersion: 2
-        x: 165
-        y: 181
-        width: 55
+        x: 166
+        y: 174
+        width: 58
         height: 29
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -196,40 +196,40 @@ TextureImporter:
     - name: spear_attack_sheet_12
       rect:
         serializedVersion: 2
-        x: 220
-        y: 181
-        width: 55
-        height: 29
+        x: 224
+        y: 173
+        width: 53
+        height: 30
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_13
       rect:
         serializedVersion: 2
-        x: 275
-        y: 181
-        width: 55
-        height: 29
+        x: 283
+        y: 173
+        width: 35
+        height: 30
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_14
       rect:
         serializedVersion: 2
-        x: 330
-        y: 181
-        width: 55
-        height: 29
+        x: 322
+        y: 173
+        width: 62
+        height: 30
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_15
       rect:
         serializedVersion: 2
-        x: 385
-        y: 181
-        width: 55
-        height: 29
+        x: 382
+        y: 173
+        width: 58
+        height: 30
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -257,9 +257,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 110
-        y: 100
+        y: 95
         width: 55
-        height: 60
+        height: 66
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,18 +267,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 165
-        y: 100
+        y: 95
         width: 55
-        height: 60
+        height: 65
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spear_attack_sheet_20
       rect:
         serializedVersion: 2
-        x: 220
+        x: 231
         y: 100
-        width: 55
+        width: 31
         height: 60
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -286,9 +286,9 @@ TextureImporter:
     - name: spear_attack_sheet_21
       rect:
         serializedVersion: 2
-        x: 275
+        x: 288
         y: 100
-        width: 55
+        width: 28
         height: 60
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -297,9 +297,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 330
-        y: 100
+        y: 96
         width: 55
-        height: 60
+        height: 67
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -307,9 +307,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 385
-        y: 100
+        y: 96
         width: 55
-        height: 61
+        height: 65
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

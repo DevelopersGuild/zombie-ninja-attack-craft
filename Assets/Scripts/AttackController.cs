@@ -25,8 +25,6 @@ public class AttackController : MonoBehaviour
           moveController = GetComponent<PlayerMoveController>();
           attackCollider = FindObjectOfType<ColliderInteractions>().GetComponent<BoxCollider2D>();
           attackCollider.enabled = false;
-          Ammo = 5;
-          Grenades = 3;
      }
 
      public void SetPlayerProjectileAmmo(int amount)
@@ -95,7 +93,7 @@ public class AttackController : MonoBehaviour
           }
      }
 
-     public void ShootProjectile(int damage = 1)
+     public void ShootProjectile(Projectile currentProjectile)
      {
           if (Ammo > 0)
           {
@@ -110,23 +108,23 @@ public class AttackController : MonoBehaviour
                //Instantiate an arrow depending on which direction the player is facing
                if (moveController.facing.x > 0)
                {
-                    Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x + 0.25f, transform.position.y), transform.rotation) as Projectile;
-                    projectile.Shoot(0, new Vector2(1, 0), damage);
+                    Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x + 0.25f, transform.position.y), transform.rotation) as Projectile;
+                    projectile.Shoot(0, new Vector2(1, 0), projectile.damageAmount);
                }
                else if (moveController.facing.x < 0)
                {
-                    Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x - 0.25f, transform.position.y), transform.rotation) as Projectile;
-                    projectile.Shoot(180, new Vector2(-1, 0), damage);
+                    Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x - 0.25f, transform.position.y), transform.rotation) as Projectile;
+                    projectile.Shoot(180, new Vector2(-1, 0), projectile.damageAmount);
                }
                else if (moveController.facing.y > 0)
                {
-                    Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x, transform.position.y + 0.25f), transform.rotation) as Projectile;
-                    projectile.Shoot(90, new Vector2(0, 1), damage);
+                    Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x, transform.position.y + 0.25f), transform.rotation) as Projectile;
+                    projectile.Shoot(90, new Vector2(0, 1), projectile.damageAmount);
                }
                else if (moveController.facing.y < 0)
                {
-                    Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x, transform.position.y - 0.25f), transform.rotation) as Projectile;
-                    projectile.Shoot(-90, new Vector2(0, -1), damage);
+                    Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x, transform.position.y - 0.25f), transform.rotation) as Projectile;
+                    projectile.Shoot(-90, new Vector2(0, -1), projectile.damageAmount);
                }
 
                FinishedAttacking();

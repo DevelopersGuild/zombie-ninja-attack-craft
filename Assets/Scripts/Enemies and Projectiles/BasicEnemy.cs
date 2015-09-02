@@ -10,7 +10,8 @@ using UnityEngine;
           private Health health;
 
           [HideInInspector]
-          public bool isAgro, canAttack;
+          public bool isAgro, canAttack, isAttacking, canChangeDirection;
+          private Vector2 attackDirection;
           public Vector2 distance, speed, facing, distanceFromPoint, point, up, down, left, right;
           private double idleTime, attackDelay;
           private Vector3 someVec;
@@ -47,7 +48,7 @@ using UnityEngine;
 
           }
 
-          public void Update()
+          public void Update() 
           {
                // Debug.Log("LR: " + LRAttack.GetComponent<SpriteRenderer>().bounds.size.x);
                // Debug.Log("UD: " + UDAttack.GetComponent<SpriteRenderer>().bounds.size.x);
@@ -95,12 +96,16 @@ using UnityEngine;
                     {
                          if (canAttack)
                          {
-                              if(distanceFromPoint.magnitude < 0.05f) {
-                                   moveController.Move(0, 0);
+                              if(distanceFromPoint.magnitude < 0.07f && animationController.isAttacking == false) {
                                    animationController.isAttacking = true;
-                              }
-                              else if (distanceFromPoint.magnitude > 0.25f)
+                                   moveController.Move(0, 0);
+                              }else if(animationController.isAttacking == true)
                               {
+                                   moveController.Move(0, 0);
+                              }
+                              else if (distanceFromPoint.magnitude > 0.25f )
+                              {
+
                                    moveController.Move(direction / 6f);
                                    //distance.normalized?
                               }
@@ -144,24 +149,48 @@ using UnityEngine;
           //Called by attack animation when spear is being thrusted forward
           public void Attack()
           {
-               if (Math.Abs(distance.x) >= Math.Abs(distance.y))
+               Debug.Log("Started");
+               if (Math.Abs(attackDirection.x) > Math.Abs(attackDirection.y))
                {
-                    attackCollider = Instantiate(LRAttack, transform.position + new Vector3(Math.Sign(distance.x) / 4f, 0, 0), Quaternion.identity) as BasicAttack;
+                    if (attackDirection.x > 0)
+                    {
+                         attackCollider = Instantiate(LRAttack, transform.position + new Vector3(0.5f, 0, 0), Quaternion.identity) as BasicAttack;
+                    }
+                    else
+                    {
+                         attackCollider = Instantiate(LRAttack, transform.position + new Vector3(-0.5f, 0, 0), Quaternion.identity) as BasicAttack;
+                    }
+                    attackCollider.transform.parent = gameObject.transform;
                }
                else
                {
-                    attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, Math.Sign(distance.y) / 4f, 0), UDAttack.transform.rotation) as BasicAttack;
-               }
-               attackCollider.transform.parent = gameObject.transform;
+                    if(attackDirection.y > 0)
+                    {
+                         attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, 0.5f, 0), UDAttack.transform.rotation) as BasicAttack;
+                    }
+                    else
+                    {
+                         attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, -0.5f, 0), UDAttack.transform.rotation) as BasicAttack;
+                    }
 
+                    attackCollider.transform.parent = gameObject.transform;
+               }
+               //Destroy(attackCollider.gameObject);
           }
 
-          //Called by attacking animation at end of animation
+          //Called by attacking animation at end of animatn
           public void DoneAttacking()
           {
+               Debug.Log("Finished");
                canAttack = true;
                animationController.isAttacking = false;
-               Destroy(attackCollider);
+               Destroy(attackCollider.gameObject);
+          }
+          
+          public void InititalDirection()
+          {
+               attackDirection = new Vector2(moveController.facing.x, moveController.facing.y);
+               Debug.Log(attackDirection.x + " " + attackDirection.y);
           }
 
           //Called by Rest animation after animation finishes (Rest animation is idle but in it's own animation, so it can call methods seperately)

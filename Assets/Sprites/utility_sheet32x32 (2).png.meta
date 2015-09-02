@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 449d0c3d675a2a546b9f9d66494f5322
-timeCreated: 1439761911
+timeCreated: 1441089625
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -37,6 +37,7 @@ TextureImporter:
     21300060: utility_sheet32x32 (2)_30
     21300062: utility_sheet32x32 (2)_31
     21300064: utility_sheet32x32 (2)_32
+    21300066: utility_sheet32x32 (2)_33
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -406,6 +407,16 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: utility_sheet32x32 (2)_33
+      rect:
+        serializedVersion: 2
+        x: 32
         y: 0
         width: 32
         height: 32

@@ -32,7 +32,7 @@ public class DealDamageToPlayer : MonoBehaviour
                }
           }
      }
-     public void OnTriggerEnter2D(Collider2D other)
+     public void OnTriggerStay2D(Collider2D other)
      {
           //Check for player collision
           if (other.gameObject.tag == "Player")
