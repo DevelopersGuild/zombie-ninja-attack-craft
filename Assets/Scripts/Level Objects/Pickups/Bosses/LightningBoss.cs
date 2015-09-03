@@ -288,18 +288,7 @@ public class LightningBoss : Boss
           //Debug.Log("My pos is " + posArr[9 - currentHp()]);
           findPos();
           transform.position = posArr[9 - currentHp()];
-          if (currentHp() > 5)
-          {
-               transform.rotation = Quaternion.Euler(0, 0, 90 * (9 - currentHp()));
-          }
-          else if (currentHp() > 1)
-          {
-               transform.rotation = Quaternion.Euler(0, 0, 45 + 90 * (5 - currentHp()));
-          }
-          else
-          {
-               transform.rotation = Quaternion.Euler(0, 0, 0);
-          }
+
 
      }
 

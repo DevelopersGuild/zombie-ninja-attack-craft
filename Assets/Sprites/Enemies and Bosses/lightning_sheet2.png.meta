@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: da56c7c1b0a98834bb56bb9769775be1
-timeCreated: 1441267423
+timeCreated: 1441309012
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -10,6 +10,7 @@ TextureImporter:
     21300006: lightning_sheet2_3
     21300008: lightning_sheet2_4
     21300010: lightning_sheet2_5
+    21300012: lightning_sheet2_6
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -35,7 +36,7 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -112,6 +113,16 @@ TextureImporter:
         y: 56
         width: 72
         height: 73
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: lightning_sheet2_6
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 87
+        width: 22
+        height: 22
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

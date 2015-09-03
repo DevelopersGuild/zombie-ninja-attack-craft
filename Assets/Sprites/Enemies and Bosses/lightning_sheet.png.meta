@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 7a59b6945a310cd498ee13ad76de343a
-timeCreated: 1441267326
+timeCreated: 1441310910
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -13,6 +13,7 @@ TextureImporter:
     21300012: lightning_sheet_2
     21300014: lightning_sheet_3
     21300016: lightning_sheet_4
+    21300018: lightning_sheet_5
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +39,7 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -65,8 +66,8 @@ TextureImporter:
         y: 203
         width: 81
         height: 156
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 7
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: lightning_sheet_1
       rect:
@@ -75,8 +76,8 @@ TextureImporter:
         y: 203
         width: 82
         height: 155
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 7
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: LightningAim
       rect:
@@ -114,7 +115,7 @@ TextureImporter:
         x: 118
         y: 22
         width: 199
-        height: 30
+        height: 35
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,8 +126,8 @@ TextureImporter:
         y: 188
         width: 93
         height: 170
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 7
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: lightning_sheet_3
       rect:
@@ -135,8 +136,8 @@ TextureImporter:
         y: 165
         width: 113
         height: 206
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 7
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: lightning_sheet_4
       rect:
@@ -145,6 +146,16 @@ TextureImporter:
         y: 164
         width: 125
         height: 209
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: lightning_sheet_5
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 30
+        width: 23
+        height: 21
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

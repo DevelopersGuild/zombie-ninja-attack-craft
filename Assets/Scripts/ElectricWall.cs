@@ -22,7 +22,7 @@ namespace AssemblyCSharp
                if (TimeToLive > 0)
                {
                     float remainder = TimeToLive % .1f;
-                    GetComponent<Renderer>().enabled = remainder > .05f;
+                    //GetComponent<Renderer>().enabled = remainder > .05f;
                }
                else
                {
@@ -38,14 +38,15 @@ namespace AssemblyCSharp
                //and instead has an isTrigger is because of the electric guy boss fight
                if (other.gameObject.tag != "Boss")
                {
-                    BoxCollider2D box = GetComponent<BoxCollider2D>();
-                    GameObject obj = other.gameObject;
-                    Health hp = other.GetComponent<Health>();
-                    hp.CalculateKnockback(other, transform.position);
-                    hp.TakeDamage(1);
-                    hp.CalculateKnockback(box, transform.position);
+
                     if (other.CompareTag("Player"))
                     {
+                         BoxCollider2D box = GetComponent<BoxCollider2D>();
+                         GameObject obj = other.gameObject;
+                         Health hp = other.GetComponent<Health>();
+                         hp.CalculateKnockback(other, transform.position);
+                         hp.TakeDamage(1);
+                         hp.CalculateKnockback(box, transform.position);
                          Player plr = obj.GetComponent<Player>();
                          plr.isInvincible = true;
                     }
