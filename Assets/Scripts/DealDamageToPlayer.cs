@@ -30,6 +30,8 @@ public class DealDamageToPlayer : MonoBehaviour
                {
                     Destroy(gameObject);
                }
+
+
           }
      }
      public void OnTriggerStay2D(Collider2D other)
@@ -42,6 +44,7 @@ public class DealDamageToPlayer : MonoBehaviour
                Player player = playerObject.GetComponent<Player>();
                Health playerHealth = playerObject.GetComponent<Health>();
 
+
                //Take damage if the player isnt already currently invincible
                if (!player.isInvincible)
                {
@@ -53,23 +56,29 @@ public class DealDamageToPlayer : MonoBehaviour
                     playerHealth.CalculateKnockback(other, transform.position);
                     playerHealth.TakeDamage(damageAmount);
                     player.isInvincible = true;
+
+               }
+
+               else if(GetComponent<ElectricWall>())
+               {
+                    playerHealth.CalculateKnockback(other, transform.position);
                }
 
                //Destroy gameobject if its a projectile
                if (GetComponent<Projectile>() || GetComponent<Homer>())
                {
                     Destroy(gameObject);
-                    
+
                }
           }
 
-       //   else if (CompareTag("snakeBall"))
-     //     {
-        //       if (other.CompareTag("snakeBall"))
-         //      {
+          //   else if (CompareTag("snakeBall"))
+          //     {
+          //       if (other.CompareTag("snakeBall"))
+          //      {
           //          gameObject.GetComponent<ExplosionCheck>().explode();
-         //      }
-        //  }
+          //      }
+          //  }
 
      }
 }
