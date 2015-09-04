@@ -56,6 +56,7 @@ public class Enemy : MonoBehaviour
                     {
                          blink = !blink;
                          GetComponent<Renderer>().enabled = blink;
+                         GetComponent<SpriteRenderer>().color = Color.red;
                     }
                }
 
@@ -64,6 +65,7 @@ public class Enemy : MonoBehaviour
                     isInvincible = false;
                     timeSpentInvincible = 0;
                     GetComponent<Renderer>().enabled = true;
+                    GetComponent<SpriteRenderer>().color = new Color(255,255,255,255);
                }
           }
      }
