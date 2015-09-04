@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
      public float currentAngle;
      public int damageAmount;
      public int pierceAmount;
+     public ParticleSystem destroyParticle;
 
      public float stun;
      [HideInInspector]
@@ -34,6 +35,10 @@ public class Projectile : MonoBehaviour
      {
           if (AutoTileMap.Instance.GetAutotileCollisionAtPosition(transform.position) == AutoTileMap.eTileCollisionType.BLOCK)
           {
+               if(destroyParticle)
+               {
+                    Instantiate(destroyParticle, transform.position, Quaternion.identity);
+               }
                Destroy(transform.gameObject);
           }
           if (shot)

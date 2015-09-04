@@ -104,6 +104,7 @@ public class Player : MonoBehaviour
      public bool gotAttacked;
      public GameObject chargingParticle;
      private GameObject particles;
+     private SpriteRenderer sprRend;
 
      //Player progression
      public bool IsBowUnlocked;
@@ -146,6 +147,7 @@ public class Player : MonoBehaviour
           timeCharging = 0;
           playerMoveController = GetComponent<PlayerMoveController>();
           attackController = GetComponent<AttackController>();
+          sprRend = GetComponent<SpriteRenderer>();
           GameManager.Notifications.AddListener(this, "LevelLoaded");
           GameManager.Notifications.AddListener(this, "PrepareToSave");
           GameManager.Notifications.AddListener(this, "UnlockBow");
@@ -213,7 +215,7 @@ public class Player : MonoBehaviour
           //The player acts according to input
           if (slow_Timer > 0)
           {
-               stun_Timer -= Time.deltaTime;
+               slow_Timer -= Time.deltaTime;
           }
           else if (slow != 0)
           {
@@ -224,10 +226,17 @@ public class Player : MonoBehaviour
           if (stun_Timer > 0)
           {
                playerMoveController.Move(0, 0);
+               sprRend.enabled = true;
+               sprRend.color = new Color(1, 0.972f, 0.314f, 0.8f);
                stun_Timer -= Time.deltaTime;
+              // sprRend.color = Color.yellow;
           }
           else
           {
+               if(sprRend.color != new Color(1,1,1,1))
+               {
+                    sprRend.color = new Color(1, 1, 1, 1);
+               }
                HandlePlayerActions();
           }
      }
@@ -323,6 +332,10 @@ public class Player : MonoBehaviour
           stun_Timer = st;
      }
 
+     public bool getStun()
+     {
+          return (stun_Timer > 0);
+     }
      public void setSlow(float newSpeed, float slowTime)
      {
           if (slow == 0)

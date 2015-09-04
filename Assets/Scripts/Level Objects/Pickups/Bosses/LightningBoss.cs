@@ -48,8 +48,8 @@ public class LightningBoss : Boss
      public Player player;
      public float AgroRange;
      // public Chain chainObj, chainObjBlock;
-     public Landmine overloadObject;
-     private Landmine overload;
+     public BombScript overloadObject;
+     private BombScript overload;
 
      public BasicAttack normalAttackObject;
      private BasicAttack normalAttack;
@@ -66,6 +66,9 @@ public class LightningBoss : Boss
      public Indicator indicObj;
      private Indicator indic;
 
+     private SpriteRenderer sprRend;
+     private Color ovCol, normCol;
+
      public GameObject pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9;
      private Vector2[] posArr;
      private Vector2 targetPos;
@@ -74,7 +77,7 @@ public class LightningBoss : Boss
      private EnemyMoveController moveController;
      private Health health;
 
-     private bool isAgro, supercharged;
+     private bool isAgro, supercharged, overloading;
 
      System.Random rnd;
 
@@ -139,7 +142,7 @@ public class LightningBoss : Boss
           rotArr[8] = new Vector2(0, -1);
 
           shot_CD = 6;
-          overload_CD = 6;
+          overload_CD = 12;
           spark_CD = 2;
           thunder_CD = 12;
           cooldown_CD = 1.5;
@@ -147,7 +150,7 @@ public class LightningBoss : Boss
           lightning_CD = 10;
           storm_CD = 1;
 
-          overload_Range = 0.5;
+          overload_Range = 1;
           bolt_Stun = 1.5f;
           hook_Speed = 8;
           knockback = 2;
@@ -159,15 +162,28 @@ public class LightningBoss : Boss
           isAgro = false;
           norm_CD = 1.5;
           GameManager.Notifications.PostNotification(this, "OnSnakeCry");
-          
+
+          overloading = false;
+          ovCol = new Color(1, 0.7f, 0.4f, 0.9f);
+          normCol = new Color(1, 1, 1, 1);
+          sprRend = GetComponent<SpriteRenderer>();
 
      }
 
      public void Update()
      {
           isInvincible = false;
+          if(overloading)
+          {
+               sprRend.color = ovCol;
+          }
+          else
+          {
+               sprRend.color = normCol;
+          }
           if (player != null)
           {
+               
                //find position after animation? will it use the position from before the animation starts? be ready to change
                findPos();
 
@@ -201,8 +217,9 @@ public class LightningBoss : Boss
 
                if (isAgro)
                {
+                    
                     //targetPos *= 0.8f;
-                    if (cooldown_CD > 1)
+                    if (cooldown_CD > 1) 
                     {
                          cooldown_CD = 0;
                          //faster the closer you are from him, probably better ways to do this but I don't want to look it up
@@ -213,7 +230,7 @@ public class LightningBoss : Boss
                          //basic aggression range formula
                          if (distance.magnitude < overload_Range && overload_CD > 12 - cd_Reduction)
                          {
-                              overloadAttack();
+                             overloadAttack();
                          }
                          else if (distance.magnitude < 0.3 && norm_CD > 1.5)
                          {
@@ -229,6 +246,7 @@ public class LightningBoss : Boss
                               field = Instantiate(fieldObj, player.transform.position, transform.rotation) as LightningField;
                               field.set(0.7f, storm_CD);
                               lightning_CD = 0;
+
                               //dark shadow below player?
                          }
                          else if (bolt_CD > 10 - cd_Reduction)
@@ -245,6 +263,7 @@ public class LightningBoss : Boss
                               //indic = new Indicator();
 
                               //indic.set or indicObj.set?
+
                               indic = Instantiate(indicObj, player.transform.position, transform.rotation) as Indicator;
                               indic.set(2);
                               thunder_CD = 0;
@@ -273,7 +292,7 @@ public class LightningBoss : Boss
 
 
 
-
+                    
                     overload_CD += Time.deltaTime;
                     norm_CD += Time.deltaTime;
                     lightning_CD += Time.deltaTime;
@@ -318,7 +337,9 @@ public class LightningBoss : Boss
      {
           //Animation
           //overload
-          overload = Instantiate(overloadObject, transform.position, transform.rotation) as Landmine;
+          overloading = true;
+          overload = Instantiate(overloadObject, transform.position, transform.rotation) as BombScript;
+          overload.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
           overload_CD = 0;
      }
 
@@ -377,11 +398,12 @@ public class LightningBoss : Boss
           sparkU.setDir(rotArr[numArr]);
           sparkD.setDir(rotArr[numArr]);
 
-
-
-
      }
-
+     
+     public void turnOffOverload()
+     {
+          overloading = false;
+     }
 
 }
 

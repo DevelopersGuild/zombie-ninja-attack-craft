@@ -74,6 +74,8 @@ public class Health : MonoBehaviour
           {
                Death();
           }
+
+         
      }
 
      //For triggers

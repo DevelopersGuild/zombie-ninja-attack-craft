@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace AssemblyCSharp
-{
-
      public class fakeElectricWall : MonoBehaviour
      {
 
@@ -22,8 +19,8 @@ namespace AssemblyCSharp
 
                if (TimeToLive > 0)
                {
-                    float remainder = TimeToLive % .1f;
-                    GetComponent<Renderer>().enabled = remainder > .05f;
+                    //      float remainder = TimeToLive % .1f;
+                    //GetComponent<Renderer>().enabled = remainder > .05f;
                }
                else
                {
@@ -34,4 +31,3 @@ namespace AssemblyCSharp
 
 
      }
-}
