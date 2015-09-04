@@ -9,8 +9,10 @@ public class HelicopterAI : Enemy
 
      
 
-     public BombScript bombObj, mineObj;
-     private BombScript bomb, mine;
+     public BombScript bombObj;
+     public EnemyLandMine mineObj;
+     private BombScript bomb;
+     private EnemyLandMine mine;
 
      public WindupProjectile missileObj;
      private WindupProjectile missile;
@@ -102,7 +104,7 @@ public class HelicopterAI : Enemy
                          //No prep animation, just has default spinning and creates projectiles
                          if (mine_CD > 5)
                          {
-                              mine = Instantiate(mineObj, transform.position, transform.rotation) as BombScript;
+                              mine = Instantiate(mineObj, transform.position, transform.rotation) as EnemyLandMine;
                               mine_CD = 0;
                          }
                          if (homing_CD > 8)
