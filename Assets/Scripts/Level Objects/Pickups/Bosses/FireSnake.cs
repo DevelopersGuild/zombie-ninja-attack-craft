@@ -38,6 +38,8 @@ public class FireSnake : SnakeBoss
           diffVec = new Vector2(1, 1);
           GameManager.Notifications.PostNotification(this, "OnAlienCry");
 
+          StrAnim = "FireSnake Idle";
+
           shakeTime = 1f;
           shakeDist = new Vector3(0.02f, 0, 0);
 

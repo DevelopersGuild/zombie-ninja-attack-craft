@@ -97,6 +97,9 @@ public class SnakeBoss : Boss
      [HideInInspector]
      public float bite_CD, spawn_CD, acid_CD, fireBall_CD, iceBall_CD, fireTrail_CD, iceTrail_CD, laser_CD, cooldown_CD, count;
 
+     [HideInInspector]
+     public string StrAnim;
+
      public void Start()
      {
           //animator = GetComponent<Animator>();
@@ -120,7 +123,6 @@ public class SnakeBoss : Boss
           distance = new Vector2(0, 0);
           speed = new Vector2(0, 0);
           isAgro = false;
-          
 
           shakeTime = 2f;
           shakeDist = new Vector3(0.4f, 0, 0);
@@ -197,7 +199,7 @@ public class SnakeBoss : Boss
           //Ice snake mirrors that, from ~350 to ~285
           //laser ends
           close();
-          
+
      }
 
      public void trailAttack()
@@ -237,6 +239,7 @@ public class SnakeBoss : Boss
           Vector2 newPos = transform.position + new Vector3(mirrorSpawn, -2.4f);
           snake = Instantiate(snakeObj, newPos, transform.rotation) as Enemy;
           close();
+
      }
 
      public void acidAttack()
@@ -251,6 +254,7 @@ public class SnakeBoss : Boss
           acid_CD = 0;
           close();
           GameManager.Notifications.PostNotification(this, "OnfireProjectile");
+  
      }
 
 
@@ -290,12 +294,12 @@ public class SnakeBoss : Boss
 
      public void laserEnd()
      {
-          close();
           isLasering = false;
           b1.stopMove(true);
           b2.stopMove(true);
           b3.stopMove(true);
           b4.stopMove(true);
+          close();
      }
 
      public override void onDeath()
@@ -317,8 +321,13 @@ public class SnakeBoss : Boss
 
      public void close()
      {
-          attackDelay = 2.2f;
-          animator.SetBool("isOpen", false);
+          if (!isLasering)
+          {
+               attackDelay = 2.2f;
+               animator.SetBool("isOpen", false);
+               animator.Play(StrAnim);
+               Debug.Log(this.ToString());
+          }
      }
 
      public void OnCollisionEnter2D(Collision2D other)

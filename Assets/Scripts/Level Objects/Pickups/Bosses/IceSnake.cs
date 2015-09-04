@@ -36,6 +36,8 @@ public class IceSnake : SnakeBoss
           diffVec = new Vector2(1, 1);
           GameManager.Notifications.PostNotification(this, "OnAlienCry");
 
+          StrAnim = "IceSnake Idle";
+
           shakeTime = 1f;
           shakeDist = new Vector3(0.02f, 0, 0);
 
@@ -229,6 +231,7 @@ public class IceSnake : SnakeBoss
                ballAttack();
           }
           attackChoice = 0;
+          
      }
 
      public void laserAttack()
