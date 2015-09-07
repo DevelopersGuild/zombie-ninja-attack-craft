@@ -264,7 +264,7 @@ public class Player : MonoBehaviour
                attackController.Attack();
           }
 
-          if (Input.GetButton("Fire2"))
+          if (Input.GetButton("Fire2") && IsBowUnlocked == true)
           {
                if (ChosenWeapon == SecondaryWeapons.Projectile)
                {
