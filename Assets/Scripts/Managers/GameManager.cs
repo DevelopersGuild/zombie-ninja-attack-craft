@@ -177,22 +177,22 @@ public class GameManager : MonoBehaviour
 
      public int GetGoldCombatScore(int level)
      {
-          return stateManager.GameState.GameLevels[level - 1].GoldScoreCombat;
+          return (stateManager.GameState.GameLevels.Count <= level) ? stateManager.GameState.GameLevels[level - 1].GoldScoreCombat : 0;
      }
 
      public int GetGoldTimeScore(int level)
      {
-          return stateManager.GameState.GameLevels[level - 1].GoldScoreTime;
+          return (stateManager.GameState.GameLevels.Count <= level) ? stateManager.GameState.GameLevels[level - 1].GoldScoreTime : 0;
      }
 
      public int GetPlayerCombatScore(int level)
      {
-          return stateManager.GameState.GameLevels[level - 1].PlayerScoreCombat;
+          return (stateManager.GameState.GameLevels.Count > level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreCombat : 0;
      }
 
      public int GetPlayerTimeScore(int level)
      {
-          return stateManager.GameState.GameLevels[level - 1].PlayerScoreTime;
+          return (stateManager.GameState.GameLevels.Count > level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreTime : 0;
      }
 
 
