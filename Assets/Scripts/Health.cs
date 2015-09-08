@@ -7,7 +7,7 @@ public class Health : MonoBehaviour
      public int currentHealth;
      public int CoinValue;
      public bool isDead;
-     public GameObject AshPilePrefab;
+     public GameObject deathPilePrefab;
 
      private bool isQuitting;
 
@@ -137,14 +137,20 @@ public class Health : MonoBehaviour
           {
                Enemy enem = gameObject.GetComponent<Enemy>();
                enem.onDeath();
-               Instantiate(AshPilePrefab, this.transform.position, Quaternion.identity);
+               if(deathPilePrefab)
+               {
+                    Instantiate(deathPilePrefab, this.transform.position, Quaternion.identity);
+               }
+
           }
           else if (gameObject.GetComponent<Boss>())
           {
                Boss enem = gameObject.GetComponent<Boss>();
                enem.Shake();
-               Instantiate(AshPilePrefab, this.transform.position, Quaternion.identity);
-               //enem.onDeath();
+               if (deathPilePrefab)
+               {
+                    Instantiate(deathPilePrefab, this.transform.position, Quaternion.identity);
+               }
           }
           isDead = true;
           

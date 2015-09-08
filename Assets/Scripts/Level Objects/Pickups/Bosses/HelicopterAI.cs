@@ -120,7 +120,7 @@ public class HelicopterAI : Enemy
 
                               bomb = Instantiate(bombObj, transform.position, transform.rotation) as BombScript;
                               Vector2 toPlayer = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y);
-                              bomb.GetComponent<Rigidbody2D>().velocity = (toPlayer.normalized/3);
+                              bomb.GetComponent<Rigidbody2D>().velocity = (toPlayer.normalized);
                          }
                          else if (shot_CD > 6)
                          {
