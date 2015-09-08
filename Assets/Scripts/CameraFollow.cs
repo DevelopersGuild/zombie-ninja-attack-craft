@@ -36,7 +36,7 @@ public class CameraFollow : MonoBehaviour
      {
           if (isShaking)
           {
-               Tween cameraShake = transform.DOShakePosition(.05f, new Vector3(.15f, .15f, 0), 5).OnComplete(DoneShaking);
+               Tween cameraShake = transform.DOShakePosition(.04f, new Vector3(.14f, .14f, 0), 5).OnComplete(DoneShaking);
           }
           else
           {

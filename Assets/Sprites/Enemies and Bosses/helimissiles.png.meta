@@ -1,15 +1,11 @@
 fileFormatVersion: 2
-guid: ee377dbb048f12f4da415fed7e1788a2
-timeCreated: 1441682838
+guid: 167fcefe9beccbb458ab7505597d83fd
+timeCreated: 1441740781
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: MC-TreasureChest_0
-    21300002: MC-TreasureChest_1
-    21300004: MC-TreasureChest_2
-    21300006: MC-TreasureChest_3
-    21300008: MC-TreasureChest_4
-    21300010: MC-TreasureChest_5
+    21300000: helimissiles_0
+    21300002: helimissiles_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -49,21 +45,31 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 70
+  spritePixelsToUnits: 100
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: MC-TreasureChest_0
+    - name: helimissiles_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 45
+        x: 5
+        y: 0
         width: 16
-        height: 18
+        height: 26
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: helimissiles_1
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 0
+        width: 13
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

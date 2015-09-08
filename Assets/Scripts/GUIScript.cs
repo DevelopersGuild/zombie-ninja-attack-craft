@@ -36,7 +36,7 @@ public class GUIScript : MonoBehaviour
           healthLabel.text = playerHealth.currentHealth.ToString();
           scoreLabel.text = GameManager.getCoins().ToString();
 
-          if(player.IsBowUnlocked == false)
+          if(player.IsBowUnlocked == false && player.IsOtherWeaponsUnlocked == false)
           {
                bow.enabled = false;
                ammoLabel.enabled = false;
@@ -49,12 +49,15 @@ public class GUIScript : MonoBehaviour
 
           if(usingArrow && player.IsBowUnlocked == true)
           {
+               ammoLabel.enabled = true;
                ammoLabel.text = playerAttackController.Ammo.ToString();
                bow.enabled = true;
                bomb.enabled = false;
           }
           else if (player.IsOtherWeaponsUnlocked)
           {
+               Debug.Log("AAA");
+               ammoLabel.enabled = true;
                ammoLabel.text = playerAttackController.Grenades.ToString();
                bow.enabled = false;
                bomb.enabled = true;

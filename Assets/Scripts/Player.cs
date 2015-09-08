@@ -281,7 +281,7 @@ public class Player : MonoBehaviour
 
           }
 
-          if(Input.GetButtonDown("Fire2"))
+          if(Input.GetButtonDown("Fire2") && IsOtherWeaponsUnlocked)
           {
                if (ChosenWeapon == SecondaryWeapons.Mine)
                {
