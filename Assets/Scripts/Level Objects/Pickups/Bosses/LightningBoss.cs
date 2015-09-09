@@ -150,7 +150,7 @@ public class LightningBoss : Boss
           lightning_CD = 10;
           storm_CD = 1;
 
-          overload_Range = 1;
+          overload_Range = 2;
           bolt_Stun = 1.5f;
           hook_Speed = 8;
           knockback = 2;
@@ -172,143 +172,146 @@ public class LightningBoss : Boss
 
      public void Update()
      {
-          isInvincible = false;
-          if(overloading)
+          if (!checkShake())
           {
-               sprRend.color = ovCol;
-          }
-          else
-          {
-               sprRend.color = normCol;
-          }
-          if (player != null)
-          {
-               
-               //find position after animation? will it use the position from before the animation starts? be ready to change
-               findPos();
-
-               if (!supercharged && currentHp() <= health.startingHealth / 2)
+               isInvincible = false;
+               if (overloading)
                {
-                    supercharged = true;
-                    cd_Reduction = 3;
-                    overload_Range *= 1.5;
-                    bolt_Stun += 0.5f;
-                    hook_Speed *= 1.5f;
-                    knockback += 1.5f;
-                    speedBoost++;
-                    storm_CD = 0.6f;
-
+                    sprRend.color = ovCol;
                }
-               rnd = new System.Random();
-
-
-               //if stunned = true, wait 0.5s, then gain a speedBoost for 3s
-               //else
-
-               distance = player.transform.position - transform.position;
-               if (distance.magnitude <= AgroRange)
+               else
                {
-                    isAgro = true;
+                    sprRend.color = normCol;
                }
-               if (distance.magnitude > AgroRange)
+               if (player != null)
                {
-                    isAgro = false;
-               }
 
-               if (isAgro)
-               {
-                    
-                    //targetPos *= 0.8f;
-                    if (cooldown_CD > 1) 
+                    //find position after animation? will it use the position from before the animation starts? be ready to change
+                    findPos();
+
+                    if (!supercharged && currentHp() <= health.startingHealth / 2)
                     {
-                         cooldown_CD = 0;
-                         //faster the closer you are from him, probably better ways to do this but I don't want to look it up
-                         float xSp = 2 * (AgroRange - (player.transform.position.x - transform.position.x));
-                         float ySp = 2 * (AgroRange - (player.transform.position.y - transform.position.y));
-                         //targetPos = new Vector2(0, 0);
-                         moveController.Move(0, 0);
-                         //basic aggression range formula
-                         if (distance.magnitude < overload_Range && overload_CD > 12 - cd_Reduction)
-                         {
-                             overloadAttack();
-                         }
-                         else if (distance.magnitude < 0.3 && norm_CD > 1.5)
-                         {
-                              normAttack();
-                         }
-                         else if (lightning_CD > 10)
-                         {
-                              //animation
-                              //lightning storm, player parameter or getObject(player)
-                              //take in either bool supercharged or cooldown
-                              //field = new LightningField();
+                         supercharged = true;
+                         cd_Reduction = 3;
+                         overload_Range *= 1.5;
+                         bolt_Stun += 0.5f;
+                         hook_Speed *= 1.5f;
+                         knockback += 1.5f;
+                         speedBoost++;
+                         storm_CD = 0.6f;
 
-                              field = Instantiate(fieldObj, player.transform.position, transform.rotation) as LightningField;
-                              field.set(0.7f, storm_CD);
-                              lightning_CD = 0;
-
-                              //dark shadow below player?
-                         }
-                         else if (bolt_CD > 10 - cd_Reduction)
-                         {
-                              boltAttack();
-                         }
-                         //overload -> normal attack if in range -> lightning storm (effect) -> lightning bolt projectile(to set up other moves)
-                         //-> thunder (put bolt here instead? depends on thunder activation speed)-> shot -> field -> speed -> charge
-                         else if (supercharged && thunder_CD > 20)
-                         {
-                              //animation
-                              //thunder, parameter player or getobject
-                              //in thunder class, create black white black screen around player
-                              //indic = new Indicator();
-
-                              //indic.set or indicObj.set?
-
-                              indic = Instantiate(indicObj, player.transform.position, transform.rotation) as Indicator;
-                              indic.set(2);
-                              thunder_CD = 0;
-                         }
-                         else if (shot_CD > 10 - cd_Reduction)
-                         {
-                              shotAttack();
-                         }
-                         else
-                         {
-                              //if wall within 0.2 units of one corner, move to another corner clockwise
-                              //else
-                              //if wall(not pole) to the left or right, disregard x velocity and increase y velocity
-                              //if wall(not pole) above or below, disregard y velocity and increase x velocity
-                              //else move away from player
-                              cooldown_CD = 0.8f;
-                         }
-                         if (spark_CD > 2 + currentHp() / 5.0)
-                         {
-                              sparkAttack();
-                         }
                     }
-                    //moveController.Move(targetPos);
-                    // float xSp = player.transform.position.x - transform.position.x;
-                    // float ySp = player.transform.position.y - transform.position.y;
+                    rnd = new System.Random();
+
+
+                    //if stunned = true, wait 0.5s, then gain a speedBoost for 3s
+                    //else
+
+                    distance = player.transform.position - transform.position;
+                    if (distance.magnitude <= AgroRange)
+                    {
+                         isAgro = true;
+                    }
+                    if (distance.magnitude > AgroRange)
+                    {
+                         isAgro = false;
+                    }
+
+                    if (isAgro)
+                    {
+
+                         //targetPos *= 0.8f;
+                         if (cooldown_CD > 1)
+                         {
+                              cooldown_CD = 0;
+                              //faster the closer you are from him, probably better ways to do this but I don't want to look it up
+                              float xSp = 2 * (AgroRange - (player.transform.position.x - transform.position.x));
+                              float ySp = 2 * (AgroRange - (player.transform.position.y - transform.position.y));
+                              //targetPos = new Vector2(0, 0);
+                              moveController.Move(0, 0);
+                              //basic aggression range formula
+                              if (distance.magnitude < overload_Range && overload_CD > 12 - cd_Reduction)
+                              {
+                                   overloadAttack();
+                              }
+                              else if (distance.magnitude < 0.3 && norm_CD > 1.5)
+                              {
+                                   normAttack();
+                              }
+                              else if (lightning_CD > 10)
+                              {
+                                   //animation
+                                   //lightning storm, player parameter or getObject(player)
+                                   //take in either bool supercharged or cooldown
+                                   //field = new LightningField();
+
+                                   field = Instantiate(fieldObj, player.transform.position, transform.rotation) as LightningField;
+                                   field.set(0.7f, storm_CD);
+                                   lightning_CD = 0;
+
+                                   //dark shadow below player?
+                              }
+                              else if (bolt_CD > 10 - cd_Reduction)
+                              {
+                                   boltAttack();
+                              }
+                              //overload -> normal attack if in range -> lightning storm (effect) -> lightning bolt projectile(to set up other moves)
+                              //-> thunder (put bolt here instead? depends on thunder activation speed)-> shot -> field -> speed -> charge
+                              else if (supercharged && thunder_CD > 20)
+                              {
+                                   //animation
+                                   //thunder, parameter player or getobject
+                                   //in thunder class, create black white black screen around player
+                                   //indic = new Indicator();
+
+                                   //indic.set or indicObj.set?
+
+                                   indic = Instantiate(indicObj, player.transform.position, transform.rotation) as Indicator;
+                                   indic.set(2);
+                                   thunder_CD = 0;
+                              }
+                              else if (shot_CD > 10 - cd_Reduction)
+                              {
+                                   shotAttack();
+                              }
+                              else
+                              {
+                                   //if wall within 0.2 units of one corner, move to another corner clockwise
+                                   //else
+                                   //if wall(not pole) to the left or right, disregard x velocity and increase y velocity
+                                   //if wall(not pole) above or below, disregard y velocity and increase x velocity
+                                   //else move away from player
+                                   cooldown_CD = 0.8f;
+                              }
+                              if (spark_CD > 2 + currentHp() / 5.0)
+                              {
+                                   sparkAttack();
+                              }
+                         }
+                         //moveController.Move(targetPos);
+                         // float xSp = player.transform.position.x - transform.position.x;
+                         // float ySp = player.transform.position.y - transform.position.y;
 
 
 
-                    
-                    overload_CD += Time.deltaTime;
-                    norm_CD += Time.deltaTime;
-                    lightning_CD += Time.deltaTime;
-                    bolt_CD += Time.deltaTime;
-                    shot_CD += Time.deltaTime;
-                    thunder_CD += Time.deltaTime;
-                    cooldown_CD += Time.deltaTime;
-                    spark_CD += Time.deltaTime;
 
+                         overload_CD += Time.deltaTime;
+                         norm_CD += Time.deltaTime;
+                         lightning_CD += Time.deltaTime;
+                         bolt_CD += Time.deltaTime;
+                         shot_CD += Time.deltaTime;
+                         thunder_CD += Time.deltaTime;
+                         cooldown_CD += Time.deltaTime;
+                         spark_CD += Time.deltaTime;
+
+                    }
                }
+               //Debug.Log("My pos is " + posArr[9 - currentHp()]);
+               findPos();
+               transform.position = posArr[9 - currentHp()];
+
+
           }
-          //Debug.Log("My pos is " + posArr[9 - currentHp()]);
-          findPos();
-          transform.position = posArr[9 - currentHp()];
-
-
      }
 
      public bool getAgro()
@@ -399,10 +402,15 @@ public class LightningBoss : Boss
           sparkD.setDir(rotArr[numArr]);
 
      }
-     
+
      public void turnOffOverload()
      {
           overloading = false;
+     }
+
+     public override void onDeath()
+     {
+          Destroy(gameObject);
      }
 
 }

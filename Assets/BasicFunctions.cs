@@ -22,4 +22,5 @@ public class BasicFunctions : MonoBehaviour
           Debug.Log("rip");
           Destroy(gameObject);
      }
+
 }
