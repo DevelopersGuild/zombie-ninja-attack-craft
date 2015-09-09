@@ -52,10 +52,12 @@ namespace AssemblyCSharp
                if (spawnTime > 0)
                {
                     isInvincible = true;
+                    moveController.canMove = false;
                     spawnTime -= Time.deltaTime;
                     if (spawnTime <= 0)
                     {
                          isInvincible = false;
+                         moveController.canMove = true;
                     }
                }
                else
@@ -149,7 +151,7 @@ namespace AssemblyCSharp
                Vector3 spawnOffset = new Vector3(spawnOffset2.x, spawnOffset2.y);
                Splitter spawn = Instantiate(splitObj, transform.position + spawnOffset, transform.rotation) as Splitter;
                spawn.isInvincible = true;
-               spawn.spawnTime = 0.5f;
+               spawn.spawnTime = 0.75f;
                spawn.generation = generation + 1;
                spawn.Jiggle();
           }
