@@ -306,7 +306,7 @@ public class LightningBoss : Boss
           }
           //Debug.Log("My pos is " + posArr[9 - currentHp()]);
           findPos();
-          transform.position = posArr[9 - currentHp()];
+          transform.position = posArr[9 - (int)currentHp()];
 
 
      }
@@ -316,7 +316,7 @@ public class LightningBoss : Boss
           return isAgro;
      }
 
-     public int currentHp()
+     public float currentHp()
      {
           return health.currentHealth;
      }
@@ -381,7 +381,7 @@ public class LightningBoss : Boss
      private void sparkAttack()
      {
           spark_CD = 0;
-          int numArr = 9 - currentHp();
+          int numArr = 9 - (int)currentHp();
 
 
           Vector3 posC = new Vector3(transform.position.x + rotArr[numArr].x * 0.4f, transform.position.y + rotArr[numArr].y * 0.4f);

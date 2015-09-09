@@ -112,22 +112,22 @@ public class AttackController : MonoBehaviour
                if (moveController.facing.x > 0)
                {
                     Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x + 0.25f, transform.position.y), transform.rotation) as Projectile;
-                    projectile.Shoot(0, new Vector2(1, 0), projectile.damageAmount);
+                    projectile.Shoot(0, new Vector2(1, 0));
                }
                else if (moveController.facing.x < 0)
                {
                     Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x - 0.25f, transform.position.y), transform.rotation) as Projectile;
-                    projectile.Shoot(180, new Vector2(-1, 0), projectile.damageAmount);
+                    projectile.Shoot(180, new Vector2(-1, 0));
                }
                else if (moveController.facing.y > 0)
                {
                     Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x, transform.position.y + 0.25f), transform.rotation) as Projectile;
-                    projectile.Shoot(90, new Vector2(0, 1), projectile.damageAmount);
+                    projectile.Shoot(90, new Vector2(0, 1));
                }
                else if (moveController.facing.y < 0)
                {
                     Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x, transform.position.y - 0.25f), transform.rotation) as Projectile;
-                    projectile.Shoot(-90, new Vector2(0, -1), projectile.damageAmount);
+                    projectile.Shoot(-90, new Vector2(0, -1));
                }
                StartCoroutine(ResetCanShoot());
                FinishedAttacking();

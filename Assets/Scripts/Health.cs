@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Health : MonoBehaviour
 {
-     public int startingHealth = 10;
-     public int currentHealth;
+     public float startingHealth = 10;
+     public float currentHealth;
      public int CoinValue;
      public bool isDead;
      public GameObject deathPilePrefab;
@@ -33,25 +33,26 @@ public class Health : MonoBehaviour
           canKnock = false;
      }
 
-     public void replenish(int amt)
+     public void replenish(float amt)
      {
           currentHealth += amt;
           if (currentHealth > startingHealth)
                currentHealth = startingHealth;
      }
 
-     public void setHealth(int amt)
+     public void setHealth(float amt)
      {
           currentHealth = amt;
      }
-     public int currentHp()
+     public float currentHp()
      {
           return currentHealth;
      }
 
-     public void TakeDamage(int amount)
+     public void TakeDamage(float amount)
      {
           GameManager.Notifications.PostNotification(this, "OnHit");
+          Debug.Log(amount);
           currentHealth -= amount;
 
           // Instantiate a particle effect if it has one

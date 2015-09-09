@@ -5,7 +5,7 @@ using System.Collections;
 public class DealDamageToEnemy : MonoBehaviour
 {
 
-     public int damageAmount;
+     public float damageAmount;
      private Projectile projectile;
      private bool isProjectile = false;
      private bool isPowerShot = false;
@@ -229,7 +229,6 @@ public class DealDamageToEnemy : MonoBehaviour
      {
           if (projectile = GetComponent<Projectile>())
           {
-               damageAmount = projectile.damageAmount;
                isProjectile = true;
           }
      }
@@ -239,7 +238,7 @@ public class DealDamageToEnemy : MonoBehaviour
           if (projectile.pierceAmount > 1)
           {
                projectile.pierceAmount--;
-               projectile.Shoot(projectile.currentAngle, projectile.GetComponent<Rigidbody2D>().velocity / projectile.projectileSpeed, projectile.damageAmount);
+               projectile.Shoot(projectile.currentAngle, projectile.GetComponent<Rigidbody2D>().velocity / projectile.projectileSpeed);
           }
           else
           {

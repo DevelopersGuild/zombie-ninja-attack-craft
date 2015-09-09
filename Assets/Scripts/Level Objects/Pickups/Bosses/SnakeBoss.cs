@@ -149,7 +149,7 @@ public class SnakeBoss : Boss
      }
 
 
-     public int currentHp()
+     public float currentHp()
      {
           return health.currentHealth;
      }

@@ -141,7 +141,7 @@ using UnityEngine;
                return isAgro;
           }
 
-          public int currentHp()
+          public float currentHp()
           {
                return health.currentHealth;
           }

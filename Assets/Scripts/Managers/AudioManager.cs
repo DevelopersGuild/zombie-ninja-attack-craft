@@ -113,6 +113,11 @@ public class AudioManager : MonoBehaviour
      {
           AudioSources[7].Play();
      }
+
+     public void OnHealthOrPickup()
+     {
+          AudioSources[7].Play();
+     }
      public void OnKeyPickup()
      {
           AudioSources[8].Play();

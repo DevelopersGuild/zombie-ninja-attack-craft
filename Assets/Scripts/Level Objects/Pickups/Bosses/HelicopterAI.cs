@@ -148,7 +148,7 @@ public class HelicopterAI : Enemy
           return isAgro;
      }
 
-     public int currentHp()
+     public float currentHp()
      {
           return health.currentHealth;
      }

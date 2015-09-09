@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
      public float projectileSpeed;
      public float angle;
      public float currentAngle;
-     public int damageAmount;
+     public float damageAmount;
      public int pierceAmount;
      public ParticleSystem destroyParticle;
 
@@ -29,6 +29,7 @@ public class Projectile : MonoBehaviour
           Destroy(transform.gameObject, TimeToLive);
           homing = shot = false;
           player = FindObjectOfType<Player>();
+          damageAmount = GetComponent<DealDamageToPlayer>() ? GetComponent<DealDamageToPlayer>().damageAmount : GetComponent<DealDamageToEnemy>().damageAmount;
      }
 
      public void Update()
@@ -64,9 +65,8 @@ public class Projectile : MonoBehaviour
 
 
 
-     public void Shoot(float angle, Vector2 velocity, int damage = 1)
+     public void Shoot(float angle, Vector2 velocity)
      {
-          damageAmount = damage;
           originalPosition = transform.position;
           currentAngle = angle;
           transform.eulerAngles = new Vector3(0, 0, currentAngle);

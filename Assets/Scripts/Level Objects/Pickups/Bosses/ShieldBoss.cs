@@ -109,7 +109,7 @@ public class ShieldBoss : Boss
           return isAgro;
      }
 
-     public int currentHp()
+     public float currentHp()
      {
           return health.currentHealth;
      }

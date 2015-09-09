@@ -85,7 +85,7 @@ namespace AssemblyCSharp
 
           }
 
-          public int currentHp()
+          public float currentHp()
           {
                return health.currentHealth;
           }
