@@ -209,6 +209,10 @@ public class GameManager : MonoBehaviour
                {
                     stateManager.GameState.GameLevels[CurrentLevel - 1].PlayerScoreCombat = Score;
                }
+               if(stateManager.GameState.GameLevels[CurrentLevel-1].PlayerScoreTime == 0 || stateManager.GameState.GameLevels[CurrentLevel -1].PlayerScoreTime > timeToCompleteLevel)
+               {
+                    stateManager.GameState.GameLevels[CurrentLevel - 1].PlayerScoreTime = timeToCompleteLevel;
+               }
           }
           else
           {
