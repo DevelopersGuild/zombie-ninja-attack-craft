@@ -38,10 +38,10 @@ public class LoadLevelCanvasController : MonoBehaviour
 
      public void DisplayScores(int levelnum)
      {
-          GoldTimeScoreText.text = "Gold Score : " + GameManager.Instance.GetComponent<LevelScores>().LevelScore[levelnum-1];
-          PlayerTimeScoreText.text = "High Score : " + GameManager.Instance.GetPlayerTimeScore(levelnum);
-          GoldcombatScoreText.text = "Gold Score : " + GameManager.Instance.GetComponent<LevelScores>().LevelScore[levelnum];
-          PlayerCombatScoreText.text = "High Score : " + GameManager.Instance.GetPlayerCombatScore(levelnum);
+          GoldcombatScoreText.text = "Gold Score : " + GameManager.Instance.GetComponent<LevelScores>().LevelScoreCombat[levelnum-1];
+          PlayerCombatScoreText.text = "Combat Score : " + GameManager.Instance.GetPlayerCombatScore(levelnum);
+          GoldTimeScoreText.text = "Gold Score : " + GameManager.Instance.GetComponent<LevelScores>().LevelScoreTime[levelnum-1];
+          PlayerTimeScoreText.text = "Time Score : " + GameManager.Instance.GetPlayerTimeScore(levelnum);
      }
 
 }

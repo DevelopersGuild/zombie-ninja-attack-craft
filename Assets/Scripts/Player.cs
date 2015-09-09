@@ -9,7 +9,7 @@ class ArrowKeys
      private static Vector2[] directionVector = { Vector2.up,
                                                   Vector2.right,
                                                   -1 * Vector2.up,
-                                                  -1 * Vector2.right }; 
+                                                  -1 * Vector2.right };
      private static float tapSpeed = .25f;
      private List<int> keysPressed = new List<int>();
      private float[] lastTapTimes = new float[4];
@@ -48,7 +48,7 @@ class ArrowKeys
                }
           }
      }
-     
+
      public Vector2 GetMovementDirection()
      {
           if (IsDashing())
@@ -69,13 +69,13 @@ class ArrowKeys
      //Only call if getMovementDirection() != Vector2.zero
      public Vector2 GetFacing()
      {
-          if (IsDashing ())
+          if (IsDashing())
           {
                return directionVector[DashingDirection()];
           }
           else
           {
-               int lastKeyPressed = keysPressed[keysPressed.Count-1];
+               int lastKeyPressed = keysPressed[keysPressed.Count - 1];
                return directionVector[lastKeyPressed];
           }
      }
@@ -85,7 +85,7 @@ class ArrowKeys
           return dashing[0] || dashing[1] ||
                  dashing[2] || dashing[3];
      }
-     
+
      private int DashingDirection()
      {
           return dashing[0] ? 0 :
@@ -190,7 +190,7 @@ public class Player : MonoBehaviour
                return;
           }
 
-          if(PlayerToGodMode == false)
+          if (PlayerToGodMode == false)
           {
                if (isInvincible)
                {
@@ -229,11 +229,11 @@ public class Player : MonoBehaviour
                sprRend.enabled = true;
                sprRend.color = new Color(1, 0.972f, 0.314f, 0.8f);
                stun_Timer -= Time.deltaTime;
-              // sprRend.color = Color.yellow;
+               // sprRend.color = Color.yellow;
           }
           else
           {
-               if(sprRend.color != new Color(1,1,1,1))
+               if (sprRend.color != new Color(1, 1, 1, 1))
                {
                     sprRend.color = new Color(1, 1, 1, 1);
                }
@@ -264,7 +264,7 @@ public class Player : MonoBehaviour
                attackController.Attack();
           }
 
-          if (Input.GetButton("Fire2"))
+          if (Input.GetButton("Fire2") && IsBowUnlocked == true)
           {
                if (ChosenWeapon == SecondaryWeapons.Projectile)
                {
@@ -278,7 +278,6 @@ public class Player : MonoBehaviour
                          }
                     }
                }
-
           }
 
           if(Input.GetButtonDown("Fire2"))
@@ -296,13 +295,13 @@ public class Player : MonoBehaviour
                     Destroy(particles);
                     isCharging = false;
 
-                    if (timeCharging < 1.0f)
+                    if(timeCharging >= 1.0f && UpgradedBow == true)
                     {
-                         attackController.ShootProjectile(laser);
+                         attackController.ShootProjectile(chargedLaser);
                     }
                     else
                     {
-                         attackController.ShootProjectile(chargedLaser);
+                         attackController.ShootProjectile(laser);
                     }
                     timeCharging = 0;
                }

@@ -3,5 +3,7 @@ using System.Collections;
 
 public class LevelScores : MonoBehaviour
 {
-     public int[] LevelScore = new int[18];
+     public int[] LevelScoreCombat = new int[9];
+
+     public double[] LevelScoreTime = new double[9];
 }

@@ -10,10 +10,12 @@ public class AttackController : MonoBehaviour
 
      public bool isAttacking;
      private bool alreadyAttacked;
+     private bool canShoot = true;
      private Vector2 playerPosition;
 
      public Projectile PlayerArrow;
      public BombScript PlayerBomb;
+     public float TimeBetweenShots;
      public int Ammo;
      public int Grenades;
 
@@ -95,7 +97,7 @@ public class AttackController : MonoBehaviour
 
      public void ShootProjectile(Projectile currentProjectile)
      {
-          if (Ammo > 0)
+          if (Ammo > 0 && canShoot == true)
           {
                GameManager.Notifications.PostNotification(this, "PlayerProjectileAttack");
                Ammo--;
@@ -103,6 +105,7 @@ public class AttackController : MonoBehaviour
                isAttacking = true;
                moveController.isDashing = false;
                moveController.canDash = false;
+               canShoot = false;
 
 
                //Instantiate an arrow depending on which direction the player is facing
@@ -126,7 +129,7 @@ public class AttackController : MonoBehaviour
                     Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x, transform.position.y - 0.25f), transform.rotation) as Projectile;
                     projectile.Shoot(-90, new Vector2(0, -1), projectile.damageAmount);
                }
-
+               StartCoroutine(ResetCanShoot());
                FinishedAttacking();
           }
      }
@@ -167,6 +170,12 @@ public class AttackController : MonoBehaviour
           {
                return true;
           }
+     }
+
+     private IEnumerator ResetCanShoot()
+     {
+          yield return new WaitForSeconds(TimeBetweenShots);
+          canShoot = true;
      }
 }
 

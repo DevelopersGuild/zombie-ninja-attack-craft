@@ -43,8 +43,7 @@ public class KeyBoardControl : MonoBehaviour
                if(index != lastIndex)
                {
                     GetCurrentButton();
-               }
-               
+               }      
           }
      }
 
@@ -52,10 +51,12 @@ public class KeyBoardControl : MonoBehaviour
      {
           selectedButton = buttons[index];
           selectedButton.Select();
+
      }
 
      public void SetIsInMenu(bool value)
      {
           isInMenu = value;
      }
+
 }

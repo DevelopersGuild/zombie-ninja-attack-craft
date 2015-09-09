@@ -24,6 +24,8 @@ public class GUIScript : MonoBehaviour
           player = FindObjectOfType<Player>();
           playerHealth = player.GetComponent<Health>();
           playerAttackController = player.GetComponent<AttackController>();
+          bow.enabled = false;
+          bomb.enabled = false;
           GameManager.Notifications.AddListener(this, "BombSelected");
           GameManager.Notifications.AddListener(this, "Projectileselected");
      }
@@ -34,13 +36,24 @@ public class GUIScript : MonoBehaviour
           healthLabel.text = playerHealth.currentHealth.ToString();
           scoreLabel.text = GameManager.getCoins().ToString();
 
-          if(usingArrow)
+          if(player.IsBowUnlocked == false)
+          {
+               bow.enabled = false;
+               ammoLabel.enabled = false;
+          }
+          else
+          {
+               bow.enabled = true;
+               ammoLabel.enabled = true;
+          }
+
+          if(usingArrow && player.IsBowUnlocked == true)
           {
                ammoLabel.text = playerAttackController.Ammo.ToString();
                bow.enabled = true;
                bomb.enabled = false;
           }
-          else
+          else if (player.IsOtherWeaponsUnlocked)
           {
                ammoLabel.text = playerAttackController.Grenades.ToString();
                bow.enabled = false;
