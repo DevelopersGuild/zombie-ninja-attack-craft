@@ -166,33 +166,31 @@ public class GameManager : MonoBehaviour
      {
           timeToCompleteLevel = Time.time;
           Score = (int)Math.Round(Coins - timeToCompleteLevel);
-          if (Score >= PassingScore)
-          {
-               IsCurrentLevelComplete = true;
-          }
+
      }
 
      //Level unlock methods
 
-
+     /*
      public int GetGoldCombatScore(int level)
      {
-          return stateManager.GameState.GameLevels[level - 1].GoldScoreCombat;
+          return (stateManager.GameState.GameLevels.Count <= level) ? stateManager.GameState.GameLevels[level - 1].GoldScoreCombat : 0;
      }
 
      public int GetGoldTimeScore(int level)
      {
-          return stateManager.GameState.GameLevels[level - 1].GoldScoreTime;
+          return (stateManager.GameState.GameLevels.Count <= level) ? stateManager.GameState.GameLevels[level - 1].GoldScoreTime : 0;
      }
+      * */
 
      public int GetPlayerCombatScore(int level)
      {
-          return stateManager.GameState.GameLevels[level - 1].PlayerScoreCombat;
+          return (stateManager.GameState.GameLevels.Count > level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreCombat : 0;
      }
 
-     public int GetPlayerTimeScore(int level)
+     public float GetPlayerTimeScore(int level)
      {
-          return stateManager.GameState.GameLevels[level - 1].PlayerScoreTime;
+          return (stateManager.GameState.GameLevels.Count > level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreTime : 0;
      }
 
 
@@ -217,6 +215,7 @@ public class GameManager : MonoBehaviour
                LoadAndSaveManager.GameStateData.GameLevelData newLevel = new LoadAndSaveManager.GameStateData.GameLevelData();
                newLevel.LevelUnlocked = true;
                newLevel.PlayerScoreCombat = Score;
+               newLevel.PlayerScoreTime = Time.time;
                stateManager.GameState.GameLevels.Add(newLevel);
           }
      }
