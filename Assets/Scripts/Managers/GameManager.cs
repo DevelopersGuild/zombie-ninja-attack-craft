@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
 
      public static int Coins;
      public static int Score;
+     public static int deaths;
+     public static int killCount;
      public static float timeToCompleteLevel;
      public static bool IsCurrentLevelComplete = false;
      public int PassingScore = 0;
@@ -94,6 +96,7 @@ public class GameManager : MonoBehaviour
      {
           Coins = 0;
           Score = 0;
+          killCount = 0;
           IsCurrentLevelComplete = false;
           timeToCompleteLevel = 0;
           LoadGameData();
@@ -141,11 +144,60 @@ public class GameManager : MonoBehaviour
           return timeToCompleteLevel;
      }
 
+     public static string getTimeFormatted()
+     {
+          int minutes;
+          int seconds;
+
+          float time = GameManager.getTime();
+          if (time > 60)
+          {
+               minutes = (int)time / 60;
+               seconds = (int)time % 60;
+               return  minutes + "minutes and " + seconds + "seconds";
+          }
+          else
+          {
+               seconds = (int)time;
+               return seconds + "seconds";
+          }
+     }
+
 
      //Score methods
      public static int getScore()
      {
           return Score;
+     }
+
+     public static void incrementKills()
+     {
+          killCount++;
+     }
+
+     public static int getKills()
+     {
+          return killCount;
+     }
+     public static void setKills(int kills)
+     {
+          killCount = kills;
+     }
+
+     public static void incrementDeaths()
+     {
+          deaths++;
+          Debug.Log(deaths);
+     }
+
+     public static int getDeaths()
+     {
+          return deaths;
+     }
+
+     public static void setDeaths(int death)
+     {
+          deaths = death;
      }
 
      public static bool getIsLevelComplete()

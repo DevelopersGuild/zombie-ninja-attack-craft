@@ -118,6 +118,7 @@ public class GUIManager : MonoBehaviour
           if (restartCanvas != null)
           {
                restartCanvas.enabled = true;
+               GameManager.incrementDeaths();
                SetCanvasKeyBoardController(restartCanvas, true);
                Cursor.visible = true;
           }

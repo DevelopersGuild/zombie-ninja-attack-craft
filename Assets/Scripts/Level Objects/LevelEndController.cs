@@ -8,6 +8,8 @@ public class LevelEndController : MonoBehaviour
      public Text ScoreGUI = null;
      public Text CoinsGUI = null;
      public Text TimeGUI = null;
+     public Text DeathsGUI = null;
+     public Text EnemyKillsGUI = null;
 
      //GUI Button
      public Button ReplayButton = null;
@@ -27,6 +29,9 @@ public class LevelEndController : MonoBehaviour
           int seconds = 0;
           ScoreGUI.text = GameManager.getScore().ToString();
           CoinsGUI.text = GameManager.getCoins().ToString();
+          EnemyKillsGUI.text = GameManager.getKills().ToString();
+          DeathsGUI.text = GameManager.getDeaths().ToString();
+
           float time = GameManager.getTime();
           if (time > 60)
           {

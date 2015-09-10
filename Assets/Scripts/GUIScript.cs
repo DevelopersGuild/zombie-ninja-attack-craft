@@ -56,7 +56,6 @@ public class GUIScript : MonoBehaviour
           }
           else if (player.IsOtherWeaponsUnlocked)
           {
-               Debug.Log("AAA");
                ammoLabel.enabled = true;
                ammoLabel.text = playerAttackController.Grenades.ToString();
                bow.enabled = false;
