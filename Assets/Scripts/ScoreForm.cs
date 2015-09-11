@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ScoreForm : MonoBehaviour
 {
-     string highscore_url = "http://pariahsoft.com:8080";
+     string highscore_url = "http://107.191.105.122:8080/";
      string playName = "Player 1";
      int currentLevel;
      int score;
