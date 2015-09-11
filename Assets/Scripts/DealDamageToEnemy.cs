@@ -227,14 +227,22 @@ public class DealDamageToEnemy : MonoBehaviour
 
      public void CheckForProjectile()
      {
-          if (projectile = GetComponent<Projectile>())
+          Debug.Log("cuch");
+          if (GetComponent<Projectile>())
           {
+               projectile = GetComponent<Projectile>();
                isProjectile = true;
           }
      }
 
      public void ProjectileDestroy(bool isObjectProjectile)
      {
+          Debug.Log("desruct");
+          if (projectile.destroyParticle != null)
+          {
+               Instantiate(projectile.destroyParticle);
+          }
+
           if (projectile.pierceAmount > 1)
           {
                projectile.pierceAmount--;
