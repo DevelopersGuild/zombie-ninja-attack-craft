@@ -29,16 +29,6 @@ public class Enemy : MonoBehaviour
          
      }
 
-     void Start()
-     {
-
-     }
-
-     void Update()
-     {
-
-     }
-
      public void checkInvincibility()
      {
           if (isInvincible)
@@ -142,6 +132,7 @@ public class Enemy : MonoBehaviour
 
      public virtual void onDeath()
      {
+          GameManager.incrementKills();
           //death stuff for sub classes
      }
 }

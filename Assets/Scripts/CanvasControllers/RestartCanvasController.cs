@@ -25,11 +25,13 @@ public class RestartCanvasController : MonoBehaviour
 
      public void RestartLevel()
      {
+          int what = GameManager.deaths;
           GameManager.Instance.SwitchLevel(GameManager.CurrentLevel);
      }
 
      public void TitleScreen()
      {
+          GameManager.deaths = 0;
           GameManager.Instance.SwitchLevel(0);
      }
 
@@ -37,6 +39,5 @@ public class RestartCanvasController : MonoBehaviour
      {
           guiManager.ShowSettingScreen();
      }
-
 
 }
