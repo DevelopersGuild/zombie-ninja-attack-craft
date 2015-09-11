@@ -8,6 +8,7 @@ public class EndOfLevelCanvasController : MonoBehaviour
      private Button titleScreenButton;
      private Button nextLevelButton;
      private Button sendScoreButton;
+     private bool hasSentFeedback;
      // Use this for initialization
      void Start()
      {
@@ -46,8 +47,13 @@ public class EndOfLevelCanvasController : MonoBehaviour
      }
      public void SendScore()
      {
-          ScoreForm form = GetComponent<ScoreForm>();
-          form.StartCoroutine(form.UploadScores());
+          if(!hasSentFeedback){
+               ScoreForm form = GetComponent<ScoreForm>();
+               form.StartCoroutine(form.UploadScores());
+               sendScoreButton.enabled = false;
+               sendScoreButton.GetComponentInChildren<Text>().text = "Thanks!";
+               hasSentFeedback = true;
+          }
      }
 
 

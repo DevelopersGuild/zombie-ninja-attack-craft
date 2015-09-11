@@ -75,6 +75,8 @@ public class GameManager : MonoBehaviour
      public bool UnlockAllUnlocks = false;
      public bool ResetUnlocks = false;
 
+     public bool hasSentFeedback = false;
+
      // Use this for initialization
      void Start()
      {
@@ -339,5 +341,15 @@ public class GameManager : MonoBehaviour
           stateManager.GameState.Player.StartingHealth = 0;
           StateManager.Save(Application.persistentDataPath + "/SaveGame.xml");
           GameManager.Notifications.PostNotification(this, "LevelLoaded");
+     }
+
+     public void OpenLevelFeedback()
+     {
+          Application.OpenURL("https://www.surveymonkey.com/r/2V36DGV");
+     }
+
+     public void OpenGameFeedback()
+     {
+          Application.OpenURL("https://www.surveymonkey.com/r/275DBHM");
      }
 }
