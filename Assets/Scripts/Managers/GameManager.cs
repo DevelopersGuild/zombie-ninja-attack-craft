@@ -331,7 +331,6 @@ public class GameManager : MonoBehaviour
           foreach (LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
           {
                level.LevelUnlocked = true;
-               level.PlayerScoreCombat = 0;
           }
           stateManager.GameState.Player.IsBowHoldDownUnlocked = true;
           stateManager.GameState.Player.IsBowUnlocked = true;
