@@ -18,13 +18,15 @@ public class LevelEndController : MonoBehaviour
      public Button GameFeedbackButton = null;
      // Use this for initialization
 
-
+     void Awake()
+     {
+          GameManager.Notifications.AddListener(this, "ScoreReadyToDisplay");
+     }
      public void Start()
      {
           NextLevelButton.enabled = true;
           GameFeedbackButton.gameObject.SetActive(false);
           Debug.Log("Stat");
-          GameManager.Notifications.AddListener(this, "ScoreReadyToDisplay");
      }
 
      public void ScoreReadyToDisplay()
