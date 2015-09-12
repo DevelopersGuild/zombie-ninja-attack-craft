@@ -182,13 +182,11 @@ public class DealDamageToEnemy : MonoBehaviour
                     {
                          //Deal damage, knockback, set the invinicility flag
                          enemyHealth.TakeDamage(damageAmount);
-                         enemyHealth.TakeDamage(damageAmount);
                          enemy.isInvincible = true;
                     }
-               }
-               else if (enemyHealth.GetComponent<Rigidbody2D>())
-               {
-                    enemyHealth.CalculateKnockback(other, transform.position);
+                    if (enemyHealth.GetComponent<Rigidbody2D>()){
+                         enemyHealth.CalculateKnockback(other, transform.position);
+                    }
                }
                else
                {
@@ -254,7 +252,6 @@ public class DealDamageToEnemy : MonoBehaviour
 
      public void ProjectileDestroy(bool isObjectProjectile)
      {
-          Debug.Log("desruct");
           if (projectile.destroyParticle != null)
           {
                Instantiate(projectile.destroyParticle);

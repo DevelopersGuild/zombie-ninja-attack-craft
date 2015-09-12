@@ -8,6 +8,7 @@ public class Health : MonoBehaviour
      public int CoinValue;
      public bool isDead;
      public GameObject deathPilePrefab;
+     private Vector2 knockbackDirection;
 
      private bool isQuitting;
 
@@ -79,7 +80,7 @@ public class Health : MonoBehaviour
      }
 
      //For triggers
-     public void CalculateKnockback(Collider2D other, Vector2 currentPosition, float multiplier = 1)
+     public void CalculateKnockback(Collider2D other, Vector2 currentPosition, float multiplier = 0.25f)
      {
           //Calculate point of collision and knockback accordingly
           Vector3 contactPoint = other.transform.position;
@@ -92,6 +93,7 @@ public class Health : MonoBehaviour
                if (enemyMoveController != null)
                {
                     Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
+                    knockbackDirection = pushDirection;
                     enemyMoveController.Knockback(pushDirection.normalized * multiplier);
                }
                else if (playerMoveController != null)
@@ -99,8 +101,14 @@ public class Health : MonoBehaviour
                     Vector2 pushDirection = new Vector2(contactPoint.x - center.x, contactPoint.y - center.y);
                     playerMoveController.Knockback(pushDirection.normalized * multiplier);
                }
+
           }
 
+     }
+
+     public Vector2 getKnockback()
+     {
+          return knockbackDirection;
      }
 
      //For colliders

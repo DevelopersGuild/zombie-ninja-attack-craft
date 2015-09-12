@@ -105,6 +105,7 @@ public class Player : MonoBehaviour
      public GameObject chargingParticle;
      private GameObject particles;
      private SpriteRenderer sprRend;
+     public AudioClip chargedArrowClip;
 
      //Player progression
      public bool IsBowUnlocked;
@@ -297,6 +298,7 @@ public class Player : MonoBehaviour
 
                     if(timeCharging >= 1.0f && UpgradedBow == true)
                     {
+                         AudioSource.PlayClipAtPoint(chargedArrowClip, transform.position);
                          attackController.ShootProjectile(chargedLaser);
                     }
                     else
