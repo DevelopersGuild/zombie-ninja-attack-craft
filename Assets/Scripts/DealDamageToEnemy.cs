@@ -227,7 +227,6 @@ public class DealDamageToEnemy : MonoBehaviour
 
      public void CheckForProjectile()
      {
-          Debug.Log("cuch");
           if (GetComponent<Projectile>())
           {
                projectile = GetComponent<Projectile>();

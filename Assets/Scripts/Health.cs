@@ -137,11 +137,6 @@ public class Health : MonoBehaviour
           {
                Enemy enem = gameObject.GetComponent<Enemy>();
                enem.onDeath();
-               if(deathPilePrefab)
-               {
-                    Instantiate(deathPilePrefab, this.transform.position, Quaternion.identity);
-               }
-
           }
           else if (gameObject.GetComponent<Boss>())
           {
