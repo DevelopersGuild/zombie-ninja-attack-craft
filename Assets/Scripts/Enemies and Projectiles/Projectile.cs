@@ -29,14 +29,17 @@ public class Projectile : MonoBehaviour
           Destroy(transform.gameObject, TimeToLive);
           homing = shot = false;
           player = FindObjectOfType<Player>();
-          damageAmount = GetComponent<DealDamageToPlayer>() ? GetComponent<DealDamageToPlayer>().damageAmount : GetComponent<DealDamageToEnemy>().damageAmount;
+          if (GetComponent<DealDamageToShieldBoss>())
+               damageAmount = 1;
+          else
+               damageAmount = GetComponent<DealDamageToPlayer>() ? GetComponent<DealDamageToPlayer>().damageAmount : GetComponent<DealDamageToEnemy>().damageAmount;
      }
 
      public void Update()
      {
           if (AutoTileMap.Instance.GetAutotileCollisionAtPosition(transform.position) == AutoTileMap.eTileCollisionType.BLOCK)
           {
-               if(destroyParticle)
+               if (destroyParticle)
                {
                     Instantiate(destroyParticle, transform.position, Quaternion.identity);
                }
@@ -81,7 +84,7 @@ public class Projectile : MonoBehaviour
           return stun;
      }
 
-   
+
 }
 
 

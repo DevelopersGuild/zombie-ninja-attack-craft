@@ -8,6 +8,7 @@ public class EnemyMoveController : MonoBehaviour
      // Components
      private Animator animator;
      private Enemy enemy;
+     private Boss boss;
      // Speed of object
      [Range(0, 10)]
      public float speed = 8;
@@ -33,9 +34,9 @@ public class EnemyMoveController : MonoBehaviour
      private Vector2 knockbackDirection;
      //Pathfinding
      private static float jiggleMax = 0.2f;
-     private static Vector3 UL = new Vector3(-jiggleMax,  jiggleMax);
-     private static Vector3 UR = new Vector3( jiggleMax,  jiggleMax);
-     private static Vector3 DR = new Vector3( jiggleMax, -jiggleMax);
+     private static Vector3 UL = new Vector3(-jiggleMax, jiggleMax);
+     private static Vector3 UR = new Vector3(jiggleMax, jiggleMax);
+     private static Vector3 DR = new Vector3(jiggleMax, -jiggleMax);
      private static Vector3 DL = new Vector3(-jiggleMax, -jiggleMax);
      private static float jiggleSpeed = 0.25f;
 
@@ -43,7 +44,10 @@ public class EnemyMoveController : MonoBehaviour
      void Awake()
      {
           animator = GetComponent<Animator>();
-          enemy = GetComponent<Enemy>();
+          if (GetComponent<Enemy>())
+               enemy = GetComponent<Enemy>();
+          else if (GetComponent<Boss>())
+               boss = GetComponent<Boss>();
 
           isMoving = false;
           movementVector = new Vector2(0, 0);
@@ -92,7 +96,7 @@ public class EnemyMoveController : MonoBehaviour
                     {
                          if (Mathf.Abs(movementVector.x) > Mathf.Abs(movementVector.y))
                          {
-                              facing = movementVector.x < 0 ? new Vector2(-1, 0) : new Vector2(1,0);
+                              facing = movementVector.x < 0 ? new Vector2(-1, 0) : new Vector2(1, 0);
                          }
                          else
                          {
@@ -144,7 +148,7 @@ public class EnemyMoveController : MonoBehaviour
           //Debug.Log("speed:" + speed + "direction:" + direction + "movementVector" + movementVector);
      }
 
-     
+
      /* Move around obstacles in the tile map if they are small */
      private Vector2 JiggleMovement()
      {
@@ -154,14 +158,14 @@ public class EnemyMoveController : MonoBehaviour
           {
                switch (physics.CollFlags)
                {
-               case PhysicCharBehaviour.eCollFlags.LEFT:
-                    return movementVector.y > 0 ? chooseJiggle(Vector2.up, UL, DL) : chooseJiggle(Vector2.up * -1, DL, UL);
-               case PhysicCharBehaviour.eCollFlags.RIGHT:
-                    return movementVector.y > 0 ? chooseJiggle(Vector2.up, UR, DR) : chooseJiggle(Vector2.up * -1, DR, UR);
-               case PhysicCharBehaviour.eCollFlags.UP:
-                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, UL, UR) : chooseJiggle(Vector2.right, UR, UL);
-               case PhysicCharBehaviour.eCollFlags.DOWN:
-                    return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, DL, DR) : chooseJiggle(Vector2.right, DR, DL);
+                    case PhysicCharBehaviour.eCollFlags.LEFT:
+                         return movementVector.y > 0 ? chooseJiggle(Vector2.up, UL, DL) : chooseJiggle(Vector2.up * -1, DL, UL);
+                    case PhysicCharBehaviour.eCollFlags.RIGHT:
+                         return movementVector.y > 0 ? chooseJiggle(Vector2.up, UR, DR) : chooseJiggle(Vector2.up * -1, DR, UR);
+                    case PhysicCharBehaviour.eCollFlags.UP:
+                         return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, UL, UR) : chooseJiggle(Vector2.right, UR, UL);
+                    case PhysicCharBehaviour.eCollFlags.DOWN:
+                         return movementVector.x > 0 ? chooseJiggle(-1 * Vector2.right, DL, DR) : chooseJiggle(Vector2.right, DR, DL);
                }
           }
           return movementVector;
@@ -181,7 +185,7 @@ public class EnemyMoveController : MonoBehaviour
           }
           return movementVector;
      }
-     
+
      /* Moves the object in a direction by a small amount (used for player input) */
      internal void Move(float input_X, float input_Y)
      {
