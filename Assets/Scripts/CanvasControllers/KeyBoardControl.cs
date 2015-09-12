@@ -15,10 +15,6 @@ public class KeyBoardControl : MonoBehaviour
      void Start()
      {
           buttons = new List<Button>(gameObject.GetComponentsInChildren<Button>());
-          for (int i = 0; i < buttons.Count;i++)
-          {
-               Debug.Log(buttons[i].gameObject.name);
-          }
           GetCurrentButton();
      }
 
@@ -54,7 +50,6 @@ public class KeyBoardControl : MonoBehaviour
      private void GetCurrentButton()
      {
           selectedButton = buttons[index];
-          Debug.Log(index);
           selectedButton.Select();
 
      }

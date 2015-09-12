@@ -211,8 +211,10 @@ public class GameManager : MonoBehaviour
      {
           CalculateScore();
           LevelComplete();
+          Debug.Log("score:" + GameManager.getScore().ToString());
           GameManager.Notifications.PostNotification(this, "PrepareToSave");
           SaveGame();
+          Debug.Log("score:" + GameManager.getScore().ToString());
           GameManager.Notifications.PostNotification(this, "ScoreReadyToDisplay");
           Debug.Log("woo!");
      }
