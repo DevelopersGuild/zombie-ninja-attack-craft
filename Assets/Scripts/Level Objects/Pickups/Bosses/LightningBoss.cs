@@ -121,25 +121,25 @@ public class LightningBoss : Boss
 
           posArr = new Vector2[9];
           posArr[0] = pos1.transform.position;
-          posArr[1] = pos2.transform.position;
-          posArr[2] = pos3.transform.position;
-          posArr[3] = pos4.transform.position;
+          posArr[7] = pos2.transform.position;
+          posArr[6] = pos3.transform.position;
+          posArr[5] = pos4.transform.position;
           posArr[4] = pos5.transform.position;
-          posArr[5] = pos6.transform.position;
-          posArr[6] = pos7.transform.position;
-          posArr[7] = pos8.transform.position;
+          posArr[3] = pos6.transform.position;
+          posArr[2] = pos7.transform.position;
+          posArr[1] = pos8.transform.position;
           posArr[8] = pos9.transform.position;
 
           rotArr = new Vector2[9];
           rotArr[0] = new Vector2(0, -1);
-          rotArr[1] = new Vector2(1, 0);
-          rotArr[2] = new Vector2(0, 1);
-          rotArr[3] = new Vector2(-1, 0);
+          rotArr[7] = new Vector2(1, 0);
+          rotArr[6] = new Vector2(0, 1);
+          rotArr[5] = new Vector2(-1, 0);
           rotArr[4] = new Vector2(1, -1);
-          rotArr[5] = new Vector2(1, 1);
-          rotArr[6] = new Vector2(-1, 1);
-          rotArr[7] = new Vector2(-1, -1);
-          rotArr[8] = new Vector2(0, -1);
+          rotArr[3] = new Vector2(1, 1);
+          rotArr[2] = new Vector2(-1, 1);
+          rotArr[1] = new Vector2(-1, -1);
+         // rotArr[8] = new Vector2(0, -1);
 
           shot_CD = 6;
           overload_CD = 12;
@@ -150,7 +150,7 @@ public class LightningBoss : Boss
           lightning_CD = 10;
           storm_CD = 1;
 
-          overload_Range = 2;
+          overload_Range = 1.25;
           bolt_Stun = 1.5f;
           hook_Speed = 8;
           knockback = 2;
@@ -309,7 +309,14 @@ public class LightningBoss : Boss
           }
           //Debug.Log("My pos is " + posArr[9 - currentHp()]);
           findPos();
-          transform.position = posArr[9 - (int)currentHp()];
+          if (currentHp() <= 1)
+          {
+               transform.position = posArr[8];
+          }
+          else
+          {
+               transform.position = posArr[((int)currentHp() - 1) % 8];
+          }
 
      }
 
@@ -383,7 +390,7 @@ public class LightningBoss : Boss
      private void sparkAttack()
      {
           spark_CD = 0;
-          int numArr = 9 - (int)currentHp();
+          int numArr = ((int)currentHp() - 1) % 8;
 
 
           Vector3 posC = new Vector3(transform.position.x + rotArr[numArr].x * 0.4f, transform.position.y + rotArr[numArr].y * 0.4f);

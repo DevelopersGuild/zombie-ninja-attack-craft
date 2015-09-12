@@ -21,7 +21,6 @@ public class DealDamageToEnemy : MonoBehaviour
 
           if (other.gameObject.CompareTag("Attackable") || other.gameObject.CompareTag("Barrel"))
           {
-               Debug.Log("DIE!");
                //Find components necessary to take damage and knockback
                GameObject enemObject = other.gameObject;
                Health enemyHealth = other.gameObject.GetComponent<Health>();
@@ -67,12 +66,17 @@ public class DealDamageToEnemy : MonoBehaviour
                {
                     //Deal damage, knockback, set the invinicility flag
                     // enemyHealth.CalculateKnockback(other, transform.position);
-                    enemyHealth.TakeDamage(damageAmount);
+                    if (enemy.GetComponent<LightningBoss>())
+                         enemyHealth.TakeDamage(1);
+                    else
+                         enemyHealth.TakeDamage(damageAmount);
+
                     enemy.isInvincible = true;
                     enemy.setBlink(0.5f);
                }
 
                enemiesHit++;
+
           }
 
 
@@ -120,6 +124,7 @@ public class DealDamageToEnemy : MonoBehaviour
                Boss enemy = enemObject.GetComponent<Boss>();
                Health enemyHealth = enemObject.GetComponent<Health>();
 
+
                //Deal damage and knockback the enemy
                if (other.gameObject.GetComponent<ShieldBoss>())
                {
@@ -134,12 +139,18 @@ public class DealDamageToEnemy : MonoBehaviour
                {
                     //Deal damage, knockback, set the invinicility flag
                     // enemyHealth.CalculateKnockback(other, transform.position);
-                    enemyHealth.TakeDamage(damageAmount);
+                    if (enemy.GetComponent<LightningBoss>())
+                         enemyHealth.TakeDamage(1);
+                    else
+                         enemyHealth.TakeDamage(damageAmount);
+
                     enemy.isInvincible = true;
                     enemy.setBlink(0.5f);
                }
 
+
                enemiesHit++;
+
           }
           else if (other.gameObject.CompareTag("Barrel"))
           {
@@ -154,6 +165,7 @@ public class DealDamageToEnemy : MonoBehaviour
      //For triggers
      public void OnTriggerEnter2D(Collider2D other)
      {
+
           CheckForProjectile();
           //Check for enemy collision
           if (other.gameObject.CompareTag("Attackable"))
@@ -169,7 +181,7 @@ public class DealDamageToEnemy : MonoBehaviour
                     if (!enemy.isInvincible)
                     {
                          //Deal damage, knockback, set the invinicility flag
-                         enemyHealth.CalculateKnockback(other, transform.position);
+                         enemyHealth.TakeDamage(damageAmount);
                          enemyHealth.TakeDamage(damageAmount);
                          enemy.isInvincible = true;
                     }
@@ -185,6 +197,7 @@ public class DealDamageToEnemy : MonoBehaviour
           }
           else if (other.gameObject.CompareTag("Boss"))
           {
+
                GameObject enemObject = other.gameObject;
                Boss enemy = enemObject.GetComponent<Boss>();
                Health enemyHealth = enemObject.GetComponent<Health>();
@@ -203,22 +216,27 @@ public class DealDamageToEnemy : MonoBehaviour
                {
                     //Deal damage, knockback, set the invinicility flag
                     //enemyHealth.CalculateKnockback(other, transform.position);
-                    enemyHealth.TakeDamage(damageAmount);
+                    if (enemy.GetComponent<LightningBoss>())
+                         enemyHealth.TakeDamage(1);
+                    else
+                         enemyHealth.TakeDamage(damageAmount);
+
                     enemy.isInvincible = true;
                     enemy.setBlink(0.5f);
 
                }
 
                enemiesHit++;
+
           }
-          else if(other.gameObject.CompareTag("Barrel"))
+          else if (other.gameObject.CompareTag("Barrel"))
           {
                Health enemyHealth = other.gameObject.GetComponent<Health>();
                enemyHealth.TakeDamage(damageAmount);
           }
 
           //Destroy itself if its a projectile
-          if(isProjectile)
+          if (isProjectile)
           {
                ProjectileDestroy(isProjectile);
           }
