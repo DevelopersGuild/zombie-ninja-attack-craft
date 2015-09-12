@@ -6,14 +6,17 @@ public class ShieldBoss : Boss
      public Player player;
      public float AgroRange;
 
-     public GameObject shieldObj;
-     private GameObject shield;
+       public GameObject shieldObj;
+       private GameObject shield;
+
+     public GameObject tow1, tow2, tow3, tow4, tow5, tow6, tow7, tow8, tow9;
+     private GameObject[] towArr;
 
      private EnemyMoveController moveController;
      private Health health;
      private SpriteRenderer sprRend;
 
-     private bool isAgro;
+     private bool isAgro, setNext;
 
      System.Random rnd;
 
@@ -24,6 +27,7 @@ public class ShieldBoss : Boss
 
      private double multiplier;
      private float currentX, currentY, playerX, playerY, angle;
+     private int currentTow;
 
      private Vector3 left, right, up, down;
      private Quaternion west, east, north, south;
@@ -52,7 +56,25 @@ public class ShieldBoss : Boss
           north = new Quaternion(0, 0, 0, 0);
           south = new Quaternion(0, 0, 180, 0);
 
-          shield = Instantiate(shieldObj, transform.position, transform.rotation) as GameObject;
+          towArr = new GameObject[9];
+          towArr[0] = tow1;
+          towArr[1] = tow2;
+          towArr[2] = tow3;
+          towArr[3] = tow4;
+          towArr[4] = tow5;
+          towArr[5] = tow6;
+          towArr[6] = tow7;
+          towArr[7] = tow8;
+          towArr[8] = tow9;
+
+          foreach (GameObject tower in towArr)
+          {
+               tower.SetActive(false);
+          }
+          //towArr[0].SetActive(true);
+          currentTow = 1;
+          setNext = false;
+          //shield = Instantiate(shieldObj, transform.position, transform.rotation) as GameObject;
 
      }
 
@@ -60,18 +82,18 @@ public class ShieldBoss : Boss
      {
           if (check())
           {
-
+               setNext = false;
           }
           else if (player != null)
           {
-
+               setNext = true;
                findPos();
                rnd = new System.Random();
                if (currentVelocity < maxVelocity)
                {
                     currentVelocity *= currentVelocity;
                }
-               moveController.Move((direction * currentVelocity)/2);
+               moveController.Move((direction * currentVelocity)/2.0f);
                if (direction.x > direction.y)
                {
                     if (direction.x >= 0)
@@ -128,6 +150,14 @@ public class ShieldBoss : Boss
 
      public bool check()
      {
+          if(setNext)
+          {
+               if (currentTow < 9)
+               {
+                    towArr[currentTow].SetActive(true);
+                    currentTow++;
+               }
+          }
           if (isInvincible)
           {
                timeSpentInvincible += Time.deltaTime;
@@ -145,7 +175,7 @@ public class ShieldBoss : Boss
                }
                else
                {
-                    maxVelocity *= 1.1f;
+                    maxVelocity *= 1.2f;
                     currentVelocity = 1.00001f;
                     isInvincible = false;
                     timeSpentInvincible = 0;
@@ -154,6 +184,21 @@ public class ShieldBoss : Boss
           }
           return moveController.canMove;
           //previously isInvincible
+
+          if(currentHp() <= 0)
+          {
+               onDeath();
+          }
+     }
+
+     public override void onDeath()
+     {
+          foreach (GameObject tower in towArr)
+          {
+               Destroy(tower);
+          }
+          //explode
+          Destroy(gameObject);
      }
 
 }
