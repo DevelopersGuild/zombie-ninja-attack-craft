@@ -178,7 +178,7 @@ public class GUIManager : MonoBehaviour
 
      public void ShowSettingScreen()
      {
-          settingsCanvas.enabled = true;
+          settingsCanvas.gameObject.SetActive(true);
           if(restartCanvas != null)
           {
                restartCanvas.gameObject.SetActive(false);
@@ -193,7 +193,7 @@ public class GUIManager : MonoBehaviour
 
      public void HideSettingScreen()
      {
-          settingsCanvas.enabled = false;
+          settingsCanvas.gameObject.SetActive(false);
           if (restartCanvas != null)
           {
                restartCanvas.gameObject.SetActive(true);
