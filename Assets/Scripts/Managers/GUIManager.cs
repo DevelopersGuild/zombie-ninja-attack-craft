@@ -22,6 +22,7 @@ public class GUIManager : MonoBehaviour
           GameManager.Notifications.AddListener(this, "OnPlayerEnterShop");
           GameManager.Notifications.AddListener(this, "OnPlayerExitShop");
           GameManager.Notifications.AddListener(this, "EndOfLevelReached");
+          GameManager.Notifications.AddListener(this, "TurnOnEndOfLevelCanvas");
 
           GameObject temp = GameObject.Find("TitleScreenCanvas");
           if(temp != null)
@@ -148,7 +149,7 @@ public class GUIManager : MonoBehaviour
           }
      }
 
-     public void EndOfLevelReached()
+     public void TurnOnEndOfLevelCanvas()
      {
           if (endOfLevelCanvas != null)
           {
