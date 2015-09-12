@@ -214,6 +214,7 @@ public class GameManager : MonoBehaviour
           GameManager.Notifications.PostNotification(this, "PrepareToSave");
           SaveGame();
           GameManager.Notifications.PostNotification(this, "ScoreReadyToDisplay");
+          Debug.Log("woo!");
      }
 
      public void CalculateScore()

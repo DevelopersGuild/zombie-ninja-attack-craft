@@ -23,6 +23,7 @@ public class LevelEndController : MonoBehaviour
      {
           NextLevelButton.enabled = true;
           GameFeedbackButton.gameObject.SetActive(false);
+          Debug.Log("Stat");
           GameManager.Notifications.AddListener(this, "ScoreReadyToDisplay");
      }
 
@@ -30,6 +31,7 @@ public class LevelEndController : MonoBehaviour
      {
           int minutes = 0;
           int seconds = 0;
+          Debug.Log("score:" + GameManager.getScore().ToString());
           ScoreGUI.text = GameManager.getScore().ToString();
           CoinsGUI.text = GameManager.getCoins().ToString();
           EnemyKillsGUI.text = GameManager.getKills().ToString();
