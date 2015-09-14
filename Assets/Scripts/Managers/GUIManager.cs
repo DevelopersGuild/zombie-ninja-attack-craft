@@ -96,7 +96,7 @@ public class GUIManager : MonoBehaviour
           {
                if(restartCanvas != null)
                {
-                    if(restartCanvas.enabled == false)
+                    if(restartCanvas.gameObject.activeSelf == false)
                     {
                          restartCanvas.gameObject.SetActive(true);
                          SetCanvasKeyBoardController(restartCanvas, true);
