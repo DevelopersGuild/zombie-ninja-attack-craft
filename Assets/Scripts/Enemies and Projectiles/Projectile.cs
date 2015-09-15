@@ -36,10 +36,6 @@ public class Projectile : MonoBehaviour
      {
           if (AutoTileMap.Instance.GetAutotileCollisionAtPosition(transform.position) == AutoTileMap.eTileCollisionType.BLOCK)
           {
-               if(destroyParticle)
-               {
-                    Instantiate(destroyParticle, transform.position, Quaternion.identity);
-               }
                Destroy(transform.gameObject);
           }
           if (shot)
@@ -53,14 +49,18 @@ public class Projectile : MonoBehaviour
           }
      }
 
+     public void OnDestroy()
+     {
+          if (destroyParticle)
+          {
+               Instantiate(destroyParticle, transform.position, Quaternion.identity);
+          }
+     }
+
      public void OnTriggerEnter2D(Collider2D other)
      {
           if (other.gameObject.layer == LayerMask.NameToLayer("CollidableObjects"))
           {
-               if (destroyParticle != null)
-               {
-                    Instantiate(destroyParticle);
-               }
                Destroy(gameObject);
           }
      }
