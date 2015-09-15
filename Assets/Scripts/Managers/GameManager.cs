@@ -209,10 +209,10 @@ public class GameManager : MonoBehaviour
 
      public void EndOfLevelReached()
      {
-          Debug.Log("score:" + GameManager.getScore().ToString());
-          GameManager.Notifications.PostNotification(this, "TurnOnEndOfLevelCanvas");
           CalculateScore();
           LevelComplete();
+          Debug.Log("score:" + GameManager.getScore().ToString());
+          GameManager.Notifications.PostNotification(this, "TurnOnEndOfLevelCanvas");
           GameManager.Notifications.PostNotification(this, "PrepareToSave");
           SaveGame();
           Debug.Log("score:" + GameManager.getScore().ToString());
