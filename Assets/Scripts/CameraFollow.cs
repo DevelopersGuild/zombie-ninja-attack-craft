@@ -7,6 +7,9 @@ public class CameraFollow : MonoBehaviour
 {
 
      public Player player;
+     public float xOffset;
+     public float yOffset;
+     public bool canShake;
      private Transform transform;
      private bool isShaking;
 
@@ -34,7 +37,7 @@ public class CameraFollow : MonoBehaviour
      // Update is called once per frame
      void Update()
      {
-          if (isShaking)
+          if (isShaking && canShake)
           {
                Tween cameraShake = transform.DOShakePosition(.04f, new Vector3(.14f, .14f, 0), 5).OnComplete(DoneShaking);
           }
@@ -44,7 +47,7 @@ public class CameraFollow : MonoBehaviour
                {
                     Vector3 point = m_camera.WorldToViewportPoint(playerPosition.position);
                     Vector3 delta = playerPosition.position - m_camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z)); //(new Vector3(0.5, 0.5, point.z));
-                    Vector3 destination = transform.position + delta;
+                    Vector3 destination = transform.position + delta + new Vector3(xOffset,yOffset);
                     transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, DampTime);
                }
           }
