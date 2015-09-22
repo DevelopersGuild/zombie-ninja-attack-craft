@@ -22,6 +22,7 @@ public class GUIManager : MonoBehaviour
           GameManager.Notifications.AddListener(this, "OnPlayerEnterShop");
           GameManager.Notifications.AddListener(this, "OnPlayerExitShop");
           GameManager.Notifications.AddListener(this, "EndOfLevelReached");
+          GameManager.Notifications.AddListener(this, "TurnOnEndOfLevelCanvas");
 
           GameObject temp = GameObject.Find("TitleScreenCanvas");
           if(temp != null)
@@ -63,27 +64,27 @@ public class GUIManager : MonoBehaviour
 
           if (storeCanvas != null)
           {
-               storeCanvas.enabled = false;
+               storeCanvas.gameObject.SetActive(false);
           }
 
           if (restartCanvas != null)
           {
-               restartCanvas.enabled = false;
+               restartCanvas.gameObject.SetActive(false);
           }
 
           if (loadLevelCanvas != null)
           {
-               loadLevelCanvas.enabled = false;
+               loadLevelCanvas.gameObject.SetActive(false);
           }
 
           if (endOfLevelCanvas != null)
           {
-               endOfLevelCanvas.enabled = false;
+               endOfLevelCanvas.gameObject.SetActive(false);
           }
           
           if (settingsCanvas != null)
           {
-               settingsCanvas.enabled = false;
+               settingsCanvas.gameObject.SetActive(false);
           }
 
           GUIStyle myStyle = new GUIStyle();
@@ -95,9 +96,9 @@ public class GUIManager : MonoBehaviour
           {
                if(restartCanvas != null)
                {
-                    if(restartCanvas.enabled == false)
+                    if(restartCanvas.gameObject.activeSelf == false)
                     {
-                         restartCanvas.enabled = true;
+                         restartCanvas.gameObject.SetActive(true);
                          SetCanvasKeyBoardController(restartCanvas, true);
                          Cursor.visible = true;
                          GameManager.Instance.PauseGame();
@@ -105,7 +106,7 @@ public class GUIManager : MonoBehaviour
                     else
                     {
                          SetCanvasKeyBoardController(restartCanvas, false);
-                         restartCanvas.enabled = false;
+                         restartCanvas.gameObject.SetActive(false);
                          Cursor.visible = false;
                          GameManager.Instance.UnpauseGame();
                     }
@@ -117,7 +118,7 @@ public class GUIManager : MonoBehaviour
      {
           if (restartCanvas != null)
           {
-               restartCanvas.enabled = true;
+               restartCanvas.gameObject.SetActive(true);
                GameManager.incrementDeaths();
                SetCanvasKeyBoardController(restartCanvas, true);
                Cursor.visible = true;
@@ -129,7 +130,7 @@ public class GUIManager : MonoBehaviour
           if (storeCanvas != null)
           {
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
-               storeCanvas.enabled = true;
+               storeCanvas.gameObject.SetActive(true);
                SetCanvasKeyBoardController(storeCanvas, true);
                Cursor.visible = true;
                GameManager.Instance.PauseGame();
@@ -142,19 +143,19 @@ public class GUIManager : MonoBehaviour
           {
                GameManager.Notifications.PostNotification(this, "PlayerExitMenu");
                SetCanvasKeyBoardController(storeCanvas, false);
-               storeCanvas.enabled = false;
+               storeCanvas.gameObject.SetActive(false);
                Cursor.visible = false;
                GameManager.Instance.UnpauseGame();
           }
      }
 
-     public void EndOfLevelReached()
+     public void TurnOnEndOfLevelCanvas()
      {
           if (endOfLevelCanvas != null)
           {
-               SetCanvasKeyBoardController(endOfLevelCanvas, true);
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
-               endOfLevelCanvas.enabled = true;
+               endOfLevelCanvas.gameObject.SetActive(true);
+               SetCanvasKeyBoardController(endOfLevelCanvas, true);
                Cursor.visible = true;
                GameManager.Instance.PauseGame();
           }
@@ -163,45 +164,45 @@ public class GUIManager : MonoBehaviour
      public void ShowLoadLevel()
      {
           SetCanvasKeyBoardController(mainTitleMenu, false);
-          mainTitleMenu.enabled = false;
-          loadLevelCanvas.enabled = true;
+          mainTitleMenu.gameObject.SetActive(false);
+          loadLevelCanvas.gameObject.SetActive(true);
           SetCanvasKeyBoardController(loadLevelCanvas, true);
      }
 
      public void ShowTitleScreen()
      {
           SetCanvasKeyBoardController(loadLevelCanvas, false);
-          mainTitleMenu.enabled = true;
-          loadLevelCanvas.enabled = false;
+          mainTitleMenu.gameObject.SetActive(true);
+          loadLevelCanvas.gameObject.SetActive(false);
           SetCanvasKeyBoardController(mainTitleMenu, true);
      }
 
      public void ShowSettingScreen()
      {
-          settingsCanvas.enabled = true;
+          settingsCanvas.gameObject.SetActive(true);
           if(restartCanvas != null)
           {
-               restartCanvas.enabled = false;
+               restartCanvas.gameObject.SetActive(false);
           }
 
           if(mainTitleMenu != null)
           {
-               mainTitleMenu.enabled = false;
+               mainTitleMenu.gameObject.SetActive(false);
           }
           isInSettings = true;
      }
 
      public void HideSettingScreen()
      {
-          settingsCanvas.enabled = false;
+          settingsCanvas.gameObject.SetActive(false);
           if (restartCanvas != null)
           {
-               restartCanvas.enabled = true;
+               restartCanvas.gameObject.SetActive(true);
           }
 
           if (mainTitleMenu != null)
           {
-               mainTitleMenu.enabled = true;
+               mainTitleMenu.gameObject.SetActive(true);
           }
           isInSettings = false;
      }

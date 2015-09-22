@@ -22,9 +22,9 @@ public class ConsoleIntializer : MonoBehaviour
 
      public string Help(params string[] args)
      {
-          return "godmode -- Makes player invincible\n" +
-               "givemeweapons -- Unlocks all of the weapons and upgrades\n" +
-               "givemeammo -- gives the player 100 of each type of ammo";
+          return "";//"godmode -- Makes player invincible\n" +
+               //"givemeweapons -- Unlocks all of the weapons and upgrades\n" +
+               //"givemeammo -- gives the player 100 of each type of ammo";
      }
 
      public string GodMode(params string[] args)

@@ -56,6 +56,22 @@ public class Projectile : MonoBehaviour
           }
      }
 
+     public void OnDestroy()
+     {
+          if (destroyParticle)
+          {
+               Instantiate(destroyParticle, transform.position, Quaternion.identity);
+          }
+     }
+
+     public void OnTriggerEnter2D(Collider2D other)
+     {
+          if (other.gameObject.layer == LayerMask.NameToLayer("CollidableObjects"))
+          {
+               Destroy(gameObject);
+          }
+     }
+
      public void setStun(float st)
      {
           stun = st;

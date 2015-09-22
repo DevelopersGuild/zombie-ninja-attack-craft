@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
      private static GameManager instance = null;
      private static NotificationManager notifications = null;
      private static LoadAndSaveManager stateManager = null;
+     private static float gameTime = 0;
+     private static float levelTimeStart = 0;
      public static int CurrentLevel;
 
      public static int Coins;
@@ -100,6 +102,7 @@ public class GameManager : MonoBehaviour
           Score = 0;
           killCount = 0;
           IsCurrentLevelComplete = false;
+          levelTimeStart = Time.time;
           timeToCompleteLevel = 0;
           LoadGameData();
           GameManager.Notifications.PostNotification(this, "LevelLoaded");
@@ -142,7 +145,7 @@ public class GameManager : MonoBehaviour
      //Time methods
      public static float getTime()
      {
-          timeToCompleteLevel = Time.time;
+          timeToCompleteLevel = Time.time - levelTimeStart;
           return timeToCompleteLevel;
      }
 
@@ -211,9 +214,13 @@ public class GameManager : MonoBehaviour
      {
           CalculateScore();
           LevelComplete();
+          Debug.Log("score:" + GameManager.getScore().ToString());
+          GameManager.Notifications.PostNotification(this, "TurnOnEndOfLevelCanvas");
           GameManager.Notifications.PostNotification(this, "PrepareToSave");
           SaveGame();
+          Debug.Log("score:" + GameManager.getScore().ToString());
           GameManager.Notifications.PostNotification(this, "ScoreReadyToDisplay");
+          Debug.Log("woo!");
      }
 
      public void CalculateScore()
@@ -331,7 +338,6 @@ public class GameManager : MonoBehaviour
           foreach (LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
           {
                level.LevelUnlocked = true;
-               level.PlayerScoreCombat = 0;
           }
           stateManager.GameState.Player.IsBowHoldDownUnlocked = true;
           stateManager.GameState.Player.IsBowUnlocked = true;

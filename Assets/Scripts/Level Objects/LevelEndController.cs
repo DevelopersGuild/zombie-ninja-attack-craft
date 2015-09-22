@@ -18,18 +18,21 @@ public class LevelEndController : MonoBehaviour
      public Button GameFeedbackButton = null;
      // Use this for initialization
 
-
+     void Awake()
+     {
+          GameManager.Notifications.AddListener(this, "ScoreReadyToDisplay");
+     }
      public void Start()
      {
           NextLevelButton.enabled = true;
           GameFeedbackButton.gameObject.SetActive(false);
-          GameManager.Notifications.AddListener(this, "ScoreReadyToDisplay");
      }
 
      public void ScoreReadyToDisplay()
      {
           int minutes = 0;
           int seconds = 0;
+          Debug.Log("score:" + GameManager.getScore().ToString());
           ScoreGUI.text = GameManager.getScore().ToString();
           CoinsGUI.text = GameManager.getCoins().ToString();
           EnemyKillsGUI.text = GameManager.getKills().ToString();
@@ -47,13 +50,13 @@ public class LevelEndController : MonoBehaviour
           }
           TimeGUI.text = minutes + " Minutes and " + seconds + " Seconds";
 
-          if(GameManager.CurrentLevel <3)
+          if(GameManager.CurrentLevel < 4)
           {
                HelpMessageGUI.text = "Please send your score data to our servers by clicking the send score button. Any feedback/bug reports are also appreciated. Thanks for testing!";
           }
           else
           {
-               HelpMessageGUI.text = "Hey! You've played a good amount. Care to give us general thoughts on the game so far?";
+               HelpMessageGUI.text = "Hey! You've gotten pretty far. Do you want to give any general thoughts on the game so far?";
                GameFeedbackButton.gameObject.SetActive(true);
           }
 

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 161a2026272cbf54c9d8f8ec7745935c
-timeCreated: 1434612128
+timeCreated: 1442016535
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -22,6 +22,7 @@ TextureImporter:
     21300030: mole_purple_sheet_15
     21300032: mole_purple_sheet_16
     21300034: mole_purple_sheet_17
+    21300036: mole_purple_death
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -244,6 +245,16 @@ TextureImporter:
         y: 33
         width: 12
         height: 15
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: mole_purple_death
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 124
+        width: 57
+        height: 23
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

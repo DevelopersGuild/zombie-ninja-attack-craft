@@ -12,6 +12,7 @@ namespace AssemblyCSharp
           public int SoundDistance;
           public float sparkTime;
           private float sparkTimer;
+          private int sparksLeft;
 
           private Health health;
 
@@ -39,6 +40,8 @@ namespace AssemblyCSharp
 
                distance = new Vector2(0, 0);
                stop = 1;
+
+               sparksLeft = 0;
           }
 
           public void Update()
@@ -58,6 +61,7 @@ namespace AssemblyCSharp
                     if (sparkTimer <= 0)
                     {
                          animationController.isAttacking = true;
+                         sparksLeft = 2;
                     }
 
 
@@ -92,14 +96,15 @@ namespace AssemblyCSharp
 
           public void Spark()
           {
-
-               CheckIfPlayerCanHearSpark();
-               moveController.Move(0, 0);
-               t = .5;
-               sparkTimer = sparkTime;
-               stop = 0;
-               GameObject spark = Instantiate(SparkParticle, transform.position, Quaternion.identity) as GameObject;
-               spark.transform.parent = transform;
+               if (sparksLeft-- > 0) {
+                    CheckIfPlayerCanHearSpark();
+                    moveController.Move(0, 0);
+                    t = .5;
+                    sparkTimer = sparkTime;
+                    stop = 0;
+                    GameObject spark = Instantiate(SparkParticle, transform.position, Quaternion.identity) as GameObject;
+                    spark.transform.parent = transform;
+               }
           }
           public void FinishedSpark()
           {

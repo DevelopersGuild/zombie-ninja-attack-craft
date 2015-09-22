@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 /* PlayerScript - Handle Input from a player */
 
-class ArrowKeys
+public class ArrowKeys
 {
      private static string[] buttonNames = { "Up", "Right", "Down", "Left" };
      private static Vector2[] directionVector = { Vector2.up,
@@ -14,37 +14,41 @@ class ArrowKeys
      private List<int> keysPressed = new List<int>();
      private float[] lastTapTimes = new float[4];
      private bool[] dashing = new bool[4];
+     public bool canTakeInput = true;
 
 
 
      public void Update()
      {
-          for (int i = 0; i < 4; i++)
+          if (canTakeInput)
           {
-               string name = buttonNames[i];
-
-               //Regular movement
-               if (Input.GetButton(name))
+               for (int i = 0; i < 4; i++)
                {
-                    if (!keysPressed.Contains(i))
+                    string name = buttonNames[i];
+
+                    //Regular movement
+                    if (Input.GetButton(name))
                     {
-                         keysPressed.Add(i);
+                         if (!keysPressed.Contains(i))
+                         {
+                              keysPressed.Add(i);
+                         }
                     }
-               }
-               else
-               {
-                    keysPressed.Remove(i);
-               }
+                    else
+                    {
+                         keysPressed.Remove(i);
+                    }
 
-               //Dashing
-               if (Input.GetButtonDown(name))
-               {
-                    dashing[i] = Time.time - lastTapTimes[i] < tapSpeed;
-                    lastTapTimes[i] = Time.time;
-               }
-               else
-               {
-                    dashing[i] = false;
+                    //Dashing
+                    if (Input.GetButtonDown(name))
+                    {
+                         dashing[i] = Time.time - lastTapTimes[i] < tapSpeed;
+                         lastTapTimes[i] = Time.time;
+                    }
+                    else
+                    {
+                         dashing[i] = false;
+                    }
                }
           }
      }
@@ -105,6 +109,7 @@ public class Player : MonoBehaviour
      public GameObject chargingParticle;
      private GameObject particles;
      private SpriteRenderer sprRend;
+     public AudioClip chargedArrowClip;
 
      //Player progression
      public bool IsBowUnlocked;
@@ -122,7 +127,7 @@ public class Player : MonoBehaviour
      private float lastTapTimeA;
      private float lastTapTimeD;
 
-     private ArrowKeys arrowKeys = new ArrowKeys();
+     public ArrowKeys arrowKeys = new ArrowKeys();
 
      //Timers
      public bool isInvincible;
@@ -297,6 +302,7 @@ public class Player : MonoBehaviour
 
                     if(timeCharging >= 1.0f && UpgradedBow == true)
                     {
+                         AudioSource.PlayClipAtPoint(chargedArrowClip, transform.position);
                          attackController.ShootProjectile(chargedLaser);
                     }
                     else

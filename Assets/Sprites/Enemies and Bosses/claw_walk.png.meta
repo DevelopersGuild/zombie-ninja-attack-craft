@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e196fb427dd1e4e429402b62fca6f9e6
-timeCreated: 1433576217
+timeCreated: 1442016433
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -16,6 +16,7 @@ TextureImporter:
     21300018: claw_walk_9
     21300020: claw_walk_10
     21300022: claw_walk_11
+    21300024: claw_death
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -69,7 +70,7 @@ TextureImporter:
         width: 14
         height: 25
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_1
       rect:
@@ -79,7 +80,7 @@ TextureImporter:
         width: 14
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_2
       rect:
@@ -89,7 +90,7 @@ TextureImporter:
         width: 18
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_3
       rect:
@@ -99,7 +100,7 @@ TextureImporter:
         width: 14
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_4
       rect:
@@ -119,7 +120,7 @@ TextureImporter:
         width: 14
         height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_6
       rect:
@@ -129,7 +130,7 @@ TextureImporter:
         width: 17
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_7
       rect:
@@ -139,7 +140,7 @@ TextureImporter:
         width: 15
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_8
       rect:
@@ -149,7 +150,7 @@ TextureImporter:
         width: 18
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_9
       rect:
@@ -159,7 +160,7 @@ TextureImporter:
         width: 14
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_10
       rect:
@@ -169,7 +170,7 @@ TextureImporter:
         width: 18
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: claw_walk_11
       rect:
@@ -179,7 +180,17 @@ TextureImporter:
         width: 14
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: claw_death
+      rect:
+        serializedVersion: 2
+        x: 364
+        y: 159
+        width: 29
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

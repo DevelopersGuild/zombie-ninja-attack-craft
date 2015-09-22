@@ -8,6 +8,7 @@ public class EndOfLevelCanvasController : MonoBehaviour
      private Button titleScreenButton;
      private Button nextLevelButton;
      private Button sendScoreButton;
+     public Button gameFeedBackButton;
      private bool hasSentFeedback;
      // Use this for initialization
      void Start()
@@ -23,8 +24,6 @@ public class EndOfLevelCanvasController : MonoBehaviour
 
           sendScoreButton = GameObject.Find("SendScoreButton").GetComponent<Button>();
           sendScoreButton.onClick.AddListener(delegate { SendScore(); });
-
-
 
      }
 
