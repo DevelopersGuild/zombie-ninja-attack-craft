@@ -6,8 +6,8 @@ public class ShieldBoss : Boss
      public Player player;
      public float AgroRange;
 
-     public GameObject shieldObj;
-     private GameObject shield;
+     public shield shield;
+     private shield shieldObj;
 
      public GameObject tow1, tow2, tow3, tow4, tow5, tow6, tow7, tow8, tow9;
      private GameObject[] towArr;
@@ -16,7 +16,7 @@ public class ShieldBoss : Boss
      private Health health;
      private SpriteRenderer sprRend;
 
-     private bool isAgro, setNext;
+     private bool isAgro, setNext, move;
 
      System.Random rnd;
 
@@ -26,8 +26,10 @@ public class ShieldBoss : Boss
      //private Animator animator;
 
      private double multiplier;
-     private float currentX, currentY, playerX, playerY, angle;
+     private float currentX, currentY, playerX, playerY, angle, mult, w, e, n, s;
      private int currentTow;
+
+     private Color rageCol, normCol, medCol;
 
      private Vector3 left, right, up, down;
      private Quaternion west, east, north, south;
@@ -51,10 +53,15 @@ public class ShieldBoss : Boss
           right = new Vector3(0.3f, 0, 0);
           up = new Vector3(0, 0.3f, 0);
           down = new Vector3(0, -0.3f, 0);
-          west = new Quaternion(0, 0, 90, 0);
-          east = new Quaternion(0, 0, -90, 0);
-          north = new Quaternion(0, 0, 0, 0);
+          west = new Quaternion(0, 0, 90, 90);
+          east = new Quaternion(0, 0, -90, 90);
+          north = new Quaternion(0, 0, 0, 180);
           south = new Quaternion(0, 0, 180, 0);
+
+          w = 90;
+          e = -90;
+          n = 0;
+          s = 180;
 
           towArr = new GameObject[9];
           towArr[0] = tow1;
@@ -74,7 +81,14 @@ public class ShieldBoss : Boss
           towArr[0].SetActive(true);
           currentTow = 1;
           setNext = false;
-          shield = Instantiate(shieldObj, transform.position, transform.rotation) as GameObject;
+          //shield = Instantiate(shieldObj, transform.position, transform.rotation) as GameObject;
+
+          rageCol = new Color(0.8f, 0.1f, 0.15f, 1f);
+          normCol = new Color(1, 1, 1, 1f);
+          medCol = new Color(0.4f, 0.35f, 0.2f, 0.8f);
+
+          mult = 1.001f;
+          move = true;
 
           health.canKnock = false;
 
@@ -89,42 +103,57 @@ public class ShieldBoss : Boss
           }
           else if (player != null)
           {
+               
                setNext = true;
                findPos();
                rnd = new System.Random();
                if (currentVelocity < maxVelocity)
                {
-                    currentVelocity *= currentVelocity;
+                    currentVelocity *= mult;
+                    //Debug.Log(currentVelocity);
                }
-               moveController.Move((direction * currentVelocity)/ 10f);
-               Debug.Log(direction.x + "Dir");
-               Debug.Log(direction.y + "cV");
-               if (direction.x > (direction.y * 2))
+               if (move)
+               {
+                    moveController.Move((direction * currentVelocity) / 75f);
+               }
+               else
+               {
+                    moveController.Move(0, 0);
+               }
+               //transform.eulerAngles = new Vector3(0, 0, 2 * Mathf.Rad2Deg * angle);
+               //Debug.Log("Dir " + direction);
+               //Debug.Log("cV " + currentVelocity);
+               if (Math.Abs(direction.x) > Math.Abs((direction.y * 2)))
                {
                     if (direction.x >= 0)
                     {
-                         shield.transform.position = transform.position + right;
-                         shield.transform.rotation = east;
+                         //shield.transform.position = transform.position + right;
+                         //shield.transform.rotation = east;
+                         shield.setRot(east);
                     }
                     else
                     {
-                         shield.transform.position = transform.position + left;
-                         shield.transform.rotation = west;
+                         // shield.transform.position = transform.position + left;
+                         //shield.transform.rotation = west;
+                         shield.setRot(west);
                     }
                }
                else
                {
                     if (direction.y >= 0)
                     {
-                         shield.transform.position = transform.position + up;
-                         shield.transform.rotation = north;
+                         //  shield.transform.position = transform.position + up;
+                         //shield.transform.rotation = north;
+                         shield.setRot(north);
                     }
                     else
                     {
-                         shield.transform.position = transform.position + down;
-                         shield.transform.rotation = south;
+                         // shield.transform.position = transform.position + down;
+                         //shield.transform.rotation = south;
+                         shield.setRot(south);
                     }
                }
+
           }
 
 
@@ -148,20 +177,24 @@ public class ShieldBoss : Boss
           playerX = player.transform.position.x;
           playerY = player.transform.position.y;
 
-          angle = Vector2.Angle(player.transform.position, transform.position);
-          direction = new Vector2(currentX - playerX, currentY - playerY);
+          angle = Vector2.Angle(transform.position, player.transform.position);
+          direction = new Vector2(playerX - currentX, playerY - currentY);
           direction = direction.normalized;
      }
 
      public bool check()
      {
+
+          if (currentHp() <= 0)
+          {
+               onDeath();
+          }
+
           if (setNext)
           {
-               if (currentTow < 9)
-               {
-               //     towArr[currentTow].SetActive(true);
-               //     currentTow++;
-               }
+               towArr[(18 - (int)currentHp()) / 2].SetActive(true);
+               setNext = false;
+
           }
           if (isInvincible)
           {
@@ -169,31 +202,30 @@ public class ShieldBoss : Boss
 
                if (timeSpentInvincible < 1)
                {
-                    blink = !blink;
-                    GetComponent<Renderer>().enabled = blink;
-                    moveController.canMove = false;
+                    sprRend.color = medCol;
+                    move = false;
+                    //play tired anim
                }
                else if (timeSpentInvincible <= 2 + .2f * (18 - currentHp()))
                {
-                    sprRend.color = new Color(200, 30, 50, 1f);
+                    sprRend.color = rageCol;
                     moveController.canMove = true;
+                    move = true;
+                    //actually do this at the end of animation, but no animations so math stuff
                }
                else
                {
                     maxVelocity *= 1.2f;
-                    currentVelocity = 1.00001f;
+                    mult *= 1.01f;
+                    currentVelocity = 1.001f;
                     isInvincible = false;
                     timeSpentInvincible = 0;
-                    GetComponent<Renderer>().enabled = true;
+                    sprRend.color = normCol;
                }
           }
           return moveController.canMove;
           //previously isInvincible
 
-          if (currentHp() <= 0)
-          {
-               onDeath();
-          }
      }
 
      public override void onDeath()

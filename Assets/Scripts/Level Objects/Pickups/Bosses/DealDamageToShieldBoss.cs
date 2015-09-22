@@ -54,7 +54,6 @@ public class DealDamageToShieldBoss : MonoBehaviour
 
      public void OnTriggerEnter2D(Collider2D other)
      {
-          Debug.Log("Pow");
           //Check for player collision
           if (other.gameObject.tag == "Player")
           {
@@ -104,7 +103,6 @@ public class DealDamageToShieldBoss : MonoBehaviour
 
      public void OnCollisionEnter2D(Collision2D other)
      {
-          Debug.Log("Pow");
           //Check for player collision
           if (other.gameObject.tag == "Player")
           {
@@ -154,7 +152,6 @@ public class DealDamageToShieldBoss : MonoBehaviour
 
      public void OnTriggerStay2D(Collider2D other)
      {
-          Debug.Log("Pow");
           //Check for player collision
           if (other.gameObject.tag == "Player")
           {
