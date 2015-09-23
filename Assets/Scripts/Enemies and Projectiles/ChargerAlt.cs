@@ -10,134 +10,192 @@
 using UnityEngine;
 using System;
 
-public class ChargerAlt : MonoBehaviour {
-    //Positions
-    public Player player;
-    public float AgroRange;
-    private Vector2 speed, distance;
+public class ChargerAlt : Enemy
+{
 
-    //State checks
-    private bool isAggroed;
-    private bool isTired;
-    private bool isCharging;
+     //Positions
+     private Vector2 speed, distance;
+     private Vector3 someVec;
 
-    //Components
-    private Animator animator;
-    private Rigidbody2D rb;
-    //private MoveControllerNoAnimation moveControllerNoAnimation;
+     //State checks
+     private bool isAggroed;
+     private bool isTired;
+     private bool isCharging;
+     private bool isPrepping;
 
-    System.Random rnd;
-    private double t, timer;
-    private float temp;
+     //Components
+     private Animator animator;
+     private Rigidbody2D rb;
+     //private MoveControllerNoAnimation moveControllerNoAnimation;
 
-    public void Start() {
-        //moveControllerNoAnimation = GetComponent<MoveControllerNoAnimation> ();
-        animator = GetComponent<Animator>();
-        player = FindObjectOfType<Player>();
-        rb = GetComponent<Rigidbody2D>();
+     private double timer, idleTime;
+     private float temp, currentVel, maxVel, multiplier;
 
-        distance = new Vector2(0, 0);
-        speed = new Vector2(0, 0);
+     public void Start()
+     {
+          //moveControllerNoAnimation = GetComponent<MoveControllerNoAnimation> ();
+          animator = GetComponent<Animator>();
+          player = FindObjectOfType<Player>();
+          rb = GetComponent<Rigidbody2D>();
+          moveController = GetComponent<EnemyMoveController>();
 
-        temp = 1;
-        t = 1;
-        timer = 5;
+          distance = new Vector2(0, 0);
 
-        isAggroed = false;
-        isTired = false;
-        isCharging = false;
-        GetComponent<Rigidbody2D>().mass = 5;
-    }
+          temp = 1;
+          idleTime = 0;
+          timer = 5;
 
-    void Update() {
-        rnd = new System.Random();
+          currentVel = 1f;
+          multiplier = 1.05f;
+          maxVel = 5;
 
-        if (player != null) {
-            distance = player.transform.position - transform.position;
-        }
+          isAggroed = false;
+          isTired = false;
+          isCharging = false;
+          isPrepping = false;
+          GetComponent<Rigidbody2D>().mass = 5;
+     }
 
-        //Check distance between the player and charger. If its close enough, aggro
-        if (distance.magnitude <= AgroRange && isTired == false) {
-            isAggroed = true;
-            isCharging = true;
-            animator.SetBool("isCharging", true);
-        }
-        if (distance.magnitude > AgroRange) {
-            isAggroed = false;
-        }
-        // speed = new Vector2(0, 0);
+     void Update()
+     {
+          checkInvincibility();
+          if (checkStun())
+          {
+               stunTimer -= Time.deltaTime;
+               moveController.Move(0, 0);
+          }
+          else
+          {
+               //basic aggression range formula
+               if (player)
+               {
+                    Vector2 distance = player.transform.position - transform.position;
+                    //Check distance between the player and charger. If its close enough, aggro
+                    if (!isCharging && !isPrepping && !isTired && distance.magnitude < AgroRange)
+                    {
+                         isPrepping = true;
+                         //animator.SetBool("isCharging", true);
+                         animator.Play("ChargerCharge");
+                    }
+                  //  else if (!isCharging && distance.magnitude > AgroRange)
+                 //   {
+                   //      isAggroed = false;
+                  //  }
 
-        if (isAggroed) {
 
-            //Charge while the charge animation is playing
-            if (isCharging) {
+                    if (isAggroed)
+                    {
+                         //Ideally would have an animation then leaps to move
+                         if (isPrepping || isTired)
+                         {
+                              GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+                              currentVel = 1;
+                              multiplier = 1.05f;
+                              moveController.canMove = false;
+                         }
+                         else if (isCharging)
+                         {
+                              moveController.canMove = true;
+                              //Debug.Log("HELLO?");
+                              moveController.Move(currentVel * direction / 4f);
+                              currentVel *= multiplier;
+                              multiplier *= 0.999f;
+                              Debug.Log(currentVel + "     " + multiplier);
+                         }
 
-                float xSpeed = player.transform.position.x - transform.position.x;
-                float ySpeed = player.transform.position.y - transform.position.y;
-                RunStraight(xSpeed, ySpeed, temp);
-                temp = 5;
-                //speed = new Vector2(5 * xSpeed, 5 * ySpeed);
-                //speed = speed * 3;
-                //rb.velocity = speed;
-            }
-            //Dont move if charger has already charged and is now tired
-            if (isTired) {
-                temp = 1;
-                speed = new Vector2(0, 0);
-            }
-        } //If the player isnt aggroed, it moves randomly
-        else {
-            if (t < 1) {
-                if (GetComponent<Rigidbody2D>().velocity.magnitude != 0) {
-                    speed = new Vector2(0, 0);
-                    t = 2;
-                }
-            }
-            else {
-                int rand = rnd.Next(1, 5);
-                if (rand == 1) {
-                    speed = new Vector2(2, 0);
-                    t = 1;
-                }
-                else if (rand == 2) {
-                    speed = new Vector2(-2, 0);
-                    t = 1;
-                }
-                else if (rand == 3) {
-                    speed = new Vector2(0, 2);
-                    t = 1;
-                }
-                else {
-                    speed = new Vector2(0, -2);
-                    t = 1;
-                }
-            }
-        }
-        // Debug.Log(isCharging);
-        t -= Time.deltaTime;
-        // Debug.Log(speed);
-        speed = speed / 1.03f;
-        rb.velocity = speed;
-    }
 
-    public void DoneCharging() {
-        isTired = true;
-        animator.SetBool("isCharging", false);
-        animator.SetBool("isTired", true);
-    }
+                    }
+                    else
+                    {
+                         if (!isTired && idleTime > 0.4)
+                         {
+                              someVec = idle(t, rnd);
+                              t = someVec.z;
+                              idleTime = 0;
+                         }
+                         moveController.Move(someVec.x, someVec.y);
+                    }
 
-    public void DoneResting() {
-        isTired = false;
-        animator.SetBool("isTired", false);
-    }
+                    idleTime += Time.deltaTime;
+                    t -= Time.deltaTime;
+               }
 
-    private void RunStraight(float xSp, float ySp, float extra) {
-        if (extra == 1) {
-            speed = new Vector2(xSp, ySp);
-            speed = 2 * speed;
-        }
+               else
+               {
+                    isAggroed = false;
+               }
+          }
 
-    }
+
+     }
+
+     public void start()
+     {
+          if (isPrepping)
+          {
+               startPrep();
+          }
+          else
+          {
+               startCharge();
+
+          }
+     }
+
+     public void finish()
+     {
+          if (!isCharging)
+          {
+               startCharge();
+               animator.Play("ChargerCharge");
+          }
+          else
+          {
+               finishCharge();
+          }
+     }
+
+     public void startPrep()
+     {
+          isTired = false;
+          isCharging = false;
+          isPrepping = false;
+          isAggroed = true;
+     }
+
+     public void startCharge()
+     {
+          isTired = false;
+          isCharging = true;
+          isPrepping = false;
+          isAggroed = true;
+          findPos();
+     }
+
+
+     public void finishCharge()
+     {
+          isTired = true;
+          isCharging = false;
+          isPrepping = false;
+          animator.Play("ChargerTired");
+     }
+
+     public void DoneResting()
+     {
+          isTired = false;
+          isAggroed = false;
+     }
+
+     private void RunStraight(float xSp, float ySp, float extra)
+     {
+          if (extra == 1)
+          {
+               speed = new Vector2(xSp, ySp);
+               speed = 2 * speed;
+          }
+
+     }
 }
 
 
