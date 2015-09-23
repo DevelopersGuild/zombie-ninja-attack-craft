@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour
           levelTimeStart = Time.time;
           timeToCompleteLevel = 0;
           LoadGameData();
+          UnlockPerLevel();
           GameManager.Notifications.PostNotification(this, "LevelLoaded");
           UnpauseGame();
      }
@@ -349,6 +350,26 @@ public class GameManager : MonoBehaviour
           GameManager.Notifications.PostNotification(this, "LevelLoaded");
      }
 
+     public void UnlockPerLevel()
+     {
+          if(CurrentLevel > 1)
+          {
+               stateManager.GameState.Player.IsDashUnlocked = true;
+          }
+          if(CurrentLevel > 2)
+          {
+               stateManager.GameState.Player.IsBowUnlocked = true;
+          }
+          if(CurrentLevel > 4)
+          {
+               stateManager.GameState.Player.IsLandMineUnlocked = true;
+          }
+          if(CurrentLevel > 7)
+          {
+               stateManager.GameState.Player.IsBowHoldDownUnlocked = true;
+          }
+     }
+
      public void OpenLevelFeedback()
      {
           Application.OpenURL("https://www.surveymonkey.com/r/2V36DGV");
@@ -358,4 +379,6 @@ public class GameManager : MonoBehaviour
      {
           Application.OpenURL("https://www.surveymonkey.com/r/275DBHM");
      }
+
+
 }
