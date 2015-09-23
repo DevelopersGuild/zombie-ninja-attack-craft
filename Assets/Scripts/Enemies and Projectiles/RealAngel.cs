@@ -6,7 +6,7 @@ public class RealAngel : MonoBehaviour
      private bool isActive;
 
      private bool isReal;
-     public Homer angelProjObject;
+     public Projectile angelProjObject;
      public float blinkTime;
 
      private float currentTime;
@@ -39,6 +39,12 @@ public class RealAngel : MonoBehaviour
           else
           {
                Projectile x = Instantiate(angelProjObject, transform.position, transform.rotation) as Projectile;
+               Player player = FindObjectOfType<Player>(); 
+               Vector3 direction = player.transform.position - transform.position;
+               float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
+               Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+               transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * 5);
+               x.Shoot(angle, direction.normalized);
                Destroy(gameObject);
           }
      }
