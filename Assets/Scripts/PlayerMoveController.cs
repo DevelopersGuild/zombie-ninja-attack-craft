@@ -8,6 +8,7 @@ public class PlayerMoveController : MonoBehaviour
      private Animator animator;
      public AttackController attackController;
      public ParticleSystem dashParticle;
+    public Player player;
      private ParticleSystem dashParticleInstance;
      // Speed of object
      [Range(0, 10)]
@@ -49,6 +50,7 @@ public class PlayerMoveController : MonoBehaviour
      {
           attackController = GetComponent<AttackController>();
           animator = GetComponent<Animator>();
+        player = GetComponent<Player>();
 
           isMoving = false;
           isDashing = false;
@@ -122,12 +124,14 @@ public class PlayerMoveController : MonoBehaviour
           {
                // Use facing so that we can't dash diagonally.
                movementVector = facing * dashSpeed;
+               player.arrowKeys.canTakeInput = false;
           }
           else
           {
                movementVector = direction * speed;
+               player.arrowKeys.canTakeInput = true;
           }
-
+ 
           isMoving = movementVector != Vector2.zero;
 
           //Change the movement vector to the knockbackvector if they are being knocked back
@@ -165,8 +169,6 @@ public class PlayerMoveController : MonoBehaviour
                GetComponent<Rigidbody2D>().velocity = JiggleMovement();
           }
 
-          //Debug.Log("canDash:" + canDash + "   canAttack:" + attackController.CanAttack());
-          //Debug.Log("speed:" + speed + "direction:" + direction + "movementVector" + movementVector);
      }
 
      /* Move around obstacles in the tile map if they are small */
