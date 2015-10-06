@@ -143,7 +143,7 @@ namespace AssemblyCSharp
                return isAgro;
           }
 
-          public int currentHp()
+          public float currentHp()
           {
                return health.currentHealth;
           }
@@ -151,7 +151,7 @@ namespace AssemblyCSharp
           public override void onDeath()
           {
                //play pre-explosion animation
-               Explosion lnd = Instantiate(explBlockObject, transform.position, transform.rotation) as Explosion;
+               // Explosion lnd = Instantiate(explBlockObject, transform.position, transform.rotation) as Explosion;
                //death animation
           }
 

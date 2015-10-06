@@ -5,7 +5,8 @@ public class Landmine : Pickup
 {
 
      public Explosion explosion;
-     public SpriteRenderer sprite;
+     private Explosion expl;
+     private SpriteRenderer sprite;
 
 
      private bool isActive;
@@ -29,7 +30,7 @@ public class Landmine : Pickup
           if (isActive)
           {
                currentTime += Time.deltaTime;
-
+               Debug.Log(currentTime);
                //The sprite blinks once the player has stepped in its range and explodes afterwards
                if (currentTime <= timeToExplode)
                {
@@ -38,8 +39,7 @@ public class Landmine : Pickup
                }
                else
                {
-                    Instantiate(explosion, transform.position, transform.rotation);
-
+                    expl = Instantiate(explosion, transform.position, transform.rotation) as Explosion;
                     Destroy(gameObject);
                }
           }

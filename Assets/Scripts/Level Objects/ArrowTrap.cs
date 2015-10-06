@@ -8,6 +8,7 @@ public class ArrowTrap : MonoBehaviour {
     private Transform parent;
     public Sprite facingDown;
     public Sprite facingRight;
+    public AudioClip trapArrow;
 
     public enum ShootDirections { up, down, left, right}
     public ShootDirections direction;
@@ -41,6 +42,7 @@ public class ArrowTrap : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         //If the collider is triggered by a player, shoot an arrow in the direction that the player triggered the collider
         if (other.gameObject.tag == "Player") {
+             AudioSource.PlayClipAtPoint(trapArrow, transform.position);
             if (direction == ShootDirections.up) {
                 Projectile projectile = Instantiate(TrapArrow, new Vector2(transform.position.x, transform.position.y + 0.25f), transform.rotation) as Projectile;
                 projectile.Shoot(90, new Vector2(0, 1));

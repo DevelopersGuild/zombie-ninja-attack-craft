@@ -1,13 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraFreeze : MonoBehaviour {
+public class CameraFreeze : MonoBehaviour
+{
 
      public Transform freezePosition;
-	// Use this for initialization
-	void OnTriggerEnter2D()
+     private CameraFollow camera;
+     private bool isComplete;
+     // Use this for initialization
+     void Start()
      {
-          CameraFollow camera = Camera.main.GetComponent<CameraFollow>();
-          camera.playerPosition = freezePosition;
+          isComplete = false;
+          camera = Camera.main.GetComponent<CameraFollow>();
+     }
+     // Freeze the position when the player enters the collider
+     void OnTriggerEnter2D(Collider2D other)
+     {
+          if (other.GetComponent<Player>() && isComplete == false)
+          {
+               camera.playerPosition = freezePosition;
+          }
+
+     }
+
+     public void UnfreezeToPlayer()
+     {
+          camera.playerPosition = camera.player.transform;
+          isComplete = true;
      }
 }

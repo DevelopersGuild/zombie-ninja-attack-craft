@@ -10,12 +10,14 @@ public class AttackController : MonoBehaviour
 
      public bool isAttacking;
      private bool alreadyAttacked;
+     private bool canShoot = true;
      private Vector2 playerPosition;
 
      public Projectile PlayerArrow;
      public BombScript PlayerBomb;
+     public float TimeBetweenShots;
      public int Ammo;
-     public int Bombs;
+     public int Grenades;
 
      // Use this for initialization
      void Start()
@@ -25,8 +27,16 @@ public class AttackController : MonoBehaviour
           moveController = GetComponent<PlayerMoveController>();
           attackCollider = FindObjectOfType<ColliderInteractions>().GetComponent<BoxCollider2D>();
           attackCollider.enabled = false;
-          Ammo = 5;
-          Bombs = 3;
+     }
+
+     public void SetPlayerProjectileAmmo(int amount)
+     {
+          Ammo += amount;
+     }
+
+     public void SetPlayerGrenadeAmmo(int amount)
+     {
+          Grenades += amount;
      }
 
      // Update is called once per frame
@@ -85,9 +95,9 @@ public class AttackController : MonoBehaviour
           }
      }
 
-     public void ShootProjectile(int damage = 1)
+     public void ShootProjectile(Projectile currentProjectile)
      {
-          if (Ammo > 0)
+          if (Ammo > 0 && canShoot == true)
           {
                GameManager.Notifications.PostNotification(this, "PlayerProjectileAttack");
                Ammo--;
@@ -95,39 +105,40 @@ public class AttackController : MonoBehaviour
                isAttacking = true;
                moveController.isDashing = false;
                moveController.canDash = false;
+               canShoot = false;
 
 
                //Instantiate an arrow depending on which direction the player is facing
                if (moveController.facing.x > 0)
                {
-                    Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x + 0.25f, transform.position.y), transform.rotation) as Projectile;
-                    projectile.Shoot(0, new Vector2(1, 0), damage);
+                    Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x + 0.25f, transform.position.y), transform.rotation) as Projectile;
+                    projectile.Shoot(0, new Vector2(1, 0));
                }
                else if (moveController.facing.x < 0)
                {
-                    Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x - 0.25f, transform.position.y), transform.rotation) as Projectile;
-                    projectile.Shoot(180, new Vector2(-1, 0), damage);
+                    Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x - 0.25f, transform.position.y), transform.rotation) as Projectile;
+                    projectile.Shoot(180, new Vector2(-1, 0));
                }
                else if (moveController.facing.y > 0)
                {
-                    Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x, transform.position.y + 0.25f), transform.rotation) as Projectile;
-                    projectile.Shoot(90, new Vector2(0, 1), damage);
+                    Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x, transform.position.y + 0.25f), transform.rotation) as Projectile;
+                    projectile.Shoot(90, new Vector2(0, 1));
                }
                else if (moveController.facing.y < 0)
                {
-                    Projectile projectile = Instantiate(PlayerArrow, new Vector2(transform.position.x, transform.position.y - 0.25f), transform.rotation) as Projectile;
-                    projectile.Shoot(-90, new Vector2(0, -1), damage);
+                    Projectile projectile = Instantiate(currentProjectile, new Vector2(transform.position.x, transform.position.y - 0.25f), transform.rotation) as Projectile;
+                    projectile.Shoot(-90, new Vector2(0, -1));
                }
-
+               StartCoroutine(ResetCanShoot());
                FinishedAttacking();
           }
      }
 
      public void ThrowBomb(int damage = 1)
      {
-          if(Bombs > 0)
+          if(Grenades > 0)
           {
-               Bombs--;
+               Grenades--;
                isAttacking = true;
                moveController.isDashing = false;
                moveController.canDash = false;
@@ -151,7 +162,7 @@ public class AttackController : MonoBehaviour
      public bool CanAttack()
      {
           //Check if the player is allowed to attack
-          if (moveController.isDashing)
+          if (isAttacking || moveController.isDashing)
           {
                return false;
           }
@@ -159,6 +170,12 @@ public class AttackController : MonoBehaviour
           {
                return true;
           }
+     }
+
+     private IEnumerator ResetCanShoot()
+     {
+          yield return new WaitForSeconds(TimeBetweenShots);
+          canShoot = true;
      }
 }
 

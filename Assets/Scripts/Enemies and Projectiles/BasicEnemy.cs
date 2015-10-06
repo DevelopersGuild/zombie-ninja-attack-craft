@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AssemblyCSharp
-{
+
      public class BasicEnemy : Enemy
      {
           public BasicAttack LRAttack, UDAttack;
@@ -10,9 +9,10 @@ namespace AssemblyCSharp
           private AnimationController animationController;
           private Health health;
 
-          private bool isAgro, canAttack;
-
-          private Vector2 distance, speed, facing, distanceFromPoint, point, up, down, left, right;
+          [HideInInspector]
+          public bool isAgro, canAttack, isAttacking, canChangeDirection;
+          private Vector2 attackDirection;
+          public Vector2 distance, speed, facing, distanceFromPoint, point, up, down, left, right;
           private double idleTime, attackDelay;
           private Vector3 someVec;
 
@@ -48,7 +48,7 @@ namespace AssemblyCSharp
 
           }
 
-          public void Update()
+          public void Update() 
           {
                // Debug.Log("LR: " + LRAttack.GetComponent<SpriteRenderer>().bounds.size.x);
                // Debug.Log("UD: " + UDAttack.GetComponent<SpriteRenderer>().bounds.size.x);
@@ -61,9 +61,12 @@ namespace AssemblyCSharp
                else
                {
                     rnd = new System.Random();
-                    //basic aggression range formula
-                    distance = player.transform.position - transform.position;
-                    distanceFromPoint = distance + up;
+                    if (player != null)
+                    {
+                         distance = player.transform.position - transform.position;
+                         distanceFromPoint = distance + up;
+                    }
+
                     if (distanceFromPoint.magnitude > (distance + left).magnitude)
                     {
                          distanceFromPoint = distance + left;
@@ -93,21 +96,20 @@ namespace AssemblyCSharp
                     {
                          if (canAttack)
                          {
-                              if (distanceFromPoint.magnitude < 0.15f)
+                              if(distanceFromPoint.magnitude < 0.07f && animationController.isAttacking == false) {
+                                   animationController.isAttacking = true;
+                                   moveController.Move(0, 0);
+                              }else if(animationController.isAttacking == true)
                               {
                                    moveController.Move(0, 0);
-                                   animationController.isAttacking = true;
-                                   //animator.setBool("Attack", true)
-
-                                   //when spear goes forward in animation, call Attack();
-
                               }
-                              else
+                              else if (distanceFromPoint.magnitude > 0.25f )
                               {
 
                                    moveController.Move(direction / 6f);
+                                   //distance.normalized?
                               }
-
+                             
                          }
                          else
                          {
@@ -129,6 +131,7 @@ namespace AssemblyCSharp
 
                     idleTime += Time.deltaTime;
                     t -= Time.deltaTime;
+                    
                }
           }
 
@@ -138,7 +141,7 @@ namespace AssemblyCSharp
                return isAgro;
           }
 
-          public int currentHp()
+          public float currentHp()
           {
                return health.currentHealth;
           }
@@ -146,18 +149,48 @@ namespace AssemblyCSharp
           //Called by attack animation when spear is being thrusted forward
           public void Attack()
           {
-               if (Math.Abs(distance.x) >= Math.Abs(distance.y))
-                    attackCollider = Instantiate(LRAttack, transform.position + new Vector3(Math.Sign(distance.x) / 2f, 0, 0), Quaternion.identity) as BasicAttack;
+               Debug.Log("Started");
+               if (Math.Abs(attackDirection.x) > Math.Abs(attackDirection.y))
+               {
+                    if (attackDirection.x > 0)
+                    {
+                         attackCollider = Instantiate(LRAttack, transform.position + new Vector3(0.5f, 0, 0), Quaternion.identity) as BasicAttack;
+                    }
+                    else
+                    {
+                         attackCollider = Instantiate(LRAttack, transform.position + new Vector3(-0.5f, 0, 0), Quaternion.identity) as BasicAttack;
+                    }
+                    attackCollider.transform.parent = gameObject.transform;
+               }
                else
-                    attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, Math.Sign(distance.y) / 2f, 0), UDAttack.transform.rotation) as BasicAttack;
+               {
+                    if(attackDirection.y > 0)
+                    {
+                         attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, 0.5f, 0), UDAttack.transform.rotation) as BasicAttack;
+                    }
+                    else
+                    {
+                         attackCollider = Instantiate(UDAttack, transform.position + new Vector3(0, -0.5f, 0), UDAttack.transform.rotation) as BasicAttack;
+                    }
+
+                    attackCollider.transform.parent = gameObject.transform;
+               }
+               //Destroy(attackCollider.gameObject);
           }
 
-          //Called by attacking animation at end of animation
+          //Called by attacking animation at end of animatn
           public void DoneAttacking()
           {
+               Debug.Log("Finished");
                canAttack = true;
                animationController.isAttacking = false;
-               Destroy(attackCollider);
+               Destroy(attackCollider.gameObject);
+          }
+          
+          public void InititalDirection()
+          {
+               attackDirection = new Vector2(moveController.facing.x, moveController.facing.y);
+               Debug.Log(attackDirection.x + " " + attackDirection.y);
           }
 
           //Called by Rest animation after animation finishes (Rest animation is idle but in it's own animation, so it can call methods seperately)
@@ -168,5 +201,8 @@ namespace AssemblyCSharp
                //sets to walking as it is the default animation.
           }
 
+          public override void onDeath()
+          {
+               Destroy(attackCollider);
+          }
      }
-}

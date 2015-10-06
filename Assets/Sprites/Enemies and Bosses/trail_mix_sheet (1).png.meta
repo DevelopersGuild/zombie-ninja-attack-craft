@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5ddc49f57b2190143b84246f3cf164d9
-timeCreated: 1433576966
+timeCreated: 1442018368
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -17,6 +17,7 @@ TextureImporter:
     21300020: trail_mix_sheet (1)_10
     21300022: trail_mix_sheet (1)_11
     21300024: trail_mix_sheet (1)_12
+    21300026: trail_mix_sheet (1)_13
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -70,7 +71,7 @@ TextureImporter:
         width: 34
         height: 53
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_1
       rect:
@@ -80,7 +81,7 @@ TextureImporter:
         width: 25
         height: 58
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_2
       rect:
@@ -90,7 +91,7 @@ TextureImporter:
         width: 24
         height: 51
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_3
       rect:
@@ -100,7 +101,7 @@ TextureImporter:
         width: 33
         height: 54
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_4
       rect:
@@ -110,7 +111,7 @@ TextureImporter:
         width: 24
         height: 57
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_5
       rect:
@@ -120,7 +121,7 @@ TextureImporter:
         width: 23
         height: 52
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_6
       rect:
@@ -130,7 +131,7 @@ TextureImporter:
         width: 32
         height: 55
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_7
       rect:
@@ -140,7 +141,7 @@ TextureImporter:
         width: 24
         height: 60
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_8
       rect:
@@ -150,7 +151,7 @@ TextureImporter:
         width: 25
         height: 51
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_9
       rect:
@@ -160,7 +161,7 @@ TextureImporter:
         width: 50
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_10
       rect:
@@ -170,7 +171,7 @@ TextureImporter:
         width: 50
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_11
       rect:
@@ -180,7 +181,7 @@ TextureImporter:
         width: 50
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: trail_mix_sheet (1)_12
       rect:
@@ -190,7 +191,17 @@ TextureImporter:
         width: 50
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: trail_mix_sheet (1)_13
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 84
+        width: 65
+        height: 37
+      alignment: 0
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

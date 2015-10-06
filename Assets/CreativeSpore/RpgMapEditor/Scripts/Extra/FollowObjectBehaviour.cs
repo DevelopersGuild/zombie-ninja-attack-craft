@@ -14,6 +14,7 @@ namespace CreativeSpore
         void Start()
         {
             m_camera = GetComponent<Camera>();
+            Target = FindObjectOfType<Player>().GetComponent<Transform>();
         }
 		
 		// Update is called once per frame

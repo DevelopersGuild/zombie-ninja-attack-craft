@@ -13,7 +13,7 @@ public class DoorKey : MonoBehaviour
           if (other.tag == "Player")
           {
                door.OpenDoor();
-               //TODO: PLAY SOUND
+               GameManager.Notifications.PostNotification(this, "OnKeyPickup");
                Destroy(gameObject);
           }
      }

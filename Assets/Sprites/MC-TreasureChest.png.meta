@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: ee377dbb048f12f4da415fed7e1788a2
-timeCreated: 1429073871
+timeCreated: 1441682838
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -61,59 +61,9 @@ TextureImporter:
         x: 2
         y: 45
         width: 16
-        height: 16
+        height: 18
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: MC-TreasureChest_1
-      rect:
-        serializedVersion: 2
-        x: 20
-        y: 45
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: MC-TreasureChest_2
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 27
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: MC-TreasureChest_3
-      rect:
-        serializedVersion: 2
-        x: 20
-        y: 27
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: MC-TreasureChest_4
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 9
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: MC-TreasureChest_5
-      rect:
-        serializedVersion: 2
-        x: 20
-        y: 9
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

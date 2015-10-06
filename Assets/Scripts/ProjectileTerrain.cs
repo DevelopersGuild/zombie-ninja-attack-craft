@@ -42,7 +42,6 @@ public class ProjectileTerrain : Projectile
 
      public void Shoot(float angle, Vector2 velocity, int damage = 1)
      {
-          damageAmount = damage;
           originalPosition = transform.position;
           transform.eulerAngles = new Vector3(0, 0, angle);
           currentVelocity = velocity;

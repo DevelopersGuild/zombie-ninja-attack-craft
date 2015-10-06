@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 08fd6853c95e844438a1169a7ce0d6c4
-timeCreated: 1433575813
+timeCreated: 1442016352
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -16,6 +16,7 @@ TextureImporter:
     21300018: 2claw_walk_9
     21300020: 2claw_walk_10
     21300022: 2claw_walk_11
+    21300024: 2clawdeath
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -79,7 +80,7 @@ TextureImporter:
         width: 14
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: 2claw_walk_2
       rect:
@@ -89,7 +90,7 @@ TextureImporter:
         width: 18
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: 2claw_walk_3
       rect:
@@ -99,7 +100,7 @@ TextureImporter:
         width: 14
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: 2claw_walk_4
       rect:
@@ -119,7 +120,7 @@ TextureImporter:
         width: 14
         height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: 2claw_walk_6
       rect:
@@ -129,7 +130,7 @@ TextureImporter:
         width: 17
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: 2claw_walk_7
       rect:
@@ -139,7 +140,7 @@ TextureImporter:
         width: 15
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: 2claw_walk_8
       rect:
@@ -149,7 +150,7 @@ TextureImporter:
         width: 18
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: 2claw_walk_9
       rect:
@@ -159,7 +160,7 @@ TextureImporter:
         width: 14
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: 2claw_walk_10
       rect:
@@ -178,6 +179,16 @@ TextureImporter:
         y: 153
         width: 14
         height: 26
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: 2clawdeath
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 159
+        width: 32
+        height: 16
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

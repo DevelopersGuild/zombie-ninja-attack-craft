@@ -9,12 +9,18 @@ public class Explosion : MonoBehaviour
      // Use this for initialization
      void Start()
      {
+          if (GetComponent<DontDelete>())
+          {
+               FindObjectOfType<LightningBoss>().turnOffOverload();
+               GetComponent<SpriteRenderer>().sortingLayerName = "Default";
+          }
           collider = GetComponent<CircleCollider2D>();
           GameManager.Notifications.PostNotification(this, "OnExplosion");
      }
 
      void DestroySelf()
      {
+
           Destroy(gameObject);
      }
 

@@ -15,24 +15,26 @@ public class ShopGUI : MonoBehaviour
 
 
      public string ItemName = null;
-     public Shop Store = null;
+     private Shop store = null;
 
 
      void Start()
      {
+          store = GameObject.Find("StoreTrigger").GetComponent<Shop>();
           ItemNameGUI.text = ItemName;
-          CostOfItem.text = Store.GetItemPrice(ItemName).ToString();
-          NumberAvailable.text = Store.GetItemQuantity(ItemName).ToString();
+          CostOfItem.text = store.GetItemPrice(ItemName).ToString();
+          NumberAvailable.text = store.GetItemQuantity(ItemName).ToString();
 
           ResultMessage.text = "";
+
      }
 
      public void AttemptToBuyItem(string ItemName)
      {
           string ResultOfTransaction;
-          ResultOfTransaction = Store.BuyItem(ItemName);
+          ResultOfTransaction = store.BuyItem(ItemName);
           ResultMessage.text = ResultOfTransaction;
-          NumberAvailable.text = Store.GetItemQuantity(ItemName).ToString();
+          NumberAvailable.text = store.GetItemQuantity(ItemName).ToString();
      }
 
 

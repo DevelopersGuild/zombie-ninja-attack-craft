@@ -12,14 +12,18 @@ public class ActivateTrigger : MonoBehaviour {
             foreach (GameObject item in objects)
             {
                   item.SetActive(false);
+                  Debug.Log(item.name);
             }
       }
 
       void OnTriggerEnter2D(Collider2D other)
       {
-            foreach (GameObject item in objects)
-            {
-                  item.SetActive(true);
-            }
+           if (other.tag == "Player")
+           {
+                foreach (GameObject item in objects)
+                {
+                     item.SetActive(true);
+                }
+           }
       }
 }

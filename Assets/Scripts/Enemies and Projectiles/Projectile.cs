@@ -6,7 +6,10 @@ public class Projectile : MonoBehaviour
 {
      public float projectileSpeed;
      public float angle;
-     public int damageAmount;
+     public float currentAngle;
+     public float damageAmount;
+     public int pierceAmount;
+     public ParticleSystem destroyParticle;
 
      public float stun;
      [HideInInspector]
@@ -26,12 +29,20 @@ public class Projectile : MonoBehaviour
           Destroy(transform.gameObject, TimeToLive);
           homing = shot = false;
           player = FindObjectOfType<Player>();
+          if (GetComponent<DealDamageToShieldBoss>())
+               damageAmount = 1;
+          else
+               damageAmount = GetComponent<DealDamageToPlayer>() ? GetComponent<DealDamageToPlayer>().damageAmount : GetComponent<DealDamageToEnemy>().damageAmount;
      }
 
      public void Update()
      {
           if (AutoTileMap.Instance.GetAutotileCollisionAtPosition(transform.position) == AutoTileMap.eTileCollisionType.BLOCK)
           {
+               if (destroyParticle)
+               {
+                    Instantiate(destroyParticle, transform.position, Quaternion.identity);
+               }
                Destroy(transform.gameObject);
           }
           if (shot)
@@ -45,10 +56,25 @@ public class Projectile : MonoBehaviour
           }
      }
 
+     public void OnDestroy()
+     {
+          if (destroyParticle)
+          {
+               Instantiate(destroyParticle, transform.position, Quaternion.identity);
+          }
+     }
+
+     public void OnTriggerEnter2D(Collider2D other)
+     {
+          if (other.gameObject.layer == LayerMask.NameToLayer("CollidableObjects"))
+          {
+               Destroy(gameObject);
+          }
+     }
+
      public void setStun(float st)
      {
           stun = st;
-
      }
 
      public void home(bool x)
@@ -58,11 +84,11 @@ public class Projectile : MonoBehaviour
 
 
 
-     public void Shoot(float angle, Vector2 velocity, int damage = 1)
+     public void Shoot(float angle, Vector2 velocity)
      {
-          damageAmount = damage;
           originalPosition = transform.position;
-          transform.eulerAngles = new Vector3(0, 0, angle);
+          currentAngle = angle;
+          transform.eulerAngles = new Vector3(0, 0, currentAngle);
           currentVelocity = velocity;
           GetComponent<Rigidbody2D>().velocity = currentVelocity * projectileSpeed;
           shot = true;
@@ -74,7 +100,7 @@ public class Projectile : MonoBehaviour
           return stun;
      }
 
-   
+
 }
 
 

@@ -5,6 +5,8 @@ public class Enemy : MonoBehaviour
 {
      public Player player;
      public float AgroRange;
+     private GameObject deathPile;
+     public Sprite deathSprite;
      public EnemyMoveController moveController;
      public bool isInvincible, blink, canBlink;
      public float timeSpentInvincible, stunTimer;
@@ -25,18 +27,8 @@ public class Enemy : MonoBehaviour
           canBlink = true;
           timeSpentInvincible = 0;
           GetComponent<Rigidbody2D>().gravityScale = 0;
-          
+          deathPile = GetComponent<Health>().deathPilePrefab;
          
-     }
-
-     void Start()
-     {
-
-     }
-
-     void Update()
-     {
-
      }
 
      public void checkInvincibility()
@@ -56,6 +48,7 @@ public class Enemy : MonoBehaviour
                     {
                          blink = !blink;
                          GetComponent<Renderer>().enabled = blink;
+                         GetComponent<SpriteRenderer>().color = Color.red;
                     }
                }
 
@@ -64,6 +57,7 @@ public class Enemy : MonoBehaviour
                     isInvincible = false;
                     timeSpentInvincible = 0;
                     GetComponent<Renderer>().enabled = true;
+                    GetComponent<SpriteRenderer>().color = new Color(255,255,255,255);
                }
           }
      }
@@ -115,12 +109,16 @@ public class Enemy : MonoBehaviour
      {
           currentX = transform.position.x;
           currentY = transform.position.y;
-          playerX = player.transform.position.x;
-          playerY = player.transform.position.y;
 
-          angle = Vector2.Angle(player.transform.position, transform.position);
-          direction = new Vector2(playerX - currentX, playerY - currentY);
-          direction = direction.normalized;
+          if (player != null)
+          {
+               playerX = player.transform.position.x;
+               playerY = player.transform.position.y;
+
+               angle = Vector2.Angle(player.transform.position, transform.position);
+               direction = new Vector2(playerX - currentX, playerY - currentY);
+               direction = direction.normalized;
+          }
      }
 
      public bool checkStun()
@@ -136,6 +134,19 @@ public class Enemy : MonoBehaviour
 
      public virtual void onDeath()
      {
+          if (deathPile)
+          {
+               GameObject deathObject = (GameObject)Instantiate(deathPile, this.transform.position, Quaternion.identity);
+               if(deathSprite != null)
+               {
+                    deathObject.GetComponent<SpriteRenderer>().sprite = deathSprite;
+                    deathObject.transform.localScale = transform.localScale;
+                    Debug.Log(GetComponent<Health>().getKnockback() * 500);
+                    deathObject.GetComponent<EnemyMoveController>().Knockback(GetComponent<Health>().getKnockback() * 5);
+               }
+          }
+
+          GameManager.incrementKills();
           //death stuff for sub classes
      }
 }

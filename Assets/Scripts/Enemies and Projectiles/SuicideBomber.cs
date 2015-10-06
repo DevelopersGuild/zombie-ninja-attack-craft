@@ -135,7 +135,7 @@ public class SuicideBomber : Enemy
           return isAgro;
      }
 
-     public int currentHp()
+     public float currentHp()
      {
           return health.currentHealth;
      }

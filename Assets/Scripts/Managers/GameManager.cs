@@ -63,21 +63,27 @@ public class GameManager : MonoBehaviour
      private static GameManager instance = null;
      private static NotificationManager notifications = null;
      private static LoadAndSaveManager stateManager = null;
-     private static int currentLevel;
+     private static float gameTime = 0;
+     private static float levelTimeStart = 0;
+     public static int CurrentLevel;
 
      public static int Coins;
      public static int Score;
+     public static int deaths;
+     public static int killCount;
      public static float timeToCompleteLevel;
      public static bool IsCurrentLevelComplete = false;
      public int PassingScore = 0;
      public bool UnlockAllUnlocks = false;
      public bool ResetUnlocks = false;
 
+     public bool hasSentFeedback = false;
+
      // Use this for initialization
      void Start()
      {
-          currentLevel = Application.loadedLevel;
-          OnLevelWasLoaded(currentLevel);
+          CurrentLevel = Application.loadedLevel;
+          OnLevelWasLoaded(CurrentLevel);
           if (UnlockAllUnlocks == true)
           {
                UnlockEverything();
@@ -94,10 +100,13 @@ public class GameManager : MonoBehaviour
      {
           Coins = 0;
           Score = 0;
+          killCount = 0;
           IsCurrentLevelComplete = false;
+          levelTimeStart = Time.time;
           timeToCompleteLevel = 0;
           LoadGameData();
           GameManager.Notifications.PostNotification(this, "LevelLoaded");
+          UnpauseGame();
      }
 
      public void LoadGameData()
@@ -136,8 +145,27 @@ public class GameManager : MonoBehaviour
      //Time methods
      public static float getTime()
      {
-          timeToCompleteLevel = Time.time;
+          timeToCompleteLevel = Time.time - levelTimeStart;
           return timeToCompleteLevel;
+     }
+
+     public static string getTimeFormatted()
+     {
+          int minutes;
+          int seconds;
+
+          float time = GameManager.getTime();
+          if (time > 60)
+          {
+               minutes = (int)time / 60;
+               seconds = (int)time % 60;
+               return  minutes + "minutes and " + seconds + "seconds";
+          }
+          else
+          {
+               seconds = (int)time;
+               return seconds + "seconds";
+          }
      }
 
 
@@ -145,6 +173,36 @@ public class GameManager : MonoBehaviour
      public static int getScore()
      {
           return Score;
+     }
+
+     public static void incrementKills()
+     {
+          killCount++;
+     }
+
+     public static int getKills()
+     {
+          return killCount;
+     }
+     public static void setKills(int kills)
+     {
+          killCount = kills;
+     }
+
+     public static void incrementDeaths()
+     {
+          deaths++;
+          Debug.Log(deaths);
+     }
+
+     public static int getDeaths()
+     {
+          return deaths;
+     }
+
+     public static void setDeaths(int death)
+     {
+          deaths = death;
      }
 
      public static bool getIsLevelComplete()
@@ -156,39 +214,73 @@ public class GameManager : MonoBehaviour
      {
           CalculateScore();
           LevelComplete();
+          Debug.Log("score:" + GameManager.getScore().ToString());
+          GameManager.Notifications.PostNotification(this, "TurnOnEndOfLevelCanvas");
           GameManager.Notifications.PostNotification(this, "PrepareToSave");
           SaveGame();
+          Debug.Log("score:" + GameManager.getScore().ToString());
           GameManager.Notifications.PostNotification(this, "ScoreReadyToDisplay");
+          Debug.Log("woo!");
      }
 
      public void CalculateScore()
      {
           timeToCompleteLevel = Time.time;
           Score = (int)Math.Round(Coins - timeToCompleteLevel);
-          //Test purposes Delete once level switching is done
-          Score = 1000000;
-          //Test purposes Delete once level switching is done
-          if (Score >= PassingScore)
-          {
-               IsCurrentLevelComplete = true;
-          }
+
      }
+
+     //Level unlock methods
+
+     /*
+     public int GetGoldCombatScore(int level)
+     {
+          return (stateManager.GameState.GameLevels.Count <= level) ? stateManager.GameState.GameLevels[level - 1].GoldScoreCombat : 0;
+     }
+
+     public int GetGoldTimeScore(int level)
+     {
+          return (stateManager.GameState.GameLevels.Count <= level) ? stateManager.GameState.GameLevels[level - 1].GoldScoreTime : 0;
+     }
+      * */
+
+     public int GetPlayerCombatScore(int level)
+     {
+          return (stateManager.GameState.GameLevels.Count > level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreCombat : 0;
+     }
+
+     public float GetPlayerTimeScore(int level)
+     {
+          return (stateManager.GameState.GameLevels.Count > level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreTime : 0;
+     }
+
 
      public static void LevelComplete()
      {
           bool isActive = StateManager.isActiveAndEnabled;
-          if (stateManager.GameState.GameLevels.Count >= currentLevel)
+          if (CurrentLevel == 0)
           {
-               if (stateManager.GameState.GameLevels[currentLevel - 1].Score < Score)
+               //Happens while choosing playing a level scene directly from within the Unity Editor.
+               Debug.Log("Not saving score on level because I don't know which level number this is");
+               return;
+          }
+          if (stateManager.GameState.GameLevels.Count >= CurrentLevel)
+          {
+               if (stateManager.GameState.GameLevels[CurrentLevel - 1].PlayerScoreCombat < Score)
                {
-                    stateManager.GameState.GameLevels[currentLevel - 1].Score = Score;
+                    stateManager.GameState.GameLevels[CurrentLevel - 1].PlayerScoreCombat = Score;
+               }
+               if(stateManager.GameState.GameLevels[CurrentLevel-1].PlayerScoreTime == 0 || stateManager.GameState.GameLevels[CurrentLevel -1].PlayerScoreTime > timeToCompleteLevel)
+               {
+                    stateManager.GameState.GameLevels[CurrentLevel - 1].PlayerScoreTime = timeToCompleteLevel;
                }
           }
           else
           {
                LoadAndSaveManager.GameStateData.GameLevelData newLevel = new LoadAndSaveManager.GameStateData.GameLevelData();
                newLevel.LevelUnlocked = true;
-               newLevel.Score = Score;
+               newLevel.PlayerScoreCombat = Score;
+               newLevel.PlayerScoreTime = Time.time;
                stateManager.GameState.GameLevels.Add(newLevel);
           }
      }
@@ -212,6 +304,16 @@ public class GameManager : MonoBehaviour
           Application.Quit();
      }
 
+     public void PauseGame()
+     {
+          Time.timeScale = 0;
+     }
+
+     public void UnpauseGame()
+     {
+          Time.timeScale = 1.0f;
+     }
+
      //Player Progression
 
      public void ResetGameProgression()
@@ -219,7 +321,7 @@ public class GameManager : MonoBehaviour
           foreach (LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
           {
                level.LevelUnlocked = false;
-               level.Score = 0;
+               level.PlayerScoreCombat = 0;
           }
           stateManager.GameState.Player.IsBowHoldDownUnlocked = false;
           stateManager.GameState.Player.IsBowUnlocked = false;
@@ -236,7 +338,6 @@ public class GameManager : MonoBehaviour
           foreach (LoadAndSaveManager.GameStateData.GameLevelData level in stateManager.GameState.GameLevels)
           {
                level.LevelUnlocked = true;
-               level.Score = 0;
           }
           stateManager.GameState.Player.IsBowHoldDownUnlocked = true;
           stateManager.GameState.Player.IsBowUnlocked = true;
@@ -246,5 +347,15 @@ public class GameManager : MonoBehaviour
           stateManager.GameState.Player.StartingHealth = 0;
           StateManager.Save(Application.persistentDataPath + "/SaveGame.xml");
           GameManager.Notifications.PostNotification(this, "LevelLoaded");
+     }
+
+     public void OpenLevelFeedback()
+     {
+          Application.OpenURL("https://www.surveymonkey.com/r/2V36DGV");
+     }
+
+     public void OpenGameFeedback()
+     {
+          Application.OpenURL("https://www.surveymonkey.com/r/275DBHM");
      }
 }

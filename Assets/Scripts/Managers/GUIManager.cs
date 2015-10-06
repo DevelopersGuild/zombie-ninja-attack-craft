@@ -7,14 +7,14 @@ using System.Collections;
 
 public class GUIManager : MonoBehaviour
 {
-     public Canvas MainTitleMenu = null;
-     public Canvas restartCanvas = null;
-     public Canvas StoreCanvas = null;
-     public Canvas LoadLevelCanvas = null;
-     public Canvas EndOfLevelCanvas = null;
+     private Canvas mainTitleMenu = null;
+     private Canvas loadLevelCanvas = null;
+     private Canvas restartCanvas = null;
+     private Canvas storeCanvas = null;
+     private Canvas endOfLevelCanvas = null;
+     private Canvas settingsCanvas = null;
 
-     public GUIStyle myStyle;
-     public Font pixelFont;
+     private bool isInSettings = false; 
 
      void Start()
      {
@@ -22,85 +22,194 @@ public class GUIManager : MonoBehaviour
           GameManager.Notifications.AddListener(this, "OnPlayerEnterShop");
           GameManager.Notifications.AddListener(this, "OnPlayerExitShop");
           GameManager.Notifications.AddListener(this, "EndOfLevelReached");
+          GameManager.Notifications.AddListener(this, "TurnOnEndOfLevelCanvas");
+
+          GameObject temp = GameObject.Find("TitleScreenCanvas");
+          if(temp != null)
+          {
+               mainTitleMenu = temp.GetComponent<Canvas>();
+               mainTitleMenu.GetComponent<KeyBoardControl>().SetIsInMenu(true);
+          }
+          temp = GameObject.Find("LoadLevelCanvas");
+          if (temp != null)
+          {
+               loadLevelCanvas = temp.GetComponent<Canvas>();
+          }
+          temp = GameObject.Find("RestartCanvas");
+          if (temp != null)
+          {
+               restartCanvas = temp.GetComponent<Canvas>();
+          }
+          temp = GameObject.Find("ShopCanvas");
+          if (temp != null)
+          {
+               storeCanvas = temp.GetComponent<Canvas>();
+          }
+          temp = GameObject.Find("EndOfLevelCanvas");
+          if (temp != null)
+          {
+               endOfLevelCanvas = temp.GetComponent<Canvas>();
+          }
+          temp = GameObject.Find("SettingsCanvas");
+          if (temp != null)
+          {
+               settingsCanvas = temp.GetComponent<Canvas>();
+          }
+
 
           if (Application.loadedLevelName != "titleScreen")
           {
                Cursor.visible = false;
           }
 
-          if (StoreCanvas != null)
+          if (storeCanvas != null)
           {
-               StoreCanvas.enabled = false;
+               storeCanvas.gameObject.SetActive(false);
           }
 
           if (restartCanvas != null)
           {
-               restartCanvas.enabled = false;
+               restartCanvas.gameObject.SetActive(false);
           }
 
-          if (LoadLevelCanvas != null)
+          if (loadLevelCanvas != null)
           {
-               LoadLevelCanvas.enabled = false;
+               loadLevelCanvas.gameObject.SetActive(false);
           }
 
-          if (EndOfLevelCanvas != null)
+          if (endOfLevelCanvas != null)
           {
-               EndOfLevelCanvas.enabled = false;
+               endOfLevelCanvas.gameObject.SetActive(false);
+          }
+          
+          if (settingsCanvas != null)
+          {
+               settingsCanvas.gameObject.SetActive(false);
           }
 
           GUIStyle myStyle = new GUIStyle();
-          myStyle.font = pixelFont;
+     }
+
+     void Update()
+     {
+          if(Input.GetButtonDown("Cancel") && isInSettings == false)
+          {
+               if(restartCanvas != null)
+               {
+                    if(restartCanvas.gameObject.activeSelf == false)
+                    {
+                         restartCanvas.gameObject.SetActive(true);
+                         SetCanvasKeyBoardController(restartCanvas, true);
+                         Cursor.visible = true;
+                         GameManager.Instance.PauseGame();
+                    }
+                    else
+                    {
+                         SetCanvasKeyBoardController(restartCanvas, false);
+                         restartCanvas.gameObject.SetActive(false);
+                         Cursor.visible = false;
+                         GameManager.Instance.UnpauseGame();
+                    }
+               }
+          }
      }
 
      public void OnPlayerDeath()
      {
           if (restartCanvas != null)
           {
-               restartCanvas.enabled = true;
+               restartCanvas.gameObject.SetActive(true);
+               GameManager.incrementDeaths();
+               SetCanvasKeyBoardController(restartCanvas, true);
                Cursor.visible = true;
           }
      }
 
      public void OnPlayerEnterShop()
      {
-          if (StoreCanvas != null)
+          if (storeCanvas != null)
           {
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
-               StoreCanvas.enabled = true;
+               storeCanvas.gameObject.SetActive(true);
+               SetCanvasKeyBoardController(storeCanvas, true);
                Cursor.visible = true;
+               GameManager.Instance.PauseGame();
           }
      }
 
      public void OnPlayerExitShop()
      {
-          if (StoreCanvas != null)
+          if (storeCanvas != null)
           {
                GameManager.Notifications.PostNotification(this, "PlayerExitMenu");
-               StoreCanvas.enabled = false;
+               SetCanvasKeyBoardController(storeCanvas, false);
+               storeCanvas.gameObject.SetActive(false);
                Cursor.visible = false;
+               GameManager.Instance.UnpauseGame();
           }
      }
 
-     public void EndOfLevelReached()
+     public void TurnOnEndOfLevelCanvas()
      {
-          if (EndOfLevelCanvas != null)
+          if (endOfLevelCanvas != null)
           {
                GameManager.Notifications.PostNotification(this, "PlayerInMenu");
-               EndOfLevelCanvas.enabled = true;
+               endOfLevelCanvas.gameObject.SetActive(true);
+               SetCanvasKeyBoardController(endOfLevelCanvas, true);
                Cursor.visible = true;
+               GameManager.Instance.PauseGame();
           }
      }
 
      public void ShowLoadLevel()
      {
-          MainTitleMenu.enabled = false;
-          LoadLevelCanvas.enabled = true;
+          SetCanvasKeyBoardController(mainTitleMenu, false);
+          mainTitleMenu.gameObject.SetActive(false);
+          loadLevelCanvas.gameObject.SetActive(true);
+          SetCanvasKeyBoardController(loadLevelCanvas, true);
      }
 
      public void ShowTitleScreen()
      {
-          MainTitleMenu.enabled = true;
-          LoadLevelCanvas.enabled = false;
+          SetCanvasKeyBoardController(loadLevelCanvas, false);
+          mainTitleMenu.gameObject.SetActive(true);
+          loadLevelCanvas.gameObject.SetActive(false);
+          SetCanvasKeyBoardController(mainTitleMenu, true);
+     }
+
+     public void ShowSettingScreen()
+     {
+          settingsCanvas.gameObject.SetActive(true);
+          if(restartCanvas != null)
+          {
+               restartCanvas.gameObject.SetActive(false);
+          }
+
+          if(mainTitleMenu != null)
+          {
+               mainTitleMenu.gameObject.SetActive(false);
+          }
+          isInSettings = true;
+     }
+
+     public void HideSettingScreen()
+     {
+          settingsCanvas.gameObject.SetActive(false);
+          if (restartCanvas != null)
+          {
+               restartCanvas.gameObject.SetActive(true);
+          }
+
+          if (mainTitleMenu != null)
+          {
+               mainTitleMenu.gameObject.SetActive(true);
+          }
+          isInSettings = false;
+     }
+
+     private void SetCanvasKeyBoardController(Canvas canvas, bool value)
+     {
+          canvas.GetComponent<KeyBoardControl>().SetIsInMenu(value);
      }
 
      private void OnGUI()

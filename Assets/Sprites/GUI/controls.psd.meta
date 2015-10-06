@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 45fbe9ee81b966844b489479c722c315
-timeCreated: 1434610025
+timeCreated: 1441012034
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -11,6 +11,13 @@ TextureImporter:
     21300008: controls_9
     21300010: controls_10
     21300012: controls_11
+    21300014: controls_2
+    21300016: controls_3
+    21300018: controls_4
+    21300020: controls_5
+    21300022: controls_6
+    21300024: controls_12
+    21300026: controls_13
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -36,7 +43,7 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -60,7 +67,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 10
-        y: 112
+        y: 184
         width: 30
         height: 30
       alignment: 0
@@ -69,8 +76,8 @@ TextureImporter:
     - name: controls_1
       rect:
         serializedVersion: 2
-        x: 59
-        y: 112
+        x: 58
+        y: 184
         width: 31
         height: 31
       alignment: 0
@@ -80,49 +87,119 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 11
-        y: 37
+        y: 109
         width: 26
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: controls_8
       rect:
         serializedVersion: 2
         x: 51
-        y: 39
+        y: 111
         width: 31
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: controls_9
       rect:
         serializedVersion: 2
         x: 11
-        y: 2
+        y: 74
         width: 31
         height: 27
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: controls_10
       rect:
         serializedVersion: 2
         x: 73
-        y: 2
+        y: 74
         width: 26
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: controls_11
       rect:
         serializedVersion: 2
         x: 9
-        y: 78
+        y: 150
         width: 81
         height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: controls_2
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 149
+        width: 51
+        height: 33
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: controls_3
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 113
+        width: 82
+        height: 33
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: controls_4
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 43
+        width: 75
+        height: 17
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: controls_5
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 21
+        width: 48
+        height: 17
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: controls_6
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 2
+        width: 74
+        height: 17
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: controls_12
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 60
+        width: 151
+        height: 12
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: controls_13
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 21
+        width: 44
+        height: 18
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

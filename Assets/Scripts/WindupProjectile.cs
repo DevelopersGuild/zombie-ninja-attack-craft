@@ -7,7 +7,7 @@ public class WindupProjectile : Projectile
 
 
      [HideInInspector]
-     public Vector2 maxVelocity, currentVelocity;
+     public Vector2 maxVelocity;
      private float speedBoost, temp;
 
      public void Start()
@@ -60,16 +60,18 @@ public class WindupProjectile : Projectile
 
 
 
-     public void Shoot(float dododoS, Vector2 velocity, int damage = 1)
+     public void Shoot(float angle, Vector2 velocity, int damage = 1)
      {
           damageAmount = damage;
           originalPosition = transform.position;
-         // transform.eulerAngles = new Vector3(0, 0, angle);
+          currentAngle = angle;
+          transform.eulerAngles = new Vector3(0, 0, currentAngle);
           maxVelocity = velocity * projectileSpeed;
           currentVelocity = maxVelocity * 0.01f;
           GetComponent<Rigidbody2D>().velocity = currentVelocity;
           shot = true;
      }
+
 
 
      public float getStun()

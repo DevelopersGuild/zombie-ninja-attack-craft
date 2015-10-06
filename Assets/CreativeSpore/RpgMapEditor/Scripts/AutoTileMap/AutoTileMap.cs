@@ -304,7 +304,7 @@ namespace CreativeSpore.RpgMapEditor
 			{ 
 				Vector3 vPos = TileLayerPosition[ (int)eTileLayer.OVERLAY ]; 
 				vPos.z = value; TileLayerPosition[ (int)eTileLayer.OVERLAY ] = vPos;
-                vPos.z -= .1f; EditorMinimapRender.transform.position = vPos; // set editor minimap position a little over the overlay layer
+                //vPos.z -= .1f; EditorMinimapRender.transform.position = vPos; // set editor minimap position a little over the overlay layer
 				m_tileChunkPoolNode.UpdateLayerPositions();
 			}
 		}

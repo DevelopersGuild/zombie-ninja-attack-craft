@@ -82,7 +82,6 @@ public class Cyclops : Enemy
                     {
                          if (temp > 0)
                          {
-                              collider.enabled = false;
                               sprRend.enabled = false;
                               moveController.Move(teleportRun * 2);
                               temp -= Time.deltaTime;
@@ -169,7 +168,7 @@ public class Cyclops : Enemy
           return isAgro;
      }
 
-     public int currentHp()
+     public float currentHp()
      {
           return health.currentHealth;
      }
@@ -177,6 +176,7 @@ public class Cyclops : Enemy
      public void Shoot()
      {
           Vector3 offset;
+          GameManager.Notifications.PostNotification(this, "OnCyclopsShoot");
           laser = Instantiate(laserObject, transform.position, transform.rotation) as Projectile;
           laser.GetComponent<Rigidbody2D>().velocity = (direction * projectileSpeed);
           laserCD = 0;
@@ -189,6 +189,7 @@ public class Cyclops : Enemy
 
      public void Teleporting()
      {
+          GameManager.Notifications.PostNotification(this, "OnCyclopsTeleport");
           sprRend.enabled = false;
           collider.enabled = false;
           teleporting = true;
