@@ -85,14 +85,6 @@ public class PlayerMoveController : MonoBehaviour
           //Subtract the cooldown for dashing and check when the player can dash again and whether or not its finished dashing
           dashIn -= Time.deltaTime;
 
-          //The player can move after the dash cool down
-          if (dashIn < -0.1)
-          {
-               canDash = true;
-               isDashing = false;
-               dashCooldown = false;
-          }
-
           //Dash Cooldown
           if (dashIn < 0.1)
           {
@@ -108,13 +100,18 @@ public class PlayerMoveController : MonoBehaviour
           //The player can move after the dash cool down
           if (dashIn < -0.3)
           {
-               canDash = true;
                isDashing = false;
                dashCooldown = false;
           }
 
-          //Check the players state. If its already doing something, prevent the player from being able to move
-          canMove = attackController.isAttacking == false &&
+        //The player can move after the dash cool down
+        if (dashIn < -0.7)
+        {
+            canDash = true;
+        }
+
+        //Check the players state. If its already doing something, prevent the player from being able to move
+        canMove = attackController.isAttacking == false &&
                     dashCooldown == false;
 
           // Calculate movement amount
