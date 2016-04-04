@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class LoadLevelCanvasController : MonoBehaviour
 {
+
+	public Button[] levelButtons = new Button[9];
      public Button Level1Button;
      public Button Level2Button;
      public Button Level3Button;
@@ -19,6 +21,24 @@ public class LoadLevelCanvasController : MonoBehaviour
      public Text PlayerTimeScoreText;
      public Text GoldcombatScoreText;
      public Text PlayerCombatScoreText;
+
+	void Start()
+	{
+		foreach(Button button in levelButtons)
+		{
+			foreach(Image image in button.GetComponentsInChildren<Image>())
+			{
+				if(image.name == "SwordImage")
+				{
+					Debug.Log("Sword Image");
+				}
+				else if(image.name == "TimeImage")
+				{
+					Debug.Log ("Time Image");
+				}
+			}
+		}
+	}
 
 
      public void ButtonSelected(Button selectedButton)
