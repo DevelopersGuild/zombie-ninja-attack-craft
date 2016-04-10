@@ -246,12 +246,12 @@ public class GameManager : MonoBehaviour
 
      public int GetPlayerCombatScore(int level)
      {
-          return (stateManager.GameState.GameLevels.Count > level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreCombat : 0;
+          return (stateManager.GameState.GameLevels.Count >= level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreCombat : 0;
      }
 
      public float GetPlayerTimeScore(int level)
      {
-          return (stateManager.GameState.GameLevels.Count > level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreTime : 0;
+          return (stateManager.GameState.GameLevels.Count >= level) ? stateManager.GameState.GameLevels[level - 1].PlayerScoreTime : 0;
      }
 
 
