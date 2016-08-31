@@ -10,21 +10,17 @@ public class MinimapCamera : MonoBehaviour
     {
         isActive = false;
         camera = GetComponent<Camera>();
+        camera.enabled = isActive;
     }
 
     // Update is called once per frame
 	void Update ()
     {
-	    if (Input.GetButtonDown("Map") && isActive)
+        if (Input.GetButtonDown("Map"))
 	    {
             Debug.Log("enabling!");
-	        camera.enabled = false;
-	        isActive = false;
-	    }
-	    else if(Input.GetButtonDown("Map") && !isActive)
-	    {
-	        camera.enabled = true;
-	        isActive = true;
+            isActive = !isActive;
+            camera.enabled = isActive;
 	    }
 	}
 }
