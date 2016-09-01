@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using CreativeSpore.RpgMapEditor;
 
 public class shield : MonoBehaviour {
 
