@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d2dcb2f17ed260b46882a576dfd13285
-timeCreated: 1434689493
+timeCreated: 1474938872
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -8,6 +8,7 @@ TextureImporter:
     21300002: door_sheet_1
     21300004: door_sheet_2
     21300006: door_sheet_3
+    21300008: door_sheet_4
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -21,7 +22,7 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: .25
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
@@ -41,19 +42,23 @@ TextureImporter:
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
+  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
-  spritePivot: {x: .5, y: .5}
+  spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: door_sheet_0
+    - serializedVersion: 2
+      name: door_sheet_0
       rect:
         serializedVersion: 2
         x: 222
@@ -61,9 +66,12 @@ TextureImporter:
         width: 125
         height: 65
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: door_sheet_1
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: door_sheet_1
       rect:
         serializedVersion: 2
         x: 533
@@ -71,9 +79,12 @@ TextureImporter:
         width: 43
         height: 125
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: door_sheet_2
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: door_sheet_2
       rect:
         serializedVersion: 2
         x: 222
@@ -81,9 +92,12 @@ TextureImporter:
         width: 125
         height: 65
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: door_sheet_3
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: door_sheet_3
       rect:
         serializedVersion: 2
         x: 533
@@ -91,8 +105,24 @@ TextureImporter:
         width: 43
         height: 124
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: door_sheet_4
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 187
+        width: 131
+        height: 57
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 
